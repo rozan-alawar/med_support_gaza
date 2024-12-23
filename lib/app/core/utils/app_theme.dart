@@ -4,52 +4,32 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
-    return ThemeData(
-      primaryColor: AppColors.primary,
-      scaffoldBackgroundColor: AppColors.background,
-      colorScheme: ColorScheme.light(
-        primary: AppColors.primary,
-        secondary: AppColors.accent,
-        background: AppColors.background,
-        surface: AppColors.surface,
-        error: AppColors.error,
-      ),
-
-      appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.textDark),
-
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.white,
-          minimumSize: const Size(double.infinity, 56),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+    return  ThemeData(
+        primarySwatch: Colors.teal,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryColor: Color(0xFF00796B), // Custom primary color
+        scaffoldBackgroundColor: Colors.white, // Background color
+        
+        buttonTheme: ButtonThemeData(
+          buttonColor: Color(0xFF00796B),
+          textTheme: ButtonTextTheme.primary,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: Color(0xFF004D40)),
           ),
-
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: Color(0xFF00796B)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: Color(0xFF004D40)),
+          ),
         ),
-      ),
-      cardTheme: CardTheme(
-        color: AppColors.surface,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        margin: const EdgeInsets.symmetric(vertical: 8),
-      ),
-      listTileTheme: ListTileThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 8,
-        ),
-      ),
-    );
-  }
+      );
+      }
 }

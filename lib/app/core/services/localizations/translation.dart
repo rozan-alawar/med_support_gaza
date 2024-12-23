@@ -5,11 +5,37 @@ class Translation extends Translations {
   Map<String, Map<String, String>> get keys => {
         'ar': {
           'Hello': 'مرحباً',
-
-
+          'Welcome': 'أهلاً وسهلاً',
+          'GetFreeConsultation': 'احصل على استشارة طبية مجانية الآن',
+          'SignUp': 'تسجيل الدخول',
+          'Login': 'تسجيل الدخول',
+          'FirstName': 'الاسم الأول',
+          'LastName': 'الاسم الأخير',
+          'Email': 'البريد الإلكتروني',
+          'Password': 'كلمة المرور',
+          'PhoneNumber': 'رقم الهاتف',
+          'Age': 'العمر',
+          'Gender': 'الجنس',
+          'Male': 'ذكر',
+          'Female': 'أنثى',
+          'ForgotPassword': 'هل نسيت كلمة المرور؟',
         },
         'en': {
-         'Hello':'Hello'
+          'Hello': 'Hello',
+          'Welcome': 'Welcome',
+          'GetFreeConsultation': 'Get a free medical consultation now',
+          'SignUp': 'Sign Up',
+          'Login': 'Login',
+          'FirstName': 'First Name',
+          'LastName': 'Last Name',
+          'Email': 'Email',
+          'Password': 'Password',
+          'PhoneNumber': 'Phone Number',
+          'Age': 'Age',
+          'Gender': 'Gender',
+          'Male': 'Male',
+          'Female': 'Female',
+          'ForgotPassword': 'Forgot Password?',
         },
       };
 }

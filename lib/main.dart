@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/core/services/localizations/translation_contoller.dart';
+import 'package:med_support_gaza/app/core/utils/app_theme.dart';
 import 'app/core/services/localizations/translation.dart';
 import 'app/routes/app_pages.dart';
 
@@ -17,11 +19,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Med Support Gaza',
-      // locale: TranslationController.initalLang, // Get initial language
-      fallbackLocale: const Locale('en'), // Fallback to English
-      translations: Translation(), // Language translations
-      initialRoute: AppPages.INITIAL, // Set initial route
-      getPages: AppPages.routes, // Define routes
+      theme: AppTheme.appTheme,
+      fallbackLocale:const Locale('en', 'US'),
+      locale: TranslationController.initalLang,
+      translations: Translation(), 
+      initialRoute: AppPages.INITIAL, 
+      getPages: AppPages.routes, 
     );
   }
 }
