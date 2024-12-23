@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 
 class AppTheme {
-  static ThemeData get lightTheme {
+  static ThemeData get appTheme {
     return  ThemeData(
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
