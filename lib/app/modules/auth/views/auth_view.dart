@@ -9,16 +9,11 @@ class AuthView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AuthView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'AuthView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      body: Obx(() => AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+       // child: controller.isLogin.value ? LoginView() : SignupView(),
+      )),
     );
+
   }
 }

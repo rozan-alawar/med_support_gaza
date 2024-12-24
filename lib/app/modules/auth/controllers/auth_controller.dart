@@ -1,23 +1,10 @@
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
-  //TODO: Implement AuthController
+  final isLogin = true.obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+
+  void toggleView() {
+    isLogin.value = !isLogin.value;
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

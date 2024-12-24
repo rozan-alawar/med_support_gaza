@@ -49,7 +49,7 @@ dependencies:
   logger: ^2.0.2+1
   url_launcher: ^6.2.2
   image_picker: ^1.0.5
-
+  flutter_screenutil: ^5.9.3
   # Network
   dio: ^5.4.0
   connectivity_plus: ^5.0.2
