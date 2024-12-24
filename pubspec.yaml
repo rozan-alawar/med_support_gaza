@@ -103,6 +103,17 @@ flutter:
         - asset: assets/fonts/arial/ARIALN.ttf
         - asset: assets/fonts/arial/ARIALNB.ttf
         - asset: assets/fonts/arial/ARIBLK.ttf
+    - family: LamaSans
+      fonts:
+        - asset: assets/fonts/lamaSans/LamaSans-Black.ttf
+        - asset: assets/fonts/lamaSans/LamaSans-Bold.ttf
+        - asset: assets/fonts/lamaSans/LamaSans-ExtraBold.ttf
+        - asset: assets/fonts/lamaSans/LamaSans-ExtraLight.ttf
+        - asset: assets/fonts/lamaSans/LamaSans-Light.ttf
+        - asset: assets/fonts/lamaSans/LamaSans-Medium.ttf
+        - asset: assets/fonts/lamaSans/LamaSans-Regular.ttf
+        - asset: assets/fonts/lamaSans/LamaSans-SemiBold.ttf
+        - asset: assets/fonts/lamaSans/LamaSans-Thin.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
