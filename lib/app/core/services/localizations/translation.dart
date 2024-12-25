@@ -19,6 +19,10 @@ class Translation extends Translations {
           'Male': 'ذكر',
           'Female': 'أنثى',
           'ForgotPassword': 'هل نسيت كلمة المرور؟',
+          'CreateAccountNow': 'أنشئ حساب الآن',
+          'DontHaveAccount': 'لا تمتلك حساب؟',
+          'AlreadyHaveAccount': 'لديك حساب بالفعل؟',
+          'SignIn': 'سجل دخولك',
         },
         'en': {
           'Hello': 'Hello',
@@ -36,6 +40,10 @@ class Translation extends Translations {
           'Male': 'Male',
           'Female': 'Female',
           'ForgotPassword': 'Forgot Password?',
+          'CreateAccountNow': 'Create Account Now',
+          'DontHaveAccount': 'Don\'t have an account?',
+          'AlreadyHaveAccount': 'Already have an account?',
+          'SignIn': 'Sign In',
         },
       };
 }
