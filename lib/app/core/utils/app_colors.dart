@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
 // Main Colors
-  static const Color primary = Color(0xFF1f6c42); // Dark Green
+  static const Color primary = Color(0xFF00918E); // Dark Green
   static const Color accent = Color(0xFF00796B); // Teal
   static const Color background = Color(0xFFFFFFFF); // White
   static const Color surface = Color(0xFFE0F2F1); // Light Teal
