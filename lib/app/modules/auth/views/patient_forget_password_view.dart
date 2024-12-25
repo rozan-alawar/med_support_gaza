@@ -4,8 +4,9 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 
-class PatientForgetPasswordView extends StatelessWidget {
+class PatientForgetPasswordView extends GetView<AuthController> {
   final TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -38,7 +39,6 @@ class PatientForgetPasswordView extends StatelessWidget {
                 color: AppColors.primary,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // Perform Forgot Password Logic
                     print('OTP Sent');
                   }
                 },

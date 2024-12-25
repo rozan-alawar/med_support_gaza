@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
 
 class MyTextStyles {
   static TextStyle hintTextStyle = TextStyle(
@@ -13,7 +14,6 @@ class MyTextStyles {
 
   static TextStyle boldTextStyle = TextStyle(
     fontWeight: FontWeight.bold,
-
     fontSize: 16.0,
   );
 
@@ -31,6 +31,15 @@ class MyTextStyles {
     fontWeight: FontWeight.w600,
     fontSize: 16.0,
   );
+
+  static TextStyle headingBoldLarge = const TextStyle(
+      fontFamily: 'Arial',
+      fontSize: 24,
+      fontWeight: FontWeight.w700,
+      color: AppColors.primary);
+  static TextStyle bodyRegularCentered = const TextStyle(
+    fontFamily: 'Arial',
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+  );
 }
-
-

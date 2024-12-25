@@ -103,12 +103,12 @@ class PatientSignUpView extends GetView<AuthController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('لا تمتلك حساب؟'),
+                       Text('AlreadyHaveAccount'.tr),
                       TextButton(
                         onPressed: controller.toggleView,
-                        child: const Text(
-                          'أنشئ حساب الآن',
-                          style: TextStyle(color: Colors.green),
+                        child:  CustomText(
+                          'SignIn'.tr,
+                          color: AppColors.primary,
                         ),
                       ),
                     ],

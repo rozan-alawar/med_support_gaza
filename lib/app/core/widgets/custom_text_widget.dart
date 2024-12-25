@@ -13,13 +13,14 @@ class CustomText extends StatelessWidget {
   final bool lineThrow;
   final double height;
   final TextDecoration? textDecoration;
-
+  final String? fontFamily;
   const CustomText(
     this.text, {
     Key? key,
     this.fontSize = 16,
     this.color,
     this.fontWeight = FontWeight.normal,
+    this.fontFamily = 'LamaSans',
     this.textAlign = TextAlign.left,
     this.overflow = TextOverflow.visible,
     this.maxLines = 5,
@@ -36,6 +37,7 @@ class CustomText extends StatelessWidget {
       overflow: overflow,
       maxLines: maxLines,
       style: TextStyle(
+        fontFamily: fontFamily,
         overflow: TextOverflow.ellipsis,
         color: color,
         fontSize: fontSize.sp,
