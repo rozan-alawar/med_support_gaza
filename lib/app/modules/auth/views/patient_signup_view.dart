@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/extentions/validation_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/utils/app_text_style.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
@@ -10,105 +12,126 @@ import '../controllers/auth_controller.dart';
 
 class PatientSignUpView extends GetView<AuthController> {
   final _formKey = GlobalKey<FormState>();
-  final AuthController authController = Get.put(AuthController());
-
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final RxString gender = 'Male'.obs;
   PatientSignUpView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: CustomText('SignUp'.tr, fontSize: 20, fontWeight: FontWeight.bold),
-        centerTitle: true,
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: 20.w,
+        ),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-              
+                100.height,
+                CustomText(
+                  'SignUp'.tr,
+                  fontSize: 20.sp,
+                  color: AppColors.accent,
+                  fontWeight: FontWeight.bold,
+                ),
+                30.height,
                 CustomTextField(
                   hintText: 'FirstName'.tr,
-                  controller: authController.firstNameController,
-                  prefixIcon: Icons.person,
+                  controller: firstNameController,
                   keyboardType: TextInputType.text,
+                  validator: (value) => value!.isValidName,
                 ),
-                const SizedBox(height: 16),
+                16.height,
                 CustomTextField(
                   hintText: 'LastName'.tr,
-                  controller: authController.lastNameController,
-                  prefixIcon: Icons.person_outline,
+                  controller: lastNameController,
+                  validator: (value) => value!.isValidName,
                   keyboardType: TextInputType.text,
                 ),
-                const SizedBox(height: 16),
+                16.height,
                 CustomTextField(
                   hintText: 'Email'.tr,
-                  controller: authController.emailController,
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  prefixIcon: Icons.email,
+                  validator: (value) => value!.isValidEmail,
                 ),
-                const SizedBox(height: 16),
+                16.height,
                 CustomTextField(
                   hintText: 'Password'.tr,
-                  controller: authController.passwordController,
+                  controller: passwordController,
                   obscureText: true,
-                  prefixIcon: Icons.lock,
+                  validator: (value) => value!.isValidPassword,
                 ),
-                const SizedBox(height: 16),
+                16.height,
                 CustomTextField(
                   hintText: 'PhoneNumber'.tr,
-                  controller: authController.phoneController,
+                  controller: phoneController,
                   keyboardType: TextInputType.phone,
-                  prefixIcon: Icons.phone,
+                  validator: (value) => value!.isValidPhone,
                 ),
-                const SizedBox(height: 16),
+                16.height,
                 CustomTextField(
                   hintText: 'Age'.tr,
-                  controller: authController.ageController,
+                  controller: ageController,
                   keyboardType: TextInputType.number,
-                  prefixIcon: Icons.calendar_today,
+                  validator: (value) => value!.isValidAge,
                 ),
-                CustomText('Gender'.tr, fontSize: 16, fontWeight: FontWeight.bold),
+                16.height,
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: CustomText('Gender'.tr,
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 Row(
                   children: [
                     Obx(() => Radio(
+                      activeColor: AppColors.primary,
                           value: 'Male',
-                          groupValue: authController.gender.value,
-                          onChanged: (value) => authController.gender.value = value.toString(),
+                          groupValue: gender.value,
+                          onChanged: (value) => gender.value = value.toString(),
                         )),
                     CustomText('Male'.tr),
                     Obx(() => Radio(
                           value: 'Female',
-                          groupValue: authController.gender.value,
-                          onChanged: (value) => authController.gender.value = value.toString(),
+                          activeColor: AppColors.primary,
+                          groupValue: gender.value,
+                          onChanged: (value) => gender.value = value.toString(),
                         )),
                     CustomText('Female'.tr),
                   ],
                 ),
-                const SizedBox(height: 24),
+                30.height,
                 CustomButton(
                   text: 'SignUp'.tr,
                   color: AppColors.primary,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      authController.signUp();
+                      controller.signUp();
                     }
                   },
                 ),
-                20.height,
-                  Center(
+                24.height,
+                Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                       Text('AlreadyHaveAccount'.tr),
-                      TextButton(
-                        onPressed: controller.toggleView,
-                        child:  CustomText(
+                      CustomText(
+                        fontSize: 11.sp,
+                        'AlreadyHaveAccount'.tr,
+                      ),
+                      GestureDetector(
+                        onTap: controller.toggleView,
+                        child: CustomText(
+                          fontSize: 11.sp,
                           'SignIn'.tr,
-                          color: AppColors.primary,
+                          color: AppColors.accent,
                         ),
                       ),
                     ],

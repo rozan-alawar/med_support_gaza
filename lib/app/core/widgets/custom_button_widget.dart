@@ -9,8 +9,8 @@ class CustomButton extends StatelessWidget {
       required this.text,
       required this.color,
       required this.onPressed,
-      this.width = 90,
-      this.height = 40,
+      this.width = double.infinity,
+      this.height = 45,
       this.fontSize = 16,
       this.borderColor,
       this.isDisable = false,
@@ -34,8 +34,8 @@ class CustomButton extends StatelessWidget {
         width: width.w,
         height: height.h,
         decoration: BoxDecoration(
-          color: color,
-          borderRadius: borderRadius ?? BorderRadius.circular(25.r),
+          color: AppColors.accent,
+          borderRadius: borderRadius ?? BorderRadius.circular(12.r),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),

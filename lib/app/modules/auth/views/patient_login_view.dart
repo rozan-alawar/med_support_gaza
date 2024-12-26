@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/extentions/validation_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
@@ -8,81 +10,99 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import '../controllers/auth_controller.dart';
 
 class PatientLoginView extends GetView<AuthController> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: CustomText('Login'.tr, fontSize: 20, fontWeight: FontWeight.bold),
-        centerTitle: true,
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: 20.w,
+        ),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                200.height,
+                CustomText(
+                  'Login'.tr,
+                  fontSize: 20.sp,
+                  color: AppColors.accent,
+                  fontWeight: FontWeight.bold,
+                ),
+                64.height,
                 CustomTextField(
                   hintText: 'Email'.tr,
-                  controller: authController.emailController,
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  prefixIcon: Icons.email,
+                  validator: (value) => value!.isValidEmail,
                 ),
-                const SizedBox(height: 16),
-                CustomTextField(
-                  hintText: 'Password'.tr,
-                  controller: authController.passwordController,
-                  obscureText: true,
-                  prefixIcon: Icons.lock,
+                20.height,
+                Obx(
+                  () => CustomTextField(
+                    hintText: 'Password'.tr,
+                    controller: passwordController,
+                    obscureText: controller.isPasswordVisible.value,
+                    validator: (value) => value!.isValidPassword,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        size: 18.h,
+                        controller.isPasswordVisible.value
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
+                      onPressed: () => controller.togglePasswordVisibility(),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 16),
+                12.height,
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                  
                       print('Forgot Password');
                     },
                     child: CustomText(
                       'ForgotPassword'.tr,
                       color: AppColors.primary,
-                      fontSize: 14,
+                      fontSize: 11.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
-              
+                60.height,
                 CustomButton(
                   text: 'Login'.tr,
+                  width: double.infinity,
                   color: AppColors.primary,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                    
                       print('User Logged In');
                     }
                   },
                 ),
-                   20.height,
-                  Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                       Text('DontHaveAccount'.tr),
-                      TextButton(
-                        onPressed: controller.toggleView,
-                        child:  CustomText(
-                          'CreateAccountNow'.tr,
-                          color: AppColors.primary,
-                        ),
+                24.height,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      fontSize: 11.sp,
+                      'DontHaveAccount'.tr,
+                    ),
+                    GestureDetector(
+                      onTap: controller.toggleView,
+                      child: CustomText(
+                        fontSize: 11.sp,
+                        'CreateAccountNow'.tr,
+                        color: AppColors.accent,
                       ),
-                    ],
-                  ),
-                  ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

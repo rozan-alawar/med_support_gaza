@@ -1,10 +1,12 @@
+import 'package:get/get.dart';
+
 extension ValidationExt on String {
   String? get isValidEmail {
     final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     if (isEmpty) {
-      return ("يرجى إدخال البريد الإلكتروني");
+      return "enter_email".tr;
     } else if (!emailRegExp.hasMatch(this)) {
-      return ("يرجى إدخال بريد إلكتروني صحيح");
+      return "valid_email".tr;
     } else {
       return null;
     }
@@ -12,34 +14,43 @@ extension ValidationExt on String {
 
   String? get isValidPassword {
     if (isEmpty) {
-      return ("يرجى إدخال كلمة المرور");
+      return "enter_password".tr;
     } else if (length < 8) {
-      return ("كلمة المرور يجب ان تحتوي على أكثر من 8 حروف ");
-    }else {
+      return "valid_password".tr;
+    } else {
       return null;
     }
   }
 
   String? get isValidName {
     if (isEmpty) {
-      return ("Name is required");
+      return "enter_name".tr;
     } else {
       return null;
     }
-
   }
-
-
-
 
   String? get isValidPhone {
     final phoneRegExp = RegExp(r'^\+?\d{10,15}$');
     if (isEmpty) {
-      return ("Phone number is required");
+      return "enter_phone".tr;
     } else if (!phoneRegExp.hasMatch(this)) {
-      return ("Enter a valid phone number");
+      return "valid_phone".tr;
     } else {
       return null;
     }
   }
+
+
+
+  String? get isValidAge {
+    if (isEmpty) {
+      return "enter_age".tr;
+    } else if (int.tryParse(this) == null || int.parse(this) <= 0) {
+      return "valid_age".tr;
+    } else {
+      return null;
+    }
+  }
+
 }
