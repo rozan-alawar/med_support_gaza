@@ -7,6 +7,7 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 import '../controllers/auth_controller.dart';
 
 class PatientLoginView extends GetView<AuthController> {
@@ -64,7 +65,7 @@ class PatientLoginView extends GetView<AuthController> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                      print('Forgot Password');
+                    Get.toNamed(Routes.FORGET_PASSWORD);
                     },
                     child: CustomText(
                       'ForgotPassword'.tr,

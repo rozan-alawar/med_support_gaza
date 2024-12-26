@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/modules/auth/views/patient_forget_password_view.dart';
 
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
@@ -36,6 +37,16 @@ class AppPages {
     GetPage(
       name: _Paths.AUTH,
       page: () => const AuthView(),
+      binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGET_PASSWORD,
+      page: () =>  PatientForgetPasswordView(),
+      binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.VERIFICATION,
+      page: () =>  PatientForgetPasswordView(),
       binding: AuthBinding(),
     ),
   ];

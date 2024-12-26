@@ -49,7 +49,7 @@ class CustomButton extends StatelessWidget {
                     color: AppColors.white,
                     fontSize: fontSize.sp,
                     height: 1,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
                   ),
           ),
         ),

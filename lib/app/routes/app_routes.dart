@@ -8,7 +8,11 @@ abstract class Routes {
   static const DOCTROONBOARDING = _Paths.DOCTROONBOARDING;
   static const HOME = _Paths.HOME;
   static const AUTH = _Paths.AUTH;
+  static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
+  static const VERIFICATION = _Paths.VERIFICATION;
 }
+
+
 
 abstract class _Paths {
   _Paths._();
@@ -17,4 +21,6 @@ abstract class _Paths {
   static const DOCTROONBOARDING = '/doctoronboarding';
   static const HOME = '/home';
   static const AUTH = '/auth';
+  static const FORGET_PASSWORD = '/forgot-password';
+  static const VERIFICATION = '/verification';
 }
