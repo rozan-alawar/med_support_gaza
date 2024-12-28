@@ -119,14 +119,25 @@ class PatientSignUpView extends GetView<AuthController> {
                   ],
                 ),
                 30.height,
-                CustomButton(
-                  text: 'SignUp'.tr,
-                  color: AppColors.primary,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      controller.signUp();
-                    }
-                  },
+                Obx(
+                  () => CustomButton(
+                    text: 'SignUp'.tr,
+                    color: AppColors.primary,
+                    isDisable: controller.isLoading.value,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        controller.signUp(
+                          password: passwordController.text.trim(),
+                          email: emailController.text.trim(),
+                          firstName: firstNameController.text.trim(),
+                          lastName: lastNameController.text.trim(),
+                          phoneNo: phoneController.text.trim(),
+                          age: ageController.text.trim(),
+                          gender: gender.value.toString(),
+                        );
+                      }
+                    },
+                  ),
                 ),
                 24.height,
                 Center(

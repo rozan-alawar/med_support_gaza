@@ -19,8 +19,10 @@ class PatientForgetPasswordView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-extendBody: true,
-appBar: AppBar(backgroundColor: AppColors.transparent,),
+      extendBody: true,
+      appBar: AppBar(
+        backgroundColor: AppColors.transparent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -42,15 +44,20 @@ appBar: AppBar(backgroundColor: AppColors.transparent,),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) => value!.isValidEmail,
               ),
-24.height,
-              CustomButton(
-                text: 'Send OTP'.tr,
-                color: AppColors.primary,
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                  Get.offNamed(Routes.NEW_PASSWORD);
-                  }
-                },
+              24.height,
+              Obx(
+                () => CustomButton(
+                  text: 'Send OTP'.tr,
+                  color: AppColors.primary,
+                  isDisable: controller.isLoading.value,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      controller.forgetPassword(
+                        email: emailController.text.trim(),
+                      );
+                    }
+                  },
+                ),
               ),
             ],
           ),
