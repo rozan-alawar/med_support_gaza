@@ -16,8 +16,7 @@ class CustomButton extends StatelessWidget {
       this.isDisable = false,
       this.borderRadius,
       this.textColor = AppColors.white,
-      this.boxShadow,
-      this.onHighlightChanged})
+      this.boxShadow,})
       : super(key: key);
   final String? text;
   final Color? color;
@@ -30,14 +29,11 @@ class CustomButton extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;
   final Color? textColor;
   final List<BoxShadow>? boxShadow;
-  final void Function(bool)? onHighlightChanged;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      onHover: onHighlightChanged,
-      onHighlightChanged: onHighlightChanged,
       child: Container(
         width: width.w,
         height: height.h,
