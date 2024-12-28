@@ -11,6 +11,8 @@ abstract class Routes {
   static const AUTH = _Paths.AUTH;
   static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
   static const VERIFICATION = _Paths.VERIFICATION;
+  static const NEW_PASSWORD = _Paths.NEW_PASSWORD;
+
 }
 
 
@@ -25,4 +27,5 @@ abstract class _Paths {
   static const AUTH = '/auth';
   static const FORGET_PASSWORD = '/forgot-password';
   static const VERIFICATION = '/verification';
+  static const NEW_PASSWORD = '/new-password';
 }

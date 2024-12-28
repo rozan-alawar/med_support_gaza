@@ -19,6 +19,9 @@ class Translation extends Translations {
           'Male': 'ذكر',
           'Female': 'أنثى',
           'ForgotPassword': 'هل نسيت كلمة المرور؟',
+          'NewPassword': 'كلمة مرور جديدة',
+          'ConfirmPassword': 'تأكيد كلمة المرور',
+          'Confirm': 'تأكيد',
           'welcome_message_medical_support_gaza':
               'مرحبًا بك في الدعم الطبي غزة! نحن هنا لمساعدتك في الحصول على استشارات طبية موثوقة وآمنة في أي وقت.',
           'select_account_type_message':
@@ -29,7 +32,23 @@ class Translation extends Translations {
           'welcome_doctor_message':
               'أهلًا بك في الدعم الطبي غزة، حيث يمكنك تقديم رعايتك الطبية للعديد من المرضى. نحن هنا لدعمك في جعل كل استشارة أكثر فعالية',
           'doctor': 'الدكتور',
-          'patient': 'المريض'
+          'patient': 'المريض',
+          // Validation Messages
+          'enter_email': 'يرجى إدخال البريد الإلكتروني',
+          'valid_email': 'يرجى إدخال بريد إلكتروني صحيح',
+          'enter_password': 'يرجى إدخال كلمة المرور',
+          'valid_password': 'كلمة المرور يجب ان تحتوي على أكثر من 8 حروف ',
+          'enter_name': 'يرجى إدخال الاسم',
+          'enter_phone': 'يرجى إدخال رقم الهاتف',
+          'valid_phone': 'يرجى إدخال رقم هاتف صحيح',
+          'enter_age': 'يرجى إدخال العمر',
+          'valid_age': 'يرجى إدخال عمر صحيح',
+          'ResendOTP': 'أرسل OTP مرة أخرى',
+          'EnterOTP': 'أدخل OTP',
+          'CreateAccountNow': 'أنشئ حساب الآن',
+          'DontHaveAccount': 'لا تمتلك حساب؟',
+          'AlreadyHaveAccount': 'لديك حساب بالفعل؟',
+          'SignIn': 'سجل دخولك',
         },
         'en': {
           'Hello': 'Hello',
@@ -47,6 +66,10 @@ class Translation extends Translations {
           'Male': 'Male',
           'Female': 'Female',
           'ForgotPassword': 'Forgot Password?',
+          'NewPassword': 'New Password',
+          'ConfirmPassword': 'Confirm Password',
+          'Confirm': 'Confirm',
+
           'welcome_message_medical_support_gaza':
               'Welcome to Medical Support Gaza! We are here to assist you in obtaining reliable and safe medical consultations anytime.',
           'select_account_type_message':
@@ -58,7 +81,22 @@ class Translation extends Translations {
           'welcome_doctor_message':
               'Welcome to Medical Support Gaza, where you can provide your medical care to many patients. We are here to support you in making every consultation more effective.',
           'doctor': 'Doctor',
-          'patient': 'Patient'
+          'patient': 'Patient',
+          // Validation Messages
+          'enter_email': 'Please enter your email',
+          'valid_email': 'Please enter a valid email',
+          'enter_password': 'Please enter your password',
+          'valid_password': 'Password must be at least 8 characters',
+          'enter_name': 'Name is required',
+          'enter_phone': 'Phone number is required',
+          'valid_phone': 'Enter a valid phone number',
+          'enter_age': 'Please enter your age',
+          'valid_age': 'Please enter a valid age',
+          'AlreadyHaveAccount': 'Already have an account? ',
+          'CreateAccountNow': ' Create Account Now',
+          'DontHaveAccount': 'Don\'t have an account?',
+          'SignIn': 'Sign In',
+          'EnterOTP': 'Enter OTP',
         },
       };
 }

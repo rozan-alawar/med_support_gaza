@@ -10,17 +10,19 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
-class PatientForgetPasswordView extends GetView<AuthController> {
-  final TextEditingController emailController = TextEditingController();
+class PatientResetPasswordView extends GetView<AuthController> {
+  final TextEditingController confirmPassController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
-  PatientForgetPasswordView({super.key});
+  PatientResetPasswordView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-extendBody: true,
-appBar: AppBar(backgroundColor: AppColors.transparent,),
+      extendBody: true,
+      appBar: AppBar(backgroundColor: AppColors.transparent,),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -30,25 +32,32 @@ appBar: AppBar(backgroundColor: AppColors.transparent,),
             children: [
               200.height,
               CustomText(
-                'ForgotPassword'.tr,
+                'NewPassword'.tr,
                 fontSize: 20.sp,
                 color: AppColors.accent,
                 fontWeight: FontWeight.bold,
               ),
               60.height,
               CustomTextField(
-                hintText: 'Email'.tr,
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => value!.isValidEmail,
+                hintText: 'NewPassword'.tr,
+                controller: passwordController,
+                keyboardType: TextInputType.text,
+                validator: (value) => value!.isValidPassword,
               ),
-24.height,
+              20.height,
+              CustomTextField(
+                hintText: 'ConfirmPassword'.tr,
+                controller: confirmPassController,
+                keyboardType: TextInputType.text,
+                validator: (value) => value!.isValidPassword,
+              ),
+              24.height,
               CustomButton(
-                text: 'Send OTP'.tr,
+                text: 'Confirm'.tr,
                 color: AppColors.primary,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                  Get.toNamed(Routes.NEW_PASSWORD);
+                    Get.toNamed(Routes.VERIFICATION);
                   }
                 },
               ),
