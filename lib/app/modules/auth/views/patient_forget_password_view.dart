@@ -48,7 +48,7 @@ appBar: AppBar(backgroundColor: AppColors.transparent,),
                 color: AppColors.primary,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                  Get.toNamed(Routes.NEW_PASSWORD);
+                  Get.offNamed(Routes.NEW_PASSWORD);
                   }
                 },
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_text_style.dart';
@@ -13,27 +14,30 @@ class DoctorOnboardingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Center(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               50.height,
               Image.asset(
                 ImageAssets.doctros,
+                fit: BoxFit.fitWidth,
+                width: 317.w,
               ),
               45.height,
-              Text(
+              CustomText(
                 'doctor_team_welcome_message'.tr,
-                style: MyTextStyles.headingBoldLarge,
+                color: AppColors.accent,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
               ),
-              20.height,
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w),
-                child: Text(
-                  'welcome_doctor_message'.tr,
-                  style: MyTextStyles.bodyRegularCentered,
-                  textAlign: TextAlign.center,
-                ),
+              30.height,
+              CustomText(
+                'welcome_doctor_message'.tr,
+                textAlign: TextAlign.center,
+                fontWeight: FontWeight.w500,
               ),
               100.height,
               CustomButton(
@@ -42,9 +46,6 @@ class DoctorOnboardingView extends StatelessWidget {
                 },
                 text: 'next'.tr,
                 color: AppColors.primary,
-                width: 298.w,
-                height: 50.h,
-                borderRadius: BorderRadius.circular(5).r,
               ),
               40.height
             ],

@@ -23,10 +23,13 @@ class PatientResetPasswordView extends GetView<AuthController> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(backgroundColor: AppColors.transparent,),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+      body:Padding(
+    padding: EdgeInsets.symmetric(
+    horizontal: 20.w,
+    ),
+    child: Form(
+    key: _formKey,
+    child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -57,13 +60,14 @@ class PatientResetPasswordView extends GetView<AuthController> {
                 color: AppColors.primary,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    Get.toNamed(Routes.VERIFICATION);
+                    Get.offNamed(Routes.AUTH);
                   }
                 },
               ),
             ],
           ),
         ),
+    ),
       ),
     );
   }
