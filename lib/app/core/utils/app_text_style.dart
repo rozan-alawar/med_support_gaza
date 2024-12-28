@@ -33,10 +33,11 @@ class MyTextStyles {
   );
 
   static TextStyle headingBoldLarge = const TextStyle(
-      fontFamily: 'Arial',
-      fontSize: 24,
-      fontWeight: FontWeight.w700,
-      color: AppColors.primary);
+    fontFamily: 'Arial',
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primary,
+  );
   static TextStyle bodyRegularCentered = const TextStyle(
     fontFamily: 'Arial',
     fontSize: 24,
