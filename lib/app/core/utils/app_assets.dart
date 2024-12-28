@@ -6,6 +6,7 @@ class ImageAssets {
   static const String onboarding1 = "$IMAGE_PATH/onboarding-1.png";
   static const String splash = "$IMAGE_PATH/splash.jpeg";
   static const String doctros = "$IMAGE_PATH/doctors.png";
+  static const String med_support_text = "$IMAGE_PATH/Medical Support Gaza.png";
 }
 
 class IconAssets {

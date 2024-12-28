@@ -17,25 +17,25 @@ class UserRoleSelectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Center(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
                 ImageAssets.splash,
               ),
-              const CustomText(
+              CustomText(
                 'Welcome',
-                fontSize: 24,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.w500,
                 fontFamily: 'Arial',
               ),
               15.height,
-              const CustomText(
+              CustomText(
                 'select_account_type_message',
-                fontSize: 20,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
-                fontFamily: 'Arial',
                 textAlign: TextAlign.center,
               ),
               60.height,
@@ -47,32 +47,31 @@ class UserRoleSelectionView extends StatelessWidget {
                     text: 'doctor'.tr,
                     width: 150,
                     height: 50,
-                    color: AppColors.white,
-                    textColor: AppColors.textLight,
-                    borderRadius: BorderRadius.circular(5),
+                    color: AppColors.accent,
+                    textColor: AppColors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.shade300,
-                        spreadRadius: 1,
-                        blurRadius: 5,
+                        color: Colors.black.withOpacity(0.16),
+                        spreadRadius: 4,
+                        blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
                     ],
                   ),
                   20.width,
                   CustomButton(
+                    borderColor: AppColors.primary,
                     onPressed: userRoleController.navigateToPatient,
                     text: 'patient'.tr,
                     width: 150,
                     height: 50,
                     color: AppColors.white,
-                    textColor: AppColors.textLight,
-                    borderRadius: BorderRadius.circular(5),
+                    textColor: AppColors.primary,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.shade300,
-                        spreadRadius: 1,
-                        blurRadius: 5,
+                        color: Colors.black.withOpacity(0.16),
+                        spreadRadius: 4,
+                        blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
                     ],
