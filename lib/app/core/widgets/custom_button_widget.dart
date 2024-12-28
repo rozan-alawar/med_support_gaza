@@ -14,7 +14,10 @@ class CustomButton extends StatelessWidget {
       this.fontSize = 16,
       this.borderColor,
       this.isDisable = false,
-      this.borderRadius})
+      this.borderRadius,
+      this.textColor = AppColors.white,
+      this.boxShadow,
+      this.onHighlightChanged})
       : super(key: key);
   final String? text;
   final Color? color;
@@ -25,15 +28,21 @@ class CustomButton extends StatelessWidget {
   final Color? borderColor;
   final bool isDisable;
   final BorderRadiusGeometry? borderRadius;
+  final Color? textColor;
+  final List<BoxShadow>? boxShadow;
+  final void Function(bool)? onHighlightChanged;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
+      onHover: onHighlightChanged,
+      onHighlightChanged: onHighlightChanged,
       child: Container(
         width: width.w,
         height: height.h,
         decoration: BoxDecoration(
+          boxShadow: boxShadow,
           color: color,
           borderRadius: borderRadius ?? BorderRadius.circular(25.r),
         ),
@@ -46,7 +55,7 @@ class CustomButton extends StatelessWidget {
                   )
                 : CustomText(
                     text!,
-                    color: AppColors.white,
+                    color: textColor,
                     fontSize: fontSize.sp,
                     height: 1,
                     fontWeight: FontWeight.w700,

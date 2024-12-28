@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import '../../../core/utils/app_assets.dart';
@@ -27,7 +28,7 @@ class DoctorOnboardingView extends StatelessWidget {
               ),
               20.height,
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
                 child: Text(
                   'welcome_doctor_message'.tr,
                   style: MyTextStyles.bodyRegularCentered,
@@ -41,9 +42,9 @@ class DoctorOnboardingView extends StatelessWidget {
                 },
                 text: 'next'.tr,
                 color: AppColors.primary,
-                width: 298,
-                height: 50,
-                borderRadius: BorderRadius.circular(5),
+                width: 298.w,
+                height: 50.h,
+                borderRadius: BorderRadius.circular(5).r,
               ),
               40.height
             ],

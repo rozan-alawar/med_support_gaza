@@ -27,7 +27,9 @@ class Translation extends Translations {
           'skip': 'تخطي',
           'doctor_team_welcome_message': 'نحن سعداء بانضمامك لفريق الأطباء',
           'welcome_doctor_message':
-              'أهلًا بك في الدعم الطبي غزة، حيث يمكنك تقديم رعايتك الطبية للعديد من المرضى. نحن هنا لدعمك في جعل كل استشارة أكثر فعالية'
+              'أهلًا بك في الدعم الطبي غزة، حيث يمكنك تقديم رعايتك الطبية للعديد من المرضى. نحن هنا لدعمك في جعل كل استشارة أكثر فعالية',
+          'doctor': 'الدكتور',
+          'patient': 'المريض'
         },
         'en': {
           'Hello': 'Hello',
@@ -54,7 +56,9 @@ class Translation extends Translations {
           'doctor_team_welcome_message':
               'We are happy to have you join the team of doctors.',
           'welcome_doctor_message':
-              'Welcome to Medical Support Gaza, where you can provide your medical care to many patients. We are here to support you in making every consultation more effective.'
+              'Welcome to Medical Support Gaza, where you can provide your medical care to many patients. We are here to support you in making every consultation more effective.',
+          'doctor': 'Doctor',
+          'patient': 'Patient'
         },
       };
 }

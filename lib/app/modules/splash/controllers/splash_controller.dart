@@ -8,7 +8,7 @@ class SplashController extends GetxController {
     super.onInit();
     // Navigate after delay
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offNamed(Routes.PATIENTONBOARDING);
+      Get.offNamed(Routes.User_Role_Selection);
     });
   }
 }
