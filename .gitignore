@@ -31,6 +31,9 @@ migrate_working_dir/
 .pub/
 /build/
 
+# Ignore gradle wrapper properties file
+**/gradle/wrapper/gradle-wrapper.properties
+
 # Symbolication related
 app.*.symbols
 

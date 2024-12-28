@@ -63,11 +63,22 @@ class PatientSignUpView extends GetView<AuthController> {
                   validator: (value) => value!.isValidEmail,
                 ),
                 16.height,
-                CustomTextField(
-                  hintText: 'Password'.tr,
-                  controller: passwordController,
-                  obscureText: true,
-                  validator: (value) => value!.isValidPassword,
+                Obx(
+                  () => CustomTextField(
+                    hintText: 'Password'.tr,
+                    controller: passwordController,
+                    obscureText: controller.isPasswordVisible.value,
+                    validator: (value) => value!.isValidPassword,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        size: 18.h,
+                        controller.isPasswordVisible.value
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
+                      onPressed: () => controller.togglePasswordVisibility(),
+                    ),
+                  ),
                 ),
                 16.height,
                 CustomTextField(
@@ -92,7 +103,7 @@ class PatientSignUpView extends GetView<AuthController> {
                 Row(
                   children: [
                     Obx(() => Radio(
-                      activeColor: AppColors.primary,
+                          activeColor: AppColors.primary,
                           value: 'Male',
                           groupValue: gender.value,
                           onChanged: (value) => gender.value = value.toString(),
