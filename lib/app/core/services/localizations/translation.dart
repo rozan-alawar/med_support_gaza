@@ -49,6 +49,10 @@ class Translation extends Translations {
           'DontHaveAccount': 'لا تمتلك حساب؟',
           'AlreadyHaveAccount': 'لديك حساب بالفعل؟',
           'SignIn': ' سجل دخولك',
+          'Error': 'خطأ',
+          'PleaseEnterCompleteOTP': 'يرجى إدخال رمز التحقق كاملاً',
+          'SendOTP': 'إرسال رمز التحقق',
+
         },
         'en': {
           'Hello': 'Hello',
@@ -97,6 +101,10 @@ class Translation extends Translations {
           'DontHaveAccount': 'Don\'t have an account?',
           'SignIn': 'Sign In',
           'EnterOTP': 'Enter OTP',
+          'Error': 'Error',
+          'PleaseEnterCompleteOTP': 'Please enter complete OTP',
+          'SendOTP': 'Send OTP',
+
         },
       };
 }

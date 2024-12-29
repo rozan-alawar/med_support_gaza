@@ -24,7 +24,7 @@ class VerificationView extends GetView<AuthController> {
         backgroundColor: AppColors.transparent,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.symmetric(horizontal: 20.w),
         child: Form(
           key: _formKey,
           child: Column(
@@ -38,65 +38,88 @@ class VerificationView extends GetView<AuthController> {
                 fontWeight: FontWeight.bold,
               ),
               60.height,
-              Obx(() => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  4,
-                      (index) => Container(
-                    width: 60,
-                    margin: const EdgeInsets.symmetric(horizontal: 6),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      onChanged: (value) {
-                        controller.setDigit(index, value);
-                        if (value.isNotEmpty && index < 3) {
-                          FocusScope.of(context).nextFocus();
-                        }
-                      },
-                      initialValue: controller.otpDigits[index],
-                      decoration: InputDecoration(
-                        counterText: '',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.grey,
-                            width: 1,
+              Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    4,
+                    (index) => Container(
+                      width: 60,
+
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        maxLength: 1,
+                        onChanged: (value) {
+                          controller.setDigit(index, value);
+                          if (value.isNotEmpty && index < 3) {
+                            FocusScope.of(context).nextFocus();
+                          }
+                        },
+                        initialValue: controller.otpDigits[index],
+                        decoration: InputDecoration(
+                          counterText: '',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF009688),
-                            width: 2,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: Color(0xFF009688),
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              )),
-              // CustomTextField(
-              //   hintText: 'Email'.tr,
-              //   controller: emailController,
-              //   keyboardType: TextInputType.emailAddress,
-              //   validator: (value) => value!.isValidEmail,
-              // ),
-              24.height,
+              ),
+              60.height,
               Obx(
-                    () => CustomButton(
+                () => CustomButton(
                   text: 'Confirm'.tr,
                   color: AppColors.primary,
                   isDisable: controller.isLoading.value,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      controller.forgetPassword(
-                        email: emailController.text.trim(),
-                      );
+                      controller.verifyOTP();
                     }
                   },
                 ),
+              ),
+              const SizedBox(height: 16),
+              // Resend Timer
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(() => !controller.canResend.value
+                      ? Text(
+                          '00:${controller.timeRemaining.value.toString().padLeft(2, '0')}',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const SizedBox()),
+                  Obx(() => TextButton(
+                        onPressed: controller.canResend.value
+                            ? controller.resendOTP
+                            : null,
+                        child: Text(
+                          'ارسل OTP مرة أخرى',
+                          style: TextStyle(
+                            color: controller.canResend.value
+                                ? const Color(0xFF009688)
+                                : Colors.grey,
+                          ),
+                        ),
+                      )),
+                ],
               ),
             ],
           ),

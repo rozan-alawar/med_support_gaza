@@ -47,7 +47,7 @@ class PatientForgetPasswordView extends GetView<AuthController> {
               24.height,
               Obx(
                 () => CustomButton(
-                  text: 'Send OTP'.tr,
+                  text: 'SendOTP'.tr,
                   color: AppColors.primary,
                   isDisable: controller.isLoading.value,
                   onPressed: () {

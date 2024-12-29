@@ -53,26 +53,24 @@ class AuthController extends GetxController {
     try {
       final otp = otpDigits.join();
       if (otp.length != 4) {
-        Get.snackbar(
-          'Error',
-          'Please enter complete OTP',
-          snackPosition: SnackPosition.BOTTOM,
+       CustomSnackBar.showCustomErrorSnackBar(
+        title:   'Error'.tr,
+        message:   'PleaseEnterCompleteOTP'.tr,
         );
         return;
       }
 
-      // Add your API verification logic here
-      // Example:
-      // final response = await _authRepository.verifyOTP(otp);
-      // if (response.success) {
-      //   Get.offAllNamed('/home');
-      // }
+
+      Timer(
+        Duration(seconds: 3),
+            () => Get.offAllNamed(Routes.NEW_PASSWORD),
+      );
+
 
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Verification failed',
-        snackPosition: SnackPosition.BOTTOM,
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Verification failed',
       );
     }
   }
