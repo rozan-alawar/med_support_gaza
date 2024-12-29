@@ -80,7 +80,7 @@ class PatientLoginView extends GetView<AuthController> {
                   () => CustomButton(
                     text: 'Login'.tr,
                     width: double.infinity,
-                    color: AppColors.primary,
+                    color:controller.isLoading.value?AppColors.textLight: AppColors.primary,
                     isDisable: controller.isLoading.value,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {

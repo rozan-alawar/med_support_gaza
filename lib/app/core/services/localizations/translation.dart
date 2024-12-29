@@ -45,10 +45,10 @@ class Translation extends Translations {
           'valid_age': 'يرجى إدخال عمر صحيح',
           'ResendOTP': 'أرسل OTP مرة أخرى',
           'EnterOTP': 'أدخل OTP',
-          'CreateAccountNow': 'أنشئ حساب الآن',
+          'CreateAccountNow': ' أنشئ حساب الآن',
           'DontHaveAccount': 'لا تمتلك حساب؟',
           'AlreadyHaveAccount': 'لديك حساب بالفعل؟',
-          'SignIn': 'سجل دخولك',
+          'SignIn': ' سجل دخولك',
         },
         'en': {
           'Hello': 'Hello',
@@ -74,8 +74,8 @@ class Translation extends Translations {
               'Welcome to Medical Support Gaza! We are here to assist you in obtaining reliable and safe medical consultations anytime.',
           'select_account_type_message':
               'We are here to serve you. Please select your account type to enjoy the services tailored to your needs.',
-          'next': 'next',
-          'skip': 'skip',
+          'next': 'Next',
+          'skip': 'Skip',
           'doctor_team_welcome_message':
               'We are happy to have you join the team of doctors.',
           'welcome_doctor_message':

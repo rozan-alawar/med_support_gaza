@@ -10,6 +10,75 @@ class AuthController extends GetxController {
   final isPasswordVisible = false.obs;
   final isLoading = false.obs;
 
+  final RxList<String> otpDigits = List.generate(4, (index) => '').obs;
+  final RxInt timeRemaining = 15.obs;
+  final RxBool canResend = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    startTimer();
+  }
+
+  //-------------------------------------- OTP Timer -------------------------------------
+  void startTimer() {
+    timeRemaining.value = 15;
+    canResend.value = false;
+    Future.doWhile(() async {
+      await Future.delayed(const Duration(seconds: 1));
+      if (timeRemaining.value == 0) {
+        canResend.value = true;
+        return false;
+      }
+      timeRemaining.value--;
+      return true;
+    });
+  }
+
+  void setDigit(int index, String value) {
+    if (value.length <= 1) {
+      otpDigits[index] = value;
+    }
+  }
+
+  void resendOTP() {
+    // Clear OTP
+    for (var i = 0; i < otpDigits.length; i++) {
+      otpDigits[i] = '';
+    }
+    startTimer();
+    // Add your API call here to resend OTP
+  }
+  Future<void> verifyOTP() async {
+    try {
+      final otp = otpDigits.join();
+      if (otp.length != 4) {
+        Get.snackbar(
+          'Error',
+          'Please enter complete OTP',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
+      }
+
+      // Add your API verification logic here
+      // Example:
+      // final response = await _authRepository.verifyOTP(otp);
+      // if (response.success) {
+      //   Get.offAllNamed('/home');
+      // }
+
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Verification failed',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+
+//-------------------------------------------------------------------------------------
   void toggleView() {
     isLogin.value = !isLogin.value;
   }
@@ -25,14 +94,17 @@ class AuthController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
+      print('🚀 Sign In Request: ${isLoading.value}');
+
       print('🚀 Sign In Request:');
       print('Email: $email');
       print('Password: ${password.replaceAll(RegExp(r'.'), '*')}');
 
       Timer(
-        Duration(milliseconds: 500),
-            () => Get.offAllNamed(Routes.HOME),
+        Duration(seconds: 3),
+        () => Get.offAllNamed(Routes.HOME),
       );
+      isLoading.value = false;
     } on Exception catch (e) {
       isLoading.value = false;
       String message = 'حدث خطأ ما';
@@ -62,12 +134,11 @@ class AuthController extends GetxController {
       print('Password: ${password.replaceAll(RegExp(r'.'), '*')}');
 
       CustomSnackBar.showCustomErrorSnackBar(
-
           message: 'تم انشاء حساب جديد', color: Colors.green, title: 'نجاح');
 
       Timer(
         Duration(milliseconds: 500),
-            () => toggleView,
+        () => toggleView,
       );
     } on Exception catch (e) {
       isLoading.value = false;
@@ -91,7 +162,7 @@ class AuthController extends GetxController {
       isLoading.value = false;
       Timer(
         Duration(milliseconds: 500),
-            () => Get.toNamed(Routes.NEW_PASSWORD),
+        () => Get.toNamed(Routes.VERIFICATION),
       );
     } on Exception catch (e) {
       isLoading.value = false;
