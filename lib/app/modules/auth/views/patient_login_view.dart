@@ -83,12 +83,14 @@ class PatientLoginView extends GetView<AuthController> {
                     color:controller.isLoading.value?AppColors.textLight: AppColors.primary,
                     isDisable: controller.isLoading.value,
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        print('User Logged In');
-                        controller.signIn(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim());
-                      }
+                      Get.offAllNamed(Routes.HOME);
+
+                      // if (_formKey.currentState!.validate()) {
+                      //   print('User Logged In');
+                      // //   controller.signIn(
+                      // //       email: emailController.text.trim(),
+                      // //       password: passwordController.text.trim());
+                      // }
                     },
                   ),
                 ),

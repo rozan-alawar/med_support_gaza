@@ -18,7 +18,7 @@ class IconAssets {
   static const String editProfile = '$ICONS_PATH/edit-profile.svg';
   static const String filter = '$ICONS_PATH/Filter.svg';
   static const String helpCircle = '$ICONS_PATH/help-circle.svg';
-  static const String home = '$ICONS_PATH/home.svg';
+  static const String home = '$ICONS_PATH/Home.svg';
   static const String language = '$ICONS_PATH/language.svg';
   static const String logOut = '$ICONS_PATH/log-out.svg';
   static const String logo = '$ICONS_PATH/Logo.svg';

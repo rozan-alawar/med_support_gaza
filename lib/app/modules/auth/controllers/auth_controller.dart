@@ -7,7 +7,7 @@ import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class AuthController extends GetxController {
   final isLogin = true.obs;
-  final isPasswordVisible = false.obs;
+  final isPasswordVisible = true.obs;
   final isLoading = false.obs;
 
   final RxList<String> otpDigits = List.generate(4, (index) => '').obs;
