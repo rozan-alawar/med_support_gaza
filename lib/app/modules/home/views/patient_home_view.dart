@@ -5,15 +5,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/modules/home/views/Patient_main_view.dart';
 
 import '../controllers/home_controller.dart';
 
 class PatientHomeView extends GetView<HomeController> {
   PatientHomeView({super.key});
-  int currentPageIndex = 3;
+  int currentPageIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: PatientMainView(),
+
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           currentIndex: controller.currentIndex.value,
@@ -63,16 +66,6 @@ class PatientHomeView extends GetView<HomeController> {
             ),
           ],
         ),
-      ),
-
-
-        // body: IndexedStack(
-        //   // index: controller.currentIndex.value,
-        //   children: [
-        //     // ProfileView(),
-        //     // MainCategoryScreen(),
-        //     // HomeScreen()
-        //   ],
       ),
     );
   }
