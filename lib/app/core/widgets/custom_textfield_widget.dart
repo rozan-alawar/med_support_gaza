@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
+ final bool readOnly ;
 
   const CustomTextField({
     Key? key,
@@ -19,6 +20,7 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.validator,
     this.suffixIcon,
+    this.readOnly =false,
   }) : super(key: key);
 
   @override
@@ -53,6 +55,7 @@ class CustomTextField extends StatelessWidget {
           borderSide: BorderSide(color: AppColors.error),
         ),
       ),
+      readOnly: readOnly ,
     );
   }
 }

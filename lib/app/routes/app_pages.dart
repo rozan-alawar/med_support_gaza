@@ -3,7 +3,12 @@ import 'package:med_support_gaza/app/modules/auth/views/patient_forget_password_
 import 'package:med_support_gaza/app/modules/auth/views/patient_new_password_view.dart';
 
 import '../modules/auth/bindings/auth_binding.dart';
+import '../modules/auth/bindings/doctor_auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
+import '../modules/auth/views/doctor_forget_password_view.dart';
+import '../modules/auth/views/doctor_login_view.dart';
+import '../modules/auth/views/doctor_reset_password_view.dart';
+import '../modules/auth/views/doctor_signup_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/onboarding/views/patient_onboarding_view.dart';
@@ -47,18 +52,34 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.FORGET_PASSWORD,
-      page: () =>  PatientForgetPasswordView(),
+      page: () => PatientForgetPasswordView(),
       binding: AuthBinding(),
     ),
     GetPage(
       name: _Paths.VERIFICATION,
-      page: () =>  PatientForgetPasswordView(),
+      page: () => PatientForgetPasswordView(),
       binding: AuthBinding(),
     ),
     GetPage(
       name: _Paths.NEW_PASSWORD,
-      page: () =>  PatientResetPasswordView(),
+      page: () => PatientResetPasswordView(),
       // binding: AuthBinding(),
     ),
+    GetPage(
+        name: _Paths.DOCTOR_SIGNUP,
+        page: () => DoctorSignUpView(),
+        binding: DoctorAuthBinding()),
+    GetPage(
+        name: _Paths.DOCTOR_LOGIN,
+        page: () => DoctroLoginView(),
+        binding: DoctorAuthBinding()),
+    GetPage(
+        name: _Paths.DOCTOR_FORGET_PASSWORD,
+        page: () => DoctorForgetPasswordView(),
+        binding: DoctorAuthBinding()),
+    GetPage(
+        name: _Paths.DOCTOR_RESET_PASSWORD,
+        page: () => DoctroResetPasswordView(),
+        binding: DoctorAuthBinding()),
   ];
 }
