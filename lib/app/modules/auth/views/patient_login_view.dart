@@ -65,7 +65,7 @@ class PatientLoginView extends GetView<AuthController> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                    Get.toNamed(Routes.FORGET_PASSWORD);
+                      Get.toNamed(Routes.FORGET_PASSWORD);
                     },
                     child: CustomText(
                       'ForgotPassword'.tr,
@@ -76,15 +76,23 @@ class PatientLoginView extends GetView<AuthController> {
                   ),
                 ),
                 60.height,
-                CustomButton(
-                  text: 'Login'.tr,
-                  width: double.infinity,
-                  color: AppColors.primary,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print('User Logged In');
-                    }
-                  },
+                Obx(
+                  () => CustomButton(
+                    text: 'Login'.tr,
+                    width: double.infinity,
+                    color:controller.isLoading.value?AppColors.textLight: AppColors.primary,
+                    isDisable: controller.isLoading.value,
+                    onPressed: () {
+                      Get.offAllNamed(Routes.HOME);
+
+                      // if (_formKey.currentState!.validate()) {
+                      //   print('User Logged In');
+                      // //   controller.signIn(
+                      // //       email: emailController.text.trim(),
+                      // //       password: passwordController.text.trim());
+                      // }
+                    },
+                  ),
                 ),
                 24.height,
                 Row(

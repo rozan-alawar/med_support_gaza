@@ -45,10 +45,14 @@ class Translation extends Translations {
           'valid_age': 'يرجى إدخال عمر صحيح',
           'ResendOTP': 'أرسل OTP مرة أخرى',
           'EnterOTP': 'أدخل OTP',
-          'CreateAccountNow': 'أنشئ حساب الآن',
+          'CreateAccountNow': ' أنشئ حساب الآن',
           'DontHaveAccount': 'لا تمتلك حساب؟',
           'AlreadyHaveAccount': 'لديك حساب بالفعل؟',
-          'SignIn': 'سجل دخولك',
+          'SignIn': ' سجل دخولك',
+          'Error': 'خطأ',
+          'PleaseEnterCompleteOTP': 'يرجى إدخال رمز التحقق كاملاً',
+          'SendOTP': 'إرسال رمز التحقق',
+
           'country': 'الدولة',
           'speciality': 'التخصص',
           'upload_medical_certificate': 'تحميل الشهادة الطبية',
@@ -82,8 +86,8 @@ class Translation extends Translations {
               'Welcome to Medical Support Gaza! We are here to assist you in obtaining reliable and safe medical consultations anytime.',
           'select_account_type_message':
               'We are here to serve you. Please select your account type to enjoy the services tailored to your needs.',
-          'next': 'next',
-          'skip': 'skip',
+          'next': 'Next',
+          'skip': 'Skip',
           'doctor_team_welcome_message':
               'We are happy to have you join the team of doctors.',
           'welcome_doctor_message':
@@ -105,14 +109,6 @@ class Translation extends Translations {
           'DontHaveAccount': 'Don\'t have an account?',
           'SignIn': 'Sign In',
           'EnterOTP': 'Enter OTP',
-          'country': 'Country',
-          'speciality': 'Speciality',
-          'upload_medical_certificate': 'Upload medical certificate',
-          'enter_conutry': 'Please enter your country',
-          'valid_conutry': 'Please enter your valid country name',
-          'enter_speciality': 'Please enter your speciality',
-          'valid_speciality': 'Please enter your valid speciality name',
-          'confirmation_maessage': 'Confirm your Entered Password',
         },
       };
 }

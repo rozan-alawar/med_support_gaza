@@ -22,52 +22,57 @@ class PatientResetPasswordView extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(backgroundColor: AppColors.transparent,),
-      body:Padding(
-    padding: EdgeInsets.symmetric(
-    horizontal: 20.w,
-    ),
-    child: Form(
-    key: _formKey,
-    child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              200.height,
-              CustomText(
-                'NewPassword'.tr,
-                fontSize: 20.sp,
-                color: AppColors.accent,
-                fontWeight: FontWeight.bold,
-              ),
-              60.height,
-              CustomTextField(
-                hintText: 'NewPassword'.tr,
-                controller: passwordController,
-                keyboardType: TextInputType.text,
-                validator: (value) => value!.isValidPassword,
-              ),
-              20.height,
-              CustomTextField(
-                hintText: 'ConfirmPassword'.tr,
-                controller: confirmPassController,
-                keyboardType: TextInputType.text,
-                validator: (value) => value!.isValidPassword,
-              ),
-              24.height,
-              CustomButton(
-                text: 'Confirm'.tr,
-                color: AppColors.primary,
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Get.offNamed(Routes.AUTH);
-                  }
-                },
-              ),
-            ],
+      appBar: AppBar(
+        backgroundColor: AppColors.transparent,
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 20.w,
+        ),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                200.height,
+                CustomText(
+                  'NewPassword'.tr,
+                  fontSize: 20.sp,
+                  color: AppColors.accent,
+                  fontWeight: FontWeight.bold,
+                ),
+                60.height,
+                CustomTextField(
+                  hintText: 'NewPassword'.tr,
+                  controller: passwordController,
+                  keyboardType: TextInputType.text,
+                  validator: (value) => value!.isValidPassword,
+                ),
+                20.height,
+                CustomTextField(
+                  hintText: 'ConfirmPassword'.tr,
+                  controller: confirmPassController,
+                  keyboardType: TextInputType.text,
+                  validator: (value) => value!.isValidPassword,
+                ),
+                24.height,
+                Obx(
+                  () => CustomButton(
+                    text: 'Confirm'.tr,
+                    color: AppColors.primary,
+                    isDisable: controller.isLoading.value,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        Get.offNamed(Routes.AUTH);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-    ),
       ),
     );
   }
