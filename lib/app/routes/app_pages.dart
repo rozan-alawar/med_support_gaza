@@ -3,10 +3,19 @@ import 'package:get/get.dart';
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/views/appointment_booking_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
+import '../modules/auth/bindings/doctor_auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
+<<<<<<< HEAD
 import '../modules/auth/views/patient_forget_password_view.dart';
 import '../modules/auth/views/patient_new_password_view.dart';
 import '../modules/auth/views/verfication_view.dart';
+=======
+import '../modules/auth/views/doctor_forget_password_view.dart';
+import '../modules/auth/views/doctor_login_view.dart';
+import '../modules/auth/views/doctor_reset_password_view.dart';
+import '../modules/auth/views/doctor_signup_view.dart';
+import '../modules/auth/views/doctor_verifcation_view.dart';
+>>>>>>> c0370a2eca70694b253213a0ec3060c5344383ee
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/patient_home_view.dart';
 import '../modules/onboarding/views/doctor_onboarding_view.dart';
@@ -64,9 +73,31 @@ class AppPages {
       // binding: AuthBinding(),
     ),
     GetPage(
+<<<<<<< HEAD
       name: _Paths.APPOINTMENT_BOOKING,
       page: () => const AppointmentBookingView(),
       binding: AppointmentBookingBinding(),
     ),
+=======
+        name: _Paths.DOCTOR_SIGNUP,
+        page: () => DoctorSignUpView(),
+        binding: DoctorAuthBinding()),
+    GetPage(
+        name: _Paths.DOCTOR_LOGIN,
+        page: () => DoctroLoginView(),
+        binding: DoctorAuthBinding()),
+    GetPage(
+        name: _Paths.DOCTOR_FORGET_PASSWORD,
+        page: () => DoctorForgetPasswordView(),
+        binding: DoctorAuthBinding()),
+    GetPage(
+        name: _Paths.DOCTOR_RESET_PASSWORD,
+        page: () => DoctroResetPasswordView(),
+        binding: DoctorAuthBinding()),
+    GetPage(
+        name: _Paths.DOCTOR_VERIFICATION,
+        page: () => DoctorVerifcationView(),
+        binding: DoctorAuthBinding()),
+>>>>>>> c0370a2eca70694b253213a0ec3060c5344383ee
   ];
 }

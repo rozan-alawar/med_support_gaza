@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 
+import '../utils/countries.dart';
+import '../utils/medical_specialties.dart';
+
 extension ValidationExt on String {
   String? get isValidEmail {
     final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -41,8 +44,6 @@ extension ValidationExt on String {
     }
   }
 
-
-
   String? get isValidAge {
     if (isEmpty) {
       return "enter_age".tr;
@@ -53,4 +54,25 @@ extension ValidationExt on String {
     }
   }
 
+  String? get isValidCountryName {
+    if (isEmpty) {
+      return "enter_conutry".tr;
+    } else if (!countries.contains(capitalizeFirst)) {
+      print("countries.contains(this) : ${countries.contains(this)}");
+      return "valid_conutry".tr;
+    } else {
+      return null;
+    }
+  }
+
+  String? get isValidSpecialtyName {
+    if (isEmpty) {
+      return "enter_speciality".tr;
+    } else if (!medicalSpecialties.contains(this)) {
+      return "valid_speciality".tr;
+    } else {
+      return null;
+    }
+  }
+  
 }
