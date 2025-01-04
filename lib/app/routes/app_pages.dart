@@ -1,14 +1,16 @@
 import 'package:get/get.dart';
-import 'package:med_support_gaza/app/modules/auth/views/patient_forget_password_view.dart';
-import 'package:med_support_gaza/app/modules/auth/views/patient_new_password_view.dart';
-import 'package:med_support_gaza/app/modules/auth/views/verfication_view.dart';
 
+import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
+import '../modules/appointment_booking/views/appointment_booking_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
+import '../modules/auth/views/patient_forget_password_view.dart';
+import '../modules/auth/views/patient_new_password_view.dart';
+import '../modules/auth/views/verfication_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/patient_home_view.dart';
-import '../modules/onboarding/views/patient_onboarding_view.dart';
 import '../modules/onboarding/views/doctor_onboarding_view.dart';
+import '../modules/onboarding/views/patient_onboarding_view.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/user_role_selection/views/user_role_selection.dart';
 
@@ -38,7 +40,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOME,
-      page: () =>  PatientHomeView(),
+      page: () => PatientHomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -48,18 +50,23 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.FORGET_PASSWORD,
-      page: () =>  PatientForgetPasswordView(),
+      page: () => PatientForgetPasswordView(),
       binding: AuthBinding(),
     ),
     GetPage(
       name: _Paths.VERIFICATION,
-      page: () =>  VerificationView(),
+      page: () => VerificationView(),
       binding: AuthBinding(),
     ),
     GetPage(
       name: _Paths.NEW_PASSWORD,
-      page: () =>  PatientResetPasswordView(),
+      page: () => PatientResetPasswordView(),
       // binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.APPOINTMENT_BOOKING,
+      page: () => const AppointmentBookingView(),
+      binding: AppointmentBookingBinding(),
     ),
   ];
 }

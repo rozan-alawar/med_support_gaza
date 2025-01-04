@@ -24,15 +24,17 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true, 
       splitScreenMode: true, 
       builder: (context, child) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Med Support Gaza',
-          theme: AppTheme.appTheme,
-          fallbackLocale: const Locale('en', 'US'),
-          locale: TranslationController.initalLang,
-          translations: Translation(),
-          initialRoute: AppPages.INITIAL,
-          getPages: AppPages.routes,
+        return SafeArea(
+          child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Med Support Gaza',
+            theme: AppTheme.appTheme,
+            fallbackLocale: const Locale('en', 'US'),
+            locale: TranslationController.initalLang,
+            translations: Translation(),
+            initialRoute: AppPages.INITIAL,
+            getPages: AppPages.routes,
+          ),
         );
       },
     );
