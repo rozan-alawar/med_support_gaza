@@ -10,6 +10,7 @@ import '../modules/auth/views/doctor_forget_password_view.dart';
 import '../modules/auth/views/doctor_login_view.dart';
 import '../modules/auth/views/doctor_reset_password_view.dart';
 import '../modules/auth/views/doctor_signup_view.dart';
+import '../modules/auth/views/doctor_verifcation_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/patient_home_view.dart';
 import '../modules/onboarding/views/patient_onboarding_view.dart';
@@ -43,7 +44,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOME,
-      page: () =>  PatientHomeView(),
+      page: () => PatientHomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -58,7 +59,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.VERIFICATION,
-      page: () =>  VerificationView(),
+      page: () => VerificationView(),
       binding: AuthBinding(),
     ),
     GetPage(
@@ -81,6 +82,10 @@ class AppPages {
     GetPage(
         name: _Paths.DOCTOR_RESET_PASSWORD,
         page: () => DoctroResetPasswordView(),
+        binding: DoctorAuthBinding()),
+    GetPage(
+        name: _Paths.DOCTOR_VERIFICATION,
+        page: () => DoctorVerifcationView(),
         binding: DoctorAuthBinding()),
   ];
 }

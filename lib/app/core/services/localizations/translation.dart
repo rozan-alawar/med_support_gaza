@@ -61,6 +61,11 @@ class Translation extends Translations {
           'enter_speciality': 'الرجاء إدخال تخصصك',
           'valid_speciality': 'الرجاء إدخال تخصصك الصحيح',
           'confirmation_maessage': 'تاكد من تطابق كلمة المرور المدخلة',
+          'file_selected' :'تم تحديد الملف',
+          'file_not_selected':'لم يتم تحديد أي ملف',
+           'file_selected_message' :'الملف',
+          'file_not_selected_message':'الرجاء اختيار ملف',
+          'file_error_message':':خطأ في اختيار الملف',
         },
         'en': {
           'Hello': 'Hello',
@@ -109,6 +114,11 @@ class Translation extends Translations {
           'DontHaveAccount': 'Don\'t have an account?',
           'SignIn': 'Sign In',
           'EnterOTP': 'Enter OTP',
+           'file_selected' :'File Selected',
+          'file_not_selected':'No File Selected',
+           'file_selected_message' :'File :',
+          'file_not_selected_message':'Please choose a file.',
+          'file_error_message':'Error picking file :',
         },
       };
 }

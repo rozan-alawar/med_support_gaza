@@ -49,9 +49,9 @@ class DoctorForgetPasswordView extends GetView<DoctorAuthController> {
               CustomButton(
                 text: 'Send OTP'.tr,
                 color: AppColors.primary,
-                onPressed: () {
+                onPressed: () { 
                   if (_formKey.currentState!.validate()) {
-                  //  Get.offNamed(Routes.DOCTOR_FORGET_PASSWORD);
+                    Get.toNamed(Routes.DOCTOR_VERIFICATION);
                   }
                 },
               ),
