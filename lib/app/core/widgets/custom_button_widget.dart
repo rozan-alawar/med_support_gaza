@@ -5,7 +5,7 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton(
-      {Key? key,
+      {super.key,
       required this.text,
       required this.color,
       required this.onPressed,
@@ -16,8 +16,7 @@ class CustomButton extends StatelessWidget {
       this.isDisable = false,
       this.borderRadius,
       this.textColor = AppColors.white,
-      this.boxShadow,})
-      : super(key: key);
+      this.boxShadow,});
   final String? text;
   final Color? color;
   final double width;

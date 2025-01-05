@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/controllers/appointment_booking_controller.dart';
 
@@ -16,13 +15,13 @@ class DoctorCard extends GetView<AppointmentBookingController> {
   final VoidCallback onTap;
 
   const DoctorCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.specialization,
     required this.rating,
     required this.experience,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

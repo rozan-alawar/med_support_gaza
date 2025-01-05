@@ -7,7 +7,7 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class PatientMainView extends StatelessWidget {
-  const PatientMainView({Key? key}) : super(key: key);
+  const PatientMainView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class PatientMainView extends StatelessWidget {
                         color: Colors.black.withOpacity(0.1),
                         blurRadius: 12,
                         spreadRadius: 4,
-                        offset: Offset(0, 2),
+                        offset: const Offset(0, 2),
                       )
                     ],
                     color: Colors.white,
@@ -76,20 +76,20 @@ class PatientMainView extends StatelessWidget {
                       ),
                     ),
                     16.height,
-                    AppoinmentInfoWidget(
+                    const AppoinmentInfoWidget(
                       time: '10:30 AM',
                       day: 'Today',
                       major: 'Cardiology',
                       doctorName: 'Dr. Ahmed Mohammed',
                     ),
                     8.height,
-                    AppoinmentInfoWidget(
+                    const AppoinmentInfoWidget(
                       time: '8:30 AM',
                       day: 'Today',
                       major: 'Cardiology',
                       doctorName: 'Dr. Ali Mohammed',
                     ),
-                    8.height,  AppoinmentInfoWidget(
+                    8.height,  const AppoinmentInfoWidget(
                       time: '12:30 AM',
                       day: 'Tomorrow',
                       major: 'Cardiology',
@@ -158,7 +158,7 @@ class AppoinmentInfoWidget extends StatelessWidget {
               ),
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

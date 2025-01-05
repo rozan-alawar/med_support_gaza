@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/services/localizations/translation_contoller.dart';
 import 'package:med_support_gaza/app/core/utils/app_theme.dart';
+import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
 import 'app/routes/app_pages.dart';
 
@@ -11,10 +13,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init(); 
   runApp(const MyApp());
+  
+await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
 
   @override

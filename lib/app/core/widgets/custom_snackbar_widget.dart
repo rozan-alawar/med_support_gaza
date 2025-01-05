@@ -51,7 +51,7 @@ class CustomSnackBar {
       snackStyle: SnackStyle.GROUNDED,
       backgroundColor: color ?? Colors.green,
       snackPosition: SnackPosition.TOP,
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
       borderRadius: 25,
 
       onTap: (snack) {
@@ -66,7 +66,7 @@ class CustomSnackBar {
     showModalBottomSheet(
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       ),

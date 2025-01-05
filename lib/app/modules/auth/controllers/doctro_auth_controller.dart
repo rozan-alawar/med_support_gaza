@@ -158,7 +158,7 @@ class DoctorAuthController extends GetxController {
       }
 
       Timer(
-        Duration(seconds: 3),
+        const Duration(seconds: 3),
         () => Get.offAllNamed(Routes.DOCTOR_RESET_PASSWORD),
       );
     } catch (e) {

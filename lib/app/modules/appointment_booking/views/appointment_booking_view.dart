@@ -10,7 +10,7 @@ import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_ca
 import 'package:med_support_gaza/app/modules/appointment_booking/views/specialization_widget.dart';
 
 class AppointmentBookingView extends GetView<AppointmentBookingController> {
-  const AppointmentBookingView({Key? key}) : super(key: key);
+  const AppointmentBookingView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
       case 1:
         return _buildDoctorSelectionStep();
       case 2:
-        return _buildTimeSelectionStep();
+        return const _buildTimeSelectionStep();
       case 3:
         return _buildConfirmationStep();
       default:
@@ -138,7 +138,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
     final doctors = controller.getDoctors();
     return ListView.separated(
       itemCount: doctors.length,
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       separatorBuilder: (context, index) => 12.height,
       itemBuilder: (context, index) {
         final doctor = doctors[index];
@@ -154,23 +154,38 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
   }
 
   Widget _buildConfirmationStep() {
-    return Obx(() => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildConfirmationItem(
-              'Specialization',
-              controller.selectedSpecialization.value,
-            ),
-            _buildConfirmationItem(
-              'Doctor',
-              controller.selectedDoctor.value,
-            ),
-            _buildConfirmationItem(
-              'Date',
-              controller.selectedTime.value?.toString() ?? 'Not selected',
-            ),
-          ],
-        ));
+    return Obx(() =>   Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 12,
+                spreadRadius: 4,
+                offset: const Offset(0, 2),
+              )
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.r)),
+
+      child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildConfirmationItem(
+                'Specialization',
+                controller.selectedSpecialization.value,
+              ),
+              _buildConfirmationItem(
+                'Doctor',
+                controller.selectedDoctor.value,
+              ),
+              _buildConfirmationItem(
+                'Date',
+                controller.selectedTime.value?.toString() ?? 'Not selected',
+              ),
+            ],
+          ),
+    ));
   }
 
   Widget _buildConfirmationItem(String label, String value) {
@@ -197,7 +212,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
 }
 
 class _buildTimeSelectionStep extends GetView<AppointmentBookingController> {
-  const _buildTimeSelectionStep({super.key});
+  const _buildTimeSelectionStep();
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +228,7 @@ class _buildTimeSelectionStep extends GetView<AppointmentBookingController> {
               color: Colors.black.withOpacity(0.1),
               blurRadius: 12,
               spreadRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             )
           ], color: Colors.white, borderRadius: BorderRadius.circular(12.r)),
           child: Column(

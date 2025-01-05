@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
  final bool readOnly ;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.controller,
     this.keyboardType = TextInputType.text,
@@ -21,7 +21,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.suffixIcon,
     this.readOnly =false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,26 +33,26 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefixIcon != null
-            ? Icon(prefixIcon, color: Color(0xFF1f6c42))
+            ? Icon(prefixIcon, color: const Color(0xFF1f6c42))
             : null,
         suffixIcon: suffixIcon,
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: Color(0xFFE3E5E5)),
+          borderSide: const BorderSide(color: Color(0xFFE3E5E5)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: Color(0xFFE3E5E5), width: 1),
+          borderSide: const BorderSide(color: Color(0xFFE3E5E5), width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: Color(0xFF1f6c42)),
+          borderSide: const BorderSide(color: Color(0xFF1f6c42)),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: AppColors.error),
+          borderSide: const BorderSide(color: AppColors.error),
         ),
       ),
       readOnly: readOnly ,

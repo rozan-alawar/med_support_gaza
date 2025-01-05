@@ -84,6 +84,5 @@ class UserRoleSelectionView extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

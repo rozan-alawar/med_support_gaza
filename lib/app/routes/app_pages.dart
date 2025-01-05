@@ -5,17 +5,14 @@ import '../modules/appointment_booking/views/appointment_booking_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/bindings/doctor_auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
-<<<<<<< HEAD
 import '../modules/auth/views/patient_forget_password_view.dart';
 import '../modules/auth/views/patient_new_password_view.dart';
 import '../modules/auth/views/verfication_view.dart';
-=======
 import '../modules/auth/views/doctor_forget_password_view.dart';
 import '../modules/auth/views/doctor_login_view.dart';
 import '../modules/auth/views/doctor_reset_password_view.dart';
 import '../modules/auth/views/doctor_signup_view.dart';
 import '../modules/auth/views/doctor_verifcation_view.dart';
->>>>>>> c0370a2eca70694b253213a0ec3060c5344383ee
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/patient_home_view.dart';
 import '../modules/onboarding/views/doctor_onboarding_view.dart';
@@ -33,7 +30,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.SPLASH,
-      page: () => SplashView(),
+      page: () =>  SplashView(),
     ),
     GetPage(
       name: _Paths.USER_ROLE_SELECTION,
@@ -41,11 +38,11 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PATIENT_ONBOARDING,
-      page: () => PatientOnboardingView(),
+      page: () => const PatientOnboardingView(),
     ),
     GetPage(
       name: _Paths.DOCTRO_ONBOARDING,
-      page: () => DoctorOnboardingView(),
+      page: () => const DoctorOnboardingView(),
     ),
     GetPage(
       name: _Paths.HOME,
@@ -73,12 +70,11 @@ class AppPages {
       // binding: AuthBinding(),
     ),
     GetPage(
-<<<<<<< HEAD
       name: _Paths.APPOINTMENT_BOOKING,
       page: () => const AppointmentBookingView(),
       binding: AppointmentBookingBinding(),
     ),
-=======
+    GetPage(
         name: _Paths.DOCTOR_SIGNUP,
         page: () => DoctorSignUpView(),
         binding: DoctorAuthBinding()),
@@ -98,6 +94,5 @@ class AppPages {
         name: _Paths.DOCTOR_VERIFICATION,
         page: () => DoctorVerifcationView(),
         binding: DoctorAuthBinding()),
->>>>>>> c0370a2eca70694b253213a0ec3060c5344383ee
   ];
 }

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/extentions/validation_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
-import 'package:med_support_gaza/app/core/utils/app_text_style.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
@@ -134,6 +133,7 @@ class PatientSignUpView extends GetView<AuthController> {
                           phoneNo: phoneController.text.trim(),
                           age: ageController.text.trim(),
                           gender: gender.value.toString(),
+                          country: 'Gaza'
                         );
                       }
                     },

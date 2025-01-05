@@ -55,6 +55,10 @@ dependencies:
   connectivity_plus: ^5.0.2
   file_picker: ^8.1.7
 
+  firebase_core: 
+  firebase_auth: 
+  cloud_firestore: 
+
 
 dev_dependencies:
   flutter_test:

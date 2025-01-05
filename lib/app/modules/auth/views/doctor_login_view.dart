@@ -15,6 +15,8 @@ class DoctroLoginView extends GetView<DoctorAuthController> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  DoctroLoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
