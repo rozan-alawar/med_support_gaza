@@ -20,6 +20,7 @@ abstract class Routes {
   static const DOCTOR_VERIFICATION = _Paths.DOCTOR_VERIFICATION;
   static const PATIENT_PROFILE = _Paths.PATIENT_PROFILE;
   static const EDIT_PATIENT_PROFILE = _Paths.EDIT_PATIENT_PROFILE;
+  static const CONSULTATION = _Paths.CONSULTATION;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const DOCTOR_VERIFICATION = '/doctor-verification';
   static const PATIENT_PROFILE = '/patient-profile';
   static const EDIT_PATIENT_PROFILE = '/edit-patient-profile';
+  static const CONSULTATION = '/consultation';
 }

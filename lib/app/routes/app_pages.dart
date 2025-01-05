@@ -1,25 +1,27 @@
 import 'package:get/get.dart';
-import 'package:med_support_gaza/app/modules/profile/bindings/profile_binding.dart';
-import 'package:med_support_gaza/app/modules/profile/views/patient_edit_profile_view.dart';
-import 'package:med_support_gaza/app/modules/profile/views/patient_profile_view.dart';
 
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/views/appointment_booking_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/bindings/doctor_auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
-import '../modules/auth/views/patient_forget_password_view.dart';
-import '../modules/auth/views/patient_new_password_view.dart';
-import '../modules/auth/views/verfication_view.dart';
 import '../modules/auth/views/doctor_forget_password_view.dart';
 import '../modules/auth/views/doctor_login_view.dart';
 import '../modules/auth/views/doctor_reset_password_view.dart';
 import '../modules/auth/views/doctor_signup_view.dart';
 import '../modules/auth/views/doctor_verifcation_view.dart';
+import '../modules/auth/views/patient_forget_password_view.dart';
+import '../modules/auth/views/patient_new_password_view.dart';
+import '../modules/auth/views/verfication_view.dart';
+import '../modules/consultation/bindings/consultation_binding.dart';
+import '../modules/consultation/views/consultation_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/patient_home_view.dart';
 import '../modules/onboarding/views/doctor_onboarding_view.dart';
 import '../modules/onboarding/views/patient_onboarding_view.dart';
+import '../modules/profile/bindings/profile_binding.dart';
+import '../modules/profile/views/patient_edit_profile_view.dart';
+import '../modules/profile/views/patient_profile_view.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/user_role_selection/views/user_role_selection.dart';
 
@@ -33,7 +35,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.SPLASH,
-      page: () =>  SplashView(),
+      page: () => SplashView(),
     ),
     GetPage(
       name: _Paths.USER_ROLE_SELECTION,
@@ -97,15 +99,20 @@ class AppPages {
         name: _Paths.DOCTOR_VERIFICATION,
         page: () => DoctorVerifcationView(),
         binding: DoctorAuthBinding()),
-         GetPage(
+    GetPage(
         name: _Paths.PATIENT_PROFILE,
-        page: () =>const PatientProfileView(),
+        page: () => const PatientProfileView(),
         binding: DoctorAuthBinding()),
-        // Add the route in app_pages.dart
-GetPage(
-  name: Routes.EDIT_PATIENT_PROFILE,
-  page: () => PatientEditProfileView(),
-  binding: ProfileBinding(),
-),
+    // Add the route in app_pages.dart
+    GetPage(
+      name: Routes.EDIT_PATIENT_PROFILE,
+      page: () => PatientEditProfileView(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONSULTATION,
+      page: () =>  ConsultationView(),
+      binding: ConsultationBinding(),
+    ),
   ];
 }
