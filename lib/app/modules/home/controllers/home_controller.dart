@@ -15,13 +15,13 @@ class HomeController extends GetxController {
         Get.offAllNamed(Routes.HOME);
         break;
       case 1: // Doctors
-        Get.toNamed(Routes.PROFILE);
+        Get.toNamed(Routes.PATIENT_PROFILE);
         break;
       case 2: // Chat
         Get.toNamed(Routes.HOME);
         break;
       case 3: // Profile
-        Get.toNamed(Routes.PROFILE);
+        Get.toNamed(Routes.PATIENT_PROFILE);
         break;
     }
   }

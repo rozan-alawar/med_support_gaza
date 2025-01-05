@@ -18,7 +18,8 @@ abstract class Routes {
   static const DOCTOR_FORGET_PASSWORD = _Paths.DOCTOR_FORGET_PASSWORD;
   static const DOCTOR_RESET_PASSWORD = _Paths.DOCTOR_RESET_PASSWORD;
   static const DOCTOR_VERIFICATION = _Paths.DOCTOR_VERIFICATION;
-  static const PROFILE = _Paths.PROFILE;
+  static const PATIENT_PROFILE = _Paths.PATIENT_PROFILE;
+  static const EDIT_PATIENT_PROFILE = _Paths.EDIT_PATIENT_PROFILE;
 }
 
 abstract class _Paths {
@@ -38,5 +39,6 @@ abstract class _Paths {
   static const DOCTOR_FORGET_PASSWORD = '/doctor-forget-password';
   static const DOCTOR_RESET_PASSWORD = '/doctor-reset-password';
   static const DOCTOR_VERIFICATION = '/doctor-verification';
-  static const PROFILE = '/profile';
+  static const PATIENT_PROFILE = '/patient-profile';
+  static const EDIT_PATIENT_PROFILE = '/edit-patient-profile';
 }

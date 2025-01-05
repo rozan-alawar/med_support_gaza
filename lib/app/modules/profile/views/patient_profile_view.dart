@@ -5,8 +5,8 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/profile/controllers/profile_controller.dart';
-class ProfileView extends GetView<ProfileController> {
-  const ProfileView({super.key});
+class PatientProfileView extends GetView<ProfileController> {
+  const PatientProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {

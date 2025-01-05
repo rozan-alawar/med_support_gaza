@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/modules/profile/bindings/profile_binding.dart';
+import 'package:med_support_gaza/app/modules/profile/views/patient_edit_profile_view.dart';
+import 'package:med_support_gaza/app/modules/profile/views/patient_profile_view.dart';
 
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/views/appointment_booking_view.dart';
@@ -94,5 +97,15 @@ class AppPages {
         name: _Paths.DOCTOR_VERIFICATION,
         page: () => DoctorVerifcationView(),
         binding: DoctorAuthBinding()),
+         GetPage(
+        name: _Paths.PATIENT_PROFILE,
+        page: () =>const PatientProfileView(),
+        binding: DoctorAuthBinding()),
+        // Add the route in app_pages.dart
+GetPage(
+  name: Routes.EDIT_PATIENT_PROFILE,
+  page: () => PatientEditProfileView(),
+  binding: ProfileBinding(),
+),
   ];
 }

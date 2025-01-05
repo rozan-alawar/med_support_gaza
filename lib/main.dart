@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/services/localizations/translation_contoller.dart';
 import 'package:med_support_gaza/app/core/utils/app_theme.dart';
+import 'package:med_support_gaza/app/core/widgets/custem_error_widget.dart';
 import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
 import 'app/routes/app_pages.dart';
@@ -25,24 +26,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit( 
-      designSize: const Size(375, 812), 
-      minTextAdapt: true, 
-      splitScreenMode: true, 
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
       builder: (context, child) {
-        return SafeArea(
-          child: GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Med Support Gaza',
-            theme: AppTheme.appTheme,
-            fallbackLocale: const Locale('en', 'US'),
-            locale: TranslationController.initalLang,
-            translations: Translation(),
-            initialRoute: AppPages.INITIAL,
-            getPages: AppPages.routes,
-          ),
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Med Support Gaza',
+          theme: AppTheme.appTheme,
+          fallbackLocale: const Locale('en', 'US'),
+          locale: TranslationController.initalLang,
+          translations: Translation(),
+          initialRoute: AppPages.INITIAL,
+          getPages: AppPages.routes,
+          defaultTransition: Transition.fadeIn,
+          onUnknownRoute: (settings) {
+            return MaterialPageRoute(
+              builder: (context) => ErrorView(
+                message: 'Route ${settings.name} not found',
+              ),
+            );
+          },
+          builder: (context, child) {
+            return ScrollConfiguration(
+              behavior: const ScrollBehavior().copyWith(
+                physics: const BouncingScrollPhysics(),
+              ),
+              child: child!,
+            );
+          },
         );
       },
     );
   }
+
 }
+
+
+
+//rozan@gmail.com
+//123456789
