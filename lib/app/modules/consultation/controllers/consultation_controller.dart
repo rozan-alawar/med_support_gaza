@@ -9,10 +9,10 @@ import 'package:med_support_gaza/app/data/models/message_model.dart';
 
 class ConsultationController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  final currentUserId = FirebaseAuth.instance.currentUser?.uid??1;
   final messageController = TextEditingController();
 
-  final doctor = Get.arguments as DoctorModel;
+  // final doctor = Get.arguments as DoctorModel;
   final RxList<MessageModel> messages = <MessageModel>[].obs;
 
   late StreamSubscription<QuerySnapshot> _messagesSubscription;
@@ -39,7 +39,7 @@ class ConsultationController extends GetxController {
 
   String _getChatId() {
     // Create a unique chat ID based on both users' IDs
-    final List<String> ids = [currentUserId, doctor.id]..sort();
+    final List<String> ids = ["currentUserId"," doctor.id"]..sort();
     return ids.join('_');
   }
 
@@ -53,8 +53,8 @@ class ConsultationController extends GetxController {
           .now()
           .millisecondsSinceEpoch
           .toString(),
-      senderId: currentUserId,
-      receiverId: doctor.id,
+      senderId: "currentUserId",
+      receiverId: "doctor.id",
       content: messageController.text.trim(),
       timestamp: DateTime.now(),
     );
