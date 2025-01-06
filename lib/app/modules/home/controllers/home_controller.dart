@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
@@ -8,6 +9,20 @@ class HomeController extends GetxController {
   void changeBottomNavIndex(int index) {
     currentIndex.value = index;
     update();
+      currentIndex.value = index;
+    switch (index) {
+      case 0: // Home
+        Get.offAllNamed(Routes.HOME);
+        break;
+      case 1: // Doctors
+        Get.toNamed(Routes.PATIENT_PROFILE);
+        break;
+      case 2: // Chat
+        Get.toNamed(Routes.HOME);
+        break;
+      case 3: // Profile
+        Get.toNamed(Routes.PATIENT_PROFILE);
+        break;
+    }
   }
-
 }

@@ -8,7 +8,6 @@ import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
-import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class PatientForgetPasswordView extends GetView<AuthController> {
   final TextEditingController emailController = TextEditingController();

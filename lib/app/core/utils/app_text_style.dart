@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 class MyTextStyles {
-  static TextStyle hintTextStyle = TextStyle(
+  static TextStyle hintTextStyle = const TextStyle(
     fontSize: 12,
   );
 
-  static TextStyle titleTextStyle = TextStyle(
+  static TextStyle titleTextStyle = const TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 24,
   );
 
-  static TextStyle boldTextStyle = TextStyle(
+  static TextStyle boldTextStyle = const TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,
   );
 
-  static TextStyle mediumTextStyle = TextStyle(
+  static TextStyle mediumTextStyle = const TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 16,
   );

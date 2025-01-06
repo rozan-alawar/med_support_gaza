@@ -14,6 +14,8 @@ class DoctroResetPasswordView extends GetView<DoctorAuthController> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  DoctroResetPasswordView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

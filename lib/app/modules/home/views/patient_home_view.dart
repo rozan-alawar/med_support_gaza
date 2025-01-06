@@ -15,7 +15,7 @@ class PatientHomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PatientMainView(),
+      body: const PatientMainView(),
 
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(

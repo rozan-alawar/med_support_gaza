@@ -15,6 +15,8 @@ class PatientLoginView extends GetView<AuthController> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  PatientLoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

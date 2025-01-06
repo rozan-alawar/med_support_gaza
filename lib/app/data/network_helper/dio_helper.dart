@@ -64,7 +64,7 @@ class DioHelper {
       );
       // 3) return response (api done successfully)
       await onSuccess.call(response);
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       // dio error (api reach the server but not performed successfully
       // no internet connection
 
@@ -170,7 +170,7 @@ class DioHelper {
             .timeout(const Duration(seconds: TIME_OUT_DURATION));
       }
       await onSuccess(response);
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       log("Dio Error");
       if (error.message!.toLowerCase().contains('socket')) {
         onError?.call(ApiException(
@@ -251,7 +251,7 @@ class DioHelper {
       );
       // 3) return response (api done successfully)
       await onSuccess.call(response);
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       // dio error (api reach the server but not performed successfully
       // no internet connection
       if (error.message!.toLowerCase().contains('socket')) {
@@ -337,7 +337,7 @@ class DioHelper {
       );
       // 3) return response (api done successfully)
       await onSuccess.call(response);
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       // dio error (api reach the server but not performed successfully
       // no internet connection
       if (error.message!.toLowerCase().contains('socket')) {
@@ -455,7 +455,7 @@ final dioLoggerInterceptor =
   log("└------------------------------------------------------------------------------");
   handler.next(response);
   // return response; // continue
-}, onError: (DioError error, handler) async {
+}, onError: (DioException error, handler) async {
   log("| [DIO] Error: ${error.error}: ${error.response.toString()}");
   log("└------------------------------------------------------------------------------");
   handler.next(error); //continue

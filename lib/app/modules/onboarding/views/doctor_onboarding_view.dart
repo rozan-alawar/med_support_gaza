@@ -5,11 +5,12 @@ import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_text_style.dart';
 import '../../../core/widgets/custom_button_widget.dart';
 import '../../../routes/app_pages.dart';
 
 class DoctorOnboardingView extends StatelessWidget {
+  const DoctorOnboardingView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

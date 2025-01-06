@@ -12,11 +12,15 @@ abstract class Routes {
   static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
   static const VERIFICATION = _Paths.VERIFICATION;
   static const NEW_PASSWORD = _Paths.NEW_PASSWORD;
+  static const APPOINTMENT_BOOKING = _Paths.APPOINTMENT_BOOKING;
   static const DOCTOR_SIGNUP = _Paths.DOCTOR_SIGNUP;
   static const DOCTOR_LOGIN = _Paths.DOCTOR_LOGIN;
   static const DOCTOR_FORGET_PASSWORD = _Paths.DOCTOR_FORGET_PASSWORD;
   static const DOCTOR_RESET_PASSWORD = _Paths.DOCTOR_RESET_PASSWORD;
-   static const DOCTOR_VERIFICATION = _Paths.DOCTOR_VERIFICATION;
+  static const DOCTOR_VERIFICATION = _Paths.DOCTOR_VERIFICATION;
+  static const PATIENT_PROFILE = _Paths.PATIENT_PROFILE;
+  static const EDIT_PATIENT_PROFILE = _Paths.EDIT_PATIENT_PROFILE;
+  static const CONSULTATION = _Paths.CONSULTATION;
 }
 
 abstract class _Paths {
@@ -30,9 +34,13 @@ abstract class _Paths {
   static const FORGET_PASSWORD = '/forgot-password';
   static const VERIFICATION = '/verification';
   static const NEW_PASSWORD = '/new-password';
+  static const APPOINTMENT_BOOKING = '/appointment-booking';
   static const DOCTOR_SIGNUP = '/doctor-signup';
   static const DOCTOR_LOGIN = '/doctor-login';
   static const DOCTOR_FORGET_PASSWORD = '/doctor-forget-password';
   static const DOCTOR_RESET_PASSWORD = '/doctor-reset-password';
   static const DOCTOR_VERIFICATION = '/doctor-verification';
+  static const PATIENT_PROFILE = '/patient-profile';
+  static const EDIT_PATIENT_PROFILE = '/edit-patient-profile';
+  static const CONSULTATION = '/consultation';
 }
