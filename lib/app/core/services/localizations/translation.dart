@@ -107,6 +107,8 @@ class Translation extends Translations {
           'arabic': 'العربية',
           'english': 'English',
           'select_language': 'اختر اللغة',
+          // doctor translations
+          'time_management' : ' ادارة المواعيد',
         },
         'en': {
           'Hello': 'Hello',
@@ -177,6 +179,7 @@ class Translation extends Translations {
           'arabic': 'Arabic',
           'english': 'English',
           'select_language': 'Select Language',
+           'time_management' :'Appointments Mamagement'
         },
       };
 }
