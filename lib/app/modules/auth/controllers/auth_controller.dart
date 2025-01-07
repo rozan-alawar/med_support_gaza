@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/data/firebase_services/firebase_handler.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
@@ -36,7 +37,6 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     startTimer();
-    // Listen to auth state changes
     currentUser.bindStream(_firebaseService.authStateChanges);
     ever(currentUser, _handleAuthChanged);
   }
@@ -85,18 +85,20 @@ class AuthController extends GetxController {
         password: password,
         patient: patient,
       );
+      isLoading.value = false;
 
       CustomSnackBar.showCustomErrorSnackBar(
         message: 'AccountCreatedSuccessfully'.tr,
         color: Colors.green,
         title: 'Success'.tr,
       );
+      isLoading.value = false;
 
       Get.offAllNamed(Routes.HOME);
     } catch (e) {
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr,
-        message: e.toString(),
+        message: FirebaseErrorHandler.getErrorMessage(e.toString()),
       );
     } finally {
       isLoading.value = false;
@@ -117,7 +119,7 @@ class AuthController extends GetxController {
     } catch (e) {
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr,
-        message: e.toString(),
+        message: FirebaseErrorHandler.getErrorMessage(e.toString()),
       );
     } finally {
       isLoading.value = false;

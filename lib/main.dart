@@ -2,17 +2,25 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/services/localizations/translation_contoller.dart';
 import 'package:med_support_gaza/app/core/utils/app_theme.dart';
 import 'package:med_support_gaza/app/core/widgets/custem_error_widget.dart';
+import 'package:med_support_gaza/app/modules/appointment_booking/controllers/appointment_service.dart';
 import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await CacheHelper.init(); 
+  await GetStorage.init();
+
+  await CacheHelper.init();
+
+  Get.put<GetStorage>(GetStorage());
+
+  Get.put<AppointmentService>(AppointmentService());
   runApp(const MyApp());
   
 await Firebase.initializeApp(

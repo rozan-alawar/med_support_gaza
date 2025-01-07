@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 extension EditString on String {
@@ -88,7 +89,19 @@ extension EditString on String {
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
   }
+  String formatAppointmentDay(DateTime date) {
+    final now = DateTime.now();
+    final tomorrow = DateTime(now.year, now.month, now.day + 1);
+    final appointmentDate = DateTime(date.year, date.month, date.day);
 
+    if (appointmentDate == DateTime(now.year, now.month, now.day)) {
+      return 'Today'.tr;
+    } else if (appointmentDate == tomorrow) {
+      return 'Tomorrow'.tr;
+    } else {
+      return '${date.day}/${date.month}/${date.year}';
+    }
+  }
   String replaceDMYDPickerISO() {
     // TimeStamp Example
     // var date = '2021-01-26T03:17:00.000000Z';

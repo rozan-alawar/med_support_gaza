@@ -83,12 +83,12 @@ class Translation extends Translations {
           'enter_speciality': 'الرجاء إدخال تخصصك',
           'valid_speciality': 'الرجاء إدخال تخصصك الصحيح',
           'confirmation_maessage': 'تاكد من تطابق كلمة المرور المدخلة',
-          'file_selected' :'تم تحديد الملف',
-          'file_not_selected':'لم يتم تحديد أي ملف',
-           'file_selected_message' :'الملف',
-          'file_not_selected_message':'الرجاء اختيار ملف',
-          'file_error_message':':خطأ في اختيار الملف',
-            'settings': 'الاعدادات',
+          'file_selected': 'تم تحديد الملف',
+          'file_not_selected': 'لم يتم تحديد أي ملف',
+          'file_selected_message': 'الملف',
+          'file_not_selected_message': 'الرجاء اختيار ملف',
+          'file_error_message': ':خطأ في اختيار الملف',
+          'settings': 'الاعدادات',
           'technical_support': 'الدعم الفني',
           'language': 'اللغة',
           'logout': 'تسجيل الخروج',
@@ -107,6 +107,28 @@ class Translation extends Translations {
           'arabic': 'العربية',
           'english': 'English',
           'select_language': 'اختر اللغة',
+          'No Upcoming Appointments': 'لا توجد مواعيد قادمة',
+          'Schedule an appointment to get started': 'قم بجدولة موعد للبدء',
+          'The email address is badly formatted':
+              'تنسيق البريد الإلكتروني غير صحيح',
+          'This user account has been disabled': 'تم تعطيل حساب المستخدم هذا',
+          'No user found with this email':
+              'لم يتم العثور على مستخدم بهذا البريد الإلكتروني',
+          'Incorrect password': 'كلمة المرور غير صحيحة',
+          'An account already exists with this email':
+              'يوجد حساب بالفعل بهذا البريد الإلكتروني',
+          'This sign in method is not allowed':
+              'طريقة تسجيل الدخول هذه غير مسموح بها',
+          'The password provided is too weak': 'كلمة المرور المقدمة ضعيفة جداً',
+          'Too many sign in attempts. Please try again later':
+              'محاولات تسجيل دخول كثيرة. يرجى المحاولة لاحقاً',
+          'Please check your internet connection':
+              'يرجى التحقق من اتصال الإنترنت',
+          'Invalid verification code': 'رمز التحقق غير صالح',
+          'Invalid verification ID': 'معرف التحقق غير صالح',
+          'An error occurred. Please try again':
+              'حدث خطأ. يرجى المحاولة مرة أخرى',
+          'Unknown error occurred': 'حدث خطأ غير معروف'
         },
         'en': {
           'Hello': 'Hello',
@@ -158,7 +180,7 @@ class Translation extends Translations {
           'Error': 'Error',
           'PleaseEnterCompleteOTP': 'Please enter complete OTP',
           'SendOTP': 'Send OTP',
- 'settings': 'Settings',
+          'settings': 'Settings',
           'technical_support': 'Technical Support',
           'language': 'Language',
           'logout': 'Logout',
@@ -177,6 +199,30 @@ class Translation extends Translations {
           'arabic': 'Arabic',
           'english': 'English',
           'select_language': 'Select Language',
+          'No Upcoming Appointments': 'No Upcoming Appointments',
+          'Schedule an appointment to get started':
+              'Schedule an appointment to get started',
+          'The email address is badly formatted':
+              'The email address is badly formatted',
+          'This user account has been disabled':
+              'This user account has been disabled',
+          'No user found with this email': 'No user found with this email',
+          'Incorrect password': 'Incorrect password',
+          'An account already exists with this email':
+              'An account already exists with this email',
+          'This sign in method is not allowed':
+              'This sign in method is not allowed',
+          'The password provided is too weak':
+              'The password provided is too weak',
+          'Too many sign in attempts. Please try again later':
+              'Too many sign in attempts. Please try again later',
+          'Please check your internet connection':
+              'Please check your internet connection',
+          'Invalid verification code': 'Invalid verification code',
+          'Invalid verification ID': 'Invalid verification ID',
+          'An error occurred. Please try again':
+              'An error occurred. Please try again',
+          'Unknown error occurred': 'Unknown error occurred'
         },
       };
 }
