@@ -108,7 +108,7 @@ class Translation extends Translations {
           'english': 'English',
           'select_language': 'اختر اللغة',
           // doctor translations
-          'time_management' : ' ادارة المواعيد',
+          'time_management': ' ادارة المواعيد',
           'No Upcoming Appointments': 'لا توجد مواعيد قادمة',
           'Schedule an appointment to get started': 'قم بجدولة موعد للبدء',
           'The email address is badly formatted':
@@ -130,7 +130,14 @@ class Translation extends Translations {
           'Invalid verification ID': 'معرف التحقق غير صالح',
           'An error occurred. Please try again':
               'حدث خطأ. يرجى المحاولة مرة أخرى',
-          'Unknown error occurred': 'حدث خطأ غير معروف'
+          'Unknown error occurred': 'حدث خطأ غير معروف',
+          'morning_period': "الفترة الصباحية",
+          'evening_period': 'الفترة المسائية',
+          'date': 'اليوم',
+          'add': 'اضافة',
+          'evening_period_time': ' من 12:00 م الى 3:00 م',
+          'morning_period_time': 'من 8:00 ص الى 11:00 ص',
+          'appointments_title_massage': 'ما هي المواعيد المتاحة لديك؟'
         },
         'en': {
           'Hello': 'Hello',
@@ -201,6 +208,13 @@ class Translation extends Translations {
           'arabic': 'Arabic',
           'english': 'English',
           'select_language': 'Select Language',
+          'morning_period': 'Morning Period',
+          'evening_period': 'Evening period',
+          'date': 'Date',
+          'add': 'Add',
+          'evening_period_time': ' frome 12:00 pm to 3:00 pm',
+          'morning_period_time': 'from 8:00 am  to 11:00 am',
+          'appointments_title_massage': 'What appointments do you have available?',
         },
       };
 }

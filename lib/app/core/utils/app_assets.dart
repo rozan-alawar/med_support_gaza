@@ -34,4 +34,6 @@ class IconAssets {
   static const String home1 = '$ICONS_PATH/home.svg';
   static const String bell = '$ICONS_PATH/bell.svg';
   static const String bell_red_point = '$ICONS_PATH/bell-red-point.svg';
+   static const String date = '$ICONS_PATH/date.svg';
+    static const String drop = '$ICONS_PATH/drop.svg';
 }

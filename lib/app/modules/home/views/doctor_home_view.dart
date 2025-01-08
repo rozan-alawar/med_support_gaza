@@ -17,28 +17,29 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight + 30),
-          child: AppBar(   
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: SvgPicture.asset(
-                  IconAssets.bell,
-                ),
-              )
-            ],
-          ),
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                IconAssets.bell,
+              ),
+            )
+          ],
         ),
         body: Obx(
-          () => IndexedStack(
-            index: controller.currentIndex.value,
-            children: [
-              Center(),
-              Center(),
-              DoctorAppointmentManagementView(),
-              Center(),
-            ],
+          () => Align(
+            //  alignment: ,
+            child: IndexedStack(
+              alignment: Alignment.topRight,
+              index: controller.currentIndex.value,
+              children: [
+                Center(),
+                Center(),
+                DoctorAppointmentManagementView(),
+                Center(),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: Obx(

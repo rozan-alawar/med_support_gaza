@@ -22,4 +22,5 @@ class AppColors {
   static const Color success = Color(0xFF00918E); // Green
   static const Color warning = Color(0xFFFFC107); // Yellow
   static const Color textField = Color(0xFFF7F7F7); // Light Grey
+    static const Color gray = Color(0xFFD7E5E5); 
 }
