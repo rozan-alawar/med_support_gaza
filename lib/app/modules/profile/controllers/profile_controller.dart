@@ -1,180 +1,208 @@
-import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:get/get.dart';
+import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/models/patient_model.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 class ProfileController extends GetxController {
-  final formKey = GlobalKey<FormState>();
-  final isLoading = false.obs;
-  final gender = 'male'.obs;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final RxBool isLoading = false.obs;
+  final Rx<PatientModel?> currentUser = Rx<PatientModel?>(null);
 
-  late TextEditingController firstNameController;
-  late TextEditingController lastNameController;
-  late TextEditingController emailController;
-  late TextEditingController addressController;
-  late TextEditingController phoneController;
-  late TextEditingController ageController;
+  // Edit Profile Controllers
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final RxString selectedGender = ''.obs;
+  final RxString selectedCountry = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    firstNameController = TextEditingController();
-    lastNameController = TextEditingController();
-    emailController = TextEditingController();
-    addressController = TextEditingController();
-    phoneController = TextEditingController();
-    ageController = TextEditingController();
     loadUserData();
-  }
-
-  void loadUserData() {
-    // Load user data from your data source (e.g., Firebase)
-    // For now, we'll use dummy data
-    firstNameController.text = 'John';
-    lastNameController.text = 'Doe';
-    emailController.text = 'john.doe@example.com';
-    addressController.text = '123 Main St';
-    phoneController.text = '1234567890';
-    ageController.text = '30';
-    gender.value = 'male';
-  }
-
-  void changeProfilePicture() {
-    Get.dialog(
-      AlertDialog(
-        title: Text('change_profile_picture'.tr),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: Icon(Icons.camera_alt),
-              title: Text('take_photo'.tr),
-              onTap: () {
-                // Implement camera functionality
-                Get.back();
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.photo_library),
-              title: Text('choose_from_gallery'.tr),
-              onTap: () {
-                // Implement gallery functionality
-                Get.back();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> updateProfile() async {
-    if (!formKey.currentState!.validate()) return;
-
-    try {
-      isLoading.value = true;
-      // Implement your update logic here
-      await Future.delayed(Duration(seconds: 2)); // Simulate API call
-
-      Get.snackbar(
-        'Success',
-        'update_success'.tr,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-      
-      Get.back();
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    } finally {
-      isLoading.value = false;
-    }
   }
 
   @override
   void onClose() {
     firstNameController.dispose();
     lastNameController.dispose();
-    emailController.dispose();
-    addressController.dispose();
     phoneController.dispose();
     ageController.dispose();
     super.onClose();
   }
-  void onChangeProfilePicture() {
-    // Implement image picker logic
-    Get.dialog(
-      // Image selection dialog
-      AlertDialog(
-        title: const Text('تغيير الصورة الشخصية'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: const Text('التقاط صورة'),
-              onTap: () {
-                // Handle camera selection
-                Get.back();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.photo_library),
-              title: const Text('اختيار من المعرض'),
-              onTap: () {
-                // Handle gallery selection
-                Get.back();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+
+  Future<void> loadUserData() async {
+    try {
+      isLoading.value = true;
+      final user = _auth.currentUser;
+      if (user != null) {
+        final docSnapshot = await _firestore
+            .collection('patients')
+            .doc(user.uid)
+            .get();
+
+        if (docSnapshot.exists) {
+          currentUser.value = PatientModel.fromJson(docSnapshot.data()!);
+          _initializeControllers();
+        }
+      }
+    } catch (e) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Failed to load user data'.tr,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  void onSettingsTap() {
-    // Navigate to settings screen
-    Get.toNamed('/settings');
+  void _initializeControllers() {
+    final user = currentUser.value;
+    if (user != null) {
+      firstNameController.text = user.firstName;
+      lastNameController.text = user.lastName;
+      phoneController.text = user.phoneNo;
+      ageController.text = user.age;
+      selectedGender.value = user.gender;
+      selectedCountry.value = user.country;
+    }
   }
 
-  void onSupportTap() {
-    // Navigate to support screen
-    Get.toNamed('/support');
+  Future<void> updateProfile() async {
+    try {
+      if (!_validateInputs()) return;
+
+      isLoading.value = true;
+      final user = _auth.currentUser;
+      if (user == null) return;
+
+      final updatedData = {
+        'firstName': firstNameController.text.trim(),
+        'lastName': lastNameController.text.trim(),
+        'phoneNo': phoneController.text.trim(),
+        'age': ageController.text.trim(),
+        'gender': selectedGender.value,
+        'country': selectedCountry.value,
+      };
+
+      await _firestore
+          .collection('patients')
+          .doc(user.uid)
+          .update(updatedData);
+
+      await loadUserData();
+
+      CustomSnackBar.showCustomSnackBar(
+        title: 'Success'.tr,
+        message: 'Profile updated successfully'.tr,
+      );
+
+      Get.back();
+    } catch (e) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Failed to update profile'.tr,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  bool _validateInputs() {
+    if (firstNameController.text.trim().isEmpty ||
+        lastNameController.text.trim().isEmpty ||
+        phoneController.text.trim().isEmpty ||
+        ageController.text.trim().isEmpty ||
+        selectedGender.value.isEmpty ||
+        selectedCountry.value.isEmpty) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Please fill all fields'.tr,
+      );
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+      Get.offAllNamed(Routes.AUTH);
+    } catch (e) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Failed to sign out'.tr,
+      );
+    }
   }
 
   void onLanguageTap() {
     Get.bottomSheet(
       Container(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20.r),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              title: const Text('العربية'),
-              onTap: () {
-                // Change to Arabic
-                Get.back();
-              },
+            Row(
+              children: [
+                Icon(Icons.language, color: AppColors.primary),
+                12.width,
+                CustomText(
+                  'select_language'.tr,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ],
             ),
-            ListTile(
-              title: const Text('English'),
-              onTap: () {
-                // Change to English
-                Get.back();
-              },
+            24.height,
+            _buildLanguageOption('ar', 'العربية'),
+            12.height,
+            _buildLanguageOption('en', 'English'),
+            24.height,
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  Widget _buildLanguageOption(String code, String name) {
+    final isSelected = Get.locale?.languageCode == code;
+    return InkWell(
+      onTap: () {
+        Get.updateLocale(Locale(code));
+        Get.back();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : Colors.grey[300]!,
+          ),
+        ),
+        child: Row(
+          children: [
+            CustomText(
+              name,
+              fontSize: 16.sp,
+              color: isSelected ? AppColors.primary : Colors.black,
             ),
+            const Spacer(),
+            if (isSelected)
+              Icon(Icons.check_circle, color: AppColors.primary),
           ],
         ),
       ),
@@ -184,27 +212,22 @@ class ProfileController extends GetxController {
   void onLogoutTap() {
     Get.dialog(
       AlertDialog(
-        title: const Text('تسجيل الخروج'),
-        content: const Text('هل أنت متأكد من تسجيل الخروج؟'),
+        title: Text('logout_confirmation'.tr),
+        content: Text('logout_message'.tr),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text('إلغاء'),
+            child: Text('cancel'.tr),
           ),
           TextButton(
-            onPressed: () {
-              // Implement logout logic
-              Get.offAllNamed('/login');
-            },
-            child: const Text('تأكيد'),
+            onPressed: signOut,
+            child: Text(
+              'confirm'.tr,
+              style: TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),
     );
-  }
-
-  void onEditProfileTap() {
-    // Navigate to edit profile screen
-    Get.toNamed('/edit-profile');
   }
 }

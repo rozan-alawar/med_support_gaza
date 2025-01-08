@@ -18,24 +18,20 @@ class PatientMainView extends GetView<HomeController> {
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: Obx(() => RefreshIndicator(
             onRefresh: () async {
-              await controller.loadAppointments();
+              await controller.refreshData();
             },
             child: ListView(
               children: [
                 Obx(() =>  CustomText(
                   'Hello, ${controller.userName.value}'.tr,
-                  fontSize: 16.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
           ),
                 ),
                 20.height,
                 _buildAppointmentsCard(context),
                 SizedBox(height: 20.h),
-                CustomText(
-                  'MedicalRecords'.tr,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+
               ],
             ),
           )),

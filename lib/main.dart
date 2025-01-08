@@ -39,31 +39,34 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Med Support Gaza',
-          theme: AppTheme.appTheme,
-          fallbackLocale: const Locale('en', 'US'),
-          locale: TranslationController.initalLang,
-          translations: Translation(),
-          initialRoute: AppPages.INITIAL,
-          getPages: AppPages.routes,
-          defaultTransition: Transition.fadeIn,
-          onUnknownRoute: (settings) {
-            return MaterialPageRoute(
-              builder: (context) => ErrorView(
-                message: 'Route ${settings.name} not found',
-              ),
-            );
-          },
-          builder: (context, child) {
-            return ScrollConfiguration(
-              behavior: const ScrollBehavior().copyWith(
-                physics: const BouncingScrollPhysics(),
-              ),
-              child: child!,
-            );
-          },
+        return SafeArea(
+          child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Med Support Gaza',
+            theme: AppTheme.appTheme,
+            fallbackLocale: const Locale('en', 'US'),
+            locale: TranslationController.initalLang,
+            translations: Translation(),
+            // initialRoute:Routes.HOME,
+            initialRoute: AppPages.INITIAL,
+            getPages: AppPages.routes,
+            defaultTransition: Transition.fadeIn,
+            onUnknownRoute: (settings) {
+              return MaterialPageRoute(
+                builder: (context) => ErrorView(
+                  message: 'Route ${settings.name} not found',
+                ),
+              );
+            },
+            builder: (context, child) {
+              return ScrollConfiguration(
+                behavior: const ScrollBehavior().copyWith(
+                  physics: const BouncingScrollPhysics(),
+                ),
+                child: child!,
+              );
+            },
+          ),
         );
       },
     );

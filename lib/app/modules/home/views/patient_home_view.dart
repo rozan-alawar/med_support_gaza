@@ -25,7 +25,7 @@ class PatientHomeView extends GetView<HomeController> {
         children: [
           PatientMainView(),
 
-          PatientProfileView(),
+        //  PatientProfileView(),
           ConsultationView(),
 
           PatientProfileView(),
@@ -50,16 +50,16 @@ class PatientHomeView extends GetView<HomeController> {
               ),
               label: 'Home'.tr,
             ),
-            BottomNavigationBarItem(
-              activeIcon: SvgPicture.asset(
-                IconAssets.doctors,
-                color: AppColors.accent,
-              ),
-              icon: SvgPicture.asset(
-                IconAssets.doctors,
-              ),
-              label: 'Doctors'.tr,
-            ),
+            // BottomNavigationBarItem(
+            //   activeIcon: SvgPicture.asset(
+            //     IconAssets.doctors,
+            //     color: AppColors.accent,
+            //   ),
+            //   icon: SvgPicture.asset(
+            //     IconAssets.doctors,
+            //   ),
+            //   label: 'Doctors'.tr,
+            // ),
             BottomNavigationBarItem(
               activeIcon: SvgPicture.asset(
                 IconAssets.chatFill,

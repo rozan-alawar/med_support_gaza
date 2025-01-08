@@ -39,29 +39,6 @@ class HomeController extends GetxController {
     update();
   }
 
-  // User data management
-  Future<void> loadUserData() async {
-    try {
-      final user = _auth.currentUser;
-      if (user == null) {
-        Get.offAllNamed('/auth'); // Redirect to auth if no user
-        return;
-      }
-
-      // Get user data from Firestore
-      final docSnapshot = await _firestore.collection('patients').doc(user.uid).get();
-      if (docSnapshot.exists) {
-        currentUser.value = PatientModel.fromJson(docSnapshot.data()!);
-        userName.value = "${currentUser.value?.firstName ?? ''} ${currentUser.value?.lastName ?? ''}";
-      }
-    } catch (e) {
-      print('Error loading user data: $e');
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Failed to load user data'.tr,
-      );
-    }
-  }
 
   // Appointments management
   void setupAppointmentsListener() {
@@ -95,23 +72,71 @@ class HomeController extends GetxController {
       },
     );
   }
+// User Data Management
+  Future<void> loadUserData() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        Get.offAllNamed(Routes.AUTH);
+        return;
+      }
 
+      final docSnapshot = await _firestore
+          .collection('patients')
+          .doc(user.uid)
+          .get();
+
+      if (docSnapshot.exists) {
+        currentUser.value = PatientModel.fromJson(docSnapshot.data()!);
+        userName.value = "${currentUser.value?.firstName ?? ''} ${currentUser.value?.lastName ?? ''}";
+      } else {
+        CustomSnackBar.showCustomErrorSnackBar(
+          title: 'Error'.tr,
+          message: 'User data not found'.tr,
+        );
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Failed to load user data'.tr,
+      );
+    }
+  }
+
+  // Appointments Management
   Future<void> loadAppointments() async {
     try {
       isLoading.value = true;
       final user = _auth.currentUser;
       if (user == null) return;
 
-      final snapshot = await _firestore
+      // Query without complex ordering
+      final QuerySnapshot snapshot = await _firestore
           .collection('appointments')
           .where('userId', isEqualTo: user.uid)
           .where('status', isEqualTo: 'upcoming')
-          .orderBy('date', descending: false)
           .get();
 
-      appointments.value = snapshot.docs
-          .map((doc) => AppointmentModel.fromJson(doc.data()))
+      // Convert and sort appointments locally
+      final List<AppointmentModel> loadedAppointments = snapshot.docs
+          .map((doc) => AppointmentModel.fromJson({
+        ...doc.data() as Map<String, dynamic>,
+        'id': doc.id,
+      }))
           .toList();
+
+      // Sort by date and time
+      loadedAppointments.sort((a, b) {
+        // First compare by date
+        int dateComparison = a.date.compareTo(b.date);
+        if (dateComparison != 0) return dateComparison;
+
+        // If dates are equal, compare by time
+        return a.time.compareTo(b.time);
+      });
+
+      appointments.value = loadedAppointments;
     } catch (e) {
       print('Error loading appointments: $e');
       CustomSnackBar.showCustomErrorSnackBar(
@@ -123,6 +148,23 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> refreshData() async {
+    try {
+      isLoading.value = true;
+      await Future.wait([
+        loadUserData(),
+        loadAppointments(),
+      ]);
+    } catch (e) {
+      print('Error refreshing data: $e');
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Failed to refresh data'.tr,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
   Future<void> cancelAppointment(String appointmentId) async {
     try {
       isLoading.value = true;
