@@ -107,6 +107,8 @@ class Translation extends Translations {
           'arabic': 'العربية',
           'english': 'English',
           'select_language': 'اختر اللغة',
+          // doctor translations
+          'time_management': ' ادارة المواعيد',
           'No Upcoming Appointments': 'لا توجد مواعيد قادمة',
           'Schedule an appointment to get started': 'قم بجدولة موعد للبدء',
           'The email address is badly formatted':
@@ -128,22 +130,7 @@ class Translation extends Translations {
           'Invalid verification ID': 'معرف التحقق غير صالح',
           'An error occurred. Please try again':
               'حدث خطأ. يرجى المحاولة مرة أخرى',
-          'Unknown error occurred': 'حدث خطأ غير معروف','Appointment Summary': 'ملخص الموعد',
-          'Please verify your appointment details': 'يرجى التحقق من تفاصيل موعدك',
-          'You can manage your appointments from the home screen': 'يمكنك إدارة مواعيدك من الشاشة الرئيسية',
-          'Date & Time': 'التاريخ والوقت',
-          'Not selected': 'لم يتم التحديد',
-          'NoDoctorsAvailable': 'لا يوجد أطباء متاحين لهذا التخصص.',
-          'Failed to load user data': 'فشل في تحميل بيانات المستخدم',
-          'Failed to sign out': 'فشل في تسجيل الخروج',
-          'Appointment Type': 'نوع الموعد',
-          'New Appointment': 'موعد جديد',
-          'Follow Up': 'متابعة',
-          'No previous appointments found': 'لم يتم العثور على مواعيد سابقة',
-          'Time slot is already booked': 'الموعد محجوز بالفعل',
-          'Time slot was just booked. Please choose another time.': 'تم حجز الموعد للتو. يرجى اختيار وقت آخر',
-          'Please select previous appointment': 'يرجى اختيار الموعد السابق',
-
+          'Unknown error occurred': 'حدث خطأ غير معروف'
         },
         'en': {
           'Hello': 'Hello',
@@ -237,22 +224,7 @@ class Translation extends Translations {
           'Invalid verification ID': 'Invalid verification ID',
           'An error occurred. Please try again':
               'An error occurred. Please try again',
-          'Unknown error occurred': 'Unknown error occurred',
-          'Appointment Summary': 'Appointment Summary',
-          'Please verify your appointment details': 'Please verify your appointment details',
-          'You can manage your appointments from the home screen': 'You can manage your appointments from the home screen',
-          'Date & Time': 'Date & Time',
-          'Not selected': 'Not selected',
-          'NoDoctorsAvailable': 'No doctors available for this specialization.',
-          'Failed to load user data': 'Failed to load user data',
-          'Failed to sign out': 'Failed to sign out',
-          'Appointment Type': 'Appointment Type',
-          'New Appointment': 'New Appointment',
-          'Follow Up': 'Follow Up',
-          'No previous appointments found': 'No previous appointments found',
-          'Time slot is already booked': 'Time slot is already booked',
-          'Time slot was just booked. Please choose another time.': 'Time slot was just booked. Please choose another time.',
-          'Please select previous appointment': 'Please select previous appointment',
+          'Unknown error occurred': 'Unknown error occurred'
         },
       };
 }

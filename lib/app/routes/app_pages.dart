@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
+import '../modules/appointment_booking/bindings/doctor_appointment_management_binding.dart';
 import '../modules/appointment_booking/views/appointment_booking_view.dart';
+import '../modules/appointment_booking/views/doctor_appointment_management_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/bindings/doctor_auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
@@ -15,7 +17,9 @@ import '../modules/auth/views/patient_new_password_view.dart';
 import '../modules/auth/views/verfication_view.dart';
 import '../modules/consultation/bindings/consultation_binding.dart';
 import '../modules/consultation/views/consultation_view.dart';
+import '../modules/home/bindings/doctor_home_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/doctor_home_view.dart';
 import '../modules/home/views/patient_home_view.dart';
 import '../modules/onboarding/views/doctor_onboarding_view.dart';
 import '../modules/onboarding/views/patient_onboarding_view.dart';
@@ -111,8 +115,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CONSULTATION,
-      page: () =>  ConsultationView(),
+      page: () => ConsultationView(),
       binding: ConsultationBinding(),
+    ),
+    GetPage(
+      name: _Paths.DOCTOR_APPOINTMENT_MANAGEMENT,
+      page: () => DoctorAppointmentManagementView(),
+      binding: DoctorAppointmentManagementBinding(),
+    ),
+    GetPage(
+      name: _Paths.DOCTOR_HOME,
+      page: () => DocotrHomeView(),
+      binding: DoctorHomeBinding(),
     ),
   ];
 }

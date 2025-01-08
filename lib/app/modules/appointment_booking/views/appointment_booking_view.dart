@@ -11,6 +11,7 @@ import 'package:med_support_gaza/app/modules/appointment_booking/views/specializ
 
 class AppointmentBookingView extends GetView<AppointmentBookingController> {
   const AppointmentBookingView({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
