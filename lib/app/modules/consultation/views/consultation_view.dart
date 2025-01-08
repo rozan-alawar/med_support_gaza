@@ -25,15 +25,12 @@ class ConsultationView extends GetView<ConsultationController> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: AppColors.primary,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-        onPressed: () => Get.back(),
-      ),
+
       title: Row(
         children: [
           CircleAvatar(
             radius: 20.r,
-            // backgroundImage: NetworkImage(controller.doctor.profileImage!),
+            // backgroundImage: NetworkImage(controller.doctor.!),
           ),
           SizedBox(width: 12.w),
           Column(

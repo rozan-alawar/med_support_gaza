@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/data/models/message_model.dart';
 
 class ConsultationController extends GetxController {
@@ -12,7 +11,6 @@ class ConsultationController extends GetxController {
   final currentUserId = FirebaseAuth.instance.currentUser?.uid??1;
   final messageController = TextEditingController();
 
-  // final doctor = Get.arguments as DoctorModel;
   final RxList<MessageModel> messages = <MessageModel>[].obs;
 
   late StreamSubscription<QuerySnapshot> _messagesSubscription;
@@ -38,7 +36,6 @@ class ConsultationController extends GetxController {
   }
 
   String _getChatId() {
-    // Create a unique chat ID based on both users' IDs
     final List<String> ids = ["currentUserId"," doctor.id"]..sort();
     return ids.join('_');
   }
@@ -75,7 +72,6 @@ class ConsultationController extends GetxController {
   }
 
   void startVoiceRecord() {
-    // Implement voice recording functionality
   }
 
   @override

@@ -130,7 +130,14 @@ class Translation extends Translations {
           'Invalid verification ID': 'معرف التحقق غير صالح',
           'An error occurred. Please try again':
               'حدث خطأ. يرجى المحاولة مرة أخرى',
-          'Unknown error occurred': 'حدث خطأ غير معروف'
+          'Unknown error occurred': 'حدث خطأ غير معروف',
+          'Appointment Type': 'نوع الموعد',
+          'New Appointment': 'موعد جديد',
+          'Follow Up': 'متابعة',
+          'Select Previous Appointment': 'اختر الموعد السابق',
+          'No previous appointments found': 'لا توجد مواعيد سابقة',
+          'Selected time slot is no longer available': 'الموعد المحدد لم يعد متاحاً',
+          'Please select the previous appointment': 'الرجاء اختيار الموعد السابق',
         },
         'en': {
           'Hello': 'Hello',
@@ -224,7 +231,14 @@ class Translation extends Translations {
           'Invalid verification ID': 'Invalid verification ID',
           'An error occurred. Please try again':
               'An error occurred. Please try again',
-          'Unknown error occurred': 'Unknown error occurred'
+          'Unknown error occurred': 'Unknown error occurred',
+          'Appointment Type': 'Appointment Type',
+          'New Appointment': 'New Appointment',
+          'Follow Up': 'Follow Up',
+          'Select Previous Appointment': 'Select Previous Appointment',
+          'No previous appointments found': 'No previous appointments found',
+          'Selected time slot is no longer available': 'Selected time slot is no longer available',
+          'Please select the previous appointment': 'Please select the previous appointment',
         },
       };
 }
