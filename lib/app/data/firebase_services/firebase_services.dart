@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 
@@ -79,16 +80,31 @@ class FirebaseService extends GetxService {
       throw e.toString();
     }
   }
-}
 
-// 3. Enhanced Auth Controller (lib/app/controllers/auth_controller.dart)
+  // Add appointment to Firestore
+  Future<void> saveAppointment(AppointmentModel appointment) async {
+    try {
+      await _firestore
+          .collection('appointments')
+          .doc(appointment.id)
+          .set(appointment.toJson());
+    } catch (e) {
+      throw Exception('Failed to save appointment: $e');
+    }
+  }
 
+  // Get all appointments for current user
+  Stream<List<AppointmentModel>> getUserAppointments() {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) return Stream.value([]);
 
-// 4. Auth Binding (lib/app/bindings/auth_binding.dart)
-class AuthBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut<FirebaseService>(() => FirebaseService());
-    Get.lazyPut<AuthController>(() => AuthController());
+    return _firestore
+        .collection('appointments')
+        .where('userId', isEqualTo: userId)
+        .orderBy('date')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+        .map((doc) => AppointmentModel.fromJson(doc.data()))
+        .toList());
   }
 }

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "490674785767",
-    "project_id": "med-support-gaza",
-    "storage_bucket": "med-support-gaza.firebasestorage.app"
+    "project_number": "500258875545",
+    "project_id": "med-support-gaza-a0419",
+    "storage_bucket": "med-support-gaza-a0419.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:490674785767:android:9834278556b5710f1f8142",
+        "mobilesdk_app_id": "1:500258875545:android:8c292725d83eff3e6cf008",
         "android_client_info": {
           "package_name": "com.example.med_support_gaza"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAch9RlKyQhGfvdbIAa2iW-NIG8yzaEJAo"
+          "current_key": "AIzaSyD5SGu4tGEtGfjvogEVVOmigOcZkt59PSM"
         }
       ],
       "services": {
