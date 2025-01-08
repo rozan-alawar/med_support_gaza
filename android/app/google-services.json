@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "7092414875",
-    "project_id": "idyllic-theater-445419-c9",
-    "storage_bucket": "idyllic-theater-445419-c9.firebasestorage.app"
+    "project_number": "490674785767",
+    "project_id": "med-support-gaza",
+    "storage_bucket": "med-support-gaza.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:7092414875:android:b0b13c72043cfae07c593e",
+        "mobilesdk_app_id": "1:490674785767:android:9834278556b5710f1f8142",
         "android_client_info": {
           "package_name": "com.example.med_support_gaza"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBvEW31XXc05vj5gLLcuaIyllJ9inbvs3g"
+          "current_key": "AIzaSyAch9RlKyQhGfvdbIAa2iW-NIG8yzaEJAo"
         }
       ],
       "services": {

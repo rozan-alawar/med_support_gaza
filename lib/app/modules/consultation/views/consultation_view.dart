@@ -33,14 +33,15 @@ class ConsultationView extends GetView<ConsultationController> {
         children: [
           CircleAvatar(
             radius: 20.r,
-            backgroundImage: NetworkImage(controller.doctor.profileImage!),
+            // backgroundImage: NetworkImage(controller.doctor.profileImage!),
           ),
           SizedBox(width: 12.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                controller.doctor.fullName,
+                // controller.doctor.fullName??"",
+                "roza,",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.sp,
@@ -48,7 +49,7 @@ class ConsultationView extends GetView<ConsultationController> {
                 ),
               ),
               Text(
-                controller.doctor.isOnline ? 'Online' : 'Offline',
+               " controller.doctor.isOnline ? 'Online' : 'Offline'",
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 12.sp,
