@@ -10,7 +10,7 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import '../../../core/utils/countries.dart';
 import '../../../core/utils/medical_specialties.dart';
 import '../../../routes/app_pages.dart';
-import '../controllers/doctro_auth_controller.dart';
+import '../controllers/doctor_auth_controller.dart';
 
 class DoctorSignUpView extends GetView<DoctorAuthController> {
   final _formKey = GlobalKey<FormState>();

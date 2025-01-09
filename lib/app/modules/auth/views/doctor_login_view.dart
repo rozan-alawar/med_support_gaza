@@ -8,7 +8,7 @@ import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
-import '../controllers/doctro_auth_controller.dart';
+import '../controllers/doctor_auth_controller.dart';
 
 class DoctroLoginView extends GetView<DoctorAuthController> {
   final TextEditingController emailController = TextEditingController();

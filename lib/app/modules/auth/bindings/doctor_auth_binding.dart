@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../controllers/doctro_auth_controller.dart';
+import '../controllers/doctor_auth_controller.dart';
 
 class DoctorAuthBinding extends Bindings {
   @override

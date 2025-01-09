@@ -1,4 +1,3 @@
-// lib/app/data/models/doctor_model.dart
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -211,78 +210,5 @@ class WorkingHours {
       default:
         return '';
     }
-  }
-}
-
-// Example Firebase Service for Doctor
-class DoctorService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  // Get doctor by ID
-  Future<DoctorModel?> getDoctorById(String doctorId) async {
-    try {
-      final doc = await _firestore.collection('doctors').doc(doctorId).get();
-      if (doc.exists) {
-        return DoctorModel.fromJson(doc.data()!);
-      }
-      return null;
-    } catch (e) {
-      print('Error getting doctor: $e');
-      return null;
-    }
-  }
-
-  // Update doctor availability
-  Future<void> updateDoctorAvailability(String doctorId, bool isAvailable) async {
-    try {
-      await _firestore.collection('doctors').doc(doctorId).update({
-        'isAvailable': isAvailable,
-        'lastSeen': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      print('Error updating doctor availability: $e');
-    }
-  }
-
-  // Update doctor working hours
-  Future<void> updateWorkingHours(
-      String doctorId,
-      List<WorkingHours> workingHours
-      ) async {
-    try {
-      await _firestore.collection('doctors').doc(doctorId).update({
-        'workingHours': workingHours.map((wh) => wh.toJson()).toList(),
-      });
-    } catch (e) {
-      print('Error updating working hours: $e');
-    }
-  }
-
-  // Get all doctors by specialty
-  Stream<List<DoctorModel>> getDoctorsBySpecialty(String specialty) {
-    return _firestore
-        .collection('doctors')
-        .where('speciality', isEqualTo: specialty)
-        .where('isVerified', isEqualTo: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => DoctorModel.fromJson(doc.data()))
-          .toList();
-    });
-  }
-
-  // Get all available doctors
-  Stream<List<DoctorModel>> getAvailableDoctors() {
-    return _firestore
-        .collection('doctors')
-        .where('isAvailable', isEqualTo: true)
-        .where('isVerified', isEqualTo: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => DoctorModel.fromJson(doc.data()))
-          .toList();
-    });
   }
 }
