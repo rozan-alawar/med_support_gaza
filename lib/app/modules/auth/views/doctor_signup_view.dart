@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -138,7 +140,7 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                           size: 18.h,
                         ),
                         onPressed: () async {
-                          await controller.uploadFile(uploadFileController);
+                          await controller.pickFile(uploadFileController);
                         },
                       ),
                     ),
@@ -172,10 +174,25 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                 CustomButton(
                   text: 'SignUp'.tr,
                   color: AppColors.primary,
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      controller.signUp();
+                      File? documentFile;
+                      if (controller.selectedFilePath.value.isNotEmpty) {
+                        documentFile = File(controller.selectedFilePath.value);
+                      }
+                      await controller.signUp(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                        firstName: firstNameController.text.trim(),
+                        lastName: lastNameController.text.trim(),
+                        phone: phoneController.text.trim(),
+                        country: countryController.text.trim(),
+                        specialty: specialityController.text.trim(),
+                        documentFile: documentFile,
+                      );
+
                     }
+
                   },
                 ),
                 24.height,

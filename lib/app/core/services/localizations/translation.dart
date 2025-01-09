@@ -136,8 +136,41 @@ class Translation extends Translations {
           'Follow Up': 'متابعة',
           'Select Previous Appointment': 'اختر الموعد السابق',
           'No previous appointments found': 'لا توجد مواعيد سابقة',
-          'Selected time slot is no longer available': 'الموعد المحدد لم يعد متاحاً',
-          'Please select the previous appointment': 'الرجاء اختيار الموعد السابق',
+          'Selected time slot is no longer available':
+              'الموعد المحدد لم يعد متاحاً',
+          'Please select the previous appointment':
+              'الرجاء اختيار الموعد السابق',
+          // doctor appointment management translation
+          'morning_period': "الفترة الصباحية",
+          'evening_period': 'الفترة المسائية',
+          'date': 'اليوم',
+          'add': 'اضافة',
+          'evening_period_time': ' من 12:00 م الى 3:00 م',
+          'morning_period_time': 'من 8:00 ص الى 11:00 ص',
+          'appointments_title_massage': 'ما هي المواعيد المتاحة لديك؟',
+
+          // months
+          "January": "يناير",
+          "February": 'فبراير',
+          "March": 'مارس',
+          "April": 'ابريل',
+          "May": 'مايو',
+          "June": 'يونيو',
+          "July": 'يوليو',
+          "August": 'اغسطس',
+          "September": 'سبتمبر',
+          "October": 'اكتوبر',
+          "November": 'نوفمبر',
+          "December": 'ديسمبر',
+
+            // DAYS
+          "Sunday": 'الأحد',
+          "Monday": 'الاثنين',
+          "Tuesday": 'الثلاثاء',
+          "Wednesday": 'الأربعاء',
+          "Thursday": 'الخميس',
+          "Friday": 'الجمعة',
+          "Saturday": 'السبت'
         },
         'en': {
           'Hello': 'Hello',
@@ -237,8 +270,42 @@ class Translation extends Translations {
           'Follow Up': 'Follow Up',
           'Select Previous Appointment': 'Select Previous Appointment',
           'No previous appointments found': 'No previous appointments found',
-          'Selected time slot is no longer available': 'Selected time slot is no longer available',
-          'Please select the previous appointment': 'Please select the previous appointment',
+          'Selected time slot is no longer available':
+              'Selected time slot is no longer available',
+          'Please select the previous appointment':
+              'Please select the previous appointment',
+          // doctor appointment management translation
+          'morning_period': 'Morning Period',
+          'evening_period': 'Evening period',
+          'date': 'Date',
+          'add': 'Add',
+          'evening_period_time': ' frome 12:00 pm to 3:00 pm',
+          'morning_period_time': 'from 8:00 am  to 11:00 am',
+          'appointments_title_massage':
+              'What appointments do you have available?',
+
+          // months
+          "January": "Jan",
+          "February": 'Feb',
+          "March": 'Mar',
+          "April": 'Apr',
+          "May": 'May',
+          "June": 'Jun',
+          "July": 'Jul',
+          "August": 'Aug',
+          "September": 'Sep',
+          "October": 'Oct',
+          "November": 'Nov',
+          "December": 'Dec',
+
+          // DAYS
+          "Sunday": 'Sun',
+          "Monday": 'Mon',
+          "Tuesday": 'Tue',
+          "Wednesday": 'Wed',
+          "Thursday": 'Thu',
+          "Friday": 'Fri',
+          "Saturday": 'Sat'
         },
       };
 }
