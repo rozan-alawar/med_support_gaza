@@ -17,16 +17,7 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                IconAssets.bell,
-              ),
-            )
-          ],
-        ),
+
         body: Obx(
           () => Align(
             //  alignment: ,
@@ -47,7 +38,8 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
             currentIndex: controller.currentIndex.value,
             selectedItemColor: AppColors.accent,
             selectedLabelStyle:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+
             onTap: (value) => controller.changeBottomNavIndex(value),
             items: [
               BottomNavigationBarItem(
@@ -56,19 +48,19 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
                   color: AppColors.accent,
                 ),
                 icon: SvgPicture.asset(
-                  IconAssets.home1,
+                  IconAssets.home,
                 ),
-                label: 'home'.tr,
+                label: 'Home'.tr,
               ),
               BottomNavigationBarItem(
                 activeIcon: SvgPicture.asset(
-                  IconAssets.chat,
+                  IconAssets.chatFill,
                   color: AppColors.accent,
                 ),
                 icon: SvgPicture.asset(
                   IconAssets.chat,
                 ),
-                label: 'chats'.tr,
+                label: 'Chat'.tr,
               ),
               BottomNavigationBarItem(
                 activeIcon: SvgPicture.asset(
@@ -87,7 +79,7 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
                 icon: SvgPicture.asset(
                   IconAssets.person,
                 ),
-                label: 'profile'.tr,
+                label: 'Profile'.tr,
               ),
             ],
           ),

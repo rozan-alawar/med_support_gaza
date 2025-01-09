@@ -200,6 +200,7 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                     ],
                   ),
                 ),
+                40.height,
               ],
             ),
           ),

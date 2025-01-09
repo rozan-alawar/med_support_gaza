@@ -30,7 +30,7 @@ class InsightContainer extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 16.h,
+          // spacing: 16.h,
           children: [
             CustomText(
               mainText,

@@ -85,6 +85,7 @@ class DoctroLoginView extends GetView<DoctorAuthController> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       print('doctor is logged in ');
+                      Get.offNamed(Routes.DOCTOR_HOME);
                     }
                   },
                 ),

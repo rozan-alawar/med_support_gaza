@@ -36,7 +36,7 @@ class AdminHome extends StatelessWidget {
           vertical: 20.h,
         ),
         child: Column(
-          spacing: 16.h,
+          // spacing: 16.h,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CustomText('Show Insights', fontSize: 20),
