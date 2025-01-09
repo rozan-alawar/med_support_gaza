@@ -7,8 +7,10 @@ import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/data/models/specialization_model.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
+
 
 class AppointmentBookingController extends GetxController {
   final FirebaseService _firebaseService = Get.find<FirebaseService>();
@@ -20,6 +22,8 @@ class AppointmentBookingController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxString selectedDoctorId = ''.obs;
   final RxString selectedDoctorName = ''.obs;
+  final RxList<SpecializationModel> specializations = <SpecializationModel>[].obs;
+  final RxString error = ''.obs;
 
   final RxList<DoctorModel> availableDoctors = <DoctorModel>[].obs;
 
@@ -30,6 +34,41 @@ class AppointmentBookingController extends GetxController {
   void selectDoctor(DoctorModel doctor) {
     selectedDoctorId.value = doctor.id;
     selectedDoctorName.value = "${doctor.firstName} ${doctor.lastName}";
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    _loadSpecializations();
+  }
+
+
+  void _loadSpecializations() {
+    try {
+      // Listen to specializations stream
+      _firebaseService.getActiveSpecializations().listen(
+            (specs) {
+          specializations.value = specs;
+          isLoading.value = false;
+        },
+        onError: (err) {
+          error.value = 'Error loading specializations: $err';
+          isLoading.value = false;
+        },
+      );
+    } catch (e) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: e.toString(),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void selectSpecialization(String specialization) {
+    selectedSpecialization.value = specialization;
+    selectedDoctor.value = '';
   }
 
 
@@ -120,10 +159,6 @@ class AppointmentBookingController extends GetxController {
         .toList();
   }
 
-  void selectSpecialization(String specialization) {
-    selectedSpecialization.value = specialization;
-    selectedDoctor.value = '';  // Reset doctor selection
-  }
 
   Future<void> fetchDoctorsBySpecialty(String specialty) async {
     try {

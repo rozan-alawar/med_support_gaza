@@ -5,4 +5,5 @@ class FirebaseCollections {
   static const String appointments = 'appointments';
   static const String chats = 'chats';
   static const String messages = 'messages';
+  static const String specializations = 'specializations';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
@@ -115,25 +116,85 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
   }
 
   Widget _buildSpecializationStep() {
-    final specializations = controller.getSpecializations();
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16.w,
         mainAxisSpacing: 16.h,
-        childAspectRatio: 1.6,
+        childAspectRatio: 1.4,
       ),
-      itemCount: specializations.length,
+      itemCount: controller.specializations.length,
       itemBuilder: (context, index) {
-        final specialization = specializations[index];
-        return SpecializationWidget(
-          onTap: () => controller.selectSpecialization(specialization['title']),
-          title: specialization['title'],
-          availableDoctors: specialization['availableDoctors'],
+        final specialization = controller.specializations[index];
+        final isSelected = controller.selectedSpecialization.value == specialization.name;
+
+        return GestureDetector(
+          onTap: () => controller.selectSpecialization(specialization.name),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(
+                color: isSelected ? AppColors.primary : Colors.grey.shade200,
+                width: 2.w,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  specialization.icon,
+                  width: 32.w,
+                  height: 32.w,
+                  color: isSelected ? AppColors.primary : Colors.grey.shade600,
+                ),
+                12.height,
+                CustomText(
+                  specialization.name,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? AppColors.primary : Colors.black,
+                ),
+                4.height,
+                CustomText(
+                  '${specialization.availableDoctors} doctors'.tr,
+                  fontSize: 12.sp,
+                  color: Colors.grey.shade600,
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
   }
+  // Widget _buildSpecializationStep() {
+  //   final specializations = controller.getSpecializations();
+  //   return GridView.builder(
+  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //       crossAxisCount: 2,
+  //       crossAxisSpacing: 16.w,
+  //       mainAxisSpacing: 16.h,
+  //       childAspectRatio: 1.6,
+  //     ),
+  //     itemCount: specializations.length,
+  //     itemBuilder: (context, index) {
+  //       final specialization = specializations[index];
+  //       return SpecializationWidget(
+  //         onTap: () => controller.selectSpecialization(specialization['title']),
+  //         title: specialization['title'],
+  //         availableDoctors: specialization['availableDoctors'],
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _buildDoctorSelectionStep() {
     final doctors = controller.getDoctors();

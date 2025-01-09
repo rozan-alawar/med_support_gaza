@@ -119,25 +119,25 @@ class PatientMainView extends GetView<HomeController> {
   }
 
   Widget _buildAppointmentsList() {
-    if (controller.isLoading.value && controller.appointments.isEmpty) {
-      return Center(
+    if (controller.isLoading.value && controller.upcomingAppointments.isEmpty) {
+      return const Center(
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
         ),
       );
     }
 
-    if (controller.appointments.isEmpty) {
+    if (controller.upcomingAppointments.isEmpty) {
       return _buildEmptyState();
     }
 
     return   ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: controller.appointments.length,
+      itemCount: controller.upcomingAppointments.length,
       separatorBuilder: (context, index) => 10.height,
       itemBuilder: (context, index) {
-        final appointment = controller.appointments[index];
+        final appointment = controller.upcomingAppointments[index];
         return AppoinmentInfoWidget(
           time: 'appointment.time',
           day: 'appointment.date.toString().formatAppointmentDay(appointment.date)',

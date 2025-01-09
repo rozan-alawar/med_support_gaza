@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/data/api_services/auth_api.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
-import 'package:med_support_gaza/app/modules/appointment_booking/controllers/appointment_service.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,59 +19,97 @@ class HomeController extends GetxController {
   final RxString userName = ''.obs;
   final Rx<PatientModel?> currentUser = Rx<PatientModel?>(null);
 
-  // Appointments state
-  final RxList<AppointmentModel> appointments = <AppointmentModel>[].obs;
-  final RxBool isLoading = false.obs;
+  final FirebaseService _appointmentService = Get.find<FirebaseService>();
+  final FirebaseService _authService = Get.find<FirebaseService>();
 
-  // Firebase instances
+  final RxList<AppointmentModel> upcomingAppointments = <AppointmentModel>[].obs;
+  final RxBool isLoading = true.obs;
+  final RxString error = ''.obs;
+
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+
+  void changeBottomNavIndex(int index) {
+    currentIndex.value = index;
+  }
+
 
   @override
   void onInit() {
     super.onInit();
+    _loadAppointments();
     loadUserData();
-    setupAppointmentsListener();
   }
 
-  void changeBottomNavIndex(int index) {
-    currentIndex.value = index;
-    update();
+  void _loadAppointments() {
+    try {
+      final userId = _authService.currentUser?.uid;
+      if (userId == null) {
+        error.value = 'No user logged in';
+        return;
+      }
+
+      // Listen to upcoming appointments stream
+      _appointmentService.getUpcomingAppointments(userId).listen(
+            (appointments) {
+          upcomingAppointments.value = appointments;
+          isLoading.value = false;
+        },
+        onError: (err) {
+          error.value = 'Error loading appointments: $err';
+          isLoading.value = false;
+        },
+      );
+      upcomingAppointments.sort((a, b) {
+        // First compare by date
+        int dateComparison = a.date.compareTo(b.date);
+        if (dateComparison != 0) return dateComparison;
+
+        // If dates are equal, compare by time
+        return a.time.compareTo(b.time);
+      });
+    } catch (e) {
+      print('Error loading appointments: $e');
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Failed to load appointments'.tr,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
+  String getFormattedDate(DateTime date) {
+    final now = DateTime.now();
+    final tomorrow = DateTime.now().add(Duration(days: 1));
 
-  // Appointments management
-  void setupAppointmentsListener() {
-    final user = _auth.currentUser;
-    if (user == null) return;
-
-    _firestore
-        .collection('appointments')
-        .where('userId', isEqualTo: user.uid)
-        .where('status', isEqualTo: 'upcoming')
-        .orderBy('date', descending: false)
-        .snapshots()
-        .listen(
-          (snapshot) {
-        final List<AppointmentModel> newAppointments = [];
-        for (var doc in snapshot.docs) {
-          try {
-            newAppointments.add(AppointmentModel.fromJson(doc.data()));
-          } catch (e) {
-            print('Error parsing appointment: $e');
-          }
-        }
-        appointments.value = newAppointments;
-      },
-      onError: (error) {
-        print('Error listening to appointments: $error');
-        CustomSnackBar.showCustomErrorSnackBar(
-          title: 'Error'.tr,
-          message: 'Failed to load appointments'.tr,
-        );
-      },
-    );
+    if (date.year == now.year && date.month == now.month && date.day == now.day) {
+      return 'Today';
+    } else if (date.year == tomorrow.year &&
+        date.month == tomorrow.month &&
+        date.day == tomorrow.day) {
+      return 'Tomorrow';
+    } else {
+      return '${date.day}/${date.month}/${date.year}';
+    }
   }
+
+  String getFormattedTime(DateTime date) {
+    final hour = date.hour.toString().padLeft(2, '0');
+    final minute = date.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
+  Future<void> cancelAppointment(String appointmentId) async {
+    try {
+      await _appointmentService.updateAppointmentStatus(appointmentId, 'cancelled');
+    } catch (e) {
+      error.value = 'Error cancelling appointment: $e';
+    }
+  }
+
 // User Data Management
   Future<void> loadUserData() async {
     try {
@@ -104,57 +142,13 @@ class HomeController extends GetxController {
     }
   }
 
-  // Appointments Management
-  Future<void> loadAppointments() async {
-    try {
-      isLoading.value = true;
-      final user = _auth.currentUser;
-      if (user == null) return;
-
-      // Query without complex ordering
-      final QuerySnapshot snapshot = await _firestore
-          .collection('appointments')
-          .where('userId', isEqualTo: user.uid)
-          .where('status', isEqualTo: 'upcoming')
-          .get();
-
-      // Convert and sort appointments locally
-      final List<AppointmentModel> loadedAppointments = snapshot.docs
-          .map((doc) => AppointmentModel.fromJson({
-        ...doc.data() as Map<String, dynamic>,
-        'id': doc.id,
-      }))
-          .toList();
-
-      // Sort by date and time
-      loadedAppointments.sort((a, b) {
-        // First compare by date
-        int dateComparison = a.date.compareTo(b.date);
-        if (dateComparison != 0) return dateComparison;
-
-        // If dates are equal, compare by time
-        return a.time.compareTo(b.time);
-      });
-
-      appointments.value = loadedAppointments;
-    } catch (e) {
-      print('Error loading appointments: $e');
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Failed to load appointments'.tr,
-      );
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
   Future<void> refreshData() async {
     try {
       isLoading.value = true;
       await Future.wait([
         loadUserData(),
-        loadAppointments(),
       ]);
+      _loadAppointments();
     } catch (e) {
       print('Error refreshing data: $e');
       CustomSnackBar.showCustomErrorSnackBar(
@@ -165,31 +159,7 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
-  Future<void> cancelAppointment(String appointmentId) async {
-    try {
-      isLoading.value = true;
 
-      await _firestore
-          .collection('appointments')
-          .doc(appointmentId)
-          .update({'status': 'cancelled'});
-
-      CustomSnackBar.showCustomSnackBar(
-        title: 'Success'.tr,
-        message: 'Appointment cancelled successfully'.tr,
-      );
-
-      // Refresh appointments
-      await loadAppointments();
-    } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Failed to cancel appointment'.tr,
-      );
-    } finally {
-      isLoading.value = false;
-    }
-  }
 
   // Profile management
   Future<void> updateProfile(Map<String, dynamic> data) async {

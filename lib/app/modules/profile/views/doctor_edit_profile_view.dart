@@ -30,6 +30,8 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+backgroundColor: AppColors.transparent,
+
         title: CustomText(
           'Edit Profile'.tr,
           fontSize: 18.sp,
@@ -39,24 +41,27 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
       ),
       body: Obx(() => controller.isLoading.value
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        child: Column(
-          children: [
-            _buildProfileImage(),
-            24.height,
-            _buildForm(),
-            24.height,
-            _buildProfessionalInfo(),
-            24.height,
-            CustomButton(
-              text: 'Save'.tr,
-              color: AppColors.primary,
-              onPressed: () => controller.updateProfile(),
-            ),
-          ],
-        ),
-      )),
+          : Form( // Add Form widget here
+    key: controller.formKey,
+            child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                    child: Column(
+            children: [
+              _buildProfileImage(),
+              24.height,
+              _buildForm(),
+              24.height,
+              _buildProfessionalInfo(),
+              24.height,
+              CustomButton(
+                text: 'Save'.tr,
+                color: AppColors.primary,
+                onPressed: () => controller.updateProfile(),
+              ),
+            ],
+                    ),
+                  ),
+          )),
     );
   }
 

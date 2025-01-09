@@ -83,7 +83,7 @@ class UserRoleSelectionView extends StatelessWidget {
               30.height,
               CustomButton(
                 borderColor: AppColors.primary,
-                onPressed: () => Get.toNamed(Routes.ADMIN_HOME),
+                onPressed: () => Get.toNamed(Routes.ADMIN_AUTH),
                 text: 'Admin'.tr,
                 width: 150,
                 height: 50,

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_collections.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/data/models/specialization_model.dart';
 import 'package:med_support_gaza/app/modules/profile/controllers/doctor_profile_controller.dart';
 import '../models/patient_model.dart';
 
@@ -151,6 +152,52 @@ class FirebaseService extends GetxService {
     }
   }
 
+  // Get appointments for logged in user
+  Stream<List<AppointmentModel>> getUserAppointments(String userId) {
+    return _firestore
+        .collection('appointments')
+        .where('patientId', isEqualTo: userId)
+        .orderBy('appointmentDate')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => AppointmentModel.fromJson(doc.data()))
+          .toList();
+    });
+  }
+
+  // Get upcoming appointments
+  Stream<List<AppointmentModel>> getUpcomingAppointments(String userId) {
+    final now = DateTime.now();
+    return _firestore
+        .collection('appointments')
+        .where('patientId', isEqualTo: userId)
+        .where('appointmentDate', isGreaterThan: now)
+        .where('status', isEqualTo: 'upcoming')
+        .orderBy('appointmentDate')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => AppointmentModel.fromJson(doc.data()))
+          .toList();
+    });
+  }
+
+  // Create new appointment
+  Future<void> createAppointment(AppointmentModel appointment) {
+    return _firestore.collection('appointments').doc(appointment.id).set(
+      appointment.toJson(),
+    );
+  }
+
+  // Update appointment status
+  Future<void> updateAppointmentStatus(String appointmentId, String status) {
+    return _firestore.collection('appointments').doc(appointmentId).update({
+      'status': status,
+    });
+  }
+
+
   // Patient Methods
   Future<PatientModel?> getPatientData(String uid) async {
     try {
@@ -242,21 +289,6 @@ class FirebaseService extends GetxService {
     }
   }
 
-  Stream<List<AppointmentModel>> getUserAppointments({
-    required String userId,
-    required bool isDoctor,
-  }) {
-    final field = isDoctor ? 'doctorId' : 'patientId';
-
-    return _firestore
-        .collection(FirebaseCollections.appointments)
-        .where(field, isEqualTo: userId)
-        .orderBy('dateTime', descending: true)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-        .map((doc) => AppointmentModel.fromJson(doc.data()))
-        .toList());
-  }
 
   Future<void> cancelAppointment(String appointmentId) async {
     try {
@@ -401,4 +433,80 @@ class FirebaseService extends GetxService {
       throw 'Failed to update doctor data';
     }
   }
+  // Fetch all active specializations
+  Stream<List<SpecializationModel>> getActiveSpecializations() {
+    return _firestore
+        .collection('specializations')
+        .where('isActive', isEqualTo: true)
+        .where('availableDoctors', isGreaterThan: 0)
+        .orderBy('availableDoctors', descending: true) // Order by number of doctors
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => SpecializationModel.fromJson({
+        ...doc.data(),
+        'id': doc.id,
+      }))
+          .toList();
+    });
+  }
+
+  // Initialize sample data (only for development)
+  Future<void> initializeSampleData() async {
+    final specializations = [
+      {
+        'name': 'Cardiology',
+        'availableDoctors': 5,
+        'icon': 'assets/icons/cardiology.svg',
+        'isActive': true,
+      },
+      {
+        'name': 'Neurology',
+        'availableDoctors': 3,
+        'icon': 'assets/icons/neurology.svg',
+        'isActive': true,
+      },
+      {
+        'name': 'Pediatrics',
+        'availableDoctors': 4,
+        'icon': 'assets/icons/pediatrics.svg',
+        'isActive': true,
+      },
+      {
+        'name': 'Orthopedics',
+        'availableDoctors': 3,
+        'icon': 'assets/icons/orthopedics.svg',
+        'isActive': true,
+      },
+      {
+        'name': 'Dermatology',
+        'availableDoctors': 2,
+        'icon': 'assets/icons/dermatology.svg',
+        'isActive': true,
+      },
+      {
+        'name': 'Ophthalmology',
+        'availableDoctors': 3,
+        'icon': 'assets/icons/ophthalmology.svg',
+        'isActive': true,
+      },
+    ];
+
+    final batch = _firestore.batch();
+
+    for (var spec in specializations) {
+      final docRef = _firestore.collection('specializations').doc();
+      batch.set(docRef, spec);
+    }
+
+    await batch.commit();
+  }
+
+  // Method to create required indexes (call this once during development)
+  Future<void> createRequiredIndexes() async {
+    // This is just a placeholder - you need to create the index manually
+    print('Please create the required index using this URL:');
+    print('https://console.firebase.google.com/project/YOUR_PROJECT_ID/firestore/indexes');
+  }
+
 }
