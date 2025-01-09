@@ -7,7 +7,7 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import '../controllers/doctor_auth_controller.dart';
+import 'package:med_support_gaza/app/modules/auth/controllers/doctro_auth_controller.dart';
 
 class DoctroResetPasswordView extends GetView<DoctorAuthController> {
   final TextEditingController newPasswordController = TextEditingController();

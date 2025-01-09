@@ -121,6 +121,8 @@ class DoctorAuthController extends GetxController {
     required File? documentFile,
   }) async {
     try {
+      isLoading.value = true;
+
       // تسجيل مستخدم جديد
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -172,10 +174,15 @@ class DoctorAuthController extends GetxController {
       // الانتقال إلى الشاشة الرئيسية
       Get.offNamed(Routes.DOCTOR_LOGIN); // عدل اسم المسار حسب الحاجة
     } catch (e) {
+      isLoading.value = false;
+
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr,
         message: e.toString(),
       );
+    }finally{
+      isLoading.value = false;
+
     }
   }
 

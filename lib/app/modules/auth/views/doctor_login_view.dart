@@ -79,11 +79,12 @@ class DoctroLoginView extends GetView<DoctorAuthController> {
                     ),
                   ),
                   60.height,
-                  CustomButton(
+              Obx(()=>    CustomButton(
                     text: 'Login'.tr,
                     width: double.infinity,
-                    color: AppColors.primary,
-                    onPressed: () async {
+                color:controller.isLoading.value?AppColors.textLight: AppColors.primary,
+isDisable:controller.isLoading.value ,
+                onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         controller.signIn(
                           email: emailController.text.trim(),
@@ -91,7 +92,8 @@ class DoctroLoginView extends GetView<DoctorAuthController> {
                         );
                       }
                     },
-                  ),
+              ),
+              ),
                   24.height,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

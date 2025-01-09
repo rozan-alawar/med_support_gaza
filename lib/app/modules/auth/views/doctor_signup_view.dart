@@ -9,10 +9,10 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/modules/auth/controllers/doctro_auth_controller.dart';
 import '../../../core/utils/countries.dart';
 import '../../../core/utils/medical_specialties.dart';
 import '../../../routes/app_pages.dart';
-import '../controllers/doctor_auth_controller.dart';
 
 class DoctorSignUpView extends GetView<DoctorAuthController> {
   final _formKey = GlobalKey<FormState>();
@@ -171,29 +171,33 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                   ],
                 ),
                 30.height,
-                CustomButton(
-                  text: 'SignUp'.tr,
-                  color: AppColors.primary,
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      File? documentFile;
-                      if (controller.selectedFilePath.value.isNotEmpty) {
-                        documentFile = File(controller.selectedFilePath.value);
+                Obx(
+                  () => CustomButton(
+                    text: 'SignUp'.tr,
+                    color: controller.isLoading.value
+                        ? AppColors.textLight
+                        : AppColors.primary,
+                    isDisable: controller.isLoading.value,
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        File? documentFile;
+                        if (controller.selectedFilePath.value.isNotEmpty) {
+                          documentFile =
+                              File(controller.selectedFilePath.value);
+                        }
+                        await controller.signUp(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                          firstName: firstNameController.text.trim(),
+                          lastName: lastNameController.text.trim(),
+                          phone: phoneController.text.trim(),
+                          country: countryController.text.trim(),
+                          specialty: specialityController.text.trim(),
+                          documentFile: documentFile,
+                        );
                       }
-                      await controller.signUp(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                        firstName: firstNameController.text.trim(),
-                        lastName: lastNameController.text.trim(),
-                        phone: phoneController.text.trim(),
-                        country: countryController.text.trim(),
-                        specialty: specialityController.text.trim(),
-                        documentFile: documentFile,
-                      );
-
-                    }
-
-                  },
+                    },
+                  ),
                 ),
                 24.height,
                 Center(
