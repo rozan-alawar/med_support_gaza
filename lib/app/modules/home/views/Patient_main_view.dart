@@ -139,8 +139,8 @@ class PatientMainView extends GetView<HomeController> {
       itemBuilder: (context, index) {
         final appointment = controller.appointments[index];
         return AppoinmentInfoWidget(
-          time: appointment.time,
-          day: appointment.date.toString().formatAppointmentDay(appointment.date),
+          time: 'appointment.time',
+          day: 'appointment.date.toString().formatAppointmentDay(appointment.date)',
           major: appointment.specialization,
           doctorName: appointment.doctorName,
         );

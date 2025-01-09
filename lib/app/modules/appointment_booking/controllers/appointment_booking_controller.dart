@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
+import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
@@ -17,21 +18,39 @@ class AppointmentBookingController extends GetxController {
   final Rxn<DateTime> selectedDate = Rxn<DateTime>();
   final Rxn<TimeOfDay> selectedTime = Rxn<TimeOfDay>();
   final RxBool isLoading = false.obs;
+  final RxString selectedDoctorId = ''.obs;
+  final RxString selectedDoctorName = ''.obs;
+
+  final RxList<DoctorModel> availableDoctors = <DoctorModel>[].obs;
+
+  // Patient data from auth
+  String? get patientId => _firebaseService.currentUser?.uid;
+  String get patientName => "${_firebaseService.patientData.value?.firstName} ${_firebaseService.patientData.value?.lastName}" ?? '';
+
+  void selectDoctor(DoctorModel doctor) {
+    selectedDoctorId.value = doctor.id;
+    selectedDoctorName.value = "${doctor.firstName} ${doctor.lastName}";
+  }
+
 
   Future<void> confirmBooking() async {
     try {
       isLoading.value = true;
 
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      if (userId == null) throw Exception('User not logged in');
-
       final appointment = AppointmentModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        userId: userId,
-        doctorName: selectedDoctor.value,
+        patientId: patientId!,
+        doctorId: selectedDoctorId.value,
+        doctorName: selectedDoctorName.value,
+        patientName: patientName,
         specialization: selectedSpecialization.value,
-        date: selectedDate.value ?? DateTime.now(),
-        time: selectedTime.value?.format(Get.context!) ?? '',
+        dateTime: DateTime(
+          selectedDate.value!.year,
+          selectedDate.value!.month,
+          selectedDate.value!.day,
+          selectedTime.value!.hour,
+          selectedTime.value!.minute,
+        ),
       );
 
       await _firebaseService.saveAppointment(appointment);
@@ -106,8 +125,41 @@ class AppointmentBookingController extends GetxController {
     selectedDoctor.value = '';  // Reset doctor selection
   }
 
-  void selectDoctor(String doctor) {
-    selectedDoctor.value = doctor;
+  Future<void> fetchDoctorsBySpecialty(String specialty) async {
+    try {
+      isLoading.value = true;
+      availableDoctors.value = await _firebaseService.getDoctorsBySpecialty(specialty);
+    } catch (e) {
+      print('Error fetching doctors: $e');
+      Get.snackbar('Error', 'Failed to fetch doctors');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
+  bool validateBooking() {
+    if (patientId == null) {
+      Get.snackbar('Error', 'Please login first');
+      return false;
+    }
+
+    if (selectedDoctorId.isEmpty) {
+      Get.snackbar('Error', 'Please select a doctor');
+      return false;
+    }
+
+    if (selectedDate.value == null) {
+      Get.snackbar('Error', 'Please select a date');
+      return false;
+    }
+
+    if (selectedTime.value == null) {
+      Get.snackbar('Error', 'Please select a time');
+      return false;
+    }
+
+    return true;
   }
 
   void selectTime(TimeOfDay time) {

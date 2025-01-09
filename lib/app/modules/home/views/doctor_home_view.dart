@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/modules/profile/controllers/doctor_profile_controller.dart';
+import 'package:med_support_gaza/app/modules/profile/views/doctor_profile_view.dart';
 
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
@@ -15,6 +17,7 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut(()=>DoctorProfileController());
     return SafeArea(
       child: Scaffold(
 
@@ -28,8 +31,9 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
                 Center(),
                 Center(),
                 DoctorAppointmentManagementView(),
-                Center(),
-              ],
+
+                DoctorProfileView(),
+            ],
             ),
           ),
         ),
@@ -37,14 +41,14 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
           () => BottomNavigationBar(
             currentIndex: controller.currentIndex.value,
             selectedItemColor: AppColors.accent,
+
             selectedLabelStyle:
             TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
-
             onTap: (value) => controller.changeBottomNavIndex(value),
             items: [
               BottomNavigationBarItem(
                 activeIcon: SvgPicture.asset(
-                  IconAssets.home1,
+                  IconAssets.home,
                   color: AppColors.accent,
                 ),
                 icon: SvgPicture.asset(
@@ -52,6 +56,16 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
                 ),
                 label: 'Home'.tr,
               ),
+              // BottomNavigationBarItem(
+              //   activeIcon: SvgPicture.asset(
+              //     IconAssets.doctors,
+              //     color: AppColors.accent,
+              //   ),
+              //   icon: SvgPicture.asset(
+              //     IconAssets.doctors,
+              //   ),
+              //   label: 'Doctors'.tr,
+              // ),
               BottomNavigationBarItem(
                 activeIcon: SvgPicture.asset(
                   IconAssets.chatFill,

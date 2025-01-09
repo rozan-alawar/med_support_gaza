@@ -27,7 +27,7 @@ class AppointmentChatController extends GetxController {
     appointment = Get.arguments['appointment'];
     currentUserId = Get.arguments['currentUserId'];
     isDoctor = Get.arguments['isDoctor'];
-    otherUserId = isDoctor ? appointment.patientId : appointment.doctorId;
+    // otherUserId = isDoctor ? appointment.patientId : appointment.doctorId;
     _listenToMessages();
     _listenToAppointmentStatus();
   }

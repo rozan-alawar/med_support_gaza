@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/modules/admin_home/bindings/home_biding.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_auth.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_home.dart';
+import 'package:med_support_gaza/app/modules/profile/views/doctor_edit_profile_view.dart';
+import 'package:med_support_gaza/app/modules/profile/views/doctor_profile_view.dart';
 
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/bindings/doctor_appointment_management_binding.dart';
@@ -140,6 +142,15 @@ class AppPages {
       name: _Paths.ADMIN_HOME,
       page: () => AdminHome(),
       binding: AdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.DOCTOR_PROFILE,
+      page: () => DoctorProfileView(),
+      binding: ProfileBinding(),
+    ), GetPage(
+      name: _Paths.EDIT_DOCTOR_PROFILE,
+      page: () => DoctorEditProfileView(),
+      binding: ProfileBinding(),
     )
   ];
 }

@@ -174,11 +174,11 @@ class PatientProfileView extends GetView<ProfileController> {
   Widget _buildMenuItems() {
     return Column(
       children: [
-        _buildMenuItem(
-          icon: Icons.settings,
-          title: 'settings'.tr,
-          onTap: () {},
-        ),
+        // _buildMenuItem(
+        //   icon: Icons.settings,
+        //   title: 'settings'.tr,
+        //   onTap: () {},
+        // ),
         _buildMenuItem(
           icon: Icons.language,
           title: 'language'.tr,

@@ -28,6 +28,7 @@ abstract class Routes {
   static const DOCTOR_CONSULTATION = _Paths.DOCTOR_CONSULTATION;
   static const ADMIN_AUTH = _Paths.ADMIN_AUTH;
   static const ADMIN_HOME = _Paths.ADMIN_HOME;
+  static const EDIT_DOCTOR_PROFILE = _Paths.EDIT_DOCTOR_PROFILE;
 }
 
 abstract class _Paths {
@@ -54,6 +55,8 @@ abstract class _Paths {
   static const DOCTOR_APPOINTMENT_MANAGEMENT = '/doctor-appointment-management';
   static const DOCTOR_PROFILE = '/doctor-profile';
   static const DOCTOR_CONSULTATION = '/doctor-consultation';
+  static const EDIT_DOCTOR_PROFILE = '/edit-doctor-profile';
+
   static const ADMIN_AUTH = '/admin-auth';
   static const ADMIN_HOME = '/admin-home';
 }
