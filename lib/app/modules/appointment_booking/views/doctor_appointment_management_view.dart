@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,8 +12,11 @@ import '../controllers/doctor_appointment_management_controller.dart';
 
 class DoctorAppointmentManagementView
     extends GetView<DoctorAppointmentManagementController> {
+        final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -91,7 +95,9 @@ class DoctorAppointmentManagementView
               width: 298.h,
               text: 'add'.tr,
               color: AppColors.primary,
-              onPressed: controller.addAppointment,
+              onPressed: () async {
+               await  controller.addAppointment('');
+              },
             ),
             32.height,
             Expanded(

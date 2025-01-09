@@ -140,7 +140,7 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                           size: 18.h,
                         ),
                         onPressed: () async {
-                          await controller.uploadFile(uploadFileController);
+                          await controller.pickFile(uploadFileController);
                         },
                       ),
                     ),
@@ -190,7 +190,7 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                         specialty: specialityController.text.trim(),
                         documentFile: documentFile,
                       );
-                      
+
                     }
 
                   },

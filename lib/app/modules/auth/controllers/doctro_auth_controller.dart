@@ -71,42 +71,42 @@ class DoctorAuthController extends GetxController {
     }
   }
 
-  Future<void> uploadFile(
-    TextEditingController uploadFileController,
-  ) async {
-    await pickFile(uploadFileController);
+  // Future<void> uploadFile(
+  //   TextEditingController uploadFileController,
+  // ) async {
+  //   await pickFile(uploadFileController);
 
-    //  try {
-    //   Dio dio = Dio();
+  //   //  try {
+  //   //   Dio dio = Dio();
 
-    //    إنشاء بيانات الطلب
-    //   FormData formData = FormData.fromMap({
-    //     "file": await MultipartFile.fromFile(
-    //       selectedFilePath,
-    //       filename: selectedFilePath.split('/').last, // اسم الملف
-    //     ),
-    //   });
+  //   //    إنشاء بيانات الطلب
+  //   //   FormData formData = FormData.fromMap({
+  //   //     "file": await MultipartFile.fromFile(
+  //   //       selectedFilePath,
+  //   //       filename: selectedFilePath.split('/').last, // اسم الملف
+  //   //     ),
+  //   //   });
 
-    //    إرسال الملف إلى الخادم
-    //   Response response = await dio.post(
-    //     serverUrl,
-    //     data: formData,
-    //     options: Options(
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     ),
-    //   );
+  //   //    إرسال الملف إلى الخادم
+  //   //   Response response = await dio.post(
+  //   //     serverUrl,
+  //   //     data: formData,
+  //   //     options: Options(
+  //   //       headers: {
+  //   //         "Content-Type": "multipart/form-data",
+  //   //       },
+  //   //     ),
+  //   //   );
 
-    //   if (response.statusCode == 200) {
-    //     print('File uploaded successfully');
-    //   } else {
-    //     print('File upload failed with status: ${response.statusCode}');
-    //   }
-    // } catch (e) {
-    //   print('Error uploading file: $e');
-    // }
-  }
+  //   //   if (response.statusCode == 200) {
+  //   //     print('File uploaded successfully');
+  //   //   } else {
+  //   //     print('File upload failed with status: ${response.statusCode}');
+  //   //   }
+  //   // } catch (e) {
+  //   //   print('Error uploading file: $e');
+  //   // }
+  // }
 
   //-------------------------------------- Sign Up -------------------------------------
 
@@ -140,7 +140,10 @@ class DoctorAuthController extends GetxController {
       }
 
       // حفظ بيانات المستخدم في Firestore
-      await _firestore.collection('doctors').doc(userCredential.user!.uid).set({
+      final doctorDoc = await _firestore
+          .collection('doctors')
+          .doc(userCredential.user!.uid)
+          .set({
         'uid': userCredential.user!.uid,
         'firstName': firstName,
         'lastName': lastName,
@@ -151,12 +154,21 @@ class DoctorAuthController extends GetxController {
         'documentUrl': documentUrl ?? '',
         'createdAt': FieldValue.serverTimestamp(),
       });
+      
+      await _firestore
+          .collection('doctors')
+          .doc(userCredential.user!.uid)
+          .collection('availableAppointments')
+          .add({
+        'date': '2025-01-10',
+        'time': '10:00 AM',
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
       CustomSnackBar.showCustomSnackBar(
         title: 'Success'.tr,
         message: 'Account created successfully'.tr,
       );
-
       // الانتقال إلى الشاشة الرئيسية
       Get.offNamed(Routes.DOCTOR_LOGIN); // عدل اسم المسار حسب الحاجة
     } catch (e) {
@@ -169,8 +181,50 @@ class DoctorAuthController extends GetxController {
 
   //-------------------------------------- Sign IN -------------------------------------
 
-  void signIn() {
-    
+  void signIn({required String email, required String password}) async {
+    try {
+      // Start loading indicator
+      isLoading.value = true;
+
+      // Attempt to sign in
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Navigate to the main screen or dashboard after successful login
+      CustomSnackBar.showCustomSnackBar(
+        title: 'Success'.tr,
+        message: 'Login successful'.tr,
+      );
+      Get.offAllNamed(Routes.DOCTOR_HOME); // Adjust the route as per your app
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase-specific exceptions
+      String errorMessage = '';
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found for this email.'.tr;
+          break;
+        case 'wrong-password':
+          errorMessage = 'Incorrect password.'.tr;
+          break;
+        default:
+          errorMessage = 'An error occurred: ${e.message}'.tr;
+      }
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: errorMessage,
+      );
+    } catch (e) {
+      // Handle other errors
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: e.toString(),
+      );
+    } finally {
+      // Stop loading indicator
+      isLoading.value = false;
+    }
   }
 
   //-------------------------------------- Forget Password -------------------------------------
