@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/custom_button_widget.dart';
 import '../../../core/widgets/custom_text_widget.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/user_role_selection_controller.dart';
 
 class UserRoleSelectionView extends StatelessWidget {
@@ -75,6 +77,24 @@ class UserRoleSelectionView extends StatelessWidget {
                         offset: const Offset(0, 4),
                       ),
                     ],
+                  ),
+                ],
+              ),
+              30.height,
+              CustomButton(
+                borderColor: AppColors.primary,
+                onPressed: () => Get.toNamed(Routes.ADMIN_AUTH),
+                text: 'Admin'.tr,
+                width: 150,
+                height: 50,
+                color: AppColors.white,
+                textColor: AppColors.primary,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.16),
+                    spreadRadius: 4,
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),

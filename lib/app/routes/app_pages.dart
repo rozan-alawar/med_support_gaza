@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/modules/admin_home/bindings/home_biding.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_auth.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_home.dart';
 
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/bindings/doctor_appointment_management_binding.dart';
@@ -128,5 +131,15 @@ class AppPages {
       page: () => DocotrHomeView(),
       binding: DoctorHomeBinding(),
     ),
+    GetPage(
+      name: _Paths.ADMIN_AUTH,
+      page: () => AdminAuth(),
+      binding: AdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_HOME,
+      page: () => AdminHome(),
+      binding: AdminBinding(),
+    )
   ];
 }
