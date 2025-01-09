@@ -16,7 +16,7 @@ class DoctorAppointmentManagementView
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CustomText(
               'appointments_title_massage'.tr,
@@ -114,22 +114,23 @@ class DoctorAppointmentManagementView
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.all(6.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Center(
-                                child: CustomText(
-                                  '${appointment['date']}',
-                                  fontSize: 15,
-                                ),
+                              CustomText(
+                                '${appointment['date']}',
+                                fontSize: 15,
                               ),
                               CustomText(
                                 '${appointment['period']!.tr}',
                                 fontSize: 15,
                               ),
                               const SizedBox(height: 5),
-                              CustomText (appointment['time']!, fontSize: 12,),
+                              CustomText(
+                                appointment['time']!,
+                                fontSize: 12,
+                              ),
                               const Spacer(),
                               Align(
                                 alignment: Alignment.bottomLeft,

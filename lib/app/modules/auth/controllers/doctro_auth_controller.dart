@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
@@ -14,6 +18,10 @@ class DoctorAuthController extends GetxController {
   final isPasswordVisible = false.obs;
   final isPasswordVisible2 = false.obs;
   final isLoading = false.obs;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   final RxList<String> otpDigits = List.generate(4, (index) => '').obs;
   final RxInt timeRemaining = 15.obs;
@@ -42,10 +50,11 @@ class DoctorAuthController extends GetxController {
 
       if (result != null) {
         selectedFilePath.value = result.files.single.path ?? '';
-       // Get.snackbar('File Selected', 'File: ${result.files.single.name}');
-         CustomSnackBar.showCustomSnackBar(
+        // Get.snackbar('File Selected', 'File: ${result.files.single.name}');
+        CustomSnackBar.showCustomSnackBar(
             title: 'file_selected'.tr,
-            message:'${'file_selected_message'.tr} :${result.files.single.name}');
+            message:
+                '${'file_selected_message'.tr} :${result.files.single.name}');
         uploadFileController.text =
             '${result.files.single.name}.${result.files.single.extension}';
       } else {
@@ -101,11 +110,68 @@ class DoctorAuthController extends GetxController {
 
   //-------------------------------------- Sign Up -------------------------------------
 
-  void signUp() {}
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+    required String phone,
+    required String country,
+    required String specialty,
+    required File? documentFile,
+  }) async {
+    try {
+      // تسجيل مستخدم جديد
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      String? documentUrl;
+
+      // رفع الوثيقة إلى Firebase Storage إذا تم تحديدها
+      if (documentFile != null) {
+        String filePath =
+            'medical_certificates/${userCredential.user!.uid}.pdf';
+        UploadTask uploadTask = _storage.ref(filePath).putFile(documentFile);
+        TaskSnapshot snapshot = await uploadTask;
+        documentUrl = await snapshot.ref.getDownloadURL();
+      }
+
+      // حفظ بيانات المستخدم في Firestore
+      await _firestore.collection('doctors').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'phone': phone,
+        'country': country,
+        'specialty': specialty,
+        'documentUrl': documentUrl ?? '',
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      CustomSnackBar.showCustomSnackBar(
+        title: 'Success'.tr,
+        message: 'Account created successfully'.tr,
+      );
+
+      // الانتقال إلى الشاشة الرئيسية
+      Get.offNamed(Routes.DOCTOR_LOGIN); // عدل اسم المسار حسب الحاجة
+    } catch (e) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: e.toString(),
+      );
+    }
+  }
 
   //-------------------------------------- Sign IN -------------------------------------
 
-  void signIn() {}
+  void signIn() {
+    
+  }
 
   //-------------------------------------- Forget Password -------------------------------------
 

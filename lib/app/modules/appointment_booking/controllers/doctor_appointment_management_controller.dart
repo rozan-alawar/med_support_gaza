@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/utils/app_colors.dart';
 
@@ -59,14 +60,18 @@ class DoctorAppointmentManagementController extends GetxController {
 
   void addAppointment() {
     // Format the date to a readable string
+    String monthName = DateFormat.MMMM().format(selectedDate.value);
+    String dayName = DateFormat.EEEE().format(selectedDate.value);
     String formattedDate =
-        '${selectedDate.value.day}/${selectedDate.value.month}';
-     String time = selectedPeriod.value == 'morning_period'.tr ? 'morning_period_time'.tr :'evening_period_time'.tr ;
-    appointments.add({
-      'date': formattedDate,
-      'period': selectedPeriod.value,
-      'time': time
-    });
+        '${dayName.tr}   ${selectedDate.value.day}  ${monthName.tr}';
+    String time;
+    if (selectedPeriod.value.tr == 'morning_period'.tr) {
+      time = 'morning_period_time'.tr;
+    } else {
+      time = 'evening_period_time'.tr;
+    }
+    appointments.add(
+        {'date': formattedDate, 'period': selectedPeriod.value, 'time': time});
   }
 
   void deleteAppointment(int index) {
