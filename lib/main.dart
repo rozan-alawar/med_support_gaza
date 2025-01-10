@@ -8,6 +8,7 @@ import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/services/localizations/translation_contoller.dart';
 import 'package:med_support_gaza/app/core/utils/app_theme.dart';
 import 'package:med_support_gaza/app/core/widgets/custem_error_widget.dart';
+import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
 import 'app/routes/app_pages.dart';
@@ -27,6 +28,8 @@ void main() async {
 await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );
+  final firebaseService = Get.find<FirebaseService>();
+  await firebaseService.populateSampleData();
 }
 
 class MyApp extends StatelessWidget {
