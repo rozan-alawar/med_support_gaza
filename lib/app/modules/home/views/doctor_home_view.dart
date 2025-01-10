@@ -31,7 +31,6 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
                 Center(),
                 Center(),
                 DoctorAppointmentManagementView(),
-
                 DoctorProfileView(),
             ],
             ),
@@ -48,11 +47,11 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
             items: [
               BottomNavigationBarItem(
                 activeIcon: SvgPicture.asset(
-                  IconAssets.home,
+                  IconAssets.home1,
                   color: AppColors.accent,
                 ),
                 icon: SvgPicture.asset(
-                  IconAssets.home,
+                  IconAssets.home1,
                 ),
                 label: 'Home'.tr,
               ),

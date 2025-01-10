@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:file_picker/file_picker.dart';
 
 import '../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../routes/app_pages.dart';
@@ -130,33 +130,33 @@ class DoctorAuthController extends GetxController {
         password: password,
       );
 
-      String? documentUrl;
+    //  String? documentUrl;
 
       // رفع الوثيقة إلى Firebase Storage إذا تم تحديدها
-      if (documentFile != null) {
-        String filePath =
-            'medical_certificates/${userCredential.user!.uid}.pdf';
-        UploadTask uploadTask = _storage.ref(filePath).putFile(documentFile);
-        TaskSnapshot snapshot = await uploadTask;
-        documentUrl = await snapshot.ref.getDownloadURL();
-      }
+      // if (documentFile != null) {
+      //   String filePath =
+      //       'medical_certificates/${userCredential.user!.uid}.pdf';
+      //   UploadTask uploadTask = _storage.ref(filePath).putFile(documentFile);
+      //   TaskSnapshot snapshot = await uploadTask;
+      //   documentUrl = await snapshot.ref.getDownloadURL();
+      // }
 
       // حفظ بيانات المستخدم في Firestore
       final doctorDoc = await _firestore
           .collection('doctors')
           .doc(userCredential.user!.uid)
           .set({
-        'uid': userCredential.user!.uid,
+        'id': userCredential.user!.uid,
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
         'phone': phone,
         'country': country,
         'specialty': specialty,
-        'documentUrl': documentUrl ?? '',
+    //    'documentUrl': documentUrl ?? '',
         'createdAt': FieldValue.serverTimestamp(),
       });
-      
+
       await _firestore
           .collection('doctors')
           .doc(userCredential.user!.uid)
@@ -180,9 +180,8 @@ class DoctorAuthController extends GetxController {
         title: 'Error'.tr,
         message: e.toString(),
       );
-    }finally{
+    } finally {
       isLoading.value = false;
-
     }
   }
 

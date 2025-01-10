@@ -12,7 +12,6 @@ import '../controllers/doctor_appointment_management_controller.dart';
 
 class DoctorAppointmentManagementView
     extends GetView<DoctorAppointmentManagementController> {
-        final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +95,7 @@ class DoctorAppointmentManagementView
               text: 'add'.tr,
               color: AppColors.primary,
               onPressed: () async {
-               await  controller.addAppointment('');
+               await  controller.addAppointment();
               },
             ),
             32.height,
@@ -109,7 +108,7 @@ class DoctorAppointmentManagementView
                       mainAxisSpacing: 5, // Spacing between rows
                       crossAxisSpacing: 10, // Spacing between columns
                       childAspectRatio:
-                          1.2, // Width-to-height ratio for each grid item
+                          .9, // Width-to-height ratio for each grid item
                     ),
                     itemBuilder: (context, index) {
                       final appointment = controller.appointments[index];
@@ -129,7 +128,7 @@ class DoctorAppointmentManagementView
                                 fontSize: 15,
                               ),
                               CustomText(
-                                '${appointment['period']!.tr}',
+                                '${appointment['period']!}',
                                 fontSize: 15,
                               ),
                               const SizedBox(height: 5),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_doctors.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_insights.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_profile.dart';
 
-import '../../../../core/widgets/custom_text_widget.dart';
 import '../../controller/admin_home_controller.dart';
-import '../widgets/insight_container.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({super.key});
@@ -16,13 +16,12 @@ class AdminHome extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.transparent,
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications,
               color: AppColors.accent,
-              size: 24.sp,
             ),
             onPressed: () {
               controller.getPatientsCount();
@@ -30,48 +29,39 @@ class AdminHome extends StatelessWidget {
           )
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.w,
-          vertical: 20.h,
-        ),
-        child: Column(
-          // spacing: 16.h,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomText('Show Insights', fontSize: 20),
-            InsightContainer(
-              mainText: 'Number of active users (Patients)',
-              subTextWidget: Obx(
-                () => CustomText(
-                  '(${controller.patientsCount.value}) user active now',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark,
-                ),
-              ),
+      body: Obx(() {
+        // Display the corresponding page
+        switch (controller.selectedIndex.value) {
+          case 0:
+            return const InsightsPage();
+          case 1:
+            return const AdminDoctors();
+          case 2:
+            return const AdminProfile();
+          default:
+            return const SizedBox();
+        }
+      }),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          backgroundColor: AppColors.white,
+          selectedItemColor: AppColors.accent,
+          currentIndex: controller.selectedIndex.value,
+          onTap: (index) {
+            controller.changeTab(index);
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.insights),
+              label: '',
             ),
-            InsightContainer(
-              mainText: 'Number of active users (Doctors)',
-              subTextWidget: Obx(
-                () => const CustomText(
-                  '(0) user active now',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark,
-                ),
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.medical_services),
+              label: '',
             ),
-            InsightContainer(
-              mainText: 'Number of active published articles',
-              subTextWidget: Obx(
-                () => const CustomText(
-                  '(0) artivle have been published so far',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark,
-                ),
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: '',
             ),
           ],
         ),
