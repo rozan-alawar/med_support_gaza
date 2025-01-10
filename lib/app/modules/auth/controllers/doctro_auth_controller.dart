@@ -130,16 +130,16 @@ class DoctorAuthController extends GetxController {
         password: password,
       );
 
-      String? documentUrl;
+    //  String? documentUrl;
 
       // رفع الوثيقة إلى Firebase Storage إذا تم تحديدها
-      if (documentFile != null) {
-        String filePath =
-            'medical_certificates/${userCredential.user!.uid}.pdf';
-        UploadTask uploadTask = _storage.ref(filePath).putFile(documentFile);
-        TaskSnapshot snapshot = await uploadTask;
-        documentUrl = await snapshot.ref.getDownloadURL();
-      }
+      // if (documentFile != null) {
+      //   String filePath =
+      //       'medical_certificates/${userCredential.user!.uid}.pdf';
+      //   UploadTask uploadTask = _storage.ref(filePath).putFile(documentFile);
+      //   TaskSnapshot snapshot = await uploadTask;
+      //   documentUrl = await snapshot.ref.getDownloadURL();
+      // }
 
       // حفظ بيانات المستخدم في Firestore
       final doctorDoc = await _firestore
@@ -153,7 +153,7 @@ class DoctorAuthController extends GetxController {
         'phone': phone,
         'country': country,
         'specialty': specialty,
-        'documentUrl': documentUrl ?? '',
+    //    'documentUrl': documentUrl ?? '',
         'createdAt': FieldValue.serverTimestamp(),
       });
 

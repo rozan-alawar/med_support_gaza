@@ -12,7 +12,7 @@ import '../controllers/doctor_appointment_management_controller.dart';
 
 class DoctorAppointmentManagementView
     extends GetView<DoctorAppointmentManagementController> {
-        final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
+       // final String doctorId = firebaseService.currentUser?.uid : '';
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +96,7 @@ class DoctorAppointmentManagementView
               text: 'add'.tr,
               color: AppColors.primary,
               onPressed: () async {
-               await  controller.addAppointment('');
+               await  controller.addAppointment();
               },
             ),
             32.height,
