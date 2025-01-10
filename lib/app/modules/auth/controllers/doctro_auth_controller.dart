@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:file_picker/file_picker.dart';
 
 import '../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../routes/app_pages.dart';
@@ -146,7 +146,7 @@ class DoctorAuthController extends GetxController {
           .collection('doctors')
           .doc(userCredential.user!.uid)
           .set({
-        'uid': userCredential.user!.uid,
+        'id': userCredential.user!.uid,
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
@@ -156,7 +156,7 @@ class DoctorAuthController extends GetxController {
         'documentUrl': documentUrl ?? '',
         'createdAt': FieldValue.serverTimestamp(),
       });
-      
+
       await _firestore
           .collection('doctors')
           .doc(userCredential.user!.uid)
@@ -180,9 +180,8 @@ class DoctorAuthController extends GetxController {
         title: 'Error'.tr,
         message: e.toString(),
       );
-    }finally{
+    } finally {
       isLoading.value = false;
-
     }
   }
 

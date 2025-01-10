@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DoctorModel {
@@ -23,6 +22,7 @@ class DoctorModel {
   final List<WorkingHours> workingHours;
   final String about;
   final List<String> expertise;
+  final bool isApproved;
 
   DoctorModel({
     required this.id,
@@ -46,6 +46,7 @@ class DoctorModel {
     this.workingHours = const [],
     this.about = '',
     this.expertise = const [],
+    this.isApproved = false,
   })  : this.createdAt = createdAt ?? DateTime.now(),
         this.lastSeen = lastSeen ?? DateTime.now();
 
@@ -55,7 +56,7 @@ class DoctorModel {
   // Convert to JSON
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'uid': id,
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
@@ -76,13 +77,14 @@ class DoctorModel {
       'workingHours': workingHours.map((wh) => wh.toJson()).toList(),
       'about': about,
       'expertise': expertise,
+      'isApproved': isApproved,
     };
   }
 
   // Create from JSON
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     return DoctorModel(
-      id: json['id'] ?? '',
+      id: json['uid'] ?? '',
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
       email: json['email'] ?? '',
@@ -101,10 +103,12 @@ class DoctorModel {
       lastSeen: (json['lastSeen'] as Timestamp?)?.toDate(),
       isVerified: json['isVerified'] ?? false,
       workingHours: (json['workingHours'] as List?)
-          ?.map((wh) => WorkingHours.fromJson(wh))
-          .toList() ?? [],
+              ?.map((wh) => WorkingHours.fromJson(wh))
+              .toList() ??
+          [],
       about: json['about'] ?? '',
       expertise: List<String>.from(json['expertise'] ?? []),
+      isApproved: json['isApproved'] ?? false,
     );
   }
 
@@ -131,6 +135,7 @@ class DoctorModel {
     List<WorkingHours>? workingHours,
     String? about,
     List<String>? expertise,
+    bool? isApproved,
   }) {
     return DoctorModel(
       id: id ?? this.id,
@@ -144,7 +149,8 @@ class DoctorModel {
       gender: gender ?? this.gender,
       isOnline: isOnline ?? this.isOnline,
       isAvailable: isAvailable ?? this.isAvailable,
-      medicalCertificateUrl: medicalCertificateUrl ?? this.medicalCertificateUrl,
+      medicalCertificateUrl:
+          medicalCertificateUrl ?? this.medicalCertificateUrl,
       rating: rating ?? this.rating,
       experience: experience ?? this.experience,
       languages: languages ?? this.languages,
@@ -154,6 +160,7 @@ class DoctorModel {
       workingHours: workingHours ?? this.workingHours,
       about: about ?? this.about,
       expertise: expertise ?? this.expertise,
+      isApproved: isApproved ?? this.isApproved,
     );
   }
 }
