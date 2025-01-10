@@ -23,7 +23,7 @@ class DoctorAppointmentManagementController extends GetxController {
     super.onInit();
 
     // Replace with actual doctorId
-    String doctorId = 'sampleDoctorId';
+    final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
     loadAppointments(doctorId);
   }
 
@@ -139,14 +139,7 @@ class DoctorAppointmentManagementController extends GetxController {
             ? 'morning_period_time'.tr
             : 'evening_period_time'.tr,
       });
-      appointments.add({
-        'date': formattedDate,
-        'period': selectedPeriod.value,
-        'time': selectedPeriod.value.tr == 'morning_period'.tr
-            ? 'morning_period_time'.tr
-            : 'evening_period_time'.tr,
-      });
-      
+
       CustomSnackBar.showCustomSnackBar(
         title: 'Success',
         message: 'Appointments added successfully',
@@ -263,15 +256,39 @@ class DoctorAppointmentManagementController extends GetxController {
           .get();
 
       // Parse and update the local appointments list
-      appointments.value = querySnapshot.docs.map((doc) {
+      // Clear the current appointments list
+      List<Map<String, String>> tempAppointments = [];
+
+// Iterate through the documents in the querySnapshot
+      for (var doc in querySnapshot.docs) {
+        // Extract data from the document
         final data = doc.data();
-        return {
-          'date': data['date']?.toString() ?? '', // Explicitly cast to String
+        // Check if the date is of type Timestamp and convert it
+        String formattedDate = '';
+        if (data['date'] is Timestamp) {
+          final timestamp = data['date'] as Timestamp;
+          final dateTime = timestamp.toDate(); // Convert to DateTime
+
+          // Format the date as desired
+          String monthName = DateFormat.MMMM().format(dateTime);
+          String dayName = DateFormat.EEEE().format(dateTime);
+          formattedDate = '${dayName.tr}   ${dateTime.day}  ${monthName.tr}';
+        } else if (data['date'] is String) {
+          // If it's already a String, use it directly
+          formattedDate = data['date'];
+        }
+        // Map the data to a structured format
+        tempAppointments.add({
+          'date': formattedDate, // Explicitly cast to String
           'period':
               data['period']?.toString() ?? '', // Explicitly cast to String
-          'time': data['time']?.toString() ?? '', // Explicitly cast to String
-        };
-      }).toList();
+          'time':
+              data['startTime']?.toString() ?? '', // Explicitly cast to String
+        });
+      }
+
+// Assign the mapped appointments to the observable list
+      appointments.value = tempAppointments;
 
       // Optional: Show a success message
       Get.snackbar('Success', 'Appointments loaded successfully',
