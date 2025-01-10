@@ -35,36 +35,44 @@ class AppointmentBookingController extends GetxController {
     selectedDoctorId.value = doctor.id;
     selectedDoctorName.value = "${doctor.firstName} ${doctor.lastName}";
   }
-
   @override
   void onInit() {
     super.onInit();
+    print('AppointmentBookingController initialized');
     _loadSpecializations();
+
   }
 
-
-  void _loadSpecializations() {
+  void _loadSpecializations()async {
     try {
+      print('Loading specializations...');
+      isLoading.value = true;
+
       // Listen to specializations stream
       _firebaseService.getActiveSpecializations().listen(
             (specs) {
+          print('Received specializations: ${specs.length}');
           specializations.value = specs;
           isLoading.value = false;
         },
         onError: (err) {
+          print('Error loading specializations: $err');
           error.value = 'Error loading specializations: $err';
           isLoading.value = false;
         },
       );
+      if(specializations.value.isEmpty){
+        await _firebaseService.initializeSampleData();
+
+      }
+
     } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: e.toString(),
-      );
-    } finally {
+      print('Exception in _loadSpecializations: $e');
+      error.value = 'Error: $e';
       isLoading.value = false;
     }
   }
+
 
   void selectSpecialization(String specialization) {
     selectedSpecialization.value = specialization;

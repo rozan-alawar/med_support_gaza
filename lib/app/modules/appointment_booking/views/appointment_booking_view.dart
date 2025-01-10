@@ -6,46 +6,115 @@ import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/controllers/appointment_booking_controller.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_card_widget.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/views/specialization_widget.dart';
 
 class AppointmentBookingView extends GetView<AppointmentBookingController> {
   const AppointmentBookingView({super.key});
-  
+
 
   @override
   Widget build(BuildContext context) {
+FirebaseService firebaseService = FirebaseService();
+
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: CustomText('BookAppointment'.tr,
             fontSize: 16.sp, fontWeight: FontWeight.bold),
         centerTitle: true,
         backgroundColor: AppColors.transparent,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            40.height,
-            _buildHeader(),
-            Expanded(
-              child: Obx(() => _buildStepContent()),
+      body: Obx(() {
+        print('Rebuilding body - Loading: ${controller.isLoading.value}'); // Debug print
+
+        // Show loading indicator
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        // Show error if any
+        if (controller.error.value.isNotEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline,
+                    color: AppColors.error,
+                    size: 48.sp),
+                16.height,
+                CustomText(
+                  controller.error.value,
+                  color: AppColors.error,
+                  fontSize: 16.sp,
+                  textAlign: TextAlign.center,
+                ),
+                24.height,
+                CustomButton(
+                  text: 'Retry',
+                  color: AppColors.primary,
+                  onPressed: () => controller.onInit(),
+                ),
+              ],
             ),
-            30.height,
-            CustomButton(
-              color: AppColors.accent,
-              onPressed: controller.nextStep,
-              text:
-                  controller.currentStep.value == 3 ? 'Confirm'.tr : 'Next'.tr,
+          );
+        }
+
+        // Show empty state if no specializations
+        if (controller.specializations.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.medical_services_outlined,
+                    color: AppColors.textLight,
+                    size: 48.sp),
+                16.height,
+                CustomText(
+                  'No specializations available',
+                  color: AppColors.textDark,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+                8.height,
+                CustomText(
+                  'Please try again later',
+                  color: AppColors.textLight,
+                  fontSize: 14.sp,
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          );
+        }
+
+        // Show main content
+        return Padding(
+          padding: EdgeInsets.all(20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(),
+              Expanded(
+                child: _buildStepContent(),
+              ),
+              30.height,
+              CustomButton(
+                color: AppColors.accent,
+                onPressed: controller.nextStep,
+                text: controller.currentStep.value == 3
+                    ? 'Confirm'.tr
+                    : 'Next'.tr,
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
+
 
   Widget _buildHeader() {
     return Column(
@@ -58,43 +127,43 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
         ),
         10.height,
         Obx(() => Row(
-              children: List.generate(4, (index) {
-                return Expanded(
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 16.r,
-                        backgroundColor: index <= controller.currentStep.value
+          children: List.generate(4, (index) {
+            return Expanded(
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 16.r,
+                    backgroundColor: index <= controller.currentStep.value
+                        ? AppColors.primary
+                        : Colors.grey[300],
+                    child: Icon(
+                      Icons.check,
+                      size: 14.sp,
+                      color: index <= controller.currentStep.value
+                          ? Colors.white
+                          : Colors.grey,
+                    ),
+                  ),
+                  if (index < 3)
+                    Expanded(
+                      child: Container(
+                        height: 2.h,
+                        color: index < controller.currentStep.value
                             ? AppColors.primary
                             : Colors.grey[300],
-                        child: Icon(
-                          Icons.check,
-                          size: 14.sp,
-                          color: index <= controller.currentStep.value
-                              ? Colors.white
-                              : Colors.grey,
-                        ),
                       ),
-                      if (index < 3)
-                        Expanded(
-                          child: Container(
-                            height: 2.h,
-                            color: index < controller.currentStep.value
-                                ? AppColors.primary
-                                : Colors.grey[300],
-                          ),
-                        ),
-                    ],
-                  ),
-                );
-              }),
-            )),
+                    ),
+                ],
+              ),
+            );
+          }),
+        )),
         40.height,
         Obx(() => CustomText(
-              controller.stepTitles[controller.currentStep.value].tr,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            )),
+          controller.stepTitles[controller.currentStep.value].tr,
+          fontSize: 16.sp,
+          fontWeight: FontWeight.bold,
+        )),
         10.height,
       ],
     );
@@ -230,127 +299,127 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
 
   Widget _buildConfirmationStep() {
     return Obx(() => Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 12,
-                spreadRadius: 2,
-                offset: const Offset(0, 2),
-              )
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            spreadRadius: 2,
+            offset: const Offset(0, 2),
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
             children: [
-              // Header
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Icon(
-                      Icons.fact_check_rounded,
-                      color: AppColors.primary,
-                      size: 20.sp,
-                    ),
-                  ),
-                  12.width,
-                  CustomText(
-                    'Appointment Summary'.tr,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ],
-              ),
-              20.height,
-
-              // Appointment Details
               Container(
-                padding: EdgeInsets.all(16.w),
+                padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: Colors.grey[200]!,
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    _buildConfirmationItem(
-                      'Specialization'.tr,
-                      controller.selectedSpecialization.value,
-                      Icons.local_hospital_rounded,
-                    ),
-                    Divider(height: 24.h, color: Colors.grey[200]),
-                    _buildConfirmationItem(
-                      'Doctor'.tr,
-                      controller.selectedDoctor.value,
-                      Icons.person_rounded,
-                    ),
-                    Divider(height: 24.h, color: Colors.grey[200]),
-                    _buildConfirmationItem(
-                      'Date & Time'.tr,
-                      controller.selectedTime.value?.format(Get.context!) ??
-                          'Not selected'.tr,
-                      Icons.access_time_rounded,
-                    ),
-                  ],
-                ),
-              ),
-
-              24.height,
-              // Additional Information
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.05),
+                  color: AppColors.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(
-                    color: AppColors.primary.withOpacity(0.1),
-                  ),
                 ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: AppColors.primary,
-                      size: 18.sp,
-                    ),
-                    12.width,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            'Please verify your appointment details'.tr,
-                            fontSize: 12.sp,
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w500,
-                          ),
-                          4.height,
-                          CustomText(
-                            'You can manage your appointments from the home screen'
-                                .tr,
-                            fontSize: 11.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                child: Icon(
+                  Icons.fact_check_rounded,
+                  color: AppColors.primary,
+                  size: 20.sp,
                 ),
+              ),
+              12.width,
+              CustomText(
+                'Appointment Summary'.tr,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
               ),
             ],
           ),
-        ));
+          20.height,
+
+          // Appointment Details
+          Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.grey[50],
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(
+                color: Colors.grey[200]!,
+                width: 1,
+              ),
+            ),
+            child: Column(
+              children: [
+                _buildConfirmationItem(
+                  'Specialization'.tr,
+                  controller.selectedSpecialization.value,
+                  Icons.local_hospital_rounded,
+                ),
+                Divider(height: 24.h, color: Colors.grey[200]),
+                _buildConfirmationItem(
+                  'Doctor'.tr,
+                  controller.selectedDoctor.value,
+                  Icons.person_rounded,
+                ),
+                Divider(height: 24.h, color: Colors.grey[200]),
+                _buildConfirmationItem(
+                  'Date & Time'.tr,
+                  controller.selectedTime.value?.format(Get.context!) ??
+                      'Not selected'.tr,
+                  Icons.access_time_rounded,
+                ),
+              ],
+            ),
+          ),
+
+          24.height,
+          // Additional Information
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(
+                color: AppColors.primary.withOpacity(0.1),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: AppColors.primary,
+                  size: 18.sp,
+                ),
+                12.width,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        'Please verify your appointment details'.tr,
+                        fontSize: 12.sp,
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.w500,
+                      ),
+                      4.height,
+                      CustomText(
+                        'You can manage your appointments from the home screen'
+                            .tr,
+                        fontSize: 11.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 
   Widget _buildConfirmationItem(String label, String value, IconData icon) {
@@ -457,63 +526,63 @@ class _buildTimeSelectionStep extends GetView<AppointmentBookingController> {
 
               // Time Slots Section
               Obx(() => Wrap(
-                    spacing: 12.w,
-                    runSpacing: 16.h,
-                    children: List.generate(
-                      controller.getAvailableTimes().length,
+                spacing: 12.w,
+                runSpacing: 16.h,
+                children: List.generate(
+                  controller.getAvailableTimes().length,
                       (index) {
-                        final time = controller.getAvailableTimes()[index];
-                        final isSelected =
-                            controller.selectedTime.value == time;
+                    final time = controller.getAvailableTimes()[index];
+                    final isSelected =
+                        controller.selectedTime.value == time;
 
-                        return InkWell(
-                          onTap: () => controller.selectTime(time),
+                    return InkWell(
+                      onTap: () => controller.selectTime(time),
+                      borderRadius: BorderRadius.circular(12.r),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 12.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.primary.withOpacity(0.05),
                           borderRadius: BorderRadius.circular(12.r),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12.w,
-                              vertical: 12.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? AppColors.primary
-                                  : AppColors.primary.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(
-                                color: isSelected
-                                    ? AppColors.primary
-                                    : Colors.transparent,
-                                width: 1.5.w,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.schedule,
-                                  size: 16.sp,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : AppColors.primary,
-                                ),
-                                6.height,
-                                CustomText(
-                                  time.format(context),
-                                  fontSize: 13.sp,
-                                  fontWeight: isSelected
-                                      ? FontWeight.w600
-                                      : FontWeight.normal,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.grey[800],
-                                ),
-                              ],
-                            ),
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.primary
+                                : Colors.transparent,
+                            width: 1.5.w,
                           ),
-                        );
-                      },
-                    ),
-                  )),
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.schedule,
+                              size: 16.sp,
+                              color: isSelected
+                                  ? Colors.white
+                                  : AppColors.primary,
+                            ),
+                            6.height,
+                            CustomText(
+                              time.format(context),
+                              fontSize: 13.sp,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? Colors.white
+                                  : Colors.grey[800],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )),
 
               // Additional Info Section
               24.height,
