@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 
 class AppTheme {
   static ThemeData get appTheme {
@@ -28,6 +29,10 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8.0),
           borderSide: const BorderSide(color: Color(0xFF1f6c42)),
         ),
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: AppColors.textLight),
       ),
     );
   }

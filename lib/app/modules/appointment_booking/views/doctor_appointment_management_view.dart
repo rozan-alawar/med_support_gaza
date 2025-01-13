@@ -12,10 +12,8 @@ import '../controllers/doctor_appointment_management_controller.dart';
 
 class DoctorAppointmentManagementView
     extends GetView<DoctorAppointmentManagementController> {
-
   @override
   Widget build(BuildContext context) {
-    
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -60,7 +58,7 @@ class DoctorAppointmentManagementView
             11.height,
             Obx(() => SizedBox(
                   width: 350.w,
-                  height: 70.h,
+                  height: 65.h,
                   child: DropdownButtonFormField<String>(
                     value: controller.selectedPeriod.value,
                     items: controller.periods
@@ -73,7 +71,7 @@ class DoctorAppointmentManagementView
                                           ? 'morning_period_time'.tr
                                           : 'evening_period_time'.tr),
                                   fontFamily: 'Lama Sans',
-                                  fontSize: 16.sp,
+                                  fontSize: 12.sp,
                                   color: AppColors.textgray),
                             ))
                         .toList(),
@@ -95,7 +93,7 @@ class DoctorAppointmentManagementView
               text: 'add'.tr,
               color: AppColors.primary,
               onPressed: () async {
-               await  controller.addAppointment();
+                await controller.addAppointment();
               },
             ),
             32.height,

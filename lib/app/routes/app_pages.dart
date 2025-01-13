@@ -8,6 +8,7 @@ import 'package:med_support_gaza/app/modules/profile/views/doctor_profile_view.d
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/bindings/doctor_appointment_management_binding.dart';
 import '../modules/appointment_booking/views/appointment_booking_view.dart';
+import '../modules/appointment_booking/views/daily_schedule_view.dart';
 import '../modules/appointment_booking/views/doctor_appointment_management_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/bindings/doctor_auth_binding.dart';
@@ -147,10 +148,16 @@ class AppPages {
       name: _Paths.DOCTOR_PROFILE,
       page: () => DoctorProfileView(),
       binding: ProfileBinding(),
-    ), GetPage(
+    ),
+    GetPage(
       name: _Paths.EDIT_DOCTOR_PROFILE,
       page: () => DoctorEditProfileView(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.DOCTOR_DAILY_SCHEDULE,
+      page: () => DailyScheduleView(),
+      binding: DoctorAppointmentManagementBinding(),
     )
   ];
 }
