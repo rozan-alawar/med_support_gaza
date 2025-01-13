@@ -22,7 +22,149 @@ class FirebaseService extends GetxService {
   Stream<User?> get authStateChanges => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
   final Rxn<PatientModel> patientData = Rxn<PatientModel>();
+  Stream<List<SpecializationModel>> getActiveSpecializations() async* {
+    try {
+      print('Fetching active specializations...');
 
+      // First get all doctors
+      final doctorsSnapshot = await _firestore
+          .collection('doctors')
+          .where('isAvailable', isEqualTo: true)
+          .get();
+
+      // Count doctors per specialization
+      Map<String, int> doctorCounts = {};
+      for (var doc in doctorsSnapshot.docs) {
+        final specialty = doc.data()['speciality'] as String;
+        doctorCounts[specialty] = (doctorCounts[specialty] ?? 0) + 1;
+      }
+
+      print('Doctor counts: $doctorCounts');
+
+      // Now get the specializations
+      final specializationsStream = _firestore
+          .collection('specializations')
+          .where('isActive', isEqualTo: true)
+          .snapshots()
+          .map((snapshot) {
+        return snapshot.docs
+            .map((doc) {
+          // Get the actual doctor count for this specialization
+          final String specName = doc.data()['name'];
+          final int availableDoctors = doctorCounts[specName] ?? 0;
+
+          // Only include specializations with available doctors
+          if (availableDoctors > 0) {
+            return SpecializationModel.fromJson({
+              ...doc.data(),
+              'id': doc.id,
+              'availableDoctors': availableDoctors, // Use real count
+            });
+          }
+          return null;
+        })
+            .where((spec) => spec != null) // Filter out null values
+            .cast<SpecializationModel>() // Cast to correct type
+            .toList();
+      });
+
+      yield* specializationsStream;
+    } catch (e) {
+      print('Error in getActiveSpecializations: $e');
+      yield [];
+    }
+  }
+
+  // Get doctors by specialization
+  Future<List<DoctorModel>> getDoctorsBySpeciality(String speciality) async {
+    try {
+      print('Fetching doctors for speciality: $speciality');
+
+      final querySnapshot = await _firestore
+          .collection('doctors')
+          .where('speciality', isEqualTo: speciality)
+          .where('isAvailable', isEqualTo: true)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => DoctorModel.fromJson({
+        ...doc.data(),
+        'id': doc.id,
+      }))
+          .toList();
+    } catch (e) {
+      print('Error in getDoctorsBySpeciality: $e');
+      return [];
+    }
+  }
+
+  // Method to populate sample data (use during development)
+  Future<void> populateSampleData() async {
+    try {
+      final batch = _firestore.batch();
+
+      // Sample specializations
+      final specializations = [
+        {
+          'name': 'Cardiology',
+          'icon': 'assets/icons/cardiology.svg',
+          'isActive': true,
+          'description': 'Heart and cardiovascular specialists',
+        },
+        {
+          'name': 'Neurology',
+          'icon': 'assets/icons/neurology.svg',
+          'isActive': true,
+          'description': 'Brain and nervous system specialists',
+        },
+        // Add more specializations as needed
+      ];
+
+      // Sample doctors
+      final doctors = [
+        {
+          'firstName': 'John',
+          'lastName': 'Smith',
+          'speciality': 'Cardiology',
+          'isAvailable': true,
+          'experience': 10,
+          'rating': 4.8,
+          'gender': 'Male',
+          'phoneNo': '+1234567890',
+          'email': 'john.smith@example.com',
+        },
+        {
+          'firstName': 'Sarah',
+          'lastName': 'Johnson',
+          'speciality': 'Neurology',
+          'isAvailable': true,
+          'experience': 8,
+          'rating': 4.6,
+          'gender': 'Female',
+          'phoneNo': '+1234567891',
+          'email': 'sarah.johnson@example.com',
+        },
+        // Add more doctors as needed
+      ];
+
+      // Add specializations
+      for (var spec in specializations) {
+        final docRef = _firestore.collection('specializations').doc();
+        batch.set(docRef, spec);
+      }
+
+      // Add doctors
+      for (var doc in doctors) {
+        final docRef = _firestore.collection('doctors').doc();
+        batch.set(docRef, doc);
+      }
+
+      await batch.commit();
+      print('Sample data populated successfully');
+    } catch (e) {
+      print('Error populating sample data: $e');
+    }
+  }
   // Initialize and set up patient data stream
   Future<void> initPatientDataStream() async {
     if (currentUser != null) {
@@ -433,22 +575,50 @@ class FirebaseService extends GetxService {
       throw 'Failed to update doctor data';
     }
   }
-  // Fetch all active specializations
-  Stream<List<SpecializationModel>> getActiveSpecializations() {
-    return _firestore
-        .collection('specializations')
-        .where('isActive', isEqualTo: true)
-        .where('availableDoctors', isGreaterThan: 0)
-        .orderBy('availableDoctors', descending: true) // Order by number of doctors
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => SpecializationModel.fromJson({
-        ...doc.data(),
-        'id': doc.id,
-      }))
-          .toList();
-    });
+  //
+  // Stream<List<AppointmentModel>> getUpcomingAppointments(String userId) {
+  //   final now = DateTime.now();
+  //
+  //   return _firestore
+  //       .collection('appointments')
+  //       .where('patientId', isEqualTo: userId)
+  //       .where('appointmentDate', isGreaterThan: now)
+  //       .where('status', isEqualTo: 'upcoming')
+  //       .orderBy('appointmentDate', descending: false)
+  //       .snapshots()
+  //       .map((snapshot) {
+  //     return snapshot.docs
+  //         .map((doc) => AppointmentModel.fromJson(doc.data()))
+  //         .toList();
+  //   });
+  // }
+  // Stream<List<AppointmentModel>> getUpcomingAppointments(String userId) {
+  //   final now = DateTime.now();
+  //
+  //   return _firestore
+  //       .collection('appointments')
+  //       .where('patientId', isEqualTo: userId)
+  //       .where('appointmentDate', isGreaterThan: now)
+  //       .where('status', isEqualTo: 'upcoming')
+  //       .orderBy('appointmentDate', descending: false)
+  //       .snapshots()
+  //       .map((snapshot) {
+  //     return snapshot.docs
+  //         .map((doc) => AppointmentModel.fromJson(doc.data()))
+  //         .toList();
+  //   });
+  // }
+
+// Method to help create required indexes (for development)
+  Future<void> createRequiredIndexes() async {
+    print('Please create the following indexes in Firebase Console:');
+    print('''
+    Collection: appointments
+    Index:
+    - patientId (Ascending)
+    - appointmentDate (Ascending)
+    - status (Ascending)
+    ''');
   }
 
   // Initialize sample data (only for development)
@@ -500,13 +670,6 @@ class FirebaseService extends GetxService {
     }
 
     await batch.commit();
-  }
-
-  // Method to create required indexes (call this once during development)
-  Future<void> createRequiredIndexes() async {
-    // This is just a placeholder - you need to create the index manually
-    print('Please create the required index using this URL:');
-    print('https://console.firebase.google.com/project/YOUR_PROJECT_ID/firestore/indexes');
   }
 
 }

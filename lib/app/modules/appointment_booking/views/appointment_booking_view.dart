@@ -12,7 +12,7 @@ import 'package:med_support_gaza/app/modules/appointment_booking/views/specializ
 
 class AppointmentBookingView extends GetView<AppointmentBookingController> {
   const AppointmentBookingView({super.key});
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,118 +116,167 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
   }
 
   Widget _buildSpecializationStep() {
+    final specializations = controller.getSpecializations();
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16.w,
         mainAxisSpacing: 16.h,
-        childAspectRatio: 1.4,
+        childAspectRatio: 1.6,
       ),
-      itemCount: controller.specializations.length,
+      itemCount: specializations.length,
       itemBuilder: (context, index) {
-        final specialization = controller.specializations[index];
-        final isSelected = controller.selectedSpecialization.value == specialization.name;
-
-        return GestureDetector(
-          onTap: () => controller.selectSpecialization(specialization.name),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(
-                color: isSelected ? AppColors.primary : Colors.grey.shade200,
-                width: 2.w,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  specialization.icon,
-                  width: 32.w,
-                  height: 32.w,
-                  color: isSelected ? AppColors.primary : Colors.grey.shade600,
-                ),
-                12.height,
-                CustomText(
-                  specialization.name,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? AppColors.primary : Colors.black,
-                ),
-                4.height,
-                CustomText(
-                  '${specialization.availableDoctors} doctors'.tr,
-                  fontSize: 12.sp,
-                  color: Colors.grey.shade600,
-                ),
-              ],
-            ),
-          ),
+        final specialization = specializations[index];
+        return SpecializationWidget(
+          onTap: () => controller.selectSpecialization(specialization['title']),
+          title: specialization['title'],
+          availableDoctors: specialization['availableDoctors'],
         );
       },
     );
   }
-  // Widget _buildSpecializationStep() {
-  //   final specializations = controller.getSpecializations();
-  //   return GridView.builder(
-  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //       crossAxisCount: 2,
-  //       crossAxisSpacing: 16.w,
-  //       mainAxisSpacing: 16.h,
-  //       childAspectRatio: 1.6,
-  //     ),
-  //     itemCount: specializations.length,
+  //
+  // Widget _buildDoctorSelectionStep() {
+  //   final doctors = controller.getDoctors();
+  //   if (doctors.isEmpty) {
+  //     // Show a message when no doctors are available
+  //     return Align(
+  //       alignment: Alignment.center,
+  //       child: CustomText(
+  //         'No doctors available for this specialization.'.tr,
+  //         fontSize: 16.sp,
+  //         fontWeight: FontWeight.w600,
+  //         color: AppColors.textLight,
+  //       ),
+  //     );
+  //   }
+  //   return ListView.separated(
+  //     itemCount: doctors.length,
+  //     shrinkWrap: true,
+  //     physics: const BouncingScrollPhysics(),
+  //     separatorBuilder: (context, index) => 12.height,
   //     itemBuilder: (context, index) {
-  //       final specialization = specializations[index];
-  //       return SpecializationWidget(
-  //         onTap: () => controller.selectSpecialization(specialization['title']),
-  //         title: specialization['title'],
-  //         availableDoctors: specialization['availableDoctors'],
+  //       final doctor = doctors[index];
+  //       return DoctorCard(
+  //         name: doctor['name'],
+  //         specialization: doctor['specialization'],
+  //         rating: doctor['rating'],
+  //         experience: doctor['experience'],
+  //         onTap: () => controller.selectDoctor(doctor['name']),
   //       );
   //     },
   //   );
   // }
 
   Widget _buildDoctorSelectionStep() {
-    final doctors = controller.getDoctors();
-    if (doctors.isEmpty) {
-      // Show a message when no doctors are available
-      return Align(
-        alignment: Alignment.center,
-        child: CustomText(
-          'No doctors available for this specialization.'.tr,
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textLight,
-        ),
-      );
-    }
-    return ListView.separated(
-      itemCount: doctors.length,
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
-      separatorBuilder: (context, index) => 12.height,
-      itemBuilder: (context, index) {
-        final doctor = doctors[index];
-        return DoctorCard(
-          name: doctor['name'],
-          specialization: doctor['specialization'],
-          rating: doctor['rating'],
-          experience: doctor['experience'],
-          onTap: () => controller.selectDoctor(doctor['name']),
+    return Obx(() {
+      if (controller.isLoadingDoctors.value) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: AppColors.primary,
+                strokeWidth: 3,
+              ),
+              16.height,
+              CustomText(
+                'Loading doctors...'.tr,
+                fontSize: 14.sp,
+                color: AppColors.textLight,
+              ),
+            ],
+          ),
         );
-      },
-    );
-  }
+      }
 
+      if (controller.hasError.value) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                size: 48.sp,
+                color: AppColors.error,
+              ),
+              16.height,
+              CustomText(
+                'Error loading doctors'.tr,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.error,
+              ),
+              8.height,
+              CustomText(
+                controller.errorMessage.value,
+                fontSize: 14.sp,
+                color: AppColors.textLight,
+                textAlign: TextAlign.center,
+              ),
+              24.height,
+              CustomButton(
+                text: 'Try Again'.tr,
+                color: AppColors.primary,
+                width: 120.w,
+                onPressed: () => controller.loadDoctors(),
+              ),
+            ],
+          ),
+        );
+      }
+
+      if (controller.availableDoctors.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              CustomText(
+                'No doctors available'.tr,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textDark,
+              ),
+              8.height,
+              CustomText(
+                'There are currently no doctors available\nfor ${controller.selectedSpecialization.value}'.tr,
+                fontSize: 14.sp,
+                color: AppColors.textLight,
+                textAlign: TextAlign.center,
+              ),
+              24.height,
+              CustomButton(
+                text: 'Choose Another Specialty'.tr,
+                color: AppColors.primary,
+                width: 200.w,
+                onPressed: () => controller.currentStep.value = 0,
+              ),
+            ],
+          ),
+        );
+      }
+
+      return ListView.separated(
+        itemCount: controller.availableDoctors.length,
+        physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        separatorBuilder: (context, index) => 16.height,
+        itemBuilder: (context, index) {
+          final doctor = controller.availableDoctors[index];
+          return Hero(
+            tag: 'doctor-${doctor.id}',
+            child: Obx(()=> DoctorCard(
+                doctor: doctor,
+                isSelected: controller.selectedDoctorId.value == doctor.id,
+                onTap: () => controller.selectDoctor(doctor),
+              ),
+            ),
+          );
+        },
+      );
+    });
+  }
   Widget _buildConfirmationStep() {
     return Obx(() => Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
@@ -401,150 +450,152 @@ class _buildTimeSelectionStep extends GetView<AppointmentBookingController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        20.height,
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 12,
-                spreadRadius: 2,
-                offset: const Offset(0, 2),
-              )
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header Section
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(
-                      Icons.access_time_rounded,
-                      color: AppColors.primary,
-                      size: 20.sp,
-                    ),
-                  ),
-                  12.width,
-                  CustomText(
-                    'AvailableTimes'.tr,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-              16.height,
-              CustomText(
-                'Select your preferred time slot'.tr,
-                fontSize: 12.sp,
-                color: Colors.grey[600],
-              ),
-              24.height,
-
-              // Time Slots Section
-              Obx(() => Wrap(
-                    spacing: 12.w,
-                    runSpacing: 16.h,
-                    children: List.generate(
-                      controller.getAvailableTimes().length,
-                      (index) {
-                        final time = controller.getAvailableTimes()[index];
-                        final isSelected =
-                            controller.selectedTime.value == time;
-
-                        return InkWell(
-                          onTap: () => controller.selectTime(time),
-                          borderRadius: BorderRadius.circular(12.r),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12.w,
-                              vertical: 12.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? AppColors.primary
-                                  : AppColors.primary.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(
-                                color: isSelected
-                                    ? AppColors.primary
-                                    : Colors.transparent,
-                                width: 1.5.w,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.schedule,
-                                  size: 16.sp,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : AppColors.primary,
-                                ),
-                                6.height,
-                                CustomText(
-                                  time.format(context),
-                                  fontSize: 13.sp,
-                                  fontWeight: isSelected
-                                      ? FontWeight.w600
-                                      : FontWeight.normal,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.grey[800],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  )),
-
-              // Additional Info Section
-              24.height,
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Row(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          20.height,
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 12,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 2),
+                )
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header Section
+                Row(
                   children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Colors.blue[700],
-                      size: 18.sp,
+                    Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.access_time_rounded,
+                        color: AppColors.primary,
+                        size: 20.sp,
+                      ),
                     ),
                     12.width,
-                    Expanded(
-                      child: CustomText(
-                        'Appointment duration is 30 minutes'.tr,
-                        fontSize: 12.sp,
-                        color: Colors.blue[700],
-                      ),
+                    CustomText(
+                      'AvailableTimes'.tr,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
                     ),
                   ],
                 ),
-              ),
-            ],
+                16.height,
+                CustomText(
+                  'Select your preferred time slot'.tr,
+                  fontSize: 12.sp,
+                  color: Colors.grey[600],
+                ),
+                24.height,
+      
+                // Time Slots Section
+                Obx(() => Wrap(
+                      spacing: 12.w,
+                      runSpacing: 16.h,
+                      children: List.generate(
+                        controller.getAvailableTimes().length,
+                        (index) {
+                          final time = controller.getAvailableTimes()[index];
+                          final isSelected =
+                              controller.selectedTime.value == time;
+      
+                          return InkWell(
+                            onTap: () => controller.selectTime(time),
+                            borderRadius: BorderRadius.circular(12.r),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12.w,
+                                vertical: 12.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.primary.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(12.r),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : Colors.transparent,
+                                  width: 1.5.w,
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.schedule,
+                                    size: 16.sp,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : AppColors.primary,
+                                  ),
+                                  6.height,
+                                  CustomText(
+                                    time.format(context),
+                                    fontSize: 13.sp,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w600
+                                        : FontWeight.normal,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.grey[800],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )),
+      
+                // Additional Info Section
+                24.height,
+                Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: Colors.blue[700],
+                        size: 18.sp,
+                      ),
+                      12.width,
+                      Expanded(
+                        child: CustomText(
+                          'Appointment duration is 30 minutes'.tr,
+                          fontSize: 12.sp,
+                          color: Colors.blue[700],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
