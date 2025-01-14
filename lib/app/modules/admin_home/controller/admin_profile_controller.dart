@@ -63,8 +63,8 @@ class AdminProfileController extends GetxController {
     doctors.value = [
       DoctorModel(
         id: '1',
-        firstName: 'أمين',
-        lastName: 'أمين',
+        firstName: 'Ameen',
+        lastName: 'Mohamed',
         email: 'aminamin@gmail.com',
         phoneNo: '+970 59-123-4567',
         speciality: 'Cardiology',
@@ -78,8 +78,8 @@ class AdminProfileController extends GetxController {
       ),
       DoctorModel(
         id: '2',
-        firstName: 'أمين',
-        lastName: 'أمين',
+        firstName: 'Sarah',
+        lastName: 'Ahmed',
         email: 'aminamin@gmail.com',
         phoneNo: '+970 59-234-5678',
         speciality: 'Pediatrics',
@@ -96,8 +96,8 @@ class AdminProfileController extends GetxController {
     patients.value = [
       PatientModel(
         id: '1',
-        firstName: 'محمد',
-        lastName: 'أحمد',
+        firstName: 'Mohamed',
+        lastName: 'Ahmed',
         email: 'mohammed@gmail.com',
         phoneNo: '+970 59-876-5432',
         age: '35',
@@ -106,8 +106,8 @@ class AdminProfileController extends GetxController {
       ),
       PatientModel(
         id: '2',
-        firstName: 'فاطمة',
-        lastName: 'علي',
+        firstName: 'Fatema',
+        lastName: 'Ali',
         email: 'fatima@gmail.com',
         phoneNo: '+970 59-765-4321',
         age: '28',

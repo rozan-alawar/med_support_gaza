@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
@@ -14,7 +15,9 @@ class AdminProfile extends GetView<AdminProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => AdminProfileController(),);
+    Get.lazyPut(
+      () => AdminProfileController(),
+    );
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -236,7 +239,7 @@ class AdminProfile extends GetView<AdminProfileController> {
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                     ),
-                    4.height,
+                    8.height,
                     CustomText(
                       doctor.email,
                       fontSize: 12.sp,
@@ -245,30 +248,24 @@ class AdminProfile extends GetView<AdminProfileController> {
                   ],
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.delete_outline, color: Colors.red),
-                onPressed: () => controller.deleteUser(doctor.id, true),
-              ),
             ],
           ),
-          12.height,
-          InkWell(
-            onTap: () => controller.sendEmailToDoctor(doctor.id),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8.h),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Center(
-                child: CustomText(
-                  'send_email'.tr,
-                  fontSize: 12.sp,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+          20.height,
+          Row(
+            children: [
+              Expanded(
+                  child: CustomButton(
+                      text: 'delete_user'.tr,
+                      color: Colors.red,
+                      onPressed: () => controller.deleteUser(doctor.id, true))),
+              20.width,
+              Expanded(
+                  child: CustomButton(
+                      text: 'send_email'.tr,
+                      color: AppColors.primary,
+                      onPressed: () =>
+                          controller.sendEmailToDoctor(doctor.id))),
+            ],
           ),
         ],
       ),
