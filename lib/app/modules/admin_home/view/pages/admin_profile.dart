@@ -1,42 +1,276 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/data/models/patient_model.dart';
 
 import '../../controller/admin_profile_controller.dart';
 
-class AdminProfile extends StatelessWidget {
+class AdminProfile extends GetView<AdminProfileController> {
   const AdminProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AdminProfileController controller = Get.put(AdminProfileController());
-
-    return Scaffold(
-      body: ListTile(
-        title: const CustomText('Logout'),
-        leading: const Icon(Icons.logout),
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Confirm Logout'),
-              content: const Text('Are you sure you want to log out?'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
+    Get.lazyPut(() => AdminProfileController(),);
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              _buildSearchBar(),
+              _buildTabs(),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    _buildPatientsList(),
+                    _buildDoctorsList(),
+                  ],
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    controller.logout();
-                  },
-                  child: const Text('Logout'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      color: Colors.white,
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: 'search'.tr,
+          prefixIcon: Icon(Icons.search, color: Colors.grey),
+          filled: true,
+          fillColor: Colors.grey[100],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.r),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 12.h,
+          ),
+        ),
+        onChanged: controller.onSearchChanged,
+      ),
+    );
+  }
+
+  Widget _buildTabs() {
+    return Container(
+      color: Colors.white,
+      child: TabBar(
+        indicatorColor: AppColors.primary,
+        labelColor: AppColors.primary,
+        unselectedLabelColor: Colors.grey,
+        tabs: [
+          Tab(text: 'patients'.tr),
+          Tab(text: 'doctors'.tr),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPatientsList() {
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      final patients = controller.filteredPatients;
+      if (patients.isEmpty) {
+        return Center(child: Text('no_patients_found'.tr));
+      }
+
+      return RefreshIndicator(
+        onRefresh: controller.refreshUsers,
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          itemCount: patients.length,
+          itemBuilder: (context, index) => _buildPatientCard(patients[index]),
+        ),
+      );
+    });
+  }
+
+  Widget _buildDoctorsList() {
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      final doctors = controller.filteredDoctors;
+      if (doctors.isEmpty) {
+        return Center(child: Text('no_doctors_found'.tr));
+      }
+
+      return RefreshIndicator(
+        onRefresh: controller.refreshUsers,
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          itemCount: doctors.length,
+          itemBuilder: (context, index) => _buildDoctorCard(doctors[index]),
+        ),
+      );
+    });
+  }
+
+  Widget _buildPatientCard(PatientModel patient) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 25.r,
+            child: Text(
+              patient.firstName[0].toUpperCase(),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          16.width,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  '${patient.firstName} ${patient.lastName}',
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+                4.height,
+                CustomText(
+                  patient.email,
+                  fontSize: 12.sp,
+                  color: Colors.grey[600],
+                ),
+                4.height,
+                Row(
+                  children: [
+                    Icon(Icons.phone, size: 14.sp, color: Colors.grey),
+                    4.width,
+                    CustomText(
+                      patient.phoneNo,
+                      fontSize: 12.sp,
+                      color: Colors.grey[600],
+                    ),
+                  ],
                 ),
               ],
             ),
-          );
-        },
+          ),
+          IconButton(
+            icon: Icon(Icons.delete_outline, color: Colors.red),
+            onPressed: () => controller.deleteUser(patient.id!, false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDoctorCard(DoctorModel doctor) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              if (doctor.profileImage != null)
+                CircleAvatar(
+                  radius: 25.r,
+                  backgroundImage: NetworkImage(doctor.profileImage!),
+                )
+              else
+                CircleAvatar(
+                  radius: 25.r,
+                  child: Text(
+                    doctor.firstName[0].toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              16.width,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      '${doctor.firstName} ${doctor.lastName}',
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    4.height,
+                    CustomText(
+                      doctor.email,
+                      fontSize: 12.sp,
+                      color: Colors.grey[600],
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.delete_outline, color: Colors.red),
+                onPressed: () => controller.deleteUser(doctor.id, true),
+              ),
+            ],
+          ),
+          12.height,
+          InkWell(
+            onTap: () => controller.sendEmailToDoctor(doctor.id),
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 8.h),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Center(
+                child: CustomText(
+                  'send_email'.tr,
+                  fontSize: 12.sp,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -17,8 +17,9 @@ class AdminHome extends StatelessWidget {
     final AdminHomeController controller = Get.put(AdminHomeController());
 
     return Scaffold(
+
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(
@@ -37,11 +38,12 @@ class AdminHome extends StatelessWidget {
           case 0:
             return const InsightsPage();
           case 1:
-            return const AdminDoctors();
+            return const AdminProfile();
           case 2:
-            return const AdminProfile();
+            return  Container();
+
           case 3:
-            return const AdminProfile();
+            return const AdminDoctors();
           default:
             return const SizedBox();
         }
