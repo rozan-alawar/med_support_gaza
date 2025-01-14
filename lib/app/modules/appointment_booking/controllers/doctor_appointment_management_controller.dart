@@ -11,6 +11,34 @@ class DoctorAppointmentManagementController extends GetxController {
   var selectedDate = DateTime.now().obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   var appointments = <Map<String, dynamic>> [
+  ].obs;
+
+
+  var dayilyappointments = <Map<String, dynamic>> [
+    {
+      'patientName': 'المريض أحمد أحمد',
+      'date': '12 يناير',
+      'time': '10:00 صباحاً',
+    },
+    {
+      'patientName': 'المريض محمد محمد',
+      'date': '12 يناير',
+      'time': '11:00 صباحاً',
+    },
+    {
+      'patientName': 'المريض علي علي',
+      'date': '12 يناير',
+      'time': '12:00 مساءً',
+    },
+     {
+      'patientName': 'المريض علي علي',
+      'date': '12 يناير',
+      'time': '12:00 مساءً',
+    },
+
+  ].obs;
+
+var appointments2 = <Map<String, dynamic>> [
    
 
   ].obs;
@@ -209,7 +237,7 @@ class DoctorAppointmentManagementController extends GetxController {
   void deleteAppointment(int index) async {
     try {
       // Get the selected appointment details
-      final appointmentToDelete = appointments[index];
+      final appointmentToDelete = appointments2[index];
 
       // Remove it from the local list
       appointments.removeAt(index);
@@ -224,7 +252,7 @@ class DoctorAppointmentManagementController extends GetxController {
           .collection('availableAppointments')
           .where('date', isEqualTo: appointmentToDelete['date'])
           .where('period', isEqualTo: appointmentToDelete['period'])
-          .where('time', isEqualTo: appointmentToDelete['time'])
+          .where('startTime', isEqualTo: appointmentToDelete['time'])
           .get()
           .then((querySnapshot) {
         for (var doc in querySnapshot.docs) {
@@ -285,14 +313,18 @@ class DoctorAppointmentManagementController extends GetxController {
           'time':
               data['startTime']?.toString() ?? '', // Explicitly cast to String
         });
+
+         appointments2.add({
+          'date':data['date'] , // Explicitly cast to String
+          'period':
+              data['period'], // Explicitly cast to String
+          'time':
+              data['startTime'], // Explicitly cast to String
+        });
       }
 
 // Assign the mapped appointments to the observable list
       appointments.value = tempAppointments;
-
-      // Optional: Show a success message
-      Get.snackbar('Success', 'Appointments loaded successfully',
-          snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
       // Handle errors
       Get.snackbar('Error', 'Failed to load appointments: $e',

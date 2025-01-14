@@ -10,6 +10,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../appointment_booking/controllers/doctor_appointment_management_controller.dart';
 import '../../appointment_booking/views/doctor_appointment_management_view.dart';
 import '../controllers/doctor_home_controller.dart';
+import 'doctor_main_view.dart';
 
 class DocotrHomeView extends GetView<DoctorHomeController> {
   DocotrHomeView({super.key});
@@ -20,15 +21,23 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
     Get.lazyPut(()=>DoctorProfileController());
     return SafeArea(
       child: Scaffold(
-
+         appBar: AppBar(
+            actions: [
+            IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                IconAssets.bell,
+              ),
+            )
+          ],
+         ),
         body: Obx(
           () => Align(
-            //  alignment: ,
             child: IndexedStack(
               alignment: Alignment.topRight,
               index: controller.currentIndex.value,
               children: [
-                Center(),
+                DoctorMainView(),
                 Center(),
                 DoctorAppointmentManagementView(),
                 DoctorProfileView(),

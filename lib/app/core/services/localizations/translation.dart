@@ -163,14 +163,23 @@ class Translation extends Translations {
           "November": 'نوفمبر',
           "December": 'ديسمبر',
 
-            // DAYS
+          // DAYS
           "Sunday": 'الأحد',
           "Monday": 'الاثنين',
           "Tuesday": 'الثلاثاء',
           "Wednesday": 'الأربعاء',
           "Thursday": 'الخميس',
           "Friday": 'الجمعة',
-          "Saturday": 'السبت'
+          "Saturday": 'السبت',
+
+          'daily_schedule': 'جدول المواعيد اليومية',
+          'no_appointment_message': 'لا يوجد مواعيد حالياً',
+          'cancel_appointment': 'الغاء الموعد',
+          'more': 'المزيد>',
+          'quick_statistics': 'الاحصائيات السريعة',
+          'Number of unread messages' : 'عدد الرسائل غير المقروءة',
+          'Unread message from patients': 'رسالة غير مقروءة من المرضى',
+          'Show details':'عرض التفاصيل'
         },
         'en': {
           'Hello': 'Hello',
@@ -305,7 +314,17 @@ class Translation extends Translations {
           "Wednesday": 'Wed',
           "Thursday": 'Thu',
           "Friday": 'Fri',
-          "Saturday": 'Sat'
+          "Saturday": 'Sat',
+
+          'time_management': 'Time Management',
+          'daily_schedule': 'Daily appointment schedule',
+          'no_appointment_message': 'No appointments currently',
+          'cancel_appointment': 'Cancel Appointment',
+          'more': 'more >',
+          'quick_statistics': 'Quick Statistics',
+          'Number of unread messages':'Number of unread messages',
+          'Unread message from patients' : 'Unread message from patients' ,
+          'Show details': 'Show details',
         },
       };
 }
