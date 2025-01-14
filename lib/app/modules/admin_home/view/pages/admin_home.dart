@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_doctors.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_insights.dart';
@@ -38,6 +40,8 @@ class AdminHome extends StatelessWidget {
             return const AdminDoctors();
           case 2:
             return const AdminProfile();
+          case 3:
+            return const AdminProfile();
           default:
             return const SizedBox();
         }
@@ -50,18 +54,47 @@ class AdminHome extends StatelessWidget {
           onTap: (index) {
             controller.changeTab(index);
           },
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.insights),
-              label: '',
+              activeIcon: SvgPicture.asset(
+                IconAssets.dashboard,
+                color: AppColors.accent,
+              ),
+              icon: SvgPicture.asset(
+                IconAssets.dashboard,
+
+              ),
+              label: 'Dashboard'.tr,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.medical_services),
-              label: '',
+              activeIcon: SvgPicture.asset(
+                IconAssets.userManagment,
+                color: AppColors.accent,
+              ),
+              icon: SvgPicture.asset(
+                IconAssets.userManagment,
+              ),
+              label: 'userManagment'.tr,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: '',
+              activeIcon: SvgPicture.asset(
+                IconAssets.contentManagment,
+                color: AppColors.accent,
+              ),
+              icon: SvgPicture.asset(
+                IconAssets.contentManagment,
+              ),
+              label: 'contentManagment'.tr,
+            ),
+            BottomNavigationBarItem(
+              activeIcon: SvgPicture.asset(
+                IconAssets.serviceManagment,
+                color: AppColors.accent,
+              ),
+              icon: SvgPicture.asset(
+                IconAssets.serviceManagment,
+              ),
+              label: 'serviceManagment'.tr,
             ),
           ],
         ),
