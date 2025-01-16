@@ -17,6 +17,21 @@ class AdminHomeController extends GetxController {
   void changeTab(int index) {
     selectedIndex.value = index;
   }
+  String getPageTitle() {
+    switch (selectedIndex.value) {
+      case 0:
+        return 'Dashboard'.tr;
+      case 1:
+        return 'userManagment'.tr;
+      case 2:
+        return 'contentManagment'.tr;
+      case 3:
+        return 'serviceManagment'.tr;
+      default:
+        return '';
+    }
+  }
+
 
   Future<void> getPatientsCount() async {
     try {

@@ -25,7 +25,7 @@ class AddNewArticle extends GetView<ContentController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              20.height,
+              // 20.height,
               _buildImageUpload(),
               20.height,
               CustomText(
@@ -47,10 +47,10 @@ class AddNewArticle extends GetView<ContentController> {
               ),
               8.height,
               Container(
-                height: 300.h,
+                height: 250.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+                  // border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                 ),
                 child: TextFormField(
                   controller: controller.contentController,
