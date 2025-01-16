@@ -250,11 +250,14 @@ class AdminProfile extends GetView<AdminProfileController> {
               ),
             ],
           ),
-          20.height,
+          30.height,
           Row(
             children: [
               Expanded(
                   child: CustomButton(
+                    height: 35.h,
+                      fontSize: 11.sp,
+
                       text: 'delete_user'.tr,
                       color: Colors.red,
                       onPressed: () => controller.deleteUser(doctor.id, true))),
@@ -262,6 +265,9 @@ class AdminProfile extends GetView<AdminProfileController> {
               Expanded(
                   child: CustomButton(
                       text: 'send_email'.tr,
+                      fontSize: 11.sp,
+                      height: 35.h,
+
                       color: AppColors.primary,
                       onPressed: () =>
                           controller.sendEmailToDoctor(doctor.id))),

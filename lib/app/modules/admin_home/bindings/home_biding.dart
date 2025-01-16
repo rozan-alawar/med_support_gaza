@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/modules/admin_home/controller/admin_auth_controller.dart';
+import 'package:med_support_gaza/app/modules/admin_home/controller/admin_content_controller.dart';
 import 'package:med_support_gaza/app/modules/admin_home/controller/admin_doctors_controller.dart';
 
 import '../../../data/firebase_services/firebase_services.dart';
@@ -19,6 +20,9 @@ class AdminBinding extends Bindings {
     );
     Get.lazyPut<AdminDoctorsController>(
       () => AdminDoctorsController(),
+    );
+    Get.lazyPut<ContentController>(
+          () => ContentController(),
     );
   }
 }

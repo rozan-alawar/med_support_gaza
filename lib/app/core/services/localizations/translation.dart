@@ -206,6 +206,38 @@ class Translation extends Translations {
           'confirm_delete': 'تأكيد الحذف',
           'error': 'خطأ',
           'success': 'نجاح',
+
+
+          // Content Management
+          'content_management': 'إدارة المحتوى',
+          'content_list': 'المحتوى',
+          'add_new': 'إضافة جديد',
+          'search': 'بحث',
+          'no_content': 'لا يوجد محتوى',
+          'article_title': 'عنوان المقال',
+          'enter_article_title': 'أدخل عنوان المقال',
+          'article_content': 'محتوى المقال',
+          'write_article_content': 'اكتب محتوى المقال...',
+          'publish': 'نشر',
+          'title_required': 'العنوان مطلوب',
+          'content_required': 'المحتوى مطلوب',
+          'content_saved': 'تم حفظ المحتوى بنجاح',
+          'save_error': 'فشل في حفظ المحتوى',
+          'load_error': 'فشل في تحميل المحتوى',
+
+          // Health Content
+          'flu_protection': 'كيف تحمي نفسك من الإنفلونزا؟',
+          'seasonal_precautions': 'تعرف على أهم الإجراءات الوقائية من الإنفلونزا خلال المواسم',
+          'health': 'صحة',
+          'prevention': 'وقاية',
+          'flu': 'إنفلونزا',
+
+          'article_image': 'صورة المقال',
+          'tap_to_upload_image': 'انقر لتحميل صورة',
+          'image_pick_error': 'فشل في اختيار الصورة',
+          'image_required': 'الصورة مطلوبة',
+
+
         },
         'en': {
           'Hello': 'Hello',
@@ -378,6 +410,33 @@ class Translation extends Translations {
           'confirm_delete': 'Confirm Delete',
           'error': 'Error',
           'success': 'Success',
+
+          // Content Management
+          'content_management': 'Content Management',
+          'content_list': 'Content',
+          'add_new': 'Add New',
+          'no_content': 'No content available',
+          'article_title': 'Article Title',
+          'enter_article_title': 'Enter article title',
+          'article_content': 'Article Content',
+          'write_article_content': 'Write article content...',
+          'publish': 'Publish',
+          'title_required': 'Title is required',
+          'content_required': 'Content is required',
+          'content_saved': 'Content saved successfully',
+          'save_error': 'Failed to save content',
+          'load_error': 'Failed to load content',
+
+          // Health Content
+          'flu_protection': 'How to Protect Yourself from the Flu?',
+          'seasonal_precautions': 'Learn about important preventive measures against flu during seasons',
+          'health': 'Health',
+          'prevention': 'Prevention',
+          'flu': 'Flu',
+          'article_image': 'Article Image',
+          'tap_to_upload_image': 'Tap to upload image',
+          'image_pick_error': 'Failed to pick image',
+          'image_required': 'Image is required',
         },
       };
 }

@@ -3,9 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_content_management_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_doctors.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_insights.dart';
-import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_profile.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_user_management_view.dart';
 
 import '../../controller/admin_home_controller.dart';
 
@@ -40,7 +41,7 @@ class AdminHome extends StatelessWidget {
           case 1:
             return const AdminProfile();
           case 2:
-            return  Container();
+            return  AdminContentManagementView();
 
           case 3:
             return const AdminDoctors();

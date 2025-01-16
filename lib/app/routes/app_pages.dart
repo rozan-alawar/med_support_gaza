@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/modules/admin_home/bindings/home_biding.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_auth.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_content_management_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_home.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_new_article_view.dart';
 import 'package:med_support_gaza/app/modules/profile/views/doctor_edit_profile_view.dart';
 import 'package:med_support_gaza/app/modules/profile/views/doctor_profile_view.dart';
 
@@ -158,6 +160,11 @@ class AppPages {
       name: _Paths.DOCTOR_DAILY_SCHEDULE,
       page: () => DailyScheduleView(),
       binding: DoctorAppointmentManagementBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_CONTETNT,
+      page: () => AddNewArticle(),
+      binding: AdminBinding(),
     )
   ];
 }
