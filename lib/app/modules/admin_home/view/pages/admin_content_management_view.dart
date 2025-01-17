@@ -3,37 +3,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
-import 'package:med_support_gaza/app/data/models/health_content_model.dart';
 import 'package:med_support_gaza/app/modules/admin_home/controller/admin_content_controller.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/widgets/content_card.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class AdminContentManagementView extends GetView<ContentController> {
+  const AdminContentManagementView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: AppColors.primary,
-        //   elevation: 0,
-        //   title: CustomText(
-        //     'إدارة المحتوى',
-        //     color: Colors.white,
-        //     fontSize: 18.sp,
-        //     fontWeight: FontWeight.bold,
-        //   ),
-        //   bottom: TabBar(
-        //     onTap: (index) => controller.selectedTabIndex.value = index,
-        //     tabs: [
-        //       Tab(text: 'المحتوى'),
-        //       Tab(text: 'إضافة جديد'),
-        //     ],
-        //   ),
-        // ),
+
         body: _buildContentList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Get.toNamed(Routes.ADD_CONTENT),

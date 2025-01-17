@@ -8,15 +8,15 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
 
-import '../../controller/admin_profile_controller.dart';
+import '../../controller/admin_user_management_controller.dart';
 
-class AdminProfile extends GetView<AdminProfileController> {
-  const AdminProfile({super.key});
+class AdminUserManagementView extends GetView<AdminUserManagementController> {
+  const AdminUserManagementView({super.key});
 
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(
-      () => AdminProfileController(),
+      () => AdminUserManagementController(),
     );
     return DefaultTabController(
       length: 2,
@@ -46,10 +46,19 @@ class AdminProfile extends GetView<AdminProfileController> {
     return Container(
       padding: EdgeInsets.all(16.w),
       color: Colors.white,
+    // child:  Padding(
+        // padding: EdgeInsets.all(16.w),
+        // child: CustomTextField(
+        //   hintText: 'search'.tr,
+        //   onChanged: controller.onSearchChanged,
+        //   prefixIcon: Icons.search,
+        //
+        // ),
+      // ),
       child: TextFormField(
         decoration: InputDecoration(
           hintText: 'search'.tr,
-          prefixIcon: Icon(Icons.search, color: Colors.grey),
+          prefixIcon: const Icon(Icons.search, color: Colors.grey),
           filled: true,
           fillColor: Colors.grey[100],
           border: OutlineInputBorder(
@@ -84,7 +93,7 @@ class AdminProfile extends GetView<AdminProfileController> {
   Widget _buildPatientsList() {
     return Obx(() {
       if (controller.isLoading.value) {
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       }
 
       final patients = controller.filteredPatients;
@@ -106,7 +115,7 @@ class AdminProfile extends GetView<AdminProfileController> {
   Widget _buildDoctorsList() {
     return Obx(() {
       if (controller.isLoading.value) {
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       }
 
       final doctors = controller.filteredDoctors;
@@ -136,7 +145,7 @@ class AdminProfile extends GetView<AdminProfileController> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -185,7 +194,7 @@ class AdminProfile extends GetView<AdminProfileController> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete_outline, color: Colors.red),
+            icon: const Icon(Icons.delete_outline, color: Colors.red),
             onPressed: () => controller.deleteUser(patient.id!, false),
           ),
         ],
@@ -204,7 +213,7 @@ class AdminProfile extends GetView<AdminProfileController> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),

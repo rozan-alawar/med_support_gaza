@@ -52,9 +52,9 @@ class AdminHome extends StatelessWidget {
             case 0:
               return const InsightsPage();
             case 1:
-              return const AdminProfile();
+              return const AdminUserManagementView();
             case 2:
-              return AdminContentManagementView();
+              return const AdminContentManagementView();
       
             case 3:
               return const AdminDoctors();

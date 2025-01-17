@@ -6,7 +6,7 @@ import 'package:med_support_gaza/app/data/models/patient_model.dart';
 
 import '../../../routes/app_pages.dart';
 
-class AdminProfileController extends GetxController {
+class AdminUserManagementController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final doctors = <DoctorModel>[].obs;
   final patients = <PatientModel>[].obs;
@@ -174,7 +174,7 @@ class AdminProfileController extends GetxController {
         return;
       }
 
-      final collection = isDoctor ? 'doctors' : 'patients';
+      // final collection = isDoctor ? 'doctors' : 'patients';
       // await _firestore.collection(collection).doc(userId).delete();
       // await fetchUsers();
 

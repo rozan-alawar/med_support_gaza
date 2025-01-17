@@ -55,14 +55,15 @@ class ContentController extends GetxController {
       isLoading.value = true;
 
       String imageUrl = await uploadImage(selectedImage.value!);
+      print("Saved!!!!");
 
       final content = HealthContentModel(
         title: titleController.text.trim(),
         content: contentController.text.trim(),
-        imageUrl:imageUrl, // Replace with actual uploaded image URL
+        imageUrl:imageUrl, 
       );
 
-      await Future.delayed(Duration(seconds: 1)); // Simulate API call
+      await Future.delayed(Duration(seconds: 1)); 
 
       contentList.add(content);
       filteredContent.value = contentList;
