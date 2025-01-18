@@ -3,6 +3,7 @@ import 'package:med_support_gaza/app/modules/admin_home/bindings/home_biding.dar
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_auth.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_home.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_new_article_view.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_notification_view.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_booking_view.dart';
 import 'package:med_support_gaza/app/modules/profile/views/doctor_edit_profile_view.dart';
 import 'package:med_support_gaza/app/modules/profile/views/doctor_profile_view.dart';
@@ -172,15 +173,10 @@ class AppPages {
       binding: DoctorAppointmentManagementBinding(),
     ),
 
-    GetPage(
-      name: _Paths.UPDATE_ARTICLE,
-      page: () => DoctorBookingView(),
-      binding: AdminBinding(),
-    ),
 
     GetPage(
       name: _Paths.ADMIN_NOTIFICATION,
-      page: () => DoctorBookingView(),
+      page: () => AdminNotificationView(),
       binding: AdminBinding(),
     ),
 

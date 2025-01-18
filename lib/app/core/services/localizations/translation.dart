@@ -188,7 +188,6 @@ class Translation extends Translations {
           // User Management Screen
           'search': 'بحث',
           'patients': 'المرضى',
-          'doctors': 'الأطباء',
           'no_patients_found': 'لا يوجد مرضى',
           'no_doctors_found': 'لا يوجد أطباء',
           'send_email': 'ارسال رسالة عبر البريد الالكتروني',
@@ -224,14 +223,10 @@ class Translation extends Translations {
           'save_error': 'فشل في حفظ المحتوى',
           'load_error': 'فشل في تحميل المحتوى',
           // Content Management
-          'content_management': 'إدارة المحتوى',
-          'content_list': 'قائمة المحتوى',
+
           'add_new_article': 'إضافة مقال جديد',
           'update_article': 'تحديث المقال',
-          'article_title': 'عنوان المقال',
-          'enter_article_title': 'أدخل عنوان المقال',
-          'article_content': 'محتوى المقال',
-          'write_article_content': 'اكتب محتوى المقال...',
+
           'article_image': 'صورة المقال',
           'tap_to_upload_image': 'انقر لتحميل الصورة',
           'image_load_error': 'فشل تحميل الصورة',
@@ -266,6 +261,16 @@ class Translation extends Translations {
           'Status': 'الحالة',
           'Approved': 'مقبول',
           'Pending': 'قيد الانتظار',
+
+          // Notification Translations
+          'notifications': 'الإشعارات',
+          'today': 'اليوم',
+          'yesterday': 'أمس',
+          'no_notifications': 'لا توجد إشعارات',
+          'mark_all_read': 'تحديد الكل كمقروء',
+          'clear_all_notifications': 'مسح كل الإشعارات',
+          'doctor_acceptance_request': 'أرسل الطبيب طلب قبول',
+          'article_published': 'تم نشر المقال',
         },
         'en': {
           'Hello': 'Hello',
@@ -491,6 +496,16 @@ class Translation extends Translations {
           'prevention_tips': 'Prevention Tips',
           'health_tips': 'Health Tips',
           'seasonal_advice': 'Seasonal Advice',
+
+          // Notification Translations
+          'notifications': 'Notifications',
+          'today': 'Today',
+          'yesterday': 'Yesterday',
+          'no_notifications': 'No notifications',
+          'mark_all_read': 'Mark all as read',
+          'clear_all_notifications': 'Clear all notifications',
+          'doctor_acceptance_request': 'Doctor sent acceptance request',
+          'article_published': 'Article has been published',
         },
       };
 }

@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/modules/admin_home/controller/admin_notification_controller.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_content_management_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_doctors.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_insights.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_user_management_view.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 import '../../controller/admin_home_controller.dart';
 
@@ -25,7 +27,7 @@ class AdminHome extends StatelessWidget {
           backgroundColor: Colors.white,
           title: Obx(() => CustomText(
                 controller.getPageTitle(),
-                fontSize: 17.sp,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textDark,
               )),
@@ -39,7 +41,7 @@ class AdminHome extends StatelessWidget {
                 height: 26.h,
               ),
               onPressed: () {
-                controller.getPatientsCount();
+             Get.toNamed(Routes.ADMIN_NOTIFICATION);
               },
             ),
           )),
