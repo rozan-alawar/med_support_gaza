@@ -31,6 +31,7 @@ class AppTheme {
         ),
       ),
       appBarTheme: const AppBarTheme(
+        toolbarHeight: 70,
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: AppColors.textLight),
       ),

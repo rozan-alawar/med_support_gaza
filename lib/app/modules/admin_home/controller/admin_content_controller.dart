@@ -1,11 +1,10 @@
-
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../data/models/health_content_model.dart';
 import 'dart:io';
+
 class ContentController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
@@ -18,11 +17,22 @@ class ContentController extends GetxController {
   final RxList<HealthContentModel> contentList = <HealthContentModel>[].obs;
   final RxList<HealthContentModel> filteredContent = <HealthContentModel>[].obs;
   final Rxn<PlatformFile> selectedImage = Rxn<PlatformFile>();
-  final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  final RxDouble uploadProgress = 0.0.obs;
+  @override
+  void onInit() {
+    super.onInit();
+    loadContent();
+    searchController.addListener(_onSearchChanged);
+  }
 
-  // Add this method
+  @override
+  void onClose() {
+    titleController.dispose();
+    contentController.dispose();
+    searchController.dispose();
+    super.onClose();
+  }
+
   Future<void> pickImage() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -54,27 +64,24 @@ class ContentController extends GetxController {
     try {
       isLoading.value = true;
 
-      String imageUrl = await uploadImage(selectedImage.value!);
-      print("Saved!!!!");
+      final String imagePath = selectedImage.value!.path!;
 
       final content = HealthContentModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
         title: titleController.text.trim(),
         content: contentController.text.trim(),
-        imageUrl:imageUrl, 
+        imageUrl: imagePath,
       );
-
-      await Future.delayed(Duration(seconds: 1)); 
 
       contentList.add(content);
       filteredContent.value = contentList;
+      Get.back();
 
       CustomSnackBar.showCustomSnackBar(
         title: 'success'.tr,
         message: 'content_saved'.tr,
       );
 
-      clearForm();
-      Get.back();
 
     } catch (e) {
       CustomSnackBar.showCustomErrorSnackBar(
@@ -84,54 +91,6 @@ class ContentController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  }
-
-  Future<String> uploadImage(PlatformFile file) async {
-    try {
-      final String fileName = '${DateTime.now().millisecondsSinceEpoch}_${file.name}';
-
-      // Create storage reference
-      final Reference storageRef = _storage.ref().child('article_images/$fileName');
-
-      // Create upload task
-      final UploadTask uploadTask = storageRef.putFile(File(file.path!));
-
-      // Track upload progress
-      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-        uploadProgress.value = snapshot.bytesTransferred / snapshot.totalBytes;
-      });
-
-      // Wait for upload to complete and get download URL
-      final TaskSnapshot taskSnapshot = await uploadTask;
-      final String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-
-      return downloadUrl;
-
-    } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'error'.tr,
-        message: 'image_upload_error'.tr,
-      );
-      throw e;
-    } finally {
-      uploadProgress.value = 0.0;
-    }
-  }
-
-
-  @override
-  void onInit() {
-    super.onInit();
-    loadContent();
-    searchController.addListener(_onSearchChanged);
-  }
-
-  @override
-  void onClose() {
-    titleController.dispose();
-    contentController.dispose();
-    searchController.dispose();
-    super.onClose();
   }
 
   void _onSearchChanged() {
@@ -150,8 +109,7 @@ class ContentController extends GetxController {
   Future<void> loadContent() async {
     try {
       isLoading.value = true;
-      // TODO: Implement actual API call
-      await Future.delayed(Duration(seconds: 1)); // Simulate API call
+      await Future.delayed(Duration(seconds: 1)); // Simulate loading
 
       final mockData = [
         HealthContentModel(
@@ -159,16 +117,13 @@ class ContentController extends GetxController {
           title: 'كيف تحمي نفسك من الإنفلونزا؟',
           content: 'تعرف على أهم الإجراءات الوقائية من إنفلونزا خلال المواسم المختلفة',
           imageUrl: 'assets/images/heart.png',
-          // tags: ['صحة', 'وقاية', 'إنفلونزا'],
         ),
         HealthContentModel(
           id: '2',
           title: 'flu_protection'.tr,
           content: 'seasonal_precautions'.tr,
           imageUrl: 'assets/images/heart.png',
-          // tags: ['صحة', 'وقاية', 'إنفلونزا'],
         ),
-        // Add more mock data
       ];
 
       contentList.value = mockData;
@@ -184,45 +139,13 @@ class ContentController extends GetxController {
     }
   }
 
-  // Future<void> saveContent() async {
-  //   if (!formKey.currentState!.validate()) return;
-  //
-  //   try {
-  //     isLoading.value = true;
-  //
-  //     final content = HealthContentModel(
-  //       title: titleController.text.trim(),
-  //       content: contentController.text.trim(),
-  //     );
-  //
-  //     // TODO: Implement actual API call
-  //     await Future.delayed(Duration(seconds: 1)); // Simulate API call
-  //
-  //     contentList.add(content);
-  //     filteredContent.value = contentList;
-  //
-  //     CustomSnackBar.showCustomSnackBar(
-  //       title: 'Success',
-  //       message: 'content_saved'.tr,
-  //     );
-  //
-  //     clearForm();
-  //     Get.back();
-  //
-  //   } catch (e) {
-  //     CustomSnackBar.showCustomErrorSnackBar(
-  //       title: 'Error',
-  //       message: 'save_error'.tr,
-  //     );
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
   void clearForm() {
     titleController.clear();
     contentController.clear();
+    selectedImage.value = null;
     isEditing.value = false;
+    Get.back();
+
   }
 
   String? validateTitle(String? value) {
@@ -237,5 +160,47 @@ class ContentController extends GetxController {
       return 'content_required'.tr;
     }
     return null;
+  }
+
+  Future<void> updateArticle(String id) async {
+    if (!formKey.currentState!.validate()) return;
+
+    try {
+      isLoading.value = true;
+
+      final updatedContent = HealthContentModel(
+        id: id,
+        title: titleController.text.trim(),
+        content: contentController.text.trim(),
+        imageUrl: selectedImage.value?.path ??
+            contentList.firstWhere((element) => element.id == id).imageUrl,
+      );
+
+      final index = contentList.indexWhere((element) => element.id == id);
+      if (index != -1) {
+        contentList[index] = updatedContent;
+        filteredContent.value = contentList;
+
+        // First navigate back
+        Get.back();
+
+        // Then show success message
+        await Future.delayed(Duration(milliseconds: 300));  // Small delay to ensure navigation is complete
+        CustomSnackBar.showCustomSnackBar(
+          title: 'success'.tr,
+          message: 'article_updated'.tr,
+        );
+      }
+
+      clearForm();
+
+    } catch (e) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'error'.tr,
+        message: 'update_error'.tr,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

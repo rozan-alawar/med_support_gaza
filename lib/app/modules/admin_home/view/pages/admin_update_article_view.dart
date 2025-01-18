@@ -1,4 +1,5 @@
-import 'dart:io';
+// lib/app/modules/admin_home/view/update_article_view.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,15 +8,31 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
+
+import 'dart:io';
+
+import 'package:med_support_gaza/app/data/models/health_content_model.dart';
 import 'package:med_support_gaza/app/modules/admin_home/controller/admin_content_controller.dart';
 
-class AddNewArticle extends GetView<ContentController> {
-  const AddNewArticle({super.key});
+class UpdateArticleView extends GetView<ContentController> {
+  final HealthContentModel article;
+
+  const UpdateArticleView({Key? key, required this.article}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: CustomText(
+          'update_article'.tr,
+          fontSize: 18.sp,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textDark,
+        ),
+        centerTitle: true,
+
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),
         child: Form(
@@ -24,7 +41,7 @@ class AddNewArticle extends GetView<ContentController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               20.height,
-              _buildImageUploadSection(),
+              _buildImageSection(),
               20.height,
               CustomText(
                 'article_title'.tr,
@@ -34,7 +51,7 @@ class AddNewArticle extends GetView<ContentController> {
               8.height,
               CustomTextField(
                 hintText: 'enter_article_title'.tr,
-                controller: controller.titleController,
+                controller: controller.titleController..text = article.title,
                 validator: controller.validateTitle,
               ),
               16.height,
@@ -45,13 +62,13 @@ class AddNewArticle extends GetView<ContentController> {
               ),
               8.height,
               Container(
-                height: 250.h,
+                height: 240.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.r),
                   // border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                 ),
                 child: TextFormField(
-                  controller: controller.contentController,
+                  controller: controller.contentController..text = article.content,
                   validator: controller.validateContent,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -63,13 +80,14 @@ class AddNewArticle extends GetView<ContentController> {
                   textDirection: TextDirection.rtl,
                 ),
               ),
-              0.height,
+              24.height
+              ,
               Obx(() => CustomButton(
-                    text: 'publish'.tr,
-                    color: AppColors.primary,
-                    isDisable: controller.isLoading.value,
-                    onPressed: controller.saveContent,
-                  )),
+                text: 'update'.tr,
+                color: AppColors.primary,
+                isDisable: controller.isLoading.value,
+                onPressed: () => controller.updateArticle(article.id!),
+              )),
             ],
           ),
         ),
@@ -77,7 +95,7 @@ class AddNewArticle extends GetView<ContentController> {
     );
   }
 
-  Widget _buildImageUploadSection() {
+  Widget _buildImageSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,78 +106,43 @@ class AddNewArticle extends GetView<ContentController> {
         ),
         8.height,
         Obx(() => GestureDetector(
-              onTap: controller.pickImage,
-              child: Container(
-                width: double.infinity,
-                height: 200.h,
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: AppColors.primary.withOpacity(0.3),
-                  ),
-                ),
-                child: controller.selectedImage.value != null
-                    ? _buildSelectedImage()
-                    : _buildImagePlaceholder(),
+          onTap: controller.pickImage,
+          child: Container(
+            width: double.infinity,
+            height: 200.h,
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(
+                color: AppColors.primary.withOpacity(0.3),
               ),
-            )),
-      ],
-    );
-  }
-
-  Widget _buildSelectedImage() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12.r),
-      child: Image.file(
-        File(controller.selectedImage.value!.path!),
-        width: double.infinity,
-        height: 200.h,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => _buildErrorPlaceholder(),
-      ),
-    );
-  }
-
-  Widget _buildImagePlaceholder() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.add_photo_alternate_outlined,
-          size: 48.sp,
-          color: AppColors.primary,
-        ),
-        8.height,
-        CustomText(
-          'tap_to_upload_image'.tr,
-          fontSize: 14.sp,
-          color: AppColors.textLight,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildErrorPlaceholder() {
-    return Container(
-      width: double.infinity,
-      height: 200.h,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.error_outline,
-            size: 48.sp,
-            color: Colors.red,
+            ),
+            child: controller.selectedImage.value != null
+                ? ClipRRect(
+              borderRadius: BorderRadius.circular(12.r),
+              child: Image.file(
+                File(controller.selectedImage.value!.path!),
+                fit: BoxFit.cover,
+              ),
+            )
+                : article.imageUrl!.startsWith('assets/')
+                ? ClipRRect(
+              borderRadius: BorderRadius.circular(12.r),
+              child: Image.asset(
+                article.imageUrl!,
+                fit: BoxFit.cover,
+              ),
+            )
+                : ClipRRect(
+              borderRadius: BorderRadius.circular(12.r),
+              child: Image.file(
+                File(article.imageUrl!),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-          8.height,
-          CustomText(
-            'image_load_error'.tr,
-            fontSize: 14.sp,
-            color: AppColors.textLight,
-          ),
-        ],
-      ),
+        )),
+      ],
     );
   }
 }

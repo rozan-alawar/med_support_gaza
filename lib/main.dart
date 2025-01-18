@@ -27,6 +27,7 @@ void main() async {
 await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );
+  Get.put(FirebaseService());
   final firebaseService = Get.find<FirebaseService>();
   await firebaseService.populateSampleData();
 }

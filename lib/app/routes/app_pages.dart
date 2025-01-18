@@ -172,5 +172,17 @@ class AppPages {
       binding: DoctorAppointmentManagementBinding(),
     ),
 
+    GetPage(
+      name: _Paths.UPDATE_ARTICLE,
+      page: () => DoctorBookingView(),
+      binding: AdminBinding(),
+    ),
+
+    GetPage(
+      name: _Paths.ADMIN_NOTIFICATION,
+      page: () => DoctorBookingView(),
+      binding: AdminBinding(),
+    ),
+
   ];
 }

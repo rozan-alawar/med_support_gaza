@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,8 +9,7 @@ import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/data/models/health_content_model.dart';
-
-
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_update_article_view.dart';
 class ContentCard extends StatelessWidget {
   final HealthContentModel content;
 
@@ -16,77 +17,97 @@ class ContentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w,vertical: 10.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          if (content.imageUrl != null)
+    return GestureDetector(
+      onTap: () => Get.to(() => UpdateArticleView(article: content)),
+      child: Container(
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Article Image
             ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-              child: Image.asset(
-                content.imageUrl!,
-                width: 90.w,
-                height: 120.h,
-                fit: BoxFit.contain,
+              borderRadius: BorderRadius.circular(12.r),
+              child: Container(
+                width: 86.w,
+                height: 100.w,
+
+                child: content.imageUrl != null
+                    ? _buildArticleImage()
+                    : _buildErrorPlaceholder(),
               ),
             ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        content.title,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      8.height,
-                      CustomText(
-                        content.content,
-                        fontSize: 12.sp,
-                        color: AppColors.textLight,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      if (content.tags.isNotEmpty) ...[
-                        12.height,
-                        Wrap(
-                          spacing: 8.w,
-                          runSpacing: 8.h,
-                          children: content.tags
-                              .map((tag) => Chip(
-                            label: CustomText(
-                              tag,
-                              fontSize: 12.sp,
-                            ),
-                            backgroundColor:
-                            AppColors.primary.withOpacity(0.1),
-                          ))
-                              .toList(),
-                        ),
-                      ],
-                    ],
+            12.width,
+            // Article Content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    content.title,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textDark,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                  8.height,
+                  CustomText(
+                    content.content,
+                    fontSize: 12.sp,
+                    color: AppColors.textLight,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    height: 1.3,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildArticleImage() {
+    try {
+      if (content.imageUrl!.startsWith('assets/')) {
+        return Image.asset(
+          content.imageUrl!,
+          fit: BoxFit.fill,
+          errorBuilder: (_, __, ___) => _buildErrorPlaceholder(),
+        );
+      }
+
+      return Image.file(
+        File(content.imageUrl!),
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => _buildErrorPlaceholder(),
+      );
+    } catch (e) {
+      return _buildErrorPlaceholder();
+    }
+  }
+
+  Widget _buildErrorPlaceholder() {
+    return Container(
+      color: Colors.grey[200],
+      child: Center(
+        child: Icon(
+          Icons.image_not_supported_outlined,
+          size: 24.sp,
+          color: Colors.grey[400],
+        ),
       ),
     );
   }

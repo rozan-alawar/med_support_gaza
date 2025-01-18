@@ -223,19 +223,42 @@ class Translation extends Translations {
           'content_saved': 'تم حفظ المحتوى بنجاح',
           'save_error': 'فشل في حفظ المحتوى',
           'load_error': 'فشل في تحميل المحتوى',
+          // Content Management
+          'content_management': 'إدارة المحتوى',
+          'content_list': 'قائمة المحتوى',
+          'add_new_article': 'إضافة مقال جديد',
+          'update_article': 'تحديث المقال',
+          'article_title': 'عنوان المقال',
+          'enter_article_title': 'أدخل عنوان المقال',
+          'article_content': 'محتوى المقال',
+          'write_article_content': 'اكتب محتوى المقال...',
+          'article_image': 'صورة المقال',
+          'tap_to_upload_image': 'انقر لتحميل الصورة',
+          'image_load_error': 'فشل تحميل الصورة',
+          'image_pick_error': 'فشل اختيار الصورة',
+          'image_required': 'الصورة مطلوبة',
 
-          // Health Content
+          'article_saved': 'تم حفظ المقال بنجاح',
+          'article_updated': 'تم تحديث المقال بنجاح',
+          'update_error': 'فشل تحديث المقال',
+
+          'search_articles': 'بحث في المقالات',
+          'no_articles': 'لا يوجد مقالات',
+
+          // Health Articles
           'flu_protection': 'كيف تحمي نفسك من الإنفلونزا؟',
+          'flu_description': 'تعرف على أهم الإجراءات الوقائية من الإنفلونزا خلال المواسم المختلفة',
+          'prevention_tips': 'نصائح للوقاية',
+          'health_tips': 'نصائح صحية',
+          'seasonal_advice': 'نصائح موسمية',
+
+
           'seasonal_precautions':
               'تعرف على أهم الإجراءات الوقائية من الإنفلونزا خلال المواسم',
           'health': 'صحة',
           'prevention': 'وقاية',
           'flu': 'إنفلونزا',
 
-          'article_image': 'صورة المقال',
-          'tap_to_upload_image': 'انقر لتحميل صورة',
-          'image_pick_error': 'فشل في اختيار الصورة',
-          'image_required': 'الصورة مطلوبة',
 
           'Bookings': 'الحجوزات',
           'Approve': 'موافقة',
@@ -449,6 +472,25 @@ class Translation extends Translations {
           'Status': 'Status',
           'Approved': 'Approved',
           'Pending': 'Pending',
+
+
+          'add_new_article': 'Add New Article',
+          'update_article': 'Update Article',
+
+          'image_load_error': 'Failed to load image',
+
+          'article_saved': 'Article saved successfully',
+          'article_updated': 'Article updated successfully',
+          'update_error': 'Failed to update article',
+
+          'search_articles': 'Search articles',
+          'no_articles': 'No articles found',
+
+
+          'flu_description': 'Learn about the most important preventive measures against flu during different seasons',
+          'prevention_tips': 'Prevention Tips',
+          'health_tips': 'Health Tips',
+          'seasonal_advice': 'Seasonal Advice',
         },
       };
 }

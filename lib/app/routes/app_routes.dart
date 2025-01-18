@@ -30,6 +30,8 @@ abstract class Routes {
   static const ADMIN_HOME = _Paths.ADMIN_HOME;
   static const EDIT_DOCTOR_PROFILE = _Paths.EDIT_DOCTOR_PROFILE;
   static const ADD_CONTENT = _Paths.ADD_CONTETNT;
+  static const UPDATE_ARTICLE = _Paths.UPDATE_ARTICLE;
+  static const ADMIN_NOTIFICATION = _Paths.ADMIN_NOTIFICATION;
 
   static const DOCTOR_DAILY_SCHEDULE = _Paths.DOCTOR_DAILY_SCHEDULE;
   static const DOCTOR_BOOKING_MANAGEMENT = _Paths.DOCTOR_BOOKING_MANAGEMENT;
@@ -64,6 +66,9 @@ abstract class _Paths {
   static const ADMIN_AUTH = '/admin-auth';
   static const ADMIN_HOME = '/admin-home';
   static const ADD_CONTETNT = '/add-content';
+  static const ADMIN_NOTIFICATION = '/admin-notification';
+
+  static const UPDATE_ARTICLE = '/update-article';
   static const DOCTOR_DAILY_SCHEDULE = '/daily-schedule';
   static const DOCTOR_BOOKING_MANAGEMENT = '/booking-management';
 }
