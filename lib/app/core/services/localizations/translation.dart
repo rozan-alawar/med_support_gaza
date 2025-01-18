@@ -177,9 +177,9 @@ class Translation extends Translations {
           'cancel_appointment': 'الغاء الموعد',
           'more': 'المزيد>',
           'quick_statistics': 'الاحصائيات السريعة',
-          'Number of unread messages' : 'عدد الرسائل غير المقروءة',
+          'Number of unread messages': 'عدد الرسائل غير المقروءة',
           'Unread message from patients': 'رسالة غير مقروءة من المرضى',
-          'Show details':'عرض التفاصيل',
+          'Show details': 'عرض التفاصيل',
           'Dashboard': 'لوحة التحكم',
           'userManagment': 'إدارة المستخدمين',
           'contentManagment': 'إدارة المحتوى',
@@ -207,7 +207,6 @@ class Translation extends Translations {
           'error': 'خطأ',
           'success': 'نجاح',
 
-
           // Content Management
           'content_management': 'إدارة المحتوى',
           'content_list': 'المحتوى',
@@ -227,7 +226,8 @@ class Translation extends Translations {
 
           // Health Content
           'flu_protection': 'كيف تحمي نفسك من الإنفلونزا؟',
-          'seasonal_precautions': 'تعرف على أهم الإجراءات الوقائية من الإنفلونزا خلال المواسم',
+          'seasonal_precautions':
+              'تعرف على أهم الإجراءات الوقائية من الإنفلونزا خلال المواسم',
           'health': 'صحة',
           'prevention': 'وقاية',
           'flu': 'إنفلونزا',
@@ -237,7 +237,12 @@ class Translation extends Translations {
           'image_pick_error': 'فشل في اختيار الصورة',
           'image_required': 'الصورة مطلوبة',
 
-
+          'Bookings': 'الحجوزات',
+          'Approve': 'موافقة',
+          'Reject': 'رفض',
+          'Status': 'الحالة',
+          'Approved': 'مقبول',
+          'Pending': 'قيد الانتظار',
         },
         'en': {
           'Hello': 'Hello',
@@ -380,15 +385,14 @@ class Translation extends Translations {
           'cancel_appointment': 'Cancel Appointment',
           'more': 'more >',
           'quick_statistics': 'Quick Statistics',
-          'Number of unread messages':'Number of unread messages',
-          'Unread message from patients' : 'Unread message from patients' ,
+          'Number of unread messages': 'Number of unread messages',
+          'Unread message from patients': 'Unread message from patients',
           'Show details': 'Show details',
 
           'Dashboard': 'Dashboard',
           'userManagment': 'User Management',
           'contentManagment': 'Content Management',
           'serviceManagment': 'Service Management',
-
 
           // User Management Screen
           'search': 'Search',
@@ -429,7 +433,8 @@ class Translation extends Translations {
 
           // Health Content
           'flu_protection': 'How to Protect Yourself from the Flu?',
-          'seasonal_precautions': 'Learn about important preventive measures against flu during seasons',
+          'seasonal_precautions':
+              'Learn about important preventive measures against flu during seasons',
           'health': 'Health',
           'prevention': 'Prevention',
           'flu': 'Flu',
@@ -437,6 +442,13 @@ class Translation extends Translations {
           'tap_to_upload_image': 'Tap to upload image',
           'image_pick_error': 'Failed to pick image',
           'image_required': 'Image is required',
+
+          'Bookings': 'Bookings',
+          'Approve': 'Approve',
+          'Reject': 'Reject',
+          'Status': 'Status',
+          'Approved': 'Approved',
+          'Pending': 'Pending',
         },
       };
 }

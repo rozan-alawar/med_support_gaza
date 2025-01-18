@@ -132,6 +132,7 @@ class DoctorAppointmentManagementController extends GetxController {
             'date': appointment['date'],
             'startTime': appointment['startTime'],
             'isBooked': appointment['isBooked'],
+             'status' : appointment['status'],
             'createdAt': appointment['createdAt'],
           });
         }
@@ -147,6 +148,15 @@ class DoctorAppointmentManagementController extends GetxController {
       );
     }
   }
+
+    void approveBooking(int index) {
+ 
+  }
+
+  void rejectBooking(int index) {
+ 
+  }
+
 
   // Helper functions
   bool isSameDay(DateTime date1, DateTime date2) {
