@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
  final bool readOnly ;
+ final void Function(String)? onChanged;
 
   const CustomTextField({
     super.key,
@@ -21,11 +22,14 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.suffixIcon,
     this.readOnly =false,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
+      onChanged: onChanged,
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,

@@ -35,5 +35,9 @@ class IconAssets {
   static const String bell = '$ICONS_PATH/bell.svg';
   static const String bell_red_point = '$ICONS_PATH/bell-red-point.svg';
    static const String date = '$ICONS_PATH/date.svg';
-    static const String drop = '$ICONS_PATH/drop.svg';
+  static const String drop = '$ICONS_PATH/drop.svg';
+  static const String dashboard = '$ICONS_PATH/dashboard.svg';
+  static const String serviceManagment = '$ICONS_PATH/serviceManagment.svg';
+  static const String userManagment = '$ICONS_PATH/userManagment.svg';
+  static const String contentManagment = '$ICONS_PATH/contentManagment.svg';
 }
