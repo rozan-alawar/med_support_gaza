@@ -94,12 +94,11 @@ class AdminNotificationView extends GetView<AdminNotificationController> {
           16.horizontalSpace,
           // Message
           Expanded(
-            child: Obx(()=> CustomText(
-                notification.message.tr,
-                fontSize: 12.sp,
-                fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
-                color: AppColors.textDark,
-              ),
+            child: CustomText(
+              notification.message.tr,
+              fontSize: 12.sp,
+              fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
+              color: AppColors.textDark,
             ),
           ),
         ],
