@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
@@ -55,29 +56,26 @@ class DoctorAppointmentManagementView
                     ],
                   ),
                 )),
-            11.height,
+            30.height,
             Obx(() => SizedBox(
                   width: 350.w,
                   height: 65.h,
                   child: DropdownButtonFormField<String>(
-                    value: controller.selectedPeriod.value,
-                    items: controller.periods
-                        .map((period) => DropdownMenuItem<String>(
-                              value: period,
+                    value: controller.selectedTime.value,
+                    items: controller.availableTimes
+                        .map((time) => DropdownMenuItem<String>(
+                              value: time,
                               child: CustomText(
-                                  period.tr +
-                                      ' ' +
-                                      (period.tr == 'morning_period'.tr
-                                          ? 'morning_period_time'.tr
-                                          : 'evening_period_time'.tr),
-                                  fontFamily: 'Lama Sans',
-                                  fontSize: 12.sp,
-                                  color: AppColors.textgray),
+                                time,
+                                fontFamily: 'Lama Sans',
+                                fontSize: 14.sp,
+                                color: AppColors.textgray,
+                              ),
                             ))
                         .toList(),
                     onChanged: (value) {
                       if (value != null) {
-                        controller.updatePeriod(value);
+                        controller.updateSelectedTime(value);
                       }
                     },
                     decoration: const InputDecoration(
@@ -106,7 +104,7 @@ class DoctorAppointmentManagementView
                       mainAxisSpacing: 5, // Spacing between rows
                       crossAxisSpacing: 10, // Spacing between columns
                       childAspectRatio:
-                          .9, // Width-to-height ratio for each grid item
+                          1.25, // Width-to-height ratio for each grid item
                     ),
                     itemBuilder: (context, index) {
                       final appointment = controller.appointments[index];
@@ -117,26 +115,25 @@ class DoctorAppointmentManagementView
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(6.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                '${appointment['date']}',
-                                fontSize: 15,
-                              ),
-                              CustomText(
-                                '${appointment['period']!}',
+                                '${controller.getFormatedDate(appointment['date'])}',
                                 fontSize: 15,
                               ),
                               const SizedBox(height: 5),
                               CustomText(
-                                appointment['time']!,
+                                appointment['startTime']!,
                                 fontSize: 12,
                               ),
                               const Spacer(),
                               Align(
-                                alignment: Alignment.bottomLeft,
+                                alignment: Get.locale?.languageCode == 'en'
+                                    ? Alignment.bottomRight
+                                    : Alignment.bottomLeft,
                                 child: IconButton(
                                   icon: const Icon(
                                     Icons.delete,

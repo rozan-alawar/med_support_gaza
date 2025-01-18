@@ -62,7 +62,7 @@ class DoctorMainView extends GetView<DoctorHomeController> {
                             Get.toNamed(Routes.DOCTOR_DAILY_SCHEDULE);
                           },
                           child: CustomText(
-                            'المزيد>',
+                            'more'.tr,
                             fontFamily: 'LamaSans',
                             fontSize: 12.sp,
                             color: AppColors.textLight,
@@ -91,14 +91,14 @@ class DoctorMainView extends GetView<DoctorHomeController> {
                         );
                       }),
                     ),
-                    SizedBox(height: 20),
+                   20.height,
                     CustomText(
                       'quick_statistics'.tr,
                       fontFamily: 'LamaSans',
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(height: 10),
+                    10.height,
                     QuickStatsCard(
                       unreadMessages: controller.unreadMessages.value,
                     ),

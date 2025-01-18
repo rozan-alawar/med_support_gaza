@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 
@@ -28,29 +29,31 @@ class CustomAppointmentCard extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(10.r))),
       height: 160.h,
       margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-      child: Column( 
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         CustomText(
-                     patientName,
-                     fontFamily: 'LamaSans',
-                     fontSize: 14.sp,
-                   ),
-                   8.height,
-                   CustomText(
-                     '$date',
-                     fontFamily: 'LamaSans',
-                     fontSize: 12.sp,
-                   ),
-                   8.height,
-                   CustomText(
-                     '$time',
-                     fontFamily: 'LamaSans',
-                     fontSize: 12.sp,
-                   ),
+          CustomText(
+            '$patientName',
+            fontFamily: 'LamaSans',
+            fontSize: 14.sp,
+          ),
+          8.height,
+          CustomText(
+            '$date',
+            fontFamily: 'LamaSans',
+            fontSize: 12.sp,
+          ),
+          8.height,
+          CustomText(
+            '$time',
+            fontFamily: 'LamaSans',
+            fontSize: 12.sp,
+          ),
           Align(
-            alignment: Alignment.bottomLeft,
+            alignment: Get.locale?.languageCode == 'ar'
+                ? Alignment.bottomLeft
+                : Alignment.bottomRight,
             child: CustomButton(
               borderColor: AppColors.error,
               onPressed: onPressed,

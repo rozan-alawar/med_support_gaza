@@ -39,7 +39,7 @@ class QuickStatsCard extends StatelessWidget {
           ),
           20.height,
           Align(
-            alignment: Alignment.bottomLeft,
+            alignment: Get.locale?.languageCode == 'ar' ? Alignment.bottomLeft : Alignment.bottomRight,
             child: CustomButton(
               fontSize: 10.sp,
               color: AppColors.primary,

@@ -19,7 +19,7 @@ class DailyScheduleView extends GetView<DoctorAppointmentManagementController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-               'daily_schedule'.tr,
+                'daily_schedule'.tr,
                 fontFamily: 'LamaSans',
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -28,7 +28,7 @@ class DailyScheduleView extends GetView<DoctorAppointmentManagementController> {
                 child: Obx(() {
                   if (controller.dayilyappointments.isEmpty) {
                     return CustomText(
-                     'no_appointment_message'.tr,
+                      'no_appointment_message'.tr,
                       fontFamily: 'LamaSans',
                       fontSize: 16.sp,
                     );
@@ -39,9 +39,9 @@ class DailyScheduleView extends GetView<DoctorAppointmentManagementController> {
                       final dayilyappointments =
                           controller.dayilyappointments[index];
                       return CustomAppointmentCard(
-                        patientName: dayilyappointments['patientName'] ?? '',
-                        date: dayilyappointments['date'] ?? '',
-                        time: dayilyappointments['time'] ?? '',
+                        patientName: dayilyappointments['patientName'] ?? 'saja',
+                        date: controller.getFormatedDate(dayilyappointments['date']) ?? '',
+                        time: dayilyappointments['startTime'] ?? '',
                         butText: 'cancel_appointment'.tr,
                         onPressed: () {
                           controller.dayilyappointments.removeAt(index);

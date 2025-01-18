@@ -9,42 +9,13 @@ import '../../../core/widgets/custom_snackbar_widget.dart';
 
 class DoctorAppointmentManagementController extends GetxController {
   var selectedDate = DateTime.now().obs;
+  var selectedTime = '09:00 AM'.obs;
+  var availableTimes = <String>[].obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   var appointments = <Map<String, dynamic>> [
   ].obs;
 
-
-  var dayilyappointments = <Map<String, dynamic>> [
-    {
-      'patientName': 'المريض أحمد أحمد',
-      'date': '12 يناير',
-      'time': '10:00 صباحاً',
-    },
-    {
-      'patientName': 'المريض محمد محمد',
-      'date': '12 يناير',
-      'time': '11:00 صباحاً',
-    },
-    {
-      'patientName': 'المريض علي علي',
-      'date': '12 يناير',
-      'time': '12:00 مساءً',
-    },
-     {
-      'patientName': 'المريض علي علي',
-      'date': '12 يناير',
-      'time': '12:00 مساءً',
-    },
-
-  ].obs;
-
-var appointments2 = <Map<String, dynamic>> [
-   
-
-  ].obs;
-
-  var periods = ['morning_period', 'evening_period'].obs;
-  var selectedPeriod = 'morning_period'.obs;
+  var dayilyappointments = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
@@ -52,11 +23,34 @@ var appointments2 = <Map<String, dynamic>> [
 
     // Replace with actual doctorId
     final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    loadAppointments(doctorId);
+    loadAppointments();
+    generateAvailableTimes();
+    getDayilyappointment();
   }
 
-  void updatePeriod(String newPeriod) {
-    selectedPeriod.value = newPeriod;
+  void generateAvailableTimes() {
+    availableTimes.clear();
+
+    // Create times from 9 AM to 4 PM
+    for (int hour = 9; hour <= 16; hour++) {
+      // For each hour, create :00 and :30 slots
+      String period = hour < 12 ? 'AM' : 'PM';
+      int displayHour = hour > 12 ? hour - 12 : hour;
+
+      // Add XX:00 slot
+      availableTimes
+          .add('${displayHour.toString().padLeft(2, '0')}:00 $period');
+
+      // Add XX:30 slot if not the last hour
+      if (hour != 16) {
+        availableTimes
+            .add('${displayHour.toString().padLeft(2, '0')}:30 $period');
+      }
+    }
+  }
+
+  void updateSelectedTime(String time) {
+    selectedTime.value = time;
   }
 
   Future<void> selectDate(BuildContext context) async {
@@ -82,92 +76,20 @@ var appointments2 = <Map<String, dynamic>> [
   }
 
   Future<void> addAppointment() async {
-    String doctorId = await FirebaseAuth.instance.currentUser!.uid;
-    print('doctor id : ${doctorId} ');
     try {
-      // Format the date to a readable string
-      String monthName = DateFormat.MMMM().format(selectedDate.value);
-      String dayName = DateFormat.EEEE().format(selectedDate.value);
-      String formattedDate =
-          '${dayName.tr}   ${selectedDate.value.day}  ${monthName.tr}';
-
-      // Initialize time variables
-      TimeOfDay startTimeOfDay;
-      TimeOfDay endTimeOfDay;
-
-      if (selectedPeriod.value.tr == 'morning_period'.tr) {
-        startTimeOfDay = const TimeOfDay(hour: 8, minute: 0);
-        endTimeOfDay = const TimeOfDay(hour: 11, minute: 0);
-      } else {
-        startTimeOfDay = const TimeOfDay(hour: 12, minute: 0);
-        endTimeOfDay = const TimeOfDay(hour: 15, minute: 0); // 3:00 PM
-      }
-
-      // Convert TimeOfDay to DateTime for processing
-      DateTime baseDate = DateTime(
-        selectedDate.value.year,
-        selectedDate.value.month,
-        selectedDate.value.day,
-      );
-
-      DateTime startTime = DateTime(
-        baseDate.year,
-        baseDate.month,
-        baseDate.day,
-        startTimeOfDay.hour,
-        startTimeOfDay.minute,
-      );
-
-      DateTime endTime = DateTime(
-        baseDate.year,
-        baseDate.month,
-        baseDate.day,
-        endTimeOfDay.hour,
-        endTimeOfDay.minute,
-      );
-
-      // Generate 30-minute session slots
-      List<Map<String, dynamic>> sessions = [];
-      DateTime currentSlot = startTime;
-
-      while (currentSlot.isBefore(endTime)) {
-        DateTime slotEnd = currentSlot.add(const Duration(minutes: 30));
-
-        sessions.add({
-          'date': Timestamp.fromDate(selectedDate.value),
-          'startTime': DateFormat.jm().format(currentSlot),
-          'endTime': DateFormat.jm().format(slotEnd),
-          'period': selectedPeriod.value,
-          'isBooked': false,
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-
-        currentSlot = slotEnd;
-      }
-
-      // Batch write to Firebase for better performance
-      final batch = _firestore.batch();
-      final appointmentsCollection = _firestore
-          .collection('doctors')
-          .doc(doctorId)
-          .collection('availableAppointments');
-
-      for (var session in sessions) {
-        final docRef = appointmentsCollection.doc();
-        batch.set(docRef, session);
-      }
-
-      await batch.commit();
-
-      // Update local state
+      print(selectedDate.value);
       appointments.add({
-        'date': formattedDate,
-        'period': selectedPeriod.value,
-        'time': selectedPeriod.value.tr == 'morning_period'.tr
-            ? 'morning_period_time'.tr
-            : 'evening_period_time'.tr,
+        'date': selectedDate.value,
+        'startTime': selectedTime.value,
+        'isBooked': true, // تحديد الجلسة كغير محجوزة
+        'createdAt': FieldValue.serverTimestamp(),
+        'patientName': 'Saja HZ',
+        'patientid': '',
+        'doctorId': '',
       });
+      print(' addAppointment :  $appointments');
 
+      getDayilyappointment();
       CustomSnackBar.showCustomSnackBar(
         title: 'Success',
         message: 'Appointments added successfully',
@@ -181,154 +103,63 @@ var appointments2 = <Map<String, dynamic>> [
     }
   }
 
-//   Future<void> addAppointment(String doctorId) async {
-//     // Format the date to a readable string
-//     String monthName = DateFormat.MMMM().format(selectedDate.value);
-//     String dayName = DateFormat.EEEE().format(selectedDate.value);
-//     String formattedDate =
-//         '${dayName.tr}   ${selectedDate.value.day}  ${monthName.tr}';
-//     String time;
-//     String startTime, endTime;
-//     if (selectedPeriod.value.tr == 'morning_period'.tr) {
-//       time = 'morning_period_time'.tr;
-//       startTime = '08:00 AM';
-//       endTime = '11:00 AM';
-//     } else {
-//       time = 'evening_period_time'.tr;
-//       startTime = '12:00 PM';
-//       endTime = '03:00 PM';
-//  }
-//       print("Debug - Start Time: $startTime");
-//       print("Debug - End Time: $endTime");
-//       // تحويل النصوص الزمنية إلى DateTime
-//       DateTime start = DateFormat.jm().parse(startTime);
-//       DateTime end = DateFormat.jm().parse(endTime);
-
-//       // إنشاء جلسات بفاصل زمني قدره 30 دقيقة
-//       List<Map<String, dynamic>> sessions = [];
-//       while (start.isBefore(end)) {
-//         DateTime sessionEnd = start.add(const Duration(minutes: 30));
-//         sessions.add({
-//           'date': selectedDate.value,
-//           'startTime': DateFormat.jm().format(start),
-//           'endTime': DateFormat.jm().format(sessionEnd),
-//           'period': selectedPeriod.value,
-//           'isBooked': false, // تحديد الجلسة كغير محجوزة
-//           'createdAt': FieldValue.serverTimestamp(),
-//         });
-//         start = sessionEnd;
-//       }
-//       // تخزين الجلسات في Firebase
-//       for (var session in sessions) {
-//         await _firestore
-//             .collection('doctors')
-//             .doc(doctorId)
-//             .collection('availableAppointments')
-//             .add(session);
-//       }
-//      CustomSnackBar.showCustomSnackBar(
-//         title: 'Success',
-//         message: 'Appointment add successfully',
-//       );
-//     appointments.add(
-//         {'date': formattedDate, 'period': selectedPeriod.value, 'time': time});
-//   }
-
   void deleteAppointment(int index) async {
+    appointments.removeAt(index);
+    getDayilyappointment();
+  }
+
+  void loadAppointments() async {}
+
+// get the daily appointment that is booking from a appointments list due to the date
+
+  void getDayilyappointment() {
     try {
-      // Get the selected appointment details
-      final appointmentToDelete = appointments2[index];
+      // Clear current daily appointments
+      dayilyappointments.clear();
 
-      // Remove it from the local list
-      appointments.removeAt(index);
-
-      // Assuming you have the doctorId stored in your controller
-      final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
-
-      // Access Firestore and delete the specific appointment
-      await FirebaseFirestore.instance
-          .collection('doctors')
-          .doc(doctorId)
-          .collection('availableAppointments')
-          .where('date', isEqualTo: appointmentToDelete['date'])
-          .where('period', isEqualTo: appointmentToDelete['period'])
-          .where('startTime', isEqualTo: appointmentToDelete['time'])
-          .get()
-          .then((querySnapshot) {
-        for (var doc in querySnapshot.docs) {
-          doc.reference.delete();
+      // Filter appointments for selected date
+      for (var appointment in appointments) {
+     
+        DateTime appointmentDate = (appointment['date'] as DateTime);
+        print(
+            '-------------------- ${appointmentDate}--------------------------');
+        if (isSameDay(appointmentDate, selectedDate.value) &&
+            appointment['isBooked'] == true) {
+          // Convert appointment time format if needed
+          dayilyappointments.add({
+            'patientName': appointment['patientName'],
+            'patientid': appointment['patientid'],
+            'date': appointment['date'],
+            'startTime': appointment['startTime'],
+            'isBooked': appointment['isBooked'],
+            'createdAt': appointment['createdAt'],
+          });
         }
-      });
-
-      // Optional: Show success message
-      CustomSnackBar.showCustomSnackBar(
-        title: 'Success',
-        message: 'Appointment deleted successfully',
-      );
+        // Sort daily appointments by time
+        dayilyappointments.sort(
+            (a, b) => (a['startTime'] ?? '').compareTo(b['startTime'] ?? ''));
+        print(dayilyappointments);
+      }
     } catch (e) {
-      // Handle errors
-      CustomSnackBar.showCustomErrorSnackBar(
+      CustomSnackBar.showCustomSnackBar(
         title: 'Error',
-        message: 'Failed to delete appointment: $e',
+        message: 'Failed to load daily appointments: ${e.toString()}',
       );
     }
   }
 
-  void loadAppointments(String doctorId) async {
-    try {
-      // Fetch the appointments from Firestore
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('doctors')
-          .doc(doctorId)
-          .collection('availableAppointments')
-          .get();
+  // Helper functions
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
+  }
 
-      // Parse and update the local appointments list
-      // Clear the current appointments list
-      List<Map<String, String>> tempAppointments = [];
-
-// Iterate through the documents in the querySnapshot
-      for (var doc in querySnapshot.docs) {
-        // Extract data from the document
-        final data = doc.data();
-        // Check if the date is of type Timestamp and convert it
-        String formattedDate = '';
-        if (data['date'] is Timestamp) {
-          final timestamp = data['date'] as Timestamp;
-          final dateTime = timestamp.toDate(); // Convert to DateTime
-
-          // Format the date as desired
-          String monthName = DateFormat.MMMM().format(dateTime);
-          String dayName = DateFormat.EEEE().format(dateTime);
-          formattedDate = '${dayName.tr}   ${dateTime.day}  ${monthName.tr}';
-        } else if (data['date'] is String) {
-          // If it's already a String, use it directly
-          formattedDate = data['date'];
-        }
-        // Map the data to a structured format
-        tempAppointments.add({
-          'date': formattedDate, // Explicitly cast to String
-          'period':
-              data['period']?.toString() ?? '', // Explicitly cast to String
-          'time':
-              data['startTime']?.toString() ?? '', // Explicitly cast to String
-        });
-
-         appointments2.add({
-          'date':data['date'] , // Explicitly cast to String
-          'period':
-              data['period'], // Explicitly cast to String
-          'time':
-              data['startTime'], // Explicitly cast to String
-        });
-      }
-
-// Assign the mapped appointments to the observable list
-      appointments.value = tempAppointments;
-    } catch (e) {
-      // Handle errors
-      Get.snackbar('Error', 'Failed to load appointments: $e',
-          snackPosition: SnackPosition.BOTTOM);
-    }
+  String getFormatedDate(DateTime selectedDate) {
+    String monthName = DateFormat.MMMM().format(selectedDate);
+    String dayName = DateFormat.EEEE().format(selectedDate);
+    String formattedDate =
+        '${dayName.tr}   ${selectedDate.day}  ${monthName.tr}';
+    return formattedDate;
   }
 }
