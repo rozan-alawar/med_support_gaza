@@ -1,5 +1,3 @@
-
-// doctor_profile_controller.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -180,6 +178,7 @@ class DoctorProfileController extends GetxController {
       isLoading.value = false;
     }
   }
+
   void changeLanguage() {
     Get.bottomSheet(
       Container(
@@ -192,11 +191,11 @@ class DoctorProfileController extends GetxController {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: CustomText('English'),
+              title: const CustomText('English'),
               onTap: () => _updateLanguage('en'),
             ),
             ListTile(
-              title: CustomText('العربية'),
+              title: const CustomText('العربية'),
               onTap: () => _updateLanguage('ar'),
             ),
           ],
@@ -211,8 +210,6 @@ class DoctorProfileController extends GetxController {
     // Update in preferences if needed
   }
 
-
-
   Future<void> signOut() async {
     try {
       await _firebaseService.signOut();
@@ -225,7 +222,6 @@ class DoctorProfileController extends GetxController {
   void editProfile() {
     Get.toNamed('/edit-profile', arguments: doctorData.value);
   }
-
 
   @override
   void onClose() {

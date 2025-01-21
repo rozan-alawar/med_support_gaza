@@ -5,8 +5,8 @@ import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_home.da
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_new_article_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_notification_view.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_booking_view.dart';
-import 'package:med_support_gaza/app/modules/profile/views/doctor_edit_profile_view.dart';
-import 'package:med_support_gaza/app/modules/profile/views/doctor_profile_view.dart';
+import 'package:med_support_gaza/app/modules/profile/views/pages/doctor_edit_profile_view.dart';
+import 'package:med_support_gaza/app/modules/profile/views/pages/doctor_profile_view.dart';
 
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/bindings/doctor_appointment_management_binding.dart';
@@ -33,8 +33,8 @@ import '../modules/home/views/patient_home_view.dart';
 import '../modules/onboarding/views/doctor_onboarding_view.dart';
 import '../modules/onboarding/views/patient_onboarding_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
-import '../modules/profile/views/patient_edit_profile_view.dart';
-import '../modules/profile/views/patient_profile_view.dart';
+import '../modules/profile/views/pages/patient_edit_profile_view.dart';
+import '../modules/profile/views/pages/patient_profile_view.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/user_role_selection/views/user_role_selection.dart';
 
@@ -64,7 +64,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOME,
-      page: () => PatientHomeView(),
+      page: () => const PatientHomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -119,7 +119,7 @@ class AppPages {
     // Add the route in app_pages.dart
     GetPage(
       name: Routes.EDIT_PATIENT_PROFILE,
-      page: () => PatientEditProfileView(),
+      page: () => const PatientEditProfileView(),
       binding: ProfileBinding(),
     ),
     GetPage(
@@ -144,17 +144,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ADMIN_HOME,
-      page: () => AdminHome(),
+      page: () => const AdminHome(),
       binding: AdminBinding(),
     ),
     GetPage(
       name: _Paths.DOCTOR_PROFILE,
-      page: () => DoctorProfileView(),
+      page: () => const DoctorProfileView(),
       binding: ProfileBinding(),
     ),
     GetPage(
       name: _Paths.EDIT_DOCTOR_PROFILE,
-      page: () => DoctorEditProfileView(),
+      page: () => const DoctorEditProfileView(),
       binding: ProfileBinding(),
     ),
     GetPage(
@@ -164,21 +164,19 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ADD_CONTETNT,
-      page: () => AddNewArticle(),
+      page: () => const AddNewArticle(),
       binding: AdminBinding(),
-    ) ,
-      GetPage(
+    ),
+    GetPage(
       name: _Paths.DOCTOR_BOOKING_MANAGEMENT,
       page: () => DoctorBookingView(),
       binding: DoctorAppointmentManagementBinding(),
     ),
 
-
     GetPage(
       name: _Paths.ADMIN_NOTIFICATION,
-      page: () => AdminNotificationView(),
+      page: () => const AdminNotificationView(),
       binding: AdminBinding(),
     ),
-
   ];
 }

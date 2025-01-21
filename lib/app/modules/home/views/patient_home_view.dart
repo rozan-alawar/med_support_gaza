@@ -7,33 +7,33 @@ import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/consultation_controller.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/consultation_view.dart';
-import 'package:med_support_gaza/app/modules/home/views/Patient_main_view.dart';
-import 'package:med_support_gaza/app/modules/profile/views/patient_profile_view.dart';
+import 'package:med_support_gaza/app/modules/home/views/patient_main_view.dart';
+import 'package:med_support_gaza/app/modules/profile/views/pages/patient_profile_view.dart';
 
 import '../controllers/home_controller.dart';
 
 class PatientHomeView extends GetView<HomeController> {
-  PatientHomeView({super.key});
+  const PatientHomeView({super.key});
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(()=>ConsultationController());
+    Get.lazyPut(() => ConsultationController());
 
     return Scaffold(
-      body:Obx(
-            () => IndexedStack(
-        index: controller.currentIndex.value,
-        children: [
-          PatientMainView(),
+      body: Obx(
+        () => IndexedStack(
+          index: controller.currentIndex.value,
+          children: [
+            const PatientMainView(),
 
-        //  PatientProfileView(),
-          ConsultationView(),
+            //  PatientProfileView(),
+            ConsultationView(),
 
-          PatientProfileView(),
-        ],
-    ),
+            const PatientProfileView(),
+          ],
+        ),
       ),
       bottomNavigationBar: Obx(
-      () => BottomNavigationBar(
+        () => BottomNavigationBar(
           currentIndex: controller.currentIndex.value,
           selectedItemColor: AppColors.accent,
           selectedLabelStyle:

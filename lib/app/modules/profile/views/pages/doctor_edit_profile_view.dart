@@ -3,25 +3,14 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/extentions/validation_extention.dart';
-import '../../../core/utils/app_colors.dart';
-import '../../../core/widgets/custom_text_widget.dart';
-import '../../../core/widgets/custom_textfield_widget.dart';
-import '../../../core/widgets/custom_button_widget.dart';
-import '../controllers/doctor_profile_controller.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/widgets/custom_text_widget.dart';
+import '../../../../core/widgets/custom_textfield_widget.dart';
+import '../../../../core/widgets/custom_button_widget.dart';
+import '../../controllers/doctor_profile_controller.dart';
 
-// doctor_edit_profile_view.dart
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
-import 'package:med_support_gaza/app/core/extentions/validation_extention.dart';
-import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/utils/countries.dart';
 import 'package:med_support_gaza/app/core/utils/medical_specialties.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import '../controllers/doctor_profile_controller.dart';
 
 class DoctorEditProfileView extends GetView<DoctorProfileController> {
   const DoctorEditProfileView({super.key});
@@ -30,8 +19,7 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-backgroundColor: AppColors.transparent,
-
+        backgroundColor: AppColors.transparent,
         title: CustomText(
           'Edit Profile'.tr,
           fontSize: 18.sp,
@@ -41,27 +29,28 @@ backgroundColor: AppColors.transparent,
       ),
       body: Obx(() => controller.isLoading.value
           ? const Center(child: CircularProgressIndicator())
-          : Form( // Add Form widget here
-    key: controller.formKey,
-            child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                    child: Column(
-            children: [
-              _buildProfileImage(),
-              24.height,
-              _buildForm(),
-              24.height,
-              _buildProfessionalInfo(),
-              24.height,
-              CustomButton(
-                text: 'Save'.tr,
-                color: AppColors.primary,
-                onPressed: () => controller.updateProfile(),
-              ),
-            ],
+          : Form(
+              // Add Form widget here
+              key: controller.formKey,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                child: Column(
+                  children: [
+                    _buildProfileImage(),
+                    24.height,
+                    _buildForm(),
+                    24.height,
+                    _buildProfessionalInfo(),
+                    24.height,
+                    CustomButton(
+                      text: 'Save'.tr,
+                      color: AppColors.primary,
+                      onPressed: () => controller.updateProfile(),
                     ),
-                  ),
-          )),
+                  ],
+                ),
+              ),
+            )),
     );
   }
 
@@ -81,17 +70,18 @@ backgroundColor: AppColors.transparent,
               ),
               image: controller.doctorData.value?.profileImage != null
                   ? DecorationImage(
-                image: NetworkImage(controller.doctorData.value!.profileImage!),
-                fit: BoxFit.cover,
-              )
+                      image: NetworkImage(
+                          controller.doctorData.value!.profileImage!),
+                      fit: BoxFit.cover,
+                    )
                   : null,
             ),
             child: controller.doctorData.value?.profileImage == null
                 ? Icon(
-              Icons.person,
-              size: 60.sp,
-              color: Colors.grey[400],
-            )
+                    Icons.person,
+                    size: 60.sp,
+                    color: Colors.grey[400],
+                  )
                 : null,
           ),
           Positioned(
@@ -163,25 +153,25 @@ backgroundColor: AppColors.transparent,
                 children: [
                   Expanded(
                     child: Obx(() => RadioListTile<String>(
-                      title: CustomText('Male'.tr),
-                      value: 'Male',
-                      groupValue: controller.selectedGender.value,
-                      onChanged: (value) =>
-                      controller.selectedGender.value = value!,
-                      activeColor: AppColors.primary,
-                      contentPadding: EdgeInsets.zero,
-                    )),
+                          title: CustomText('Male'.tr),
+                          value: 'Male',
+                          groupValue: controller.selectedGender.value,
+                          onChanged: (value) =>
+                              controller.selectedGender.value = value!,
+                          activeColor: AppColors.primary,
+                          contentPadding: EdgeInsets.zero,
+                        )),
                   ),
                   Expanded(
                     child: Obx(() => RadioListTile<String>(
-                      title: CustomText('Female'.tr),
-                      value: 'Female',
-                      groupValue: controller.selectedGender.value,
-                      onChanged: (value) =>
-                      controller.selectedGender.value = value!,
-                      activeColor: AppColors.primary,
-                      contentPadding: EdgeInsets.zero,
-                    )),
+                          title: CustomText('Female'.tr),
+                          value: 'Female',
+                          groupValue: controller.selectedGender.value,
+                          onChanged: (value) =>
+                              controller.selectedGender.value = value!,
+                          activeColor: AppColors.primary,
+                          contentPadding: EdgeInsets.zero,
+                        )),
                   ),
                 ],
               ),
@@ -208,14 +198,14 @@ backgroundColor: AppColors.transparent,
                 12.width,
                 Expanded(
                   child: Obx(() => CustomText(
-                    controller.selectedCountry.value.isEmpty
-                        ? 'Select Country'.tr
-                        : controller.selectedCountry.value,
-                    fontSize: 14.sp,
-                    color: controller.selectedCountry.value.isEmpty
-                        ? Colors.grey[600]
-                        : Colors.black,
-                  )),
+                        controller.selectedCountry.value.isEmpty
+                            ? 'Select Country'.tr
+                            : controller.selectedCountry.value,
+                        fontSize: 14.sp,
+                        color: controller.selectedCountry.value.isEmpty
+                            ? Colors.grey[600]
+                            : Colors.black,
+                      )),
                 ),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -259,14 +249,14 @@ backgroundColor: AppColors.transparent,
                 12.width,
                 Expanded(
                   child: Obx(() => CustomText(
-                    controller.selectedSpeciality.value.isEmpty
-                        ? 'Select Speciality'.tr
-                        : controller.selectedSpeciality.value,
-                    fontSize: 14.sp,
-                    color: controller.selectedSpeciality.value.isEmpty
-                        ? Colors.grey[600]
-                        : Colors.black,
-                  )),
+                        controller.selectedSpeciality.value.isEmpty
+                            ? 'Select Speciality'.tr
+                            : controller.selectedSpeciality.value,
+                        fontSize: 14.sp,
+                        color: controller.selectedSpeciality.value.isEmpty
+                            ? Colors.grey[600]
+                            : Colors.black,
+                      )),
                 ),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -364,7 +354,7 @@ backgroundColor: AppColors.transparent,
           children: [
             Row(
               children: [
-                Icon(Icons.location_on, color: AppColors.primary),
+                const Icon(Icons.location_on, color: AppColors.primary),
                 12.width,
                 CustomText(
                   'Select Country'.tr,
@@ -374,12 +364,12 @@ backgroundColor: AppColors.transparent,
               ],
             ),
             16.height,
-            Container(
+            SizedBox(
               height: Get.height * 0.4,
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: countries.length,
-                separatorBuilder: (context, index) => Divider(height: 1),
+                separatorBuilder: (context, index) => const Divider(height: 1),
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: CustomText(countries[index]),
@@ -387,9 +377,11 @@ backgroundColor: AppColors.transparent,
                       controller.selectedCountry.value = countries[index];
                       Get.back();
                     },
-                    trailing: Obx(() => controller.selectedCountry.value == countries[index]
-                        ? Icon(Icons.check_circle, color: AppColors.primary)
-                        : SizedBox()),
+                    trailing: Obx(() =>
+                        controller.selectedCountry.value == countries[index]
+                            ? const Icon(Icons.check_circle,
+                                color: AppColors.primary)
+                            : const SizedBox()),
                   );
                 },
               ),
@@ -414,7 +406,7 @@ backgroundColor: AppColors.transparent,
           children: [
             Row(
               children: [
-                Icon(Icons.medical_services, color: AppColors.primary),
+                const Icon(Icons.medical_services, color: AppColors.primary),
                 12.width,
                 CustomText(
                   'Select Speciality'.tr,
@@ -424,22 +416,25 @@ backgroundColor: AppColors.transparent,
               ],
             ),
             16.height,
-            Container(
+            SizedBox(
               height: Get.height * 0.4,
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: medicalSpecialties.length,
-                separatorBuilder: (context, index) => Divider(height: 1),
+                separatorBuilder: (context, index) => const Divider(height: 1),
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: CustomText(medicalSpecialties[index]),
                     onTap: () {
-                      controller.selectedSpeciality.value = medicalSpecialties[index];
+                      controller.selectedSpeciality.value =
+                          medicalSpecialties[index];
                       Get.back();
                     },
-                    trailing: Obx(() => controller.selectedSpeciality.value == medicalSpecialties[index]
-                        ? Icon(Icons.check_circle, color: AppColors.primary)
-                        : SizedBox()),
+                    trailing: Obx(() => controller.selectedSpeciality.value ==
+                            medicalSpecialties[index]
+                        ? const Icon(Icons.check_circle,
+                            color: AppColors.primary)
+                        : const SizedBox()),
                   );
                 },
               ),

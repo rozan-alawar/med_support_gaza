@@ -21,12 +21,11 @@ void main() async {
 
   Get.put<GetStorage>(GetStorage());
 
-
   runApp(const MyApp());
-  
-await Firebase.initializeApp(
+
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   Get.put(FirebaseService());
   final firebaseService = Get.find<FirebaseService>();
   await firebaseService.populateSampleData();

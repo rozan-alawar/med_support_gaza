@@ -24,14 +24,14 @@ class AdminBinding extends Bindings {
       () => AdminDoctorsController(),
     );
     Get.lazyPut<ContentController>(
-          () => ContentController(),
+      () => ContentController(),
     );
-     Get.lazyPut<AdminUserManagementController>(
-          () => AdminUserManagementController(),
+    Get.lazyPut<AdminUserManagementController>(
+      () => AdminUserManagementController(),
     );
 
     Get.lazyPut<AdminNotificationController>(
-          () => AdminNotificationController(),
+      () => AdminNotificationController(),
     );
   }
 }

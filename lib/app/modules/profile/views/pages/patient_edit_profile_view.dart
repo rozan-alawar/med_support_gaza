@@ -1,4 +1,3 @@
-
 // lib/app/modules/profile/views/edit_profile_view.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,21 +28,21 @@ class PatientEditProfileView extends GetView<ProfileController> {
       body: Obx(() => controller.isLoading.value
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        child: Column(
-          children: [
-            _buildProfileImage(),
-            24.height,
-            _buildForm(),
-            24.height,
-            CustomButton(
-              text: 'save'.tr,
-              color: AppColors.primary,
-              onPressed: () => controller.updateProfile(),
-            ),
-          ],
-        ),
-      )),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+              child: Column(
+                children: [
+                  _buildProfileImage(),
+                  24.height,
+                  _buildForm(),
+                  24.height,
+                  CustomButton(
+                    text: 'save'.tr,
+                    color: AppColors.primary,
+                    onPressed: () => controller.updateProfile(),
+                  ),
+                ],
+              ),
+            )),
     );
   }
 
@@ -73,7 +72,7 @@ class PatientEditProfileView extends GetView<ProfileController> {
             right: 0,
             child: Container(
               padding: EdgeInsets.all(8.w),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
@@ -88,6 +87,7 @@ class PatientEditProfileView extends GetView<ProfileController> {
       ),
     );
   }
+
   Widget _buildForm() {
     return Column(
       children: [
@@ -149,25 +149,25 @@ class PatientEditProfileView extends GetView<ProfileController> {
                 children: [
                   Expanded(
                     child: Obx(() => RadioListTile<String>(
-                      title: CustomText('Male'.tr),
-                      value: 'Male',
-                      groupValue: controller.selectedGender.value,
-                      onChanged: (value) =>
-                      controller.selectedGender.value = value!,
-                      activeColor: AppColors.primary,
-                      contentPadding: EdgeInsets.zero,
-                    )),
+                          title: CustomText('Male'.tr),
+                          value: 'Male',
+                          groupValue: controller.selectedGender.value,
+                          onChanged: (value) =>
+                              controller.selectedGender.value = value!,
+                          activeColor: AppColors.primary,
+                          contentPadding: EdgeInsets.zero,
+                        )),
                   ),
                   Expanded(
                     child: Obx(() => RadioListTile<String>(
-                      title: CustomText('Female'.tr),
-                      value: 'Female',
-                      groupValue: controller.selectedGender.value,
-                      onChanged: (value) =>
-                      controller.selectedGender.value = value!,
-                      activeColor: AppColors.primary,
-                      contentPadding: EdgeInsets.zero,
-                    )),
+                          title: CustomText('Female'.tr),
+                          value: 'Female',
+                          groupValue: controller.selectedGender.value,
+                          onChanged: (value) =>
+                              controller.selectedGender.value = value!,
+                          activeColor: AppColors.primary,
+                          contentPadding: EdgeInsets.zero,
+                        )),
                   ),
                 ],
               ),
@@ -196,14 +196,14 @@ class PatientEditProfileView extends GetView<ProfileController> {
                 12.width,
                 Expanded(
                   child: Obx(() => CustomText(
-                    controller.selectedCountry.value.isEmpty
-                        ? 'Select Country'.tr
-                        : controller.selectedCountry.value,
-                    fontSize: 14.sp,
-                    color: controller.selectedCountry.value.isEmpty
-                        ? Colors.grey[600]
-                        : Colors.black,
-                  )),
+                        controller.selectedCountry.value.isEmpty
+                            ? 'Select Country'.tr
+                            : controller.selectedCountry.value,
+                        fontSize: 14.sp,
+                        color: controller.selectedCountry.value.isEmpty
+                            ? Colors.grey[600]
+                            : Colors.black,
+                      )),
                 ),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -231,7 +231,7 @@ class PatientEditProfileView extends GetView<ProfileController> {
           children: [
             Row(
               children: [
-                Icon(Icons.location_on, color: AppColors.primary),
+                const Icon(Icons.location_on, color: AppColors.primary),
                 12.width,
                 CustomText(
                   'Select Country'.tr,
@@ -241,12 +241,12 @@ class PatientEditProfileView extends GetView<ProfileController> {
               ],
             ),
             16.height,
-            Container(
+            SizedBox(
               height: Get.height * 0.4,
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: countries.length,
-                separatorBuilder: (context, index) => Divider(height: 1),
+                separatorBuilder: (context, index) => const Divider(height: 1),
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: CustomText(countries[index]),
@@ -254,9 +254,11 @@ class PatientEditProfileView extends GetView<ProfileController> {
                       controller.selectedCountry.value = countries[index];
                       Get.back();
                     },
-                    trailing: Obx(() => controller.selectedCountry.value == countries[index]
-                        ? Icon(Icons.check_circle, color: AppColors.primary)
-                        : SizedBox()),
+                    trailing: Obx(() =>
+                        controller.selectedCountry.value == countries[index]
+                            ? const Icon(Icons.check_circle,
+                                color: AppColors.primary)
+                            : const SizedBox()),
                   );
                 },
               ),
@@ -268,4 +270,3 @@ class PatientEditProfileView extends GetView<ProfileController> {
     );
   }
 }
-

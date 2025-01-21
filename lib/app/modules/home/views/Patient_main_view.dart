@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
-import 'package:med_support_gaza/app/core/extentions/string_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:med_support_gaza/app/modules/home/views/widgets/appointment_card.dart';
-import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class PatientMainView extends GetView<HomeController> {
   const PatientMainView({super.key});
@@ -44,7 +42,6 @@ class PatientMainView extends GetView<HomeController> {
       ),
     );
   }
-
 
   Widget _buildSuggestedDoctors() {
     return Column(
@@ -97,7 +94,7 @@ class PatientMainView extends GetView<HomeController> {
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
             blurRadius: 8,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -170,7 +167,7 @@ class PatientMainView extends GetView<HomeController> {
         GridView.builder(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 16.h,
@@ -189,7 +186,7 @@ class PatientMainView extends GetView<HomeController> {
       decoration: BoxDecoration(
         color: AppColors.primary,
         borderRadius: BorderRadius.circular(12.r),
-        image: DecorationImage(
+        image: const DecorationImage(
           image: AssetImage('assets/images/health_tip_bg.png'),
           fit: BoxFit.cover,
           opacity: 0.2,
@@ -207,7 +204,7 @@ class PatientMainView extends GetView<HomeController> {
               children: [
                 Icon(Icons.health_and_safety_outlined,
                     color: Colors.white, size: 24.sp),
-                Spacer(),
+                const Spacer(),
                 CustomText(
                   'Flu Prevention Tips'.tr,
                   fontSize: 14.sp,
@@ -223,5 +220,4 @@ class PatientMainView extends GetView<HomeController> {
       ),
     );
   }
-
 }

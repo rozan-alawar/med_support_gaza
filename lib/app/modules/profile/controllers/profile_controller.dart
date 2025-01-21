@@ -9,6 +9,7 @@ import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
+
 class ProfileController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -43,10 +44,8 @@ class ProfileController extends GetxController {
       isLoading.value = true;
       final user = _auth.currentUser;
       if (user != null) {
-        final docSnapshot = await _firestore
-            .collection('patients')
-            .doc(user.uid)
-            .get();
+        final docSnapshot =
+            await _firestore.collection('patients').doc(user.uid).get();
 
         if (docSnapshot.exists) {
           currentUser.value = PatientModel.fromJson(docSnapshot.data()!);
@@ -92,10 +91,7 @@ class ProfileController extends GetxController {
         'country': selectedCountry.value,
       };
 
-      await _firestore
-          .collection('patients')
-          .doc(user.uid)
-          .update(updatedData);
+      await _firestore.collection('patients').doc(user.uid).update(updatedData);
 
       await loadUserData();
 
@@ -156,7 +152,7 @@ class ProfileController extends GetxController {
           children: [
             Row(
               children: [
-                Icon(Icons.language, color: AppColors.primary),
+                const Icon(Icons.language, color: AppColors.primary),
                 12.width,
                 CustomText(
                   'select_language'.tr,
@@ -202,7 +198,7 @@ class ProfileController extends GetxController {
             ),
             const Spacer(),
             if (isSelected)
-              Icon(Icons.check_circle, color: AppColors.primary),
+              const Icon(Icons.check_circle, color: AppColors.primary),
           ],
         ),
       ),
@@ -223,7 +219,7 @@ class ProfileController extends GetxController {
             onPressed: signOut,
             child: Text(
               'confirm'.tr,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           ),
         ],
