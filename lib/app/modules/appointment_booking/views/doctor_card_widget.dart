@@ -2,22 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
-import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
-import 'package:med_support_gaza/app/modules/appointment_booking/controllers/appointment_booking_controller.dart';
 class DoctorCard extends StatelessWidget {
   final DoctorModel doctor;
   final bool isSelected;
   final VoidCallback onTap;
 
   const DoctorCard({
-    Key? key,
+    super.key,
     required this.doctor,
     this.isSelected = false,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

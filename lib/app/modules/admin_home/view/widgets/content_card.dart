@@ -5,15 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/data/models/health_content_model.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_update_article_view.dart';
 class ContentCard extends StatelessWidget {
   final HealthContentModel content;
 
-  const ContentCard({Key? key, required this.content}) : super(key: key);
+  const ContentCard({super.key, required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class ContentCard extends StatelessWidget {
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
               blurRadius: 10,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -38,7 +36,7 @@ class ContentCard extends StatelessWidget {
             // Article Image
             ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
-              child: Container(
+              child: SizedBox(
                 width: 86.w,
                 height: 100.w,
 

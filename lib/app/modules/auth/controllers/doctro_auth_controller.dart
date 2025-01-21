@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +21,7 @@ class DoctorAuthController extends GetxController {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+  // final FirebaseStorage _storage = FirebaseStorage.instance;
 
   final RxList<String> otpDigits = List.generate(4, (index) => '').obs;
   final RxInt timeRemaining = 15.obs;
@@ -130,7 +130,7 @@ class DoctorAuthController extends GetxController {
         password: password,
       );
 
-    //  String? documentUrl;
+      //  String? documentUrl;
 
       // رفع الوثيقة إلى Firebase Storage إذا تم تحديدها
       // if (documentFile != null) {
@@ -153,7 +153,7 @@ class DoctorAuthController extends GetxController {
         'phone': phone,
         'country': country,
         'specialty': specialty,
-    //    'documentUrl': documentUrl ?? '',
+        //    'documentUrl': documentUrl ?? '',
         'createdAt': FieldValue.serverTimestamp(),
       });
 

@@ -22,13 +22,13 @@ class PatientHomeView extends GetView<HomeController> {
       body: Obx(
         () => IndexedStack(
           index: controller.currentIndex.value,
-          children: [
-            const PatientMainView(),
+          children: const [
+            PatientMainView(),
 
             //  PatientProfileView(),
             ConsultationView(),
 
-            const PatientProfileView(),
+            PatientProfileView(),
           ],
         ),
       ),

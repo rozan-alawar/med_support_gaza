@@ -124,17 +124,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CONSULTATION,
-      page: () => ConsultationView(),
+      page: () => const ConsultationView(),
       binding: ConsultationBinding(),
     ),
     GetPage(
       name: _Paths.DOCTOR_APPOINTMENT_MANAGEMENT,
-      page: () => DoctorAppointmentManagementView(),
+      page: () => const DoctorAppointmentManagementView(),
       binding: DoctorAppointmentManagementBinding(),
     ),
     GetPage(
       name: _Paths.DOCTOR_HOME,
-      page: () => DocotrHomeView(),
+      page: () => const DocotrHomeView(),
       binding: DoctorHomeBinding(),
     ),
     GetPage(
@@ -159,7 +159,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DOCTOR_DAILY_SCHEDULE,
-      page: () => DailyScheduleView(),
+      page: () => const DailyScheduleView(),
       binding: DoctorAppointmentManagementBinding(),
     ),
     GetPage(
@@ -169,7 +169,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DOCTOR_BOOKING_MANAGEMENT,
-      page: () => DoctorBookingView(),
+      page: () => const DoctorBookingView(),
       binding: DoctorAppointmentManagementBinding(),
     ),
 

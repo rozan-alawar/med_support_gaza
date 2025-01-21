@@ -2,14 +2,13 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
-import 'package:med_support_gaza/app/core/extentions/string_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 class AppointmentsCard extends GetView<HomeController>{
+  const AppointmentsCard({super.key});
+
   @override
   Widget build(BuildContext context) {
 
@@ -43,7 +42,7 @@ class AppointmentsCard extends GetView<HomeController>{
               SizedBox(
                 width: 20.w,
                 height: 20.h,
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),

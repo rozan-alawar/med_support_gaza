@@ -103,8 +103,8 @@ class AdminDoctorsController extends GetxController {
         isApproved: false,
         isOnline: true,
         isAvailable: true,
-        createdAt: DateTime.now().subtract(Duration(days: 30)),
-        lastSeen: DateTime.now().subtract(Duration(minutes: 5)),
+        createdAt: DateTime.now().subtract(const Duration(days: 30)),
+        lastSeen: DateTime.now().subtract(const Duration(minutes: 5)),
       ),
       DoctorModel(
         id: '2',
@@ -127,8 +127,8 @@ class AdminDoctorsController extends GetxController {
         isApproved: false,
         isOnline: false,
         isAvailable: true,
-        createdAt: DateTime.now().subtract(Duration(days: 45)),
-        lastSeen: DateTime.now().subtract(Duration(hours: 2)),
+        createdAt: DateTime.now().subtract(const Duration(days: 45)),
+        lastSeen: DateTime.now().subtract(const Duration(hours: 2)),
       ),
       DoctorModel(
         id: '3',
@@ -151,8 +151,8 @@ class AdminDoctorsController extends GetxController {
         isApproved: false,
         isOnline: true,
         isAvailable: false,
-        createdAt: DateTime.now().subtract(Duration(days: 60)),
-        lastSeen: DateTime.now().subtract(Duration(minutes: 15)),
+        createdAt: DateTime.now().subtract(const Duration(days: 60)),
+        lastSeen: DateTime.now().subtract(const Duration(minutes: 15)),
       ),
       DoctorModel(
         id: '4',
@@ -175,8 +175,8 @@ class AdminDoctorsController extends GetxController {
         isApproved: false,
         isOnline: false,
         isAvailable: true,
-        createdAt: DateTime.now().subtract(Duration(days: 20)),
-        lastSeen: DateTime.now().subtract(Duration(hours: 1)),
+        createdAt: DateTime.now().subtract(const Duration(days: 20)),
+        lastSeen: DateTime.now().subtract(const Duration(hours: 1)),
       ),
       DoctorModel(
         id: '5',
@@ -199,7 +199,7 @@ class AdminDoctorsController extends GetxController {
         isApproved: false,
         isOnline: true,
         isAvailable: true,
-        createdAt: DateTime.now().subtract(Duration(days: 90)),
+        createdAt: DateTime.now().subtract(const Duration(days: 90)),
         lastSeen: DateTime.now(),
       ),
     ];

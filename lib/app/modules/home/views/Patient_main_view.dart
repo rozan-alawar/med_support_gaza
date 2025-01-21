@@ -30,7 +30,7 @@ class PatientMainView extends GetView<HomeController> {
                     ),
                   ),
                   20.height,
-                  AppointmentsCard(),
+                  const AppointmentsCard(),
                   SizedBox(height: 20.h),
                   24.height,
                   _buildSuggestedDoctors(),

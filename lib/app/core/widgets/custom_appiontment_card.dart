@@ -13,7 +13,7 @@ class CustomAppointmentCard extends StatelessWidget {
   final String time;
   final String butText;
   void Function()? onPressed;
-  CustomAppointmentCard({
+  CustomAppointmentCard({super.key, 
     required this.patientName,
     required this.date,
     required this.time,
@@ -34,19 +34,19 @@ class CustomAppointmentCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            '$patientName',
+            patientName,
             fontFamily: 'LamaSans',
             fontSize: 14.sp,
           ),
           8.height,
           CustomText(
-            '$date',
+            date,
             fontFamily: 'LamaSans',
             fontSize: 12.sp,
           ),
           8.height,
           CustomText(
-            '$time',
+            time,
             fontFamily: 'LamaSans',
             fontSize: 12.sp,
           ),

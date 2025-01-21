@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
@@ -13,6 +11,8 @@ import '../controllers/doctor_appointment_management_controller.dart';
 
 class DoctorAppointmentManagementView
     extends GetView<DoctorAppointmentManagementController> {
+  const DoctorAppointmentManagementView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -121,7 +121,7 @@ class DoctorAppointmentManagementView
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                '${controller.getFormatedDate(appointment['date'])}',
+                                controller.getFormatedDate(appointment['date']),
                                 fontSize: 15,
                               ),
                               const SizedBox(height: 5),

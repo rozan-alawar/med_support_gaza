@@ -16,7 +16,7 @@ class BookingCard extends StatelessWidget {
   void Function()? onReject;
 
   BookingCard(
-      {required this.patientName,
+      {super.key, required this.patientName,
       required this.date,
       required this.time,
       this.onApprove,
@@ -41,13 +41,13 @@ class BookingCard extends StatelessWidget {
           ),
           10.height,
           CustomText(
-            '$date',
+            date,
             fontFamily: 'LamaSans',
             fontSize: 12.sp,
           ),
           10.height,
           CustomText(
-            '$time',
+            time,
             fontFamily: 'LamaSans',
             fontSize: 12.sp,
           ),

@@ -9,7 +9,6 @@ import 'package:med_support_gaza/app/data/firebase_services/firebase_collections
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/data/models/specialization_model.dart';
-import 'package:med_support_gaza/app/modules/profile/controllers/doctor_profile_controller.dart';
 import '../models/patient_model.dart';
 
 
@@ -221,7 +220,7 @@ class FirebaseService extends GetxService {
         if (e is FirebaseException && e.code == 'object-not-found') {
           return;
         } else {
-          throw e;
+          rethrow;
         }
       }
     } catch (e) {

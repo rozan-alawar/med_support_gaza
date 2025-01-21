@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/data/models/message_model.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/consultation_controller.dart';
 
 class ConsultationView extends GetView<ConsultationController> {
+  const ConsultationView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +86,7 @@ class ConsultationView extends GetView<ConsultationController> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, -5),
+            offset: const Offset(0, -5),
           ),
         ],
       ),
@@ -103,14 +104,14 @@ class ConsultationView extends GetView<ConsultationController> {
                   Expanded(
                     child: TextField(
                       controller: controller.messageController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Type a message...',
                         border: InputBorder.none,
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.mic, color: AppColors.primary),
+                    icon: const Icon(Icons.mic, color: AppColors.primary),
                     onPressed: controller.startVoiceRecord,
                   ),
                 ],
@@ -122,7 +123,7 @@ class ConsultationView extends GetView<ConsultationController> {
             onTap: controller.sendMessage,
             child: Container(
               padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
