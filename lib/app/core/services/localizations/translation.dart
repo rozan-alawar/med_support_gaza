@@ -271,6 +271,15 @@ class Translation extends Translations {
           'clear_all_notifications': 'مسح كل الإشعارات',
           'doctor_acceptance_request': 'أرسل الطبيب طلب قبول',
           'article_published': 'تم نشر المقال',
+
+
+          'Health_Awareness': 'التوعية الصحية',
+          'COVID-19_Prevention': 'دليل الوقاية من كوفيد-19',
+          'COVID-19_Prevention_Description': 'تعرف على أحدث الإرشادات والتدابير الوقائية',
+          'Mental_Health': 'الصحة النفسية',
+          'Mental_Health_Description': 'نصائح الخبراء للحفاظ على صحة نفسية جيدة',
+          'Healthy_Diet': 'النظام الغذائي الصحي',
+          'Healthy_Diet_Description': 'إرشادات للحصول على نظام غذائي متوازن',
         },
         'en': {
           'Hello': 'Hello',
@@ -506,6 +515,15 @@ class Translation extends Translations {
           'clear_all_notifications': 'Clear all notifications',
           'doctor_acceptance_request': 'Doctor sent acceptance request',
           'article_published': 'Article has been published',
+
+
+          'Health_Awareness': 'Health Awareness',
+          'COVID-19_Prevention': 'COVID-19 Prevention Guide',
+          'COVID-19_Prevention_Description': 'Learn about the latest guidelines and protective measures',
+          'Mental_Health': 'Mental Health Tips',
+          'Mental_Health_Description': 'Expert advice on maintaining good mental health',
+          'Healthy_Diet': 'Healthy Diet Guide',
+          'Healthy_Diet_Description': 'Guidelines for maintaining a balanced diet',
         },
       };
 }
