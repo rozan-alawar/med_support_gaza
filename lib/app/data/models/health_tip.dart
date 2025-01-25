@@ -1,16 +1,20 @@
 
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-class HealthTip {
+class HealthAwarenessTip {
   final String title;
   final String description;
+  final String content;
+  final String bullets;
   final IconData icon;
   final Color backgroundColor;
   final Color iconColor;
 
-  HealthTip({
+  HealthAwarenessTip({
     required this.title,
     required this.description,
+    required this.content,
+    required this.bullets,
     required this.icon,
     required this.backgroundColor,
     required this.iconColor,
