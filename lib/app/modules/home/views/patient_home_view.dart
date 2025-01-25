@@ -25,7 +25,6 @@ class PatientHomeView extends GetView<HomeController> {
           children: const [
             PatientMainView(),
 
-            //  PatientProfileView(),
             ConsultationView(),
 
             PatientProfileView(),
