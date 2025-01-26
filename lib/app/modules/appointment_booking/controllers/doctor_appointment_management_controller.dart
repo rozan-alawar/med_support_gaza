@@ -77,6 +77,8 @@ class DoctorAppointmentManagementController extends GetxController {
 
   Future<void> addAppointment() async {
     try {
+      print(' addAppointment :  $appointments');
+
       print(selectedDate.value);
       appointments.add({
         'date': selectedDate.value,
@@ -119,7 +121,6 @@ class DoctorAppointmentManagementController extends GetxController {
 
       // Filter appointments for selected date
       for (var appointment in appointments) {
-     
         DateTime appointmentDate = (appointment['date'] as DateTime);
         print(
             '-------------------- $appointmentDate--------------------------');
@@ -132,14 +133,13 @@ class DoctorAppointmentManagementController extends GetxController {
             'date': appointment['date'],
             'startTime': appointment['startTime'],
             'isBooked': appointment['isBooked'],
-             'status' : appointment['status'],
+            'status': appointment['status'],
             'createdAt': appointment['createdAt'],
           });
         }
         // Sort daily appointments by time
         dayilyappointments.sort(
             (a, b) => (a['startTime'] ?? '').compareTo(b['startTime'] ?? ''));
-        print(dayilyappointments);
       }
     } catch (e) {
       CustomSnackBar.showCustomSnackBar(
@@ -149,14 +149,9 @@ class DoctorAppointmentManagementController extends GetxController {
     }
   }
 
-    void approveBooking(int index) {
- 
-  }
+  void approveBooking(int index) {}
 
-  void rejectBooking(int index) {
- 
-  }
-
+  void rejectBooking(int index) {}
 
   // Helper functions
   bool isSameDay(DateTime date1, DateTime date2) {
