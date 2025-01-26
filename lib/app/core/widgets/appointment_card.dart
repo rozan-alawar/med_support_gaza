@@ -11,8 +11,8 @@ class AppointmentCard extends StatelessWidget {
   final String date;
   final String time;
 
-  AppointmentCard(
-      {required this.patientName, required this.date, required this.time});
+  const AppointmentCard(
+      {super.key, required this.patientName, required this.date, required this.time});
 
   @override
   Widget build(BuildContext context) {

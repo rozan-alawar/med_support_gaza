@@ -7,7 +7,7 @@ import 'package:med_support_gaza/app/data/models/notification_model.dart';
 import 'package:med_support_gaza/app/modules/admin_home/controller/admin_notification_controller.dart';
 
 class AdminNotificationView extends GetView<AdminNotificationController> {
-  const AdminNotificationView({Key? key}) : super(key: key);
+  const AdminNotificationView({super.key});
 
   @override
   Widget build(BuildContext context) {

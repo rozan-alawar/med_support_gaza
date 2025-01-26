@@ -17,8 +17,8 @@ class HealthContentModel {
     DateTime? createdAt,
     List<String>? tags,
     this.isPublished = false,
-  })  : this.createdAt = createdAt ?? DateTime.now(),
-        this.tags = tags ?? [];
+  })  : createdAt = createdAt ?? DateTime.now(),
+        tags = tags ?? [];
 
   Map<String, dynamic> toJson() {
     return {

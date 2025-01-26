@@ -1,15 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
-import 'package:med_support_gaza/app/data/api_services/auth_api.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 
 class HomeController extends GetxController {
   // Navigation state
@@ -22,19 +18,17 @@ class HomeController extends GetxController {
   final FirebaseService _appointmentService = Get.find<FirebaseService>();
   final FirebaseService _authService = Get.find<FirebaseService>();
 
-  final RxList<AppointmentModel> upcomingAppointments = <AppointmentModel>[].obs;
+  final RxList<AppointmentModel> upcomingAppointments =
+      <AppointmentModel>[].obs;
   final RxBool isLoading = true.obs;
   final RxString error = ''.obs;
-
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-
   void changeBottomNavIndex(int index) {
     currentIndex.value = index;
   }
-
 
   @override
   void onInit() {
@@ -53,7 +47,7 @@ class HomeController extends GetxController {
 
       // Listen to upcoming appointments stream
       _appointmentService.getUpcomingAppointments(userId).listen(
-            (appointments) {
+        (appointments) {
           upcomingAppointments.value = appointments;
           isLoading.value = false;
         },
@@ -83,9 +77,11 @@ class HomeController extends GetxController {
 
   String getFormattedDate(DateTime date) {
     final now = DateTime.now();
-    final tomorrow = DateTime.now().add(Duration(days: 1));
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
 
-    if (date.year == now.year && date.month == now.month && date.day == now.day) {
+    if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day) {
       return 'Today';
     } else if (date.year == tomorrow.year &&
         date.month == tomorrow.month &&
@@ -104,7 +100,8 @@ class HomeController extends GetxController {
 
   Future<void> cancelAppointment(String appointmentId) async {
     try {
-      await _appointmentService.updateAppointmentStatus(appointmentId, 'cancelled');
+      await _appointmentService.updateAppointmentStatus(
+          appointmentId, 'cancelled');
     } catch (e) {
       error.value = 'Error cancelling appointment: $e';
     }
@@ -119,14 +116,13 @@ class HomeController extends GetxController {
         return;
       }
 
-      final docSnapshot = await _firestore
-          .collection('patients')
-          .doc(user.uid)
-          .get();
+      final docSnapshot =
+          await _firestore.collection('patients').doc(user.uid).get();
 
       if (docSnapshot.exists) {
         currentUser.value = PatientModel.fromJson(docSnapshot.data()!);
-        userName.value = "${currentUser.value?.firstName ?? ''} ${currentUser.value?.lastName ?? ''}";
+        userName.value =
+            "${currentUser.value?.firstName ?? ''} ${currentUser.value?.lastName ?? ''}";
       } else {
         CustomSnackBar.showCustomErrorSnackBar(
           title: 'Error'.tr,
@@ -160,7 +156,6 @@ class HomeController extends GetxController {
     }
   }
 
-
   // Profile management
   Future<void> updateProfile(Map<String, dynamic> data) async {
     try {
@@ -169,10 +164,7 @@ class HomeController extends GetxController {
       final user = _auth.currentUser;
       if (user == null) return;
 
-      await _firestore
-          .collection('patients')
-          .doc(user.uid)
-          .update(data);
+      await _firestore.collection('patients').doc(user.uid).update(data);
 
       await loadUserData(); // Reload user data
 

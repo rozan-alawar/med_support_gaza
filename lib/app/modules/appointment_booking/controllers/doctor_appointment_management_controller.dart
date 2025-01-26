@@ -123,7 +123,7 @@ class DoctorAppointmentManagementController extends GetxController {
       for (var appointment in appointments) {
         DateTime appointmentDate = (appointment['date'] as DateTime);
         print(
-            '-------------------- ${appointmentDate}--------------------------');
+            '-------------------- $appointmentDate--------------------------');
         if (isSameDay(appointmentDate, selectedDate.value) &&
             appointment['isBooked'] == true) {
           // Convert appointment time format if needed

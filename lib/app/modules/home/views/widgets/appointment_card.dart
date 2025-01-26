@@ -2,65 +2,63 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
-import 'package:med_support_gaza/app/core/extentions/string_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
-class AppointmentsCard extends GetView<HomeController>{
+
+class AppointmentsCard extends GetView<HomeController> {
+  const AppointmentsCard({super.key});
+
   @override
   Widget build(BuildContext context) {
-
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16),
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.1),
-          blurRadius: 12,
-          spreadRadius: 4,
-          offset: const Offset(0, 2),
-        )
-      ],
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(12.r),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        10.height,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomText(
-              'Upcoming Appointments'.tr,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-            ),
-            if (controller.isLoading.value)
-              SizedBox(
-                width: 20.w,
-                height: 20.h,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                ),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.w,vertical: 2.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.16),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          )
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          10.height,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                'Upcoming Appointments'.tr,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
               ),
-          ],
-        ),
-        16.height,
-        _buildScheduleButton(),
-        16.height,
-        Obx(() =>  _buildAppointmentsList(),
-        ),
-
-      ],
-    ),
-  );
-}
-
+              if (controller.isLoading.value)
+                SizedBox(
+                  width: 20.w,
+                  height: 20.h,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                  ),
+                ),
+            ],
+          ),
+          16.height,
+          _buildScheduleButton(),
+          16.height,
+          Obx(
+            () => _buildAppointmentsList(),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildScheduleButton() {
     return InkWell(
@@ -104,7 +102,7 @@ class AppointmentsCard extends GetView<HomeController>{
       return _buildEmptyState();
     }
 
-    return   ListView.separated(
+    return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: controller.upcomingAppointments.length,
@@ -113,7 +111,8 @@ class AppointmentsCard extends GetView<HomeController>{
         final appointment = controller.upcomingAppointments[index];
         return AppoinmentInfoWidget(
           time: 'appointment.time',
-          day: 'appointment.date.toString().formatAppointmentDay(appointment.date)',
+          day:
+              'appointment.date.toString().formatAppointmentDay(appointment.date)',
           major: appointment.specialization,
           doctorName: appointment.doctorName,
         );

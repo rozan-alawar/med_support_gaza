@@ -7,6 +7,8 @@ import '../../../core/widgets/custom_text_widget.dart';
 import '../controllers/doctor_appointment_management_controller.dart';
 
 class DailyScheduleView extends GetView<DoctorAppointmentManagementController> {
+  const DailyScheduleView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

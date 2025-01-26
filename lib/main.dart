@@ -21,12 +21,11 @@ void main() async {
 
   Get.put<GetStorage>(GetStorage());
 
-
   runApp(const MyApp());
-  
-await Firebase.initializeApp(
+
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   Get.put(FirebaseService());
   final firebaseService = Get.find<FirebaseService>();
   await firebaseService.populateSampleData();
@@ -50,7 +49,8 @@ class MyApp extends StatelessWidget {
             fallbackLocale: const Locale('en', 'US'),
             locale: TranslationController.initalLang,
             translations: Translation(),
-            initialRoute: AppPages.INITIAL,
+            // initialRoute: AppPages.INITIAL,
+            initialRoute: Routes.HOME,
             getPages: AppPages.routes,
             defaultTransition: Transition.fadeIn,
             onUnknownRoute: (settings) {

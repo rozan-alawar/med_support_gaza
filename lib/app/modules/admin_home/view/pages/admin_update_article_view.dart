@@ -17,7 +17,7 @@ import 'package:med_support_gaza/app/modules/admin_home/controller/admin_content
 class UpdateArticleView extends GetView<ContentController> {
   final HealthContentModel article;
 
-  const UpdateArticleView({Key? key, required this.article}) : super(key: key);
+  const UpdateArticleView({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {

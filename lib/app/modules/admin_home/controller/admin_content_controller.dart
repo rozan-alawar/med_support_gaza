@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../data/models/health_content_model.dart';
-import 'dart:io';
 
 class ContentController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -109,7 +108,7 @@ class ContentController extends GetxController {
   Future<void> loadContent() async {
     try {
       isLoading.value = true;
-      await Future.delayed(Duration(seconds: 1)); // Simulate loading
+      await Future.delayed(const Duration(seconds: 1)); // Simulate loading
 
       final mockData = [
         HealthContentModel(
@@ -185,7 +184,7 @@ class ContentController extends GetxController {
         Get.back();
 
         // Then show success message
-        await Future.delayed(Duration(milliseconds: 300));  // Small delay to ensure navigation is complete
+        await Future.delayed(const Duration(milliseconds: 300));  // Small delay to ensure navigation is complete
         CustomSnackBar.showCustomSnackBar(
           title: 'success'.tr,
           message: 'article_updated'.tr,

@@ -9,7 +9,7 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 class QuickStatsCard extends StatelessWidget {
   final int unreadMessages;
 
-  QuickStatsCard({required this.unreadMessages});
+  const QuickStatsCard({super.key, required this.unreadMessages});
 
   @override
   Widget build(BuildContext context) {

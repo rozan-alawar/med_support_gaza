@@ -47,8 +47,8 @@ class DoctorModel {
     this.about = '',
     this.expertise = const [],
     this.isApproved = false,
-  })  : this.createdAt = createdAt ?? DateTime.now(),
-        this.lastSeen = lastSeen ?? DateTime.now();
+  })  : createdAt = createdAt ?? DateTime.now(),
+        lastSeen = lastSeen ?? DateTime.now();
 
   // Get full name
   String get fullName => '$firstName $lastName';

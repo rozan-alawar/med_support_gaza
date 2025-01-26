@@ -3,27 +3,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/modules/profile/controllers/doctor_profile_controller.dart';
-import 'package:med_support_gaza/app/modules/profile/views/doctor_profile_view.dart';
+import 'package:med_support_gaza/app/modules/profile/views/pages/doctor_profile_view.dart';
 
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../appointment_booking/controllers/doctor_appointment_management_controller.dart';
 import '../../appointment_booking/views/doctor_appointment_management_view.dart';
 import '../../consultation/views/doctor_consultation_list_view.dart';
 import '../controllers/doctor_home_controller.dart';
 import 'doctor_main_view.dart';
 
 class DocotrHomeView extends GetView<DoctorHomeController> {
-  DocotrHomeView({super.key});
-  int currentPageIndex = 0;
+  const DocotrHomeView({super.key});
+  final int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(()=>DoctorProfileController());
+    Get.lazyPut(() => DoctorProfileController());
     return SafeArea(
       child: Scaffold(
-         appBar: AppBar(
-            actions: [
+        appBar: AppBar(
+          actions: [
             IconButton(
               onPressed: () {},
               icon: SvgPicture.asset(
@@ -31,18 +30,18 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
               ),
             )
           ],
-         ),
+        ),
         body: Obx(
           () => Align(
             child: IndexedStack(
               alignment: Alignment.topRight,
               index: controller.currentIndex.value,
-              children: [
+              children:  [
                 DoctorMainView(),
                 DoctorConsultationListView(),
                 DoctorAppointmentManagementView(),
                 DoctorProfileView(),
-            ],
+              ],
             ),
           ),
         ),
@@ -50,9 +49,8 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
           () => BottomNavigationBar(
             currentIndex: controller.currentIndex.value,
             selectedItemColor: AppColors.accent,
-
             selectedLabelStyle:
-            TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
             onTap: (value) => controller.changeBottomNavIndex(value),
             items: [
               BottomNavigationBarItem(

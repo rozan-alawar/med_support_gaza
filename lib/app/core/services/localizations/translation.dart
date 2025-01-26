@@ -271,7 +271,32 @@ class Translation extends Translations {
           'clear_all_notifications': 'مسح كل الإشعارات',
           'doctor_acceptance_request': 'أرسل الطبيب طلب قبول',
           'article_published': 'تم نشر المقال',
+
+
+          'Health_Awareness': 'التوعية الصحية',
+          'COVID-19_Prevention': 'دليل الوقاية من كوفيد-19',
+          'COVID-19_Prevention_Description': 'تعرف على أحدث الإرشادات والتدابير الوقائية',
+          'Mental_Health': 'الصحة النفسية',
+          'Mental_Health_Description': 'نصائح الخبراء للحفاظ على صحة نفسية جيدة',
+          'Healthy_Diet': 'النظام الغذائي الصحي',
+          'Healthy_Diet_Description': 'إرشادات للحصول على نظام غذائي متوازن',
+          'Key_Points': 'النقاط الرئيسية',
+          'COVID-19_Content': 'إن تلقي لقاح الإنفلونزا الموسمي يمكن أن يكون من أفضل الطرق للوقاية من الإنفلونزا وتنزلات البرد في كل عام، حيث يجب على الأفراد أخذ هذا اللقاح في حوالي أسبوعين قبل بداية موسم الشتاء',
+          'COVID-19_Bullets': 'تجنب الأماكن المكتظة بالناس وارتداء مناسك الوقاية|القيام بغسل اليدين بالماء الدافئ والصابون|استخدام مطهر لليدين في حال الخروج|تجنب لمس الفم والعينين والأنف دون غسل اليدين',
+          'Mental_Health_Content': 'الصحة النفسية هي حالة من العافية يمكن فيها للفرد تحقيق قدراته وإمكاناته، والتكيف مع الضغوط العادية للحياة',
+          'Mental_Health_Bullets': 'الحفاظ على روتين يومي صحي|ممارسة التمارين الرياضية بانتظام|التواصل مع الأصدقاء والعائلة|طلب المساعدة المهنية عند الحاجة',
+          'Healthy_Diet_Content': 'النظام الغذائي المتوازن ضروري للحفاظ على صحة جيدة ووقاية الجسم من الأمراض',
+          'Healthy_Diet_Bullets': 'تناول الخضروات والفواكه الطازجة يومياً|شرب كمية كافية من الماء|تجنب الأطعمة المصنعة|تناول وجبات متوازنة',
+          'Emergency_First_Aid': 'الإسعافات الأولية الطارئة',
+          'Emergency_First_Aid_Description': 'تعلم المبادئ الأساسية للإسعافات الأولية',
+          'Chronic_Disease_Management': 'إدارة الأمراض المزمنة',
+          'Chronic_Disease_Description': 'نصائح للتعامل مع الأمراض المزمنة',
+          'Child_Health': 'صحة الطفل',
+          'Child_Health_Description': 'إرشادات للعناية بصحة طفلك',
+          'Women_Health': 'صحة المرأة',
+          'Women_Health_Description': 'نصائح وإرشادات خاصة بصحة المرأة',
         },
+
         'en': {
           'Hello': 'Hello',
           'Welcome': 'Welcome',
@@ -506,6 +531,23 @@ class Translation extends Translations {
           'clear_all_notifications': 'Clear all notifications',
           'doctor_acceptance_request': 'Doctor sent acceptance request',
           'article_published': 'Article has been published',
+
+
+          'Health_Awareness': 'Health Awareness',
+          'COVID-19_Prevention': 'COVID-19 Prevention Guide',
+          'COVID-19_Prevention_Description': 'Learn about the latest guidelines and protective measures',
+          'Mental_Health': 'Mental Health Tips',
+          'Mental_Health_Description': 'Expert advice on maintaining good mental health',
+          'Healthy_Diet': 'Healthy Diet Guide',
+          'Healthy_Diet_Description': 'Guidelines for maintaining a balanced diet',
+
+          'Key_Points': 'Key Points',
+          'COVID-19_Content': 'Getting the seasonal flu vaccine can be one of the best ways to prevent flu and colds every year. Individuals should get this vaccine about two weeks before the start of winter',
+          'COVID-19_Bullets': 'Avoid crowded places and wear protective gear|Wash hands with warm water and soap|Use hand sanitizer when going out|Avoid touching mouth, eyes and nose without washing hands',
+          'Mental_Health_Content': 'Mental health is a state of well-being in which an individual can realize their abilities, cope with normal life stresses',
+          'Mental_Health_Bullets': 'Maintain a healthy daily routine|Exercise regularly|Stay connected with friends and family|Seek professional help when needed',
+          'Healthy_Diet_Content': 'A balanced diet is essential for maintaining good health and protecting the body from diseases',
+          'Healthy_Diet_Bullets': 'Eat fresh vegetables and fruits daily|Drink enough water|Avoid processed foods|Eat balanced meals',
         },
       };
 }

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import 'package:med_support_gaza/app/modules/admin_home/controller/admin_notification_controller.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_content_management_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_doctors.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_insights.dart';
@@ -32,21 +31,21 @@ class AdminHome extends StatelessWidget {
                 color: AppColors.textDark,
               )),
           centerTitle: true,
-      actions: [    Obx(() => Visibility(
-            visible: controller.selectedIndex.value == 0,
-            child: IconButton(
-              icon: SvgPicture.asset(
-                IconAssets.bell,
-                width: 26.w,
-                height: 26.h,
-              ),
-              onPressed: () {
-             Get.toNamed(Routes.ADMIN_NOTIFICATION);
-              },
-            ),
-          )),
+          actions: [
+            Obx(() => Visibility(
+                  visible: controller.selectedIndex.value == 0,
+                  child: IconButton(
+                    icon: SvgPicture.asset(
+                      IconAssets.bell,
+                      width: 26.w,
+                      height: 26.h,
+                    ),
+                    onPressed: () {
+                      Get.toNamed(Routes.ADMIN_NOTIFICATION);
+                    },
+                  ),
+                )),
           ],
-      
         ),
         body: Obx(() {
           // Display the corresponding page
@@ -57,7 +56,7 @@ class AdminHome extends StatelessWidget {
               return const AdminUserManagementView();
             case 2:
               return const AdminContentManagementView();
-      
+
             case 3:
               return const AdminDoctors();
             default:

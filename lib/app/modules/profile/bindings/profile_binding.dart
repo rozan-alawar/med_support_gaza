@@ -8,8 +8,7 @@ class ProfileBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<ProfileController>(
       () => ProfileController(),
-
     );
-    Get.lazyPut(()=>DoctorProfileController());
+    Get.lazyPut(() => DoctorProfileController());
   }
 }

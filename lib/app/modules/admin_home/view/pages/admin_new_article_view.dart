@@ -141,7 +141,7 @@ class AddNewArticle extends GetView<ContentController> {
   }
 
   Widget _buildErrorPlaceholder() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 200.h,
       child: Column(

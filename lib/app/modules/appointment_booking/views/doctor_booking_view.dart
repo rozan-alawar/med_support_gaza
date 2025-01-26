@@ -3,11 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../core/widgets/booking_card.dart';
-import '../../../core/widgets/custom_appiontment_card.dart';
 import '../../../core/widgets/custom_text_widget.dart';
 import '../controllers/doctor_appointment_management_controller.dart';
 
 class DoctorBookingView extends GetView<DoctorAppointmentManagementController> {
+  const DoctorBookingView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

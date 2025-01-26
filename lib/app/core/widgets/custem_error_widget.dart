@@ -5,7 +5,7 @@ import 'package:med_support_gaza/app/routes/app_pages.dart';
 class ErrorApp extends StatelessWidget {
   final String error;
 
-  const ErrorApp({Key? key, required this.error}) : super(key: key);
+  const ErrorApp({super.key, required this.error});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ErrorApp extends StatelessWidget {
 class ErrorView extends StatelessWidget {
   final String message;
 
-  const ErrorView({Key? key, required this.message}) : super(key: key);
+  const ErrorView({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -30,31 +30,31 @@ class ErrorView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.error_outline,
                 color: Colors.red,
                 size: 48,
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'An error occurred',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 message,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey[600]),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Get.offAllNamed(AppPages.INITIAL);
                 },
-                child: Text('Try Again'),
+                child: const Text('Try Again'),
               ),
             ],
           ),

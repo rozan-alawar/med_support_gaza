@@ -22,7 +22,7 @@ class AdminContentManagementView extends GetView<ContentController> {
         floatingActionButton: FloatingActionButton(
           onPressed: () => Get.toNamed(Routes.ADD_CONTENT),
           backgroundColor: AppColors.primary,
-          child: Icon(
+          child: const Icon(
             Icons.add,
             color: AppColors.white,
           ),

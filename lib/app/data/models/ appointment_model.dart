@@ -36,7 +36,7 @@ class AppointmentModel {
     this.status = AppointmentStatus.upcoming,
     this.notes,
     DateTime? createdAt,
-  }) : this.createdAt = createdAt ?? DateTime.now();
+  }) : createdAt = createdAt ?? DateTime.now();
 
   // Factory constructor to handle both old and new format
   factory AppointmentModel.fromJson(Map<String, dynamic> json) {
@@ -147,7 +147,7 @@ class AppointmentModel {
   // Format for specific date display (Today, Tomorrow, or date)
   String getDisplayDate() {
     final now = DateTime.now();
-    final tomorrow = DateTime.now().add(Duration(days: 1));
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
 
     if (dateTime.year == now.year &&
         dateTime.month == now.month &&
