@@ -7,21 +7,20 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/patient_doctors_controller.dart';
-
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class PatientDoctorsView extends GetView<PatientDoctorsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         centerTitle: true,
         title: CustomText(
           'AvailableDoctors'.tr,
-          fontSize: 16.sp,
+          fontSize: 17.sp,
           fontWeight: FontWeight.bold,
         ),
-
       ),
       body: Column(
         children: [
@@ -54,7 +53,6 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
       ),
     );
   }
-
 
   Widget _buildDoctorsList() {
     return Obx(() {
@@ -94,7 +92,7 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => Get.toNamed('/doctor-details', arguments: doctor),
+          onTap: () => Get.toNamed(Routes.DOCTOR_DETAILS, arguments: doctor),
           borderRadius: BorderRadius.circular(16.r),
           child: Padding(
             padding: EdgeInsets.all(16.w),
@@ -126,7 +124,6 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
                               ],
                             ),
                           ),
-
                         ],
                       ),
                       12.height,
@@ -140,11 +137,9 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
                           12.width,
                           _buildInfoChip(
                             Icons.work_outline,
-                            '${doctor.experience} ${'Years'.tr}'
-                                ,
+                            '${doctor.experience} ${'Years'.tr}',
                             AppColors.primary,
                           ),
-
                         ],
                       ),
                     ],
@@ -173,10 +168,10 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
         borderRadius: BorderRadius.circular(35.r),
         child: doctor.profileImage != null
             ? Image.network(
-          doctor.profileImage!,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(),
-        )
+                doctor.profileImage!,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(),
+              )
             : _buildAvatarPlaceholder(),
       ),
     );

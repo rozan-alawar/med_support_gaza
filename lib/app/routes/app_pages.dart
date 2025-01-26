@@ -5,6 +5,7 @@ import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_home.da
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_new_article_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_notification_view.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_booking_view.dart';
+import 'package:med_support_gaza/app/modules/home/views/doctor_details_view.dart';
 import 'package:med_support_gaza/app/modules/home/views/doctors_list_view.dart';
 
 
@@ -191,10 +192,15 @@ class AppPages {
         page: () => DoctorConsultationView(),
         binding: DoctroConsultationBinding()),
     GetPage(
-      name: _Paths.DOCTORSLIST,
+      name: _Paths.DOCTORS_LIST,
       page: () => PatientDoctorsView(),
       binding: HomeBinding(),
     ),
+    GetPage(
+      name: _Paths.DOCTOR_DETAILS,
+      page: () => DoctorDetailsView(),
+    ),
+
 
   ];
 }

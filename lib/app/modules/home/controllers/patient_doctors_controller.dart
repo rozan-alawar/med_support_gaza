@@ -44,8 +44,41 @@ class PatientDoctorsController extends GetxController {
     isApproved: true,
     isVerified: true
     ),
-        // Add more mock doctors
-      ];
+        DoctorModel(
+            id: '3',
+            firstName: 'Rozan',
+            lastName: 'Alawar',
+            email: 'rozan@example.com',
+            phoneNo: '+970597654321',
+            speciality: 'Pediatrics',
+            country: 'Palestine',
+            gender: 'Female',
+            rating: 4.8,
+            experience: 10,
+            medicalCertificateUrl: 'url',
+            about: 'Dedicated pediatrician focused on child development',
+            expertise: ['Child Care', 'Vaccinations'],
+            languages: ['Arabic', 'English', 'French'],
+            isApproved: true,
+            isVerified: true
+        ), DoctorModel(
+            id: '2',
+            firstName: 'Sara',
+            lastName: 'Ahmad',
+            email: 'sara@example.com',
+            phoneNo: '+970597654321',
+            speciality: 'Pediatrics',
+            country: 'Palestine',
+            gender: 'Female',
+            rating: 4.8,
+            experience: 10,
+            medicalCertificateUrl: 'url',
+            about: 'Dedicated pediatrician focused on child development',
+            expertise: ['Child Care', 'Vaccinations'],
+            languages: ['Arabic', 'English', 'French'],
+            isApproved: true,
+            isVerified: true
+        ),      ];
     } finally {
       isLoading.value = false;
     }
@@ -79,6 +112,24 @@ class PatientDoctorsController extends GetxController {
           firstName: 'Sara',
           lastName: 'Ahmad',
           email: 'sara@example.com',
+          phoneNo: '+970597654321',
+          speciality: 'Pediatrics',
+          country: 'Palestine',
+          gender: 'Female',
+          rating: 4.8,
+          experience: 10,
+          medicalCertificateUrl: 'url',
+          about: 'Dedicated pediatrician focused on child development',
+          expertise: ['Child Care', 'Vaccinations'],
+          languages: ['Arabic', 'English', 'French'],
+          isApproved: true,
+          isVerified: true
+      ),
+      DoctorModel(
+          id: '3',
+          firstName: 'Rozan',
+          lastName: 'Alawar',
+          email: 'rozan@example.com',
           phoneNo: '+970597654321',
           speciality: 'Pediatrics',
           country: 'Palestine',

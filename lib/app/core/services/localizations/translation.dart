@@ -299,7 +299,16 @@ class Translation extends Translations {
           'SearchDoctors': 'البحث عن الأطباء...',
           'BookAppointment': 'حجز موعد',
           'Years': 'سنوات',
-          'Rating': 'التقييم'
+          'Rating': 'التقييم','DoctorProfile': 'ملف الطبيب',
+          'BookAppointment': 'حجز موعد',
+          'Phone': 'هاتف',
+          'Location': 'الموقع',
+          'Status': 'الحالة',
+          'Verified': 'موثق',
+          'Pending': 'قيد المراجعة',
+          'About': 'نبذة',
+          'Expertise': 'التخصصات',
+          'Languages': 'اللغات'
         },
 
         'en': {
@@ -558,7 +567,17 @@ class Translation extends Translations {
           'SearchDoctors': 'Search doctors...',
           'BookAppointment': 'Book Appointment',
           'Years': 'Years',
-          'Rating': 'Rating'
+          'Rating': 'Rating',
+          'DoctorProfile': 'Doctor Profile',
+          'BookAppointment': 'Book Appointment',
+          'Phone': 'Phone',
+          'Location': 'Location',
+          'Status': 'Status',
+          'Verified': 'Verified',
+          'Pending': 'Pending',
+          'About': 'About',
+          'Expertise': 'Expertise',
+          'Languages': 'Languages'
         },
       };
 }

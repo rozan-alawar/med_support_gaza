@@ -6,7 +6,7 @@ class AppColors {
 // Main Colors
   static const Color primary = Color(0xFF00918E); // Dark Green
   static const Color accent = Color(0xFF00796B); // Teal
-  static const Color background = Color(0xFFFFFFFF); // White
+  static const Color background = Color(0xFFEFEFEF);
   static const Color surface = Color(0xFFE0F2F1); // Light Teal
 
 // Text Colors
