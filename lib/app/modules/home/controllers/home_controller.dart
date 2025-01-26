@@ -26,6 +26,7 @@ class HomeController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
   void changeBottomNavIndex(int index) {
     currentIndex.value = index;
   }

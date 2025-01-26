@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class SuggestedDoctors extends StatelessWidget {
   const SuggestedDoctors({super.key});
@@ -24,7 +25,7 @@ class SuggestedDoctors extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () => Get.toNamed(Routes.DOCTORSLIST),
                 child: CustomText(
                   'View All'.tr,
                   color: AppColors.primary,
@@ -53,7 +54,7 @@ class SuggestedDoctors extends StatelessWidget {
 Widget _buildDoctorCard() {
   return Container(
     width: 160.w,
-    margin: EdgeInsets.only(right: 16.w,bottom: 10),
+    margin: EdgeInsets.only(right: 16.w, bottom: 10),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(12.r),

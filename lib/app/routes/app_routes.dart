@@ -37,6 +37,7 @@ abstract class Routes {
   static const DOCTOR_BOOKING_MANAGEMENT = _Paths.DOCTOR_BOOKING_MANAGEMENT;
   static const ARTICLE_TIP = _Paths.ARTICLE_TIP;
   static const DOCTOR_CHAT = _Paths.DOCTOR_CHAT;
+  static const DOCTORSLIST = _Paths.DOCTORSLIST;
 }
 
 abstract class _Paths {
@@ -75,6 +76,9 @@ abstract class _Paths {
   static const DOCTOR_BOOKING_MANAGEMENT = '/booking-management';
 
   static const ARTICLE_TIP = '/article-tip';
+  static const DOCTORSLIST= '/doctors-list';
+
 
   static const DOCTOR_CHAT = '/doctor-chat';
+
 }
