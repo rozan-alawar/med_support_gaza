@@ -5,6 +5,7 @@ import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_home.da
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_new_article_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_notification_view.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_booking_view.dart';
+import 'package:med_support_gaza/app/modules/consultation/bindings/doctor_consultation_binding.dart';
 import 'package:med_support_gaza/app/modules/profile/views/doctor_edit_profile_view.dart';
 import 'package:med_support_gaza/app/modules/profile/views/doctor_profile_view.dart';
 
@@ -26,6 +27,7 @@ import '../modules/auth/views/patient_new_password_view.dart';
 import '../modules/auth/views/verfication_view.dart';
 import '../modules/consultation/bindings/consultation_binding.dart';
 import '../modules/consultation/views/consultation_view.dart';
+import '../modules/consultation/views/doctor_consultation_view.dart';
 import '../modules/home/bindings/doctor_home_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/doctor_home_view.dart';
@@ -166,19 +168,21 @@ class AppPages {
       name: _Paths.ADD_CONTETNT,
       page: () => AddNewArticle(),
       binding: AdminBinding(),
-    ) ,
-      GetPage(
+    ),
+    GetPage(
       name: _Paths.DOCTOR_BOOKING_MANAGEMENT,
       page: () => DoctorBookingView(),
       binding: DoctorAppointmentManagementBinding(),
     ),
-
 
     GetPage(
       name: _Paths.ADMIN_NOTIFICATION,
       page: () => AdminNotificationView(),
       binding: AdminBinding(),
     ),
-
+    GetPage(
+        name: _Paths.DOCTOR_CHAT,
+        page: () => DoctorConsultationView(),
+        binding: DoctroConsultationBinding())
   ];
 }

@@ -9,6 +9,7 @@ import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../appointment_booking/controllers/doctor_appointment_management_controller.dart';
 import '../../appointment_booking/views/doctor_appointment_management_view.dart';
+import '../../consultation/views/doctor_consultation_list_view.dart';
 import '../controllers/doctor_home_controller.dart';
 import 'doctor_main_view.dart';
 
@@ -38,7 +39,7 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
               index: controller.currentIndex.value,
               children: [
                 DoctorMainView(),
-                Center(),
+                DoctorConsultationListView(),
                 DoctorAppointmentManagementView(),
                 DoctorProfileView(),
             ],

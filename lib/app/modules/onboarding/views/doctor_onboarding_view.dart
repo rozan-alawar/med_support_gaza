@@ -43,7 +43,7 @@ class DoctorOnboardingView extends StatelessWidget {
               100.height,
               CustomButton(
                 onPressed: () {
-                  Get.offNamed(Routes.DOCTOR_SIGNUP);
+                  Get.offNamed(Routes.DOCTOR_LOGIN);
                 },
                 text: 'next'.tr,
                 color: AppColors.primary,
