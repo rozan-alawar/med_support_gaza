@@ -37,7 +37,7 @@ class PatientMainView extends GetView<HomeController> {
                   24.height,
                   const SuggestedDoctors(),
                   24.height,
-                  HealthTipsView(),
+               const   HealthTipsView(),
                   24.height,
                 ],
               ),
