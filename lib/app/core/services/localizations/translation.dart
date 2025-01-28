@@ -210,7 +210,6 @@ class Translation extends Translations {
           'content_management': 'إدارة المحتوى',
           'content_list': 'المحتوى',
           'add_new': 'إضافة جديد',
-          'search': 'بحث',
           'no_content': 'لا يوجد محتوى',
           'article_title': 'عنوان المقال',
           'enter_article_title': 'أدخل عنوان المقال',
@@ -295,6 +294,21 @@ class Translation extends Translations {
           'Child_Health_Description': 'إرشادات للعناية بصحة طفلك',
           'Women_Health': 'صحة المرأة',
           'Women_Health_Description': 'نصائح وإرشادات خاصة بصحة المرأة',
+
+          'AvailableDoctors': 'الأطباء المتاحون',
+          'SearchDoctors': 'البحث عن الأطباء...',
+          'BookAppointment': 'حجز موعد',
+          'Years': 'سنوات',
+          'Rating': 'التقييم','DoctorProfile': 'ملف الطبيب',
+          'BookAppointment': 'حجز موعد',
+          'Phone': 'هاتف',
+          'Location': 'الموقع',
+          'Status': 'الحالة',
+          'Verified': 'موثق',
+          'Pending': 'قيد المراجعة',
+          'About': 'نبذة',
+          'Expertise': 'التخصصات',
+          'Languages': 'اللغات'
         },
 
         'en': {
@@ -548,6 +562,22 @@ class Translation extends Translations {
           'Mental_Health_Bullets': 'Maintain a healthy daily routine|Exercise regularly|Stay connected with friends and family|Seek professional help when needed',
           'Healthy_Diet_Content': 'A balanced diet is essential for maintaining good health and protecting the body from diseases',
           'Healthy_Diet_Bullets': 'Eat fresh vegetables and fruits daily|Drink enough water|Avoid processed foods|Eat balanced meals',
+
+          'AvailableDoctors': 'Available Doctors',
+          'SearchDoctors': 'Search doctors...',
+          'BookAppointment': 'Book Appointment',
+          'Years': 'Years',
+          'Rating': 'Rating',
+          'DoctorProfile': 'Doctor Profile',
+          'BookAppointment': 'Book Appointment',
+          'Phone': 'Phone',
+          'Location': 'Location',
+          'Status': 'Status',
+          'Verified': 'Verified',
+          'Pending': 'Pending',
+          'About': 'About',
+          'Expertise': 'Expertise',
+          'Languages': 'Languages'
         },
       };
 }
