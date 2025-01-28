@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'dart:convert';
 class DoctorModel {
   final String id;
   final String firstName;
@@ -219,3 +219,87 @@ class WorkingHours {
     }
   }
 }
+
+
+
+Doctor doctorFromJson(String str) => Doctor.fromJson(json.decode(str));
+
+String doctorToJson(Doctor data) => json.encode(data.toJson());
+
+class Doctor {
+    String firstName;
+    String lastName;
+    String email;
+    String password;
+    String country;
+    String phoneNumber;
+    String gender;
+    String major;
+    dynamic certificate;
+    String passwordConfirmation;
+
+    Doctor({
+        required this.firstName,
+        required this.lastName,
+        required this.email,
+        required this.password,
+        required this.country,
+        required this.phoneNumber,
+        required this.gender,
+        required this.major,
+        required this.certificate,
+        required this.passwordConfirmation,
+    });
+
+    Doctor copyWith({
+        String? firstName,
+        String? lastName,
+        String? email,
+        String? password,
+        String? country,
+        String? phoneNumber,
+        String? gender,
+        String? major,
+        dynamic certificate,
+        String? passwordConfirmation,
+    }) => 
+        Doctor(
+            firstName: firstName ?? this.firstName,
+            lastName: lastName ?? this.lastName,
+            email: email ?? this.email,
+            password: password ?? this.password,
+            country: country ?? this.country,
+            phoneNumber: phoneNumber ?? this.phoneNumber,
+            gender: gender ?? this.gender,
+            major: major ?? this.major,
+            certificate: certificate ?? this.certificate,
+            passwordConfirmation: passwordConfirmation ?? this.passwordConfirmation,
+        );
+
+    factory Doctor.fromJson(Map<String, dynamic> json) => Doctor(
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        email: json["email"],
+        password: json["password"],
+        country: json["country"],
+        phoneNumber: json["phone_number"],
+        gender: json["gender"],
+        major: json["major"],
+        certificate: json["certificate"],
+        passwordConfirmation: json["password_confirmation"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "first_name": firstName,
+        "last_name": lastName,
+        "email": email,
+        "password": password,
+        "country": country,
+        "phone_number": phoneNumber,
+        "gender": gender,
+        "major": major,
+        "certificate": certificate,
+        "password_confirmation": passwordConfirmation,
+    };
+}
+

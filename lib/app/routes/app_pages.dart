@@ -6,7 +6,6 @@ import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_new_art
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_notification_view.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_booking_view.dart';
 
-
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/bindings/doctor_appointment_management_binding.dart';
 import '../modules/appointment_booking/views/appointment_booking_view.dart';
@@ -32,6 +31,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/article_view.dart';
 import '../modules/home/views/doctor_home_view.dart';
 import '../modules/home/views/patient_home_view.dart';
+import '../modules/notification/bindings/doctor_notification_binding.dart';
+import '../modules/notification/views/doctor_notification_view.dart';
 import '../modules/onboarding/views/doctor_onboarding_view.dart';
 import '../modules/onboarding/views/patient_onboarding_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -185,9 +186,15 @@ class AppPages {
     GetPage(
       name: _Paths.ARTICLE_TIP,
       page: () => const ArticleTipView(),
-    ),    GetPage(
+    ),
+    GetPage(
         name: _Paths.DOCTOR_CHAT,
         page: () => DoctorConsultationView(),
-        binding: DoctroConsultationBinding())
+        binding: DoctroConsultationBinding()),
+    GetPage(
+      name: _Paths.DOCTOR_NOTIFICATION,
+      page: () => const DoctorNotificationView(),
+      binding: DoctorNotificationBinding(),
+    ),
   ];
 }
