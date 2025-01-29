@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:med_support_gaza/app/modules/home/views/widgets/appointment_card.dart';
@@ -24,10 +25,23 @@ class PatientMainView extends GetView<HomeController> {
               child: ListView(
                 children: [
                   Obx(
-                    () => CustomText(
-                      'Hello, ${controller.userName.value}'.tr,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
+                    () => Row(
+                      children: [
+                        CustomText(
+                          controller.userName.value.tr,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        const Spacer(),
+                        CircleAvatar(
+                          radius: 20.r,
+                          backgroundColor: AppColors.primary,
+                          child: const Icon(
+                            Icons.person,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   20.height,

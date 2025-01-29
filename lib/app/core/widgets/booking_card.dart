@@ -16,7 +16,8 @@ class BookingCard extends StatelessWidget {
   void Function()? onReject;
 
   BookingCard(
-      {super.key, required this.patientName,
+      {super.key,
+      required this.patientName,
       required this.date,
       required this.time,
       this.onApprove,

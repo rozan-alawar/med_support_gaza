@@ -39,7 +39,7 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
         ),
         12.height,
         SizedBox(
-          height: 210.h,
+          height: 225.h,
           child: Obx(() => ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -57,7 +57,7 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
 
   Widget _buildDoctorCard(DoctorModel doctor) {
     return Container(
-      width: 175.w,
+      width: 160.w,
       margin: EdgeInsets.only(right: 16.w, bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -103,6 +103,8 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
                   children: [
                     CustomText(
                       doctor.fullName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                     ),

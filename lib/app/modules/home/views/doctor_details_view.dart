@@ -6,6 +6,7 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class DoctorDetailsView extends StatelessWidget {
   final DoctorModel doctor = Get.arguments;
@@ -29,7 +30,10 @@ class DoctorDetailsView extends StatelessWidget {
         child: CustomButton(
           text: 'BookAppointment'.tr,
           color: AppColors.primary,
-          onPressed: () => Get.toNamed('/appointment-booking', arguments: doctor),
+          onPressed: () =>Get.toNamed(
+            Routes.APPOINTMENT_BOOKING,
+            arguments: {'doctor': doctor},
+          ),
         ),
       ),
       body: SingleChildScrollView(
