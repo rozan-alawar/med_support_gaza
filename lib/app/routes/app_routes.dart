@@ -37,6 +37,7 @@ abstract class Routes {
   static const DOCTOR_BOOKING_MANAGEMENT = _Paths.DOCTOR_BOOKING_MANAGEMENT;
   static const ARTICLE_TIP = _Paths.ARTICLE_TIP;
   static const DOCTOR_CHAT = _Paths.DOCTOR_CHAT;
+  static const DOCTOR_NOTIFICATION = _Paths.DOCTOR_NOTIFICATION;
   static const DOCTOR_DETAILS = _Paths.DOCTOR_DETAILS;
   static const DOCTORS_LIST = _Paths.DOCTORS_LIST;
 }
@@ -77,10 +78,9 @@ abstract class _Paths {
   static const DOCTOR_BOOKING_MANAGEMENT = '/booking-management';
 
   static const ARTICLE_TIP = '/article-tip';
-  static const DOCTORS_LIST= '/doctors-list';
-
+  static const DOCTORS_LIST = '/doctors-list';
 
   static const DOCTOR_CHAT = '/doctor-chat';
+  static const DOCTOR_NOTIFICATION = '/doctor-notification';
   static const DOCTOR_DETAILS = '/doctor-details';
-
 }

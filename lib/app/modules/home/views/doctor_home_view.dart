@@ -7,6 +7,7 @@ import 'package:med_support_gaza/app/modules/profile/views/pages/doctor_profile_
 
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../routes/app_pages.dart';
 import '../../appointment_booking/views/doctor_appointment_management_view.dart';
 import '../../consultation/views/doctor_consultation_list_view.dart';
 import '../controllers/doctor_home_controller.dart';
@@ -24,7 +25,9 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
         appBar: AppBar(
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(Routes.DOCTOR_NOTIFICATION);
+              },
               icon: SvgPicture.asset(
                 IconAssets.bell,
               ),
@@ -55,11 +58,11 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
             items: [
               BottomNavigationBarItem(
                 activeIcon: SvgPicture.asset(
-                  IconAssets.home1,
+                  IconAssets.home,
                   color: AppColors.accent,
                 ),
                 icon: SvgPicture.asset(
-                  IconAssets.home1,
+                  IconAssets.home,
                 ),
                 label: 'Home'.tr,
               ),

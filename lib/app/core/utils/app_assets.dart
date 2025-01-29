@@ -40,4 +40,6 @@ class IconAssets {
   static const String serviceManagment = '$ICONS_PATH/serviceManagment.svg';
   static const String userManagment = '$ICONS_PATH/userManagment.svg';
   static const String contentManagment = '$ICONS_PATH/contentManagment.svg';
+  static const String notification = '$ICONS_PATH/notification.svg';
+
 }
