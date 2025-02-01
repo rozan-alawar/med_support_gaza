@@ -49,8 +49,8 @@ class MyApp extends StatelessWidget {
             fallbackLocale: const Locale('en', 'US'),
             locale: TranslationController.initalLang,
             translations: Translation(),
-            // initialRoute: AppPages.INITIAL,
-            initialRoute: Routes.HOME,
+         initialRoute: AppPages.INITIAL,
+            // initialRoute: Routes.HOME,
 
             getPages: AppPages.routes,
             defaultTransition: Transition.fadeIn,
@@ -61,35 +61,7 @@ class MyApp extends StatelessWidget {
                 ),
               );
             },
-            builder: (context, child) {
-              ErrorWidget.builder = (FlutterErrorDetails details) {
-                return Material(
-                  child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.error_outline,
-                          color: Colors.red,
-                          size: 60,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Something went wrong',
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              };
 
-              return child ?? const SizedBox();
-            },
           ),
         );
       },

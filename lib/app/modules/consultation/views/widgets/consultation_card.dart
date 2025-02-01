@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/core/extentions/string_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 
 class ConsultationCard extends StatelessWidget {
-  final ConsultationData consultation;
+  final ConsultationModel consultation;
 
   const ConsultationCard({
     Key? key,
@@ -20,6 +22,7 @@ class ConsultationCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
         color: Colors.white,
+
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           color: Colors.grey[200]!,
@@ -43,9 +46,9 @@ class ConsultationCard extends StatelessWidget {
                   ),
                   child: Center(
                     child: CustomText(
-                      consultation.initials,
+                      consultation.doctorInitials,
                       color: AppColors.primary,
-                      fontSize: 20.sp,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -72,22 +75,8 @@ class ConsultationCard extends StatelessWidget {
                   ),
                 ),
                 // Status Badge
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 6.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(30.r),
-                  ),
-                  child: CustomText(
-                    consultation.status,
-                    color: Colors.blue[700],
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+
+
               ],
             ),
             16.verticalSpace,
@@ -96,7 +85,7 @@ class ConsultationCard extends StatelessWidget {
               children: [
                 _buildInfoItem(
                   Icons.calendar_today_outlined,
-                  consultation.date,
+                  consultation.date.toString(),
                 ),
                 24.horizontalSpace,
                 _buildInfoItem(
@@ -105,27 +94,10 @@ class ConsultationCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 // View Details Button
-                OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                    side: BorderSide(color: AppColors.primary),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                      vertical: 10.h,
-                    ),
-                  ),
-                  child: CustomText(
-                    'View Details',
-                    color: AppColors.primary,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+
               ],
             ),
+
           ],
         ),
       ),

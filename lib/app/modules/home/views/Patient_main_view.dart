@@ -8,6 +8,7 @@ import 'package:med_support_gaza/app/modules/home/controllers/home_controller.da
 import 'package:med_support_gaza/app/modules/home/views/widgets/appointment_card.dart';
 import 'package:med_support_gaza/app/modules/home/views/widgets/health_tips.dart';
 import 'package:med_support_gaza/app/modules/home/views/widgets/suggested_doctors.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class PatientMainView extends GetView<HomeController> {
   const PatientMainView({super.key});
@@ -44,8 +45,8 @@ class PatientMainView extends GetView<HomeController> {
                       ],
                     ),
                   ),
-                  20.height,
-                  const AppointmentsCard(),
+                  40.height,
+                  _buildScheduleButton(),
                   SizedBox(height: 20.h),
                   24.height,
                   const SuggestedDoctors(),
@@ -58,4 +59,32 @@ class PatientMainView extends GetView<HomeController> {
       ),
     );
   }
+}
+Widget _buildScheduleButton() {
+  return InkWell(
+    onTap: () => Get.toNamed(Routes.APPOINTMENT_BOOKING),
+    child: Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.add_circle_outline_sharp,
+            color: Colors.white,
+          ),
+          12.width,
+          CustomText(
+            'Schedule New Appointment'.tr,
+            fontSize: 12.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ],
+      ),
+    ),
+  );
 }

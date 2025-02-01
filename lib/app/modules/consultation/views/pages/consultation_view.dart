@@ -20,20 +20,9 @@ class ConsultationView extends  GetView<ConsultationController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
-              Padding(
-                padding: EdgeInsets.all(20.w),
-                child: CustomText(
-                  'Medical Consultations',
-                  fontSize: 28.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
-              ),
 
-              // Custom Tab Bar
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
@@ -48,9 +37,10 @@ class ConsultationView extends  GetView<ConsultationController> {
                       color: AppColors.primary.withOpacity(0.1),
                     ),
                     dividerColor: Colors.transparent,
+
                     tabs: [
                       _buildTab('Active'),
-                      _buildTab('Upcoming'),
+                      _buildTab('Upcoming  '),
                       _buildTab('Past'),
                     ],
                   ),
@@ -67,17 +57,14 @@ class ConsultationView extends  GetView<ConsultationController> {
                     _buildEmptyState('No active consultations'),
 
                     // Upcoming Tab
-                    _buildConsultationList([
-                      ConsultationData(
-                        doctorName: 'Dr. Sarah Wilson',
-                        specialty: 'Cardiology',
-                        date: 'Tomorrow',
-                        time: '2:00 PM',
-                        status: 'Upcoming',
-                        initials: 'SW',
-                      ),
-                    ]),
-
+                  ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    itemCount: controller.consultations.length,
+                    itemBuilder: (context, index) {
+                      final consultation = controller.consultations;
+                      return ConsultationCard(consultation: consultation[index]);
+                    },
+                  ),
                     // Past Tab
                     _buildEmptyState('No past consultations'),
                   ],
@@ -92,29 +79,17 @@ class ConsultationView extends  GetView<ConsultationController> {
 
   Widget _buildTab(String text) {
     return Tab(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-          ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
 
-  Widget _buildConsultationList(List<ConsultationData> consultations) {
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      itemCount: consultations.length,
-      itemBuilder: (context, index) {
-        final consultation = consultations[index];
-        return ConsultationCard(consultation: consultation);
-      },
-    );
-  }
+
 
   Widget _buildEmptyState(String message) {
     return Center(
