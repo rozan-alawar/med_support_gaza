@@ -308,7 +308,12 @@ class Translation extends Translations {
           'Pending': 'قيد المراجعة',
           'About': 'نبذة',
           'Expertise': 'التخصصات',
-          'Languages': 'اللغات'
+          'Languages': 'اللغات',
+          'Medical Consultations': 'الاستشارات الطبية',
+          'Active': 'نشط',
+          'Upcoming': 'قادم',
+          'Past': 'سابق',
+          'View Details': 'عرض التفاصيل',
         },
 
         'en': {
@@ -577,7 +582,12 @@ class Translation extends Translations {
           'Pending': 'Pending',
           'About': 'About',
           'Expertise': 'Expertise',
-          'Languages': 'Languages'
+          'Languages': 'Languages',
+          'Medical Consultations': 'Medical Consultations',
+  'Active': 'Active',
+  'Upcoming': 'Upcoming',
+  'Past': 'Past',
+  'View Details': 'View Details',
         },
       };
 }

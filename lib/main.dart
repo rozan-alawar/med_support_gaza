@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
             translations: Translation(),
             // initialRoute: AppPages.INITIAL,
             initialRoute: Routes.HOME,
+
             getPages: AppPages.routes,
             defaultTransition: Transition.fadeIn,
             onUnknownRoute: (settings) {
@@ -61,12 +62,33 @@ class MyApp extends StatelessWidget {
               );
             },
             builder: (context, child) {
-              return ScrollConfiguration(
-                behavior: const ScrollBehavior().copyWith(
-                  physics: const BouncingScrollPhysics(),
-                ),
-                child: child!,
-              );
+              ErrorWidget.builder = (FlutterErrorDetails details) {
+                return Material(
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 60,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Something went wrong',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              };
+
+              return child ?? const SizedBox();
             },
           ),
         );
@@ -75,16 +97,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
-
 //rozanalawar@gmail.com
 //123123123
 
-
 //dr.rozan@gmail.com
 //rozan2002
-
 
 //admin@gmail.com
 //admin123

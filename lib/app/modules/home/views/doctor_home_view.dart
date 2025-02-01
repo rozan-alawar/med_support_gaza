@@ -9,7 +9,7 @@ import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../routes/app_pages.dart';
 import '../../appointment_booking/views/doctor_appointment_management_view.dart';
-import '../../consultation/views/doctor_consultation_list_view.dart';
+import '../../consultation/views/pages/doctor_consultation_list_view.dart';
 import '../controllers/doctor_home_controller.dart';
 import 'doctor_main_view.dart';
 

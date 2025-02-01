@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 
-import '../../../core/utils/app_colors.dart';
-import '../controllers/doctor_consultation_controller.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../controllers/doctor_consultation_controller.dart';
 
 class DoctorConsultationView extends GetView<DoctorConsultationController> {
   const DoctorConsultationView({super.key});

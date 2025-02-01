@@ -6,8 +6,8 @@ import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
-import '../../../core/widgets/custom_textfield_widget.dart';
-import '../controllers/doctor_consultation_controller.dart';
+import '../../../../core/widgets/custom_textfield_widget.dart';
+import '../../controllers/doctor_consultation_controller.dart';
 
 class DoctorConsultationListView extends GetView<DoctorConsultationController> {
   @override

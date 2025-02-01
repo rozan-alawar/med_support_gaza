@@ -25,8 +25,8 @@ import '../modules/auth/views/patient_new_password_view.dart';
 import '../modules/auth/views/verfication_view.dart';
 import '../modules/consultation/bindings/consultation_binding.dart';
 import '../modules/consultation/bindings/doctor_consultation_binding.dart';
-import '../modules/consultation/views/consultation_view.dart';
-import '../modules/consultation/views/doctor_consultation_view.dart';
+import '../modules/consultation/views/pages/consultation_view.dart';
+import '../modules/consultation/views/pages/doctor_consultation_view.dart';
 import '../modules/home/bindings/doctor_home_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/article_view.dart';
@@ -130,11 +130,11 @@ class AppPages {
       page: () => const PatientEditProfileView(),
       binding: ProfileBinding(),
     ),
-    GetPage(
-      name: _Paths.CONSULTATION,
-      page: () => const ConsultationView(),
-      binding: ConsultationBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.CONSULTATION,
+    //   page: () => const ConsultationView(),
+    //   binding: ConsultationBinding(),
+    // ),
     GetPage(
       name: _Paths.DOCTOR_APPOINTMENT_MANAGEMENT,
       page: () => const DoctorAppointmentManagementView(),
