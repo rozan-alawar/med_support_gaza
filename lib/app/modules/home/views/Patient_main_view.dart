@@ -60,6 +60,7 @@ class PatientMainView extends GetView<HomeController> {
     );
   }
 }
+
 Widget _buildScheduleButton() {
   return InkWell(
     onTap: () => Get.toNamed(Routes.APPOINTMENT_BOOKING),

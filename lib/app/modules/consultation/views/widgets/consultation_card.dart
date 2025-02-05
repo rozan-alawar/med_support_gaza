@@ -85,7 +85,8 @@ class ConsultationCard extends StatelessWidget {
               children: [
                 _buildInfoItem(
                   Icons.calendar_today_outlined,
-                  consultation.date.toString(),
+                  consultation.date.toString().           formatAppointmentDay(consultation.date),
+
                 ),
                 24.horizontalSpace,
                 _buildInfoItem(

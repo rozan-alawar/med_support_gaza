@@ -1,11 +1,11 @@
 
 class ConsultationModel {
-  final String id;
-  final String doctorName;
-  final String specialty;
-  final DateTime date;
-  final String time;
-  final String status; // 'upcoming', 'active', 'completed'
+   String id;
+   String doctorName;
+   String specialty;
+   DateTime date;
+   String time;
+   String status; // 'upcoming', 'active', 'completed'
 
   ConsultationModel({
     required this.id,

@@ -7,22 +7,23 @@ import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/consultation_controller.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/consultation_card.dart';
-class ConsultationView extends  GetView<ConsultationController> {
+
+class ConsultationView extends GetView<ConsultationController> {
   const ConsultationView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      initialIndex: 0,      child: Scaffold(
+      initialIndex: 0,
+      child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
@@ -37,7 +38,6 @@ class ConsultationView extends  GetView<ConsultationController> {
                       color: AppColors.primary.withOpacity(0.1),
                     ),
                     dividerColor: Colors.transparent,
-
                     tabs: [
                       _buildTab('Active'),
                       _buildTab('Upcoming  '),
@@ -47,26 +47,57 @@ class ConsultationView extends  GetView<ConsultationController> {
                 ),
               ),
 
-              24.verticalSpace,
+              10.verticalSpace,
 
               // Tab Bar View
               Expanded(
                 child: TabBarView(
                   children: [
                     // Active Tab
-                    _buildEmptyState('No active consultations'),
-
+                    controller.getConsultationsByStatus('upcoming').isEmpty
+                        ? _buildEmptyState('No active consultations')
+                        : ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            itemCount: controller
+                                .getConsultationsByStatus('active')
+                                .length,
+                            itemBuilder: (context, index) {
+                              final consultation =
+                                  controller.getConsultationsByStatus('active');
+                              return ConsultationCard(
+                                  consultation: consultation[index]);
+                            },
+                          ),
                     // Upcoming Tab
-                  ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    itemCount: controller.consultations.length,
-                    itemBuilder: (context, index) {
-                      final consultation = controller.consultations;
-                      return ConsultationCard(consultation: consultation[index]);
-                    },
-                  ),
+                    controller.getConsultationsByStatus('upcoming').isEmpty
+                        ? _buildEmptyState('No upcoming consultations')
+                        : ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            itemCount: controller
+                                .getConsultationsByStatus('upcoming')
+                                .length,
+                            itemBuilder: (context, index) {
+                              final consultation = controller
+                                  .getConsultationsByStatus('upcoming');
+                              return ConsultationCard(
+                                  consultation: consultation[index]);
+                            },
+                          ),
                     // Past Tab
-                    _buildEmptyState('No past consultations'),
+                    controller.getConsultationsByStatus('past').isEmpty
+                        ? _buildEmptyState('No past consultations')
+                        : ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            itemCount: controller
+                                .getConsultationsByStatus('past')
+                                .length,
+                            itemBuilder: (context, index) {
+                              final consultation =
+                                  controller.getConsultationsByStatus('past');
+                              return ConsultationCard(
+                                  consultation: consultation[index]);
+                            },
+                          ),
                   ],
                 ),
               ),
@@ -89,8 +120,6 @@ class ConsultationView extends  GetView<ConsultationController> {
     );
   }
 
-
-
   Widget _buildEmptyState(String message) {
     return Center(
       child: Column(
@@ -112,5 +141,3 @@ class ConsultationView extends  GetView<ConsultationController> {
     );
   }
 }
-
-

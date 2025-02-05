@@ -103,8 +103,7 @@ extension EditString on String {
     }
   }
   String replaceDMYDPickerISO() {
-    // TimeStamp Example
-    // var date = '2021-01-26T03:17:00.000000Z';
+
     DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(this);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('yMd');
