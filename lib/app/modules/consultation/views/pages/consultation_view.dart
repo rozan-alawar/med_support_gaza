@@ -6,6 +6,7 @@ import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/consultation_controller.dart';
+import 'package:med_support_gaza/app/modules/consultation/views/widgets/active_chat_card.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/consultation_card.dart';
 
 class ConsultationView extends GetView<ConsultationController> {
@@ -49,56 +50,61 @@ class ConsultationView extends GetView<ConsultationController> {
 
               10.verticalSpace,
 
-              // Tab Bar View
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    // Active Tab
-                    controller.getConsultationsByStatus('upcoming').isEmpty
-                        ? _buildEmptyState('No active consultations')
-                        : ListView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            itemCount: controller
-                                .getConsultationsByStatus('active')
-                                .length,
-                            itemBuilder: (context, index) {
-                              final consultation =
-                                  controller.getConsultationsByStatus('active');
-                              return ConsultationCard(
-                                  consultation: consultation[index]);
-                            },
-                          ),
-                    // Upcoming Tab
-                    controller.getConsultationsByStatus('upcoming').isEmpty
-                        ? _buildEmptyState('No upcoming consultations')
-                        : ListView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            itemCount: controller
-                                .getConsultationsByStatus('upcoming')
-                                .length,
-                            itemBuilder: (context, index) {
-                              final consultation = controller
-                                  .getConsultationsByStatus('upcoming');
-                              return ConsultationCard(
-                                  consultation: consultation[index]);
-                            },
-                          ),
-                    // Past Tab
-                    controller.getConsultationsByStatus('past').isEmpty
-                        ? _buildEmptyState('No past consultations')
-                        : ListView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            itemCount: controller
-                                .getConsultationsByStatus('past')
-                                .length,
-                            itemBuilder: (context, index) {
-                              final consultation =
-                                  controller.getConsultationsByStatus('past');
-                              return ConsultationCard(
-                                  consultation: consultation[index]);
-                            },
-                          ),
-                  ],
+              // Tab= Bar View
+              Obx(
+                () => Expanded(
+                  child: TabBarView(
+                    children: [
+                      // Active Tab
+                      controller.getConsultationsByStatus('upcoming').isEmpty
+                          ? _buildEmptyState('No active consultations')
+                          : ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              itemCount: controller
+                                  .getConsultationsByStatus('active')
+                                  .length,
+                              itemBuilder: (context, index) {
+                                final consultation = controller
+                                    .getConsultationsByStatus('active');
+                                return ActiveConsultationCard(
+                                  consultation: consultation[index],
+                                  onStartChat: () =>
+                                      controller.startChat(consultation[index]),
+                                );
+                              },
+                            ),
+                      // Upcoming Tab
+                      controller.getConsultationsByStatus('upcoming').isEmpty
+                          ? _buildEmptyState('No upcoming consultations')
+                          : ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              itemCount: controller
+                                  .getConsultationsByStatus('upcoming')
+                                  .length,
+                              itemBuilder: (context, index) {
+                                final consultation = controller
+                                    .getConsultationsByStatus('upcoming');
+                                return ConsultationCard(
+                                    consultation: consultation[index]);
+                              },
+                            ),
+                      // Past Tab
+                      controller.getConsultationsByStatus('past').isEmpty
+                          ? _buildEmptyState('No past consultations')
+                          : ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              itemCount: controller
+                                  .getConsultationsByStatus('past')
+                                  .length,
+                              itemBuilder: (context, index) {
+                                final consultation =
+                                    controller.getConsultationsByStatus('past');
+                                return ConsultationCard(
+                                    consultation: consultation[index]);
+                              },
+                            ),
+                    ],
+                  ),
                 ),
               ),
             ],

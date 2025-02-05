@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class ConsultationController extends GetxController {
   final RxInt activeConsultations = 0.obs;
@@ -39,6 +40,9 @@ class ConsultationController extends GetxController {
     activeConsultations.value = consultations
         .where((c) => c.status == 'active')
         .length;
+  }
+  void startChat(ConsultationModel consultation) {
+    Get.toNamed(Routes.CONSULTATION_CHAT, arguments: consultation);
   }
 
   // Get consultations by status

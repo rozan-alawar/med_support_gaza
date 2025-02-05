@@ -5,6 +5,7 @@ import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_home.da
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_new_article_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_notification_view.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_booking_view.dart';
+import 'package:med_support_gaza/app/modules/consultation/views/pages/chat_view.dart';
 
 
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
@@ -207,6 +208,11 @@ class AppPages {
       name: _Paths.DOCTOR_NOTIFICATION,
       page: () => const DoctorNotificationView(),
       binding: DoctorNotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONSULTATION_CHAT,
+      page: () => const ChatView(),
+      binding: ConsultationBinding(),
     ),
   ];
 }
