@@ -1,7 +1,5 @@
-// lib/app/modules/chat/controllers/chat_controller.dart
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +14,7 @@ class ChatController extends GetxController {
   final messages = <MessageModel>[].obs;
   final isLoading = false.obs;
   final remainingTime = ''.obs;
+  final isConsultationEnded = false.obs;
   late Timer consultationTimer;
 
   String get currentUserId => 'current_user_id'; // Replace with actual user ID
@@ -23,6 +22,7 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    checkInitialConsultationStatus();
     loadMessages();
     startConsultationTimer();
   }
@@ -34,21 +34,39 @@ class ChatController extends GetxController {
     super.onClose();
   }
 
+  void checkInitialConsultationStatus() {
+    final now = DateTime.now();
+    final consultationEnd = getConsultationEndTime();
+    isConsultationEnded.value = now.isAfter(consultationEnd);
+
+    if (isConsultationEnded.value) {
+      remainingTime.value = 'Consultation ended';
+    }
+  }
+
+  DateTime getConsultationEndTime() {
+    return DateTime(
+      consultation.date.year,
+      consultation.date.month,
+      consultation.date.day,
+      int.parse(consultation.time.split(':')[0]),
+      int.parse(consultation.time.split(':')[1]),
+    ).add(const Duration(minutes: 30));
+  }
+
   void startConsultationTimer() {
     consultationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final now = DateTime.now();
-      final consultationEnd = DateTime(
-        consultation.date.year,
-        consultation.date.month,
-        consultation.date.day,
-        int.parse(consultation.time.split(':')[0]),
-        int.parse(consultation.time.split(':')[1]),
-      ).add(const Duration(minutes: 30)); // Assuming 30-minute consultations
+      final consultationEnd = getConsultationEndTime();
 
       if (now.isAfter(consultationEnd)) {
         timer.cancel();
-        remainingTime.value = 'Consultation ended';
-        endConsultation();
+        if (!isConsultationEnded.value) {
+          isConsultationEnded.value = true;
+          remainingTime.value = 'Consultation ended';
+          endConsultation();
+          _addSystemMessage('Consultation has ended');
+        }
       } else {
         final difference = consultationEnd.difference(now);
         remainingTime.value =
@@ -60,9 +78,13 @@ class ChatController extends GetxController {
   Future<void> loadMessages() async {
     try {
       isLoading.value = true;
-      // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
       messages.value = _getMockMessages();
+
+      // Add system message if consultation has already ended
+      if (isConsultationEnded.value) {
+        _addSystemMessage('Consultation has ended');
+      }
     } catch (e) {
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error',
@@ -74,6 +96,14 @@ class ChatController extends GetxController {
   }
 
   Future<void> sendMessage() async {
+    if (isConsultationEnded.value) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error',
+        message: 'Cannot send messages after consultation has ended',
+      );
+      return;
+    }
+
     if (messageController.text.trim().isEmpty) return;
 
     try {
@@ -88,11 +118,10 @@ class ChatController extends GetxController {
       messages.insert(0, newMessage);
       messageController.clear();
 
-      // Simulate API call to send message
       await Future.delayed(const Duration(milliseconds: 500));
 
-      // Simulate doctor's response after 1 second
-      if (messages.length % 3 == 0) {
+      // Simulate doctor's response
+      if (messages.length % 3 == 0 && !isConsultationEnded.value) {
         await Future.delayed(const Duration(seconds: 1));
         final response = MessageModel(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -112,6 +141,14 @@ class ChatController extends GetxController {
   }
 
   Future<void> pickFile() async {
+    if (isConsultationEnded.value) {
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error',
+        message: 'Cannot send files after consultation has ended',
+      );
+      return;
+    }
+
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -141,12 +178,25 @@ class ChatController extends GetxController {
     }
   }
 
+  void _addSystemMessage(String text) {
+    messages.insert(
+      0,
+      MessageModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        text: text,
+        senderId: 'system',
+        timestamp: DateTime.now(),
+        type: MessageType.system,
+      ),
+    );
+  }
+
   void endConsultation() {
     CustomSnackBar.showCustomToast(
       message: 'Consultation time has ended',
       color: Colors.red,
     );
-    // Implement consultation end logic
+    messageController.clear();
   }
 
   String formatDate(DateTime date) {
