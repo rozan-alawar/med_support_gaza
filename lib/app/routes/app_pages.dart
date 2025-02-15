@@ -7,7 +7,6 @@ import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_notific
 import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_booking_view.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/pages/chat_view.dart';
 
-
 import '../modules/appointment_booking/bindings/appointment_booking_binding.dart';
 import '../modules/appointment_booking/bindings/doctor_appointment_management_binding.dart';
 import '../modules/appointment_booking/views/appointment_booking_view.dart';
@@ -26,7 +25,6 @@ import '../modules/auth/views/patient_new_password_view.dart';
 import '../modules/auth/views/verfication_view.dart';
 import '../modules/consultation/bindings/consultation_binding.dart';
 import '../modules/consultation/bindings/doctor_consultation_binding.dart';
-import '../modules/consultation/views/pages/consultation_view.dart';
 import '../modules/consultation/views/pages/doctor_consultation_view.dart';
 import '../modules/home/bindings/doctor_home_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -193,11 +191,11 @@ class AppPages {
     ),
     GetPage(
         name: _Paths.DOCTOR_CHAT,
-        page: () => DoctorConsultationView(),
+        page: () => const DoctorConsultationView(),
         binding: DoctroConsultationBinding()),
     GetPage(
       name: _Paths.DOCTORS_LIST,
-      page: () => PatientDoctorsView(),
+      page: () => const PatientDoctorsView(),
       binding: HomeBinding(),
     ),
     GetPage(

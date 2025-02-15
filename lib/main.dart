@@ -15,20 +15,16 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  await Firebase.initializeApp();
-
-  await CacheHelper.init();
-
-  Get.put<GetStorage>(GetStorage());
-
-  runApp(const MyApp());
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await CacheHelper.init();
+  Get.put<GetStorage>(GetStorage());
   Get.put(FirebaseService());
   final firebaseService = Get.find<FirebaseService>();
   await firebaseService.populateSampleData();
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -49,7 +45,7 @@ class MyApp extends StatelessWidget {
             fallbackLocale: const Locale('en', 'US'),
             locale: TranslationController.initalLang,
             translations: Translation(),
-         initialRoute: AppPages.INITIAL,
+            initialRoute: AppPages.INITIAL,
             // initialRoute: Routes.HOME,
 
             getPages: AppPages.routes,
@@ -61,13 +57,13 @@ class MyApp extends StatelessWidget {
                 ),
               );
             },
-
           ),
         );
       },
     );
   }
 }
+
 
 //rozanalawar@gmail.com
 //123123123

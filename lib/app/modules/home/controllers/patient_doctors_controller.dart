@@ -10,7 +10,6 @@ class PatientDoctorsController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxList<DoctorModel> topDoctors = <DoctorModel>[].obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -23,27 +22,25 @@ class PatientDoctorsController extends GetxController {
     try {
       isLoading.value = true;
       // Implement API call
-      await Future.delayed(Duration(seconds: 1)); // Mock delay
+      await Future.delayed(const Duration(seconds: 1)); // Mock delay
       topDoctors.value = [
-
-    DoctorModel(
-    id: '1',
-    firstName: 'Ahmed',
-    lastName: 'Mohammed',
-    email: 'ahmed@example.com',
-    phoneNo: '+970591234567',
-    speciality: 'Cardiology',
-    country: 'Palestine',
-    gender: 'Male',
-    rating: 4.9,
-    experience: 15,
-    medicalCertificateUrl: 'url',
-    about: 'Experienced cardiologist with focus on preventive care',
-    expertise: ['Heart Disease', 'Hypertension'],
-    languages: ['Arabic', 'English'],
-    isApproved: true,
-    isVerified: true
-    ),
+        DoctorModel(
+            id: '1',
+            firstName: 'Ahmed',
+            lastName: 'Mohammed',
+            email: 'ahmed@example.com',
+            phoneNo: '+970591234567',
+            speciality: 'Cardiology',
+            country: 'Palestine',
+            gender: 'Male',
+            rating: 4.9,
+            experience: 15,
+            medicalCertificateUrl: 'url',
+            about: 'Experienced cardiologist with focus on preventive care',
+            expertise: ['Heart Disease', 'Hypertension'],
+            languages: ['Arabic', 'English'],
+            isApproved: true,
+            isVerified: true),
         DoctorModel(
             id: '3',
             firstName: 'Rozan',
@@ -60,8 +57,8 @@ class PatientDoctorsController extends GetxController {
             expertise: ['Child Care', 'Vaccinations'],
             languages: ['Arabic', 'English', 'French'],
             isApproved: true,
-            isVerified: true
-        ), DoctorModel(
+            isVerified: true),
+        DoctorModel(
             id: '2',
             firstName: 'Sara',
             lastName: 'Ahmad',
@@ -77,13 +74,12 @@ class PatientDoctorsController extends GetxController {
             expertise: ['Child Care', 'Vaccinations'],
             languages: ['Arabic', 'English', 'French'],
             isApproved: true,
-            isVerified: true
-        ),      ];
+            isVerified: true),
+      ];
     } finally {
       isLoading.value = false;
     }
   }
-
 
   void fetchDoctors() {
     isLoading.value = true;
@@ -105,8 +101,7 @@ class PatientDoctorsController extends GetxController {
           expertise: ['Heart Disease', 'Hypertension'],
           languages: ['Arabic', 'English'],
           isApproved: true,
-          isVerified: true
-      ),
+          isVerified: true),
       DoctorModel(
           id: '2',
           firstName: 'Sara',
@@ -123,8 +118,7 @@ class PatientDoctorsController extends GetxController {
           expertise: ['Child Care', 'Vaccinations'],
           languages: ['Arabic', 'English', 'French'],
           isApproved: true,
-          isVerified: true
-      ),
+          isVerified: true),
       DoctorModel(
           id: '3',
           firstName: 'Rozan',
@@ -141,8 +135,7 @@ class PatientDoctorsController extends GetxController {
           expertise: ['Child Care', 'Vaccinations'],
           languages: ['Arabic', 'English', 'French'],
           isApproved: true,
-          isVerified: true
-      ),
+          isVerified: true),
     ];
 
     isLoading.value = false;

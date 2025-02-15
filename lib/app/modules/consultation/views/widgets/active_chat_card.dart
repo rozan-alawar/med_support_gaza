@@ -13,10 +13,10 @@ class ActiveConsultationCard extends StatelessWidget {
   final VoidCallback onStartChat;
 
   const ActiveConsultationCard({
-    Key? key,
+    super.key,
     required this.consultation,
     required this.onStartChat,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class ActiveConsultationCard extends StatelessWidget {
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             spreadRadius: 0,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),

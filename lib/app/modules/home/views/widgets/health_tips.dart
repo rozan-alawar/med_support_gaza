@@ -6,10 +6,9 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/health_tip.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/articles_controller.dart';
-import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class HealthTipsView extends GetView<HealthTipsController> {
-  const HealthTipsView({Key? key}) : super(key: key);
+  const HealthTipsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class HealthTipsView extends GetView<HealthTipsController> {
         16.height,
         Obx(() => ListView.separated(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               itemCount: controller.healthTips.length,
               separatorBuilder: (context, index) => 12.height,

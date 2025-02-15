@@ -5,7 +5,6 @@ import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
-import 'package:med_support_gaza/app/modules/home/views/widgets/appointment_card.dart';
 import 'package:med_support_gaza/app/modules/home/views/widgets/health_tips.dart';
 import 'package:med_support_gaza/app/modules/home/views/widgets/suggested_doctors.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';

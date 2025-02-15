@@ -1,5 +1,3 @@
-// lib/app/modules/chat/views/chat_view.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,7 +8,7 @@ import 'package:med_support_gaza/app/modules/consultation/controllers/chat_contr
 import 'package:med_support_gaza/app/modules/consultation/views/pages/message_bubbel.dart';
 
 class ChatView extends GetView<ChatController> {
-  const ChatView({Key? key}) : super(key: key);
+  const ChatView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class ChatView extends GetView<ChatController> {
       backgroundColor: AppColors.primary,
       elevation: 0,
       leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.white),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Get.back(),
       ),
       title: Row(
@@ -41,7 +39,7 @@ class ChatView extends GetView<ChatController> {
             backgroundColor: Colors.white,
             child: Text(
               controller.consultation.doctorName.substring(0, 2).toUpperCase(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -68,7 +66,7 @@ class ChatView extends GetView<ChatController> {
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.info_outline, color: Colors.white),
+          icon: const Icon(Icons.info_outline, color: Colors.white),
           onPressed: () => _showConsultationDetails(context),
         ),
       ],
@@ -85,10 +83,10 @@ class ChatView extends GetView<ChatController> {
           8.width,
           Expanded(
             child: Obx(() => CustomText(
-              controller.remainingTime.value,
-              fontSize: 12.sp,
-              color: AppColors.primary,
-            )),
+                  controller.remainingTime.value,
+                  fontSize: 12.sp,
+                  color: AppColors.primary,
+                )),
           ),
         ],
       ),
@@ -99,7 +97,7 @@ class ChatView extends GetView<ChatController> {
     return Expanded(
       child: Obx(() {
         if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (controller.messages.isEmpty) {
@@ -148,7 +146,7 @@ class ChatView extends GetView<ChatController> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, -5),
+            offset: const Offset(0, -5),
           ),
         ],
       ),
@@ -156,7 +154,7 @@ class ChatView extends GetView<ChatController> {
         child: Row(
           children: [
             IconButton(
-              icon: Icon(Icons.attach_file, color: AppColors.primary),
+              icon: const Icon(Icons.attach_file, color: AppColors.primary),
               onPressed: controller.pickFile,
             ),
             Expanded(
@@ -218,9 +216,11 @@ class ChatView extends GetView<ChatController> {
             16.height,
             _buildDetailRow('Doctor', controller.consultation.doctorName),
             _buildDetailRow('Specialty', controller.consultation.specialty),
-            _buildDetailRow('Date', controller.formatDate(controller.consultation.date)),
+            _buildDetailRow(
+                'Date', controller.formatDate(controller.consultation.date)),
             _buildDetailRow('Time', controller.consultation.time),
-            _buildDetailRow('Status', controller.consultation.status.capitalizeFirst!),
+            _buildDetailRow(
+                'Status', controller.consultation.status.capitalizeFirst!),
             24.height,
             SizedBox(
               width: double.infinity,

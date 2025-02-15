@@ -39,7 +39,7 @@ class DocotrHomeView extends GetView<DoctorHomeController> {
             child: IndexedStack(
               alignment: Alignment.topRight,
               index: controller.currentIndex.value,
-              children:  [
+              children: const [
                 DoctorMainView(),
                 DoctorConsultationListView(),
                 DoctorAppointmentManagementView(),

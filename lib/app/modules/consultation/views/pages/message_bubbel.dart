@@ -14,10 +14,10 @@ class MessageBubble extends StatelessWidget {
   final bool isMe;
 
   const MessageBubble({
-    Key? key,
+    super.key,
     required this.message,
     required this.isMe,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +27,15 @@ class MessageBubble extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 8.h),
       child: Row(
-        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment:
+            isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
           if (!isMe) _buildAvatar(),
           const SizedBox(width: 8),
           Flexible(
             child: Column(
               crossAxisAlignment:
-              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Container(
                   constraints: BoxConstraints(
@@ -100,7 +101,7 @@ class MessageBubble extends StatelessWidget {
     }
     return Column(
       crossAxisAlignment:
-      isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         CustomText(
           message.text,
@@ -115,8 +116,8 @@ class MessageBubble extends StatelessWidget {
     final iconData = message.isPDF
         ? Icons.picture_as_pdf
         : message.isImage
-        ? Icons.image
-        : Icons.insert_drive_file;
+            ? Icons.image
+            : Icons.insert_drive_file;
 
     return Container(
       constraints: BoxConstraints(
@@ -169,7 +170,7 @@ class MessageBubble extends StatelessWidget {
                     width: double.infinity,
                     height: 150.h,
                     color: Colors.grey[300],
-                    child: Icon(Icons.error_outline),
+                    child: const Icon(Icons.error_outline),
                   );
                 },
               ),

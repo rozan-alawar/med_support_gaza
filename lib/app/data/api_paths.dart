@@ -1,8 +1,22 @@
 class Links {
-  static var baseLink = 'https://staging.example.com/api/';
-  static var login = 'v1/login_phone_number';
-  static var signUp = 'v1/sign_up_phone_number';
-  static var verify = 'v1/verify_phone_number';
-  static var logout = 'v1/logout';
-  static var homePage = 'v1/home_page';
+  static var baseLink =
+      'http://medsupport-gaza-cfd5c72a1744.herokuapp.com/api/';
+  static var login = 'login';
+  static var register = 'register';
+  static var logout = 'logout';
+  static var doctorRegister = 'doctor/register';
+  static var doctorLogin = 'doctor/login';
+  static var getDoctorSpecialties = 'doctor/specialties';
+  static var getDoctorProfile = 'doctor/profile';
+  static var getDoctorAppointments = 'doctor/appointments';
+  static var getHealthTips = 'health_tips';
+  static var getHealthArticles = 'health_articles';
+  static var getPatientProfile = 'patient/profile';
+  static var updatePatientProfile = 'patient/update-profile';
+  static var getPatientDoctors = 'patient/doctors';
+  static var getPatientAppointments = 'patient/appointments';
+  static var getPatientConsultations = 'patient/consultations';
+  static var getPatientConsultationDetails = 'patient/consultation';
+  static var getPatientPrescriptions = 'patient/prescriptions';
+  static var getPatientPrescriptionDetails = 'patient/prescription';
 }

@@ -19,13 +19,13 @@ class DoctorConsultationView extends GetView<DoctorConsultationController> {
           children: [
             CircleAvatar(
                 radius: 20.r,
-                backgroundColor: Color(0xffEEEEEE),
+                backgroundColor: const Color(0xffEEEEEE),
                 child: Icon(
                   Icons.person,
                   color: AppColors.textLight,
                   size: 25.sp,
                 )),
-           12.width,
+            12.width,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -45,7 +45,7 @@ class DoctorConsultationView extends GetView<DoctorConsultationController> {
           ],
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           children: [CustomText('chat')],
         ),

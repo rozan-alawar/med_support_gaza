@@ -78,7 +78,7 @@ class DoctorNotificationView extends GetView<DoctorNotificationController> {
               color: notification.isRead ? Colors.grey : Colors.black,
               fontWeight: FontWeight.w500,
             ),
-            Spacer(),
+            const Spacer(),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               child: CustomText(

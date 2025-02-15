@@ -10,6 +10,8 @@ import 'package:med_support_gaza/app/modules/home/controllers/patient_doctors_co
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class PatientDoctorsView extends GetView<PatientDoctorsController> {
+  const PatientDoctorsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +42,7 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             spreadRadius: 0,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -85,7 +87,7 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             spreadRadius: 0,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),

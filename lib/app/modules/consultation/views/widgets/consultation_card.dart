@@ -12,9 +12,9 @@ class ConsultationCard extends StatelessWidget {
   final ConsultationModel consultation;
 
   const ConsultationCard({
-    Key? key,
+    super.key,
     required this.consultation,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,6 @@ class ConsultationCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
         color: Colors.white,
-
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           color: Colors.grey[200]!,
@@ -75,8 +74,6 @@ class ConsultationCard extends StatelessWidget {
                   ),
                 ),
                 // Status Badge
-
-
               ],
             ),
             16.verticalSpace,
@@ -85,8 +82,9 @@ class ConsultationCard extends StatelessWidget {
               children: [
                 _buildInfoItem(
                   Icons.calendar_today_outlined,
-                  consultation.date.toString().           formatAppointmentDay(consultation.date),
-
+                  consultation.date
+                      .toString()
+                      .formatAppointmentDay(consultation.date),
                 ),
                 24.horizontalSpace,
                 _buildInfoItem(
@@ -95,10 +93,8 @@ class ConsultationCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 // View Details Button
-
               ],
             ),
-
           ],
         ),
       ),

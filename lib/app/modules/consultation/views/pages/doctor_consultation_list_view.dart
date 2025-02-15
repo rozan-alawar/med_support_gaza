@@ -10,6 +10,8 @@ import '../../../../core/widgets/custom_textfield_widget.dart';
 import '../../controllers/doctor_consultation_controller.dart';
 
 class DoctorConsultationListView extends GetView<DoctorConsultationController> {
+  const DoctorConsultationListView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,7 +20,7 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
           padding: const EdgeInsets.all(8.0),
           child: CustomTextField(
               suffixIcon:
-                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
               hintText: 'search'.tr,
               controller: TextEditingController()),
         ),
@@ -29,7 +31,7 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
                   final message = controller.messages[index];
                   return GestureDetector(
                     onTap: () {
-                    //  Get.toNamed(Routes.DOCTOR_CHAT);
+                      //  Get.toNamed(Routes.DOCTOR_CHAT);
                     },
                     child: Container(
                       //color: AppColors.background,
@@ -43,11 +45,11 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
                       margin: EdgeInsets.symmetric(
                           vertical: 5.0.h, horizontal: 10.0.w),
                       child: ListTile(
-                        leading: Container(
+                        leading: SizedBox(
                           height: 70,
                           width: 70,
                           child: CircleAvatar(
-                            backgroundColor: Color(0xffEEEEEE),
+                            backgroundColor: const Color(0xffEEEEEE),
                             child: Icon(
                               Icons.person,
                               color: AppColors.textLight,
