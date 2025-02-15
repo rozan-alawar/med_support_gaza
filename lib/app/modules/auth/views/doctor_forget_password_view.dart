@@ -10,55 +10,101 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/doctro_auth_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
-
 class DoctorForgetPasswordView extends GetView<DoctorAuthController> {
-  final TextEditingController emailController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
   DoctorForgetPasswordView({super.key});
+
+  final _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
-        backgroundColor: AppColors.transparent,
-      ),
+      appBar: _buildAppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.w),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              200.height,
-              CustomText(
-                'ForgotPassword'.tr,
-                fontSize: 20.sp,
-                color: AppColors.accent,
-                fontWeight: FontWeight.bold,
-              ),
-              60.height,
-              CustomTextField(
-                hintText: 'Email'.tr,
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => value!.isValidEmail,
-              ),
-              24.height,
-              CustomButton(
-                text: 'Send OTP'.tr,
-                color: AppColors.primary,
-                onPressed: () { 
-                  if (_formKey.currentState!.validate()) {
-                    Get.toNamed(Routes.DOCTOR_VERIFICATION);
-                  }
-                },
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                _buildForgetPasswordForm(),
+                _buildLoadingIndicator(),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: AppColors.transparent,
+      elevation: 0,
+    );
+  }
+
+  Widget _buildForgetPasswordForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        200.height,
+        _buildTitle(),
+        60.height,
+        _buildEmailField(),
+        24.height,
+        _buildSendOTPButton(),
+      ],
+    );
+  }
+
+  Widget _buildTitle() {
+    return CustomText(
+      'ForgotPassword'.tr,
+      fontSize: 20.sp,
+      color: AppColors.accent,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
+  Widget _buildEmailField() {
+    return CustomTextField(
+      hintText: 'Email'.tr,
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) => value!.isValidEmail,
+    );
+  }
+
+  Widget _buildSendOTPButton() {
+    return Obx(
+      () => CustomButton(
+        text: 'Send OTP'.tr,
+        color: AppColors.primary,
+        isDisable: controller.isLoading.value,
+        onPressed: _handleSendOTP,
+      ),
+    );
+  }
+
+  void _handleSendOTP() {
+    if (_formKey.currentState!.validate()) {
+      controller.forgetPassword(
+        email: _emailController.text.trim(),
+      ).then((_) {
+        if (!controller.hasError.value) {
+          Get.toNamed(Routes.DOCTOR_VERIFICATION);
+        }
+      });
+    }
+  }
+
+  Widget _buildLoadingIndicator() {
+    return Obx(
+      () => controller.isLoading.value
+          ? const Center(child: CircularProgressIndicator())
+          : const SizedBox.shrink(),
     );
   }
 }
