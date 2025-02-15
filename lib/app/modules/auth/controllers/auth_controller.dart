@@ -9,48 +9,54 @@ import 'package:med_support_gaza/app/data/firebase_services/firebase_services.da
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
-
-
 class AuthController extends GetxController {
+  static const int otpLength = 4;
+  static const int otpTimerDuration = 15;
+
   final FirebaseService _firebaseService = Get.find<FirebaseService>();
-  
-  final isLogin = true.obs;
-  final isPasswordVisible = true.obs;
-  final isLoading = false.obs;
+  Timer? _otpTimer;
+
+  // Observable variables
+  final RxBool isLogin = true.obs;
+  final RxBool isPasswordVisible = true.obs;
+  final RxBool isLoading = false.obs;
+  final RxBool hasError = false.obs;
   final Rx<User?> currentUser = Rx<User?>(null);
   final Rx<PatientModel?> patientData = Rx<PatientModel?>(null);
 
   // OTP Related
-  final RxList<String> otpDigits = List.generate(4, (index) => '').obs;
-  final RxInt timeRemaining = 15.obs;
+  final RxList<String> otpDigits = List.generate(otpLength, (index) => '').obs;
+  final RxInt timeRemaining = otpTimerDuration.obs;
   final RxBool canResend = false.obs;
- 
- void toggleView() {
-    isLogin.value = !isLogin.value;
-  }
-
-  void togglePasswordVisibility() {
-    isPasswordVisible.value = !isPasswordVisible.value;
-  }
 
   @override
   void onInit() {
     super.onInit();
+    _initializeAuth();
+  }
+
+  @override
+  void onClose() {
+    _otpTimer?.cancel();
+    super.onClose();
+  }
+
+  void _initializeAuth() {
     startTimer();
     currentUser.bindStream(_firebaseService.authStateChanges);
     ever(currentUser, _handleAuthChanged);
   }
 
-  void _handleAuthChanged(User? user) async {
+  void toggleView() => isLogin.value = !isLogin.value;
+
+  void togglePasswordVisibility() => isPasswordVisible.value = !isPasswordVisible.value;
+
+  Future<void> _handleAuthChanged(User? user) async {
     if (user != null) {
-      // Fetch user data from Firestore
       try {
         patientData.value = await _firebaseService.getPatientData(user.uid);
       } catch (e) {
-        CustomSnackBar.showCustomErrorSnackBar(
-          title: 'Error'.tr,
-          message: e.toString(),
-        );
+        _handleError('Error'.tr, e.toString());
       }
     } else {
       patientData.value = null;
@@ -69,6 +75,7 @@ class AuthController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
+      hasError.value = false;
       
       final patient = PatientModel(
         firstName: firstName,
@@ -85,21 +92,12 @@ class AuthController extends GetxController {
         password: password,
         patient: patient,
       );
-      isLoading.value = false;
 
-      CustomSnackBar.showCustomErrorSnackBar(
-        message: 'AccountCreatedSuccessfully'.tr,
-        color: Colors.green,
-        title: 'Success'.tr,
-      );
-      isLoading.value = false;
-
+      _showSuccessMessage('AccountCreatedSuccessfully'.tr);
       Get.offAllNamed(Routes.HOME);
     } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: FirebaseErrorHandler.getErrorMessage(e.toString()),
-      );
+      hasError.value = true;
+      _handleError('Error'.tr, FirebaseErrorHandler.getErrorMessage(e.toString()));
     } finally {
       isLoading.value = false;
     }
@@ -111,16 +109,16 @@ class AuthController extends GetxController {
   }) async {
     try {
       isLoading.value = true;
+      hasError.value = false;
+
       await _firebaseService.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       Get.offAllNamed(Routes.HOME);
     } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: FirebaseErrorHandler.getErrorMessage(e.toString()),
-      );
+      hasError.value = true;
+      _handleError('Error'.tr, FirebaseErrorHandler.getErrorMessage(e.toString()));
     } finally {
       isLoading.value = false;
     }
@@ -129,62 +127,77 @@ class AuthController extends GetxController {
   Future<void> forgetPassword({required String email}) async {
     try {
       isLoading.value = true;
+      hasError.value = false;
+
       await _firebaseService.sendPasswordResetEmail(email);
       Get.toNamed(Routes.VERIFICATION);
     } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: e.toString(),
-      );
+      hasError.value = true;
+      _handleError('Error'.tr, e.toString());
     } finally {
       isLoading.value = false;
     }
   }
 
-  // Your existing OTP methods remain the same
   void startTimer() {
-    timeRemaining.value = 15;
+    _otpTimer?.cancel();
+    timeRemaining.value = otpTimerDuration;
     canResend.value = false;
-    Future.doWhile(() async {
-      await Future.delayed(const Duration(seconds: 1));
+
+    _otpTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (timeRemaining.value == 0) {
         canResend.value = true;
-        return false;
+        timer.cancel();
+      } else {
+        timeRemaining.value--;
       }
-      timeRemaining.value--;
-      return true;
     });
   }
 
   void setDigit(int index, String value) {
-    if (value.length <= 1) {
+    if (value.length <= 1 && index < otpLength) {
       otpDigits[index] = value;
     }
   }
 
   void resendOTP() {
-    for (var i = 0; i < otpDigits.length; i++) {
-      otpDigits[i] = '';
-    }
+    otpDigits.assignAll(List.generate(otpLength, (index) => ''));
     startTimer();
   }
 
   Future<void> verifyOTP() async {
     try {
+      isLoading.value = true;
+      hasError.value = false;
+
       final otp = otpDigits.join();
-      if (otp.length != 4) {
-        CustomSnackBar.showCustomErrorSnackBar(
-          title: 'Error'.tr,
-          message: 'PleaseEnterCompleteOTP'.tr,
-        );
-        return;
+      if (otp.length != otpLength) {
+        throw 'PleaseEnterCompleteOTP'.tr;
       }
+
+      // Add your OTP verification logic here
+      
       Get.offAllNamed(Routes.NEW_PASSWORD);
     } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Verification failed',
-      );
+      hasError.value = true;
+      _handleError('Error'.tr, e.toString());
+    } finally {
+      isLoading.value = false;
     }
+  }
+
+  void _handleError(String title, String message) {
+    CustomSnackBar.showCustomErrorSnackBar(
+      title: title,
+      message: message,
+    );
+  }
+
+  void _showSuccessMessage(String message) {
+    CustomSnackBar.showCustomErrorSnackBar(
+      message: message,
+      color: Colors.green,
+      title: 'Success'.tr,
+    );
   }
 }
