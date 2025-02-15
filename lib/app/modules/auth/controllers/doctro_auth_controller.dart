@@ -16,7 +16,7 @@ class DoctorAuthController extends GetxController {
   static const int otpLength = 4;
   static const int otpResendDelay = 15;
   static const List<String> allowedFileExtensions = ['pdf', 'doc', 'docx'];
-  
+
   // Firebase instances
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -28,7 +28,7 @@ class DoctorAuthController extends GetxController {
   final RxBool isConfirmPasswordVisible = false.obs;
   final RxString selectedFilePath = ''.obs;
   final RxBool isFileUploading = false.obs;
-  
+
   // OTP related state
   final RxList<String> otpDigits = List.generate(otpLength, (index) => '').obs;
   final RxInt timeRemaining = otpResendDelay.obs;
@@ -38,10 +38,12 @@ class DoctorAuthController extends GetxController {
   void toggleView() => isLogin.value = !isLogin.value;
 
   /// Toggles password visibility
-  void togglePasswordVisibility() => isPasswordVisible.value = !isPasswordVisible.value;
+  void togglePasswordVisibility() =>
+      isPasswordVisible.value = !isPasswordVisible.value;
 
   /// Toggles confirm password visibility
-  void toggleConfirmPasswordVisibility() => isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
+  void toggleConfirmPasswordVisibility() =>
+      isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
 
   /// Handles file selection for doctor's credentials
   Future<void> pickFile(TextEditingController uploadFileController) async {
@@ -55,7 +57,7 @@ class DoctorAuthController extends GetxController {
         final file = result.files.first;
         selectedFilePath.value = file.path ?? '';
         uploadFileController.text = '${file.name}.${file.extension}';
-        
+
         CustomSnackBar.showCustomSnackBar(
           title: 'file_selected'.tr,
           message: '${'file_selected_message'.tr}: ${file.name}',
@@ -149,7 +151,7 @@ class DoctorAuthController extends GetxController {
     try {
       isLoading.value = true;
       await _auth.sendPasswordResetEmail(email: email);
-      
+
       CustomSnackBar.showCustomSnackBar(
         title: 'Success'.tr,
         message: 'Password reset email sent'.tr,
@@ -232,7 +234,7 @@ class DoctorAuthController extends GetxController {
     try {
       isLoading.value = true;
       final otp = otpDigits.join();
-      
+
       if (otp.length != otpLength) {
         throw 'Please enter complete OTP';
       }

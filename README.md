@@ -1,16 +1,88 @@
-# med_support_gaza
+# Med Support Gaza
 
-A new Flutter project.
+A Flutter-based mobile application designed to provide medical support and healthcare services in Gaza. This application facilitates communication between patients and healthcare providers, making healthcare services more accessible.
+
+## Features
+
+- User Authentication (Patient/Healthcare Provider)
+- Medical Consultation Management
+- Profile Management
+- Real-time Communication
+- Resource Management
+- Image Upload and Management
+
+## Tech Stack
+
+- **Framework:** Flutter (SDK >=3.4.3)
+- **State Management:** GetX
+- **Storage:** Get Storage, Shared Preferences
+- **UI Components:**
+  - Google Fonts
+  - Cached Network Image
+  - Flutter SVG
+  - Lottie Animations
+  - Shimmer Effects
+- **Utilities:**
+  - Intl (Internationalization)
+  - Logger
+  - URL Launcher
+  - Image Picker
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter SDK (>=3.4.3)
+- Dart SDK
+- Android Studio / VS Code
+- Git
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/rozan-alawar/med_support_gaza.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd med_support_gaza
+   ```
+
+3. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+
+4. Run the app:
+   ```bash
+   flutter run
+   ```
+
+## Project Structure
+
+```
+med_support_gaza/
+├── lib/
+│   ├── app/
+│   │   ├── data/
+│   │   ├── modules/
+│   │   └── ...
+│   └── main.dart
+├── assets/
+├── android/
+├── ios/
+└── pubspec.yaml
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is proprietary and all rights are reserved.
+
+## Contact
+
+For support or queries, please reach out to the development team.
