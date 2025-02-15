@@ -12,18 +12,25 @@ import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
 import 'app/routes/app_pages.dart';
 
-void main() async {
+Future<void> initializeServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await CacheHelper.init();
+  
+  // Initialize GetX services
   Get.put<GetStorage>(GetStorage());
   Get.put(FirebaseService());
+  
+  // Populate initial data
   final firebaseService = Get.find<FirebaseService>();
   await firebaseService.populateSampleData();
+}
 
+void main() async {
+  await initializeServices();
   runApp(const MyApp());
 }
 
@@ -36,34 +43,35 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) {
-        return SafeArea(
-          child: GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Med Support Gaza',
-            theme: AppTheme.appTheme,
-            fallbackLocale: const Locale('en', 'US'),
-            locale: TranslationController.initalLang,
-            translations: Translation(),
-            initialRoute: AppPages.INITIAL,
-            // initialRoute: Routes.HOME,
+      builder: (context, child) => _buildApp(),
+    );
+  }
 
-            getPages: AppPages.routes,
-            defaultTransition: Transition.fadeIn,
-            onUnknownRoute: (settings) {
-              return MaterialPageRoute(
-                builder: (context) => ErrorView(
-                  message: 'Route ${settings.name} not found',
-                ),
-              );
-            },
-          ),
-        );
-      },
+  Widget _buildApp() {
+    return SafeArea(
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Med Support Gaza',
+        theme: AppTheme.appTheme,
+        fallbackLocale: const Locale('en', 'US'),
+        locale: TranslationController.initalLang,
+        translations: Translation(),
+        initialRoute: AppPages.INITIAL,
+        getPages: AppPages.routes,
+        defaultTransition: Transition.fadeIn,
+        onUnknownRoute: _handleUnknownRoute,
+      ),
+    );
+  }
+
+  Route<dynamic> _handleUnknownRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      builder: (context) => ErrorView(
+        message: 'Route ${settings.name} not found',
+      ),
     );
   }
 }
-
 
 //rozanalawar@gmail.com
 //123123123
