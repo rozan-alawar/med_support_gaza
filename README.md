@@ -11,23 +11,6 @@ A Flutter-based mobile application designed to provide medical support and healt
 - Resource Management
 - Image Upload and Management
 
-## Tech Stack
-
-- **Framework:** Flutter (SDK >=3.4.3)
-- **State Management:** GetX
-- **Storage:** Get Storage, Shared Preferences
-- **UI Components:**
-  - Google Fonts
-  - Cached Network Image
-  - Flutter SVG
-  - Lottie Animations
-  - Shimmer Effects
-- **Utilities:**
-  - Intl (Internationalization)
-  - Logger
-  - URL Launcher
-  - Image Picker
-
 ## Getting Started
 
 ### Prerequisites
@@ -75,14 +58,3 @@ med_support_gaza/
 └── pubspec.yaml
 ```
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is proprietary and all rights are reserved.
-
-## Contact
-
-For support or queries, please reach out to the development team.
