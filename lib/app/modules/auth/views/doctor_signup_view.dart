@@ -147,6 +147,13 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                   );
                 }),
                 16.height,
+                CustomTextField(
+                  hintText: 'Age'.tr,
+                  controller: ageController,
+                  keyboardType: TextInputType.number,
+                  validator: (value) => value!.isValidAge,
+                ),
+                16.height,
                 Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: CustomText('Gender'.tr,
@@ -194,6 +201,8 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                           country: countryController.text.trim(),
                           specialty: specialityController.text.trim(),
                           documentFile: documentFile,
+                          age: ageController.text.trim(),
+                          gender: gender.value,
                         );
                       }
                     },

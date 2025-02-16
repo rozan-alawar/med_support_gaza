@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart' as path;
 
 import '../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../routes/app_pages.dart';
@@ -26,13 +28,23 @@ class DoctorAuthController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool isPasswordVisible = false.obs;
   final RxBool isConfirmPasswordVisible = false.obs;
+  final RxBool isPasswordVisible2 = false.obs;
   final RxString selectedFilePath = ''.obs;
   final RxBool isFileUploading = false.obs;
+
+  // File upload state
+  final RxBool isUploading = false.obs;
+  final RxString uploadProgress = '0'.obs;
+  final RxString uploadError = ''.obs;
 
   // OTP related state
   final RxList<String> otpDigits = List.generate(otpLength, (index) => '').obs;
   final RxInt timeRemaining = otpResendDelay.obs;
   final RxBool canResend = false.obs;
+
+  // Error handling state
+  final RxBool hasError = false.obs;
+  final RxString errorMessage = ''.obs;
 
   /// Toggles between login and registration view
   void toggleView() => isLogin.value = !isLogin.value;
@@ -44,6 +56,10 @@ class DoctorAuthController extends GetxController {
   /// Toggles confirm password visibility
   void toggleConfirmPasswordVisibility() =>
       isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
+
+  /// Toggles second password visibility (for confirm password field)
+  void togglePasswordVisibility2() =>
+      isPasswordVisible2.value = !isPasswordVisible2.value;
 
   /// Handles file selection for doctor's credentials
   Future<void> pickFile(TextEditingController uploadFileController) async {
@@ -72,7 +88,39 @@ class DoctorAuthController extends GetxController {
     }
   }
 
-  /// Handles doctor registration
+  /// Uploads a document file to Firebase Storage
+  Future<String?> _uploadDocumentFile(File file, String userId) async {
+    try {
+      isUploading.value = true;
+      uploadError.value = '';
+
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('doctor_documents')
+          .child(userId)
+          .child('medical_certificate${file.path.split('.').last}');
+
+      final uploadTask = storageRef.putFile(file);
+
+      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+        uploadProgress.value =
+            ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toStringAsFixed(2);
+      });
+
+      await uploadTask;
+      final downloadUrl = await storageRef.getDownloadURL();
+      
+      isUploading.value = false;
+      return downloadUrl;
+    } catch (e) {
+      isUploading.value = false;
+      uploadError.value = e.toString();
+      debugPrint('Error uploading document: $e');
+      return null;
+    }
+  }
+
+  /// Handles doctor registration with all required fields
   Future<void> signUp({
     required String email,
     required String password,
@@ -82,15 +130,29 @@ class DoctorAuthController extends GetxController {
     required String country,
     required String specialty,
     required File? documentFile,
+    String? age,
+    String? gender,
   }) async {
     try {
       isLoading.value = true;
+      hasError.value = false;
+      errorMessage.value = '';
 
+      // Create user account
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
+      String? documentUrl;
+      if (documentFile != null) {
+        documentUrl = await _uploadDocumentFile(documentFile, userCredential.user!.uid);
+        if (documentUrl == null && uploadError.value.isNotEmpty) {
+          throw Exception('Failed to upload document: ${uploadError.value}');
+        }
+      }
+
+      // Create doctor profile
       await _firestore.collection('doctors').doc(userCredential.user!.uid).set({
         'id': userCredential.user!.uid,
         'firstName': firstName,
@@ -99,17 +161,23 @@ class DoctorAuthController extends GetxController {
         'phone': phone,
         'country': country,
         'specialty': specialty,
+        'documentUrl': documentUrl,
+        'age': age,
+        'gender': gender,
         'createdAt': FieldValue.serverTimestamp(),
+        'isVerified': false,
       });
 
       CustomSnackBar.showCustomSnackBar(
         title: 'Success'.tr,
-        message: 'Account created successfully'.tr,
+        message: 'Account_created_successfully'.tr,
       );
       Get.offNamed(Routes.DOCTOR_LOGIN);
     } on FirebaseAuthException catch (e) {
       _handleFirebaseAuthError(e);
     } catch (e) {
+      hasError.value = true;
+      errorMessage.value = e.toString();
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr,
         message: e.toString(),
@@ -146,11 +214,41 @@ class DoctorAuthController extends GetxController {
     }
   }
 
-  /// Initiates password reset process
-  Future<void> forgetPassword(String email) async {
+  /// Handles forget password request for doctors
+  Future<void> forgetPassword({required String email}) async {
     try {
       isLoading.value = true;
+      hasError.value = false;
+      errorMessage.value = '';
+
+      // Send password reset email
       await _auth.sendPasswordResetEmail(email: email);
+
+      // Show success message
+      CustomSnackBar.showCustomSnackBar(
+        title: 'Success',
+        message: 'Password reset email sent successfully',
+      );
+
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+      hasError.value = true;
+      errorMessage.value = e.toString();
+      
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error',
+        message: 'Failed to send password reset email. Please try again.',
+      );
+      debugPrint('Error in forgetPassword: $e');
+    }
+  }
+
+  /// Initiates password reset process
+  Future<void> forgetPasswordInit(String email) async {
+    try {
+      isLoading.value = true;
+      await forgetPassword(email: email);
 
       CustomSnackBar.showCustomSnackBar(
         title: 'Success'.tr,
@@ -164,6 +262,50 @@ class DoctorAuthController extends GetxController {
         title: 'Error'.tr,
         message: e.toString(),
       );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// Resets the user's password
+  Future<void> resetPassword({
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    try {
+      if (newPassword != confirmPassword) {
+        throw Exception('Passwords do not match');
+      }
+
+      isLoading.value = true;
+      hasError.value = false;
+      errorMessage.value = '';
+
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw Exception('No user is currently signed in');
+      }
+
+      // Update password
+      await user.updatePassword(newPassword);
+
+      // Show success message
+      CustomSnackBar.showCustomSnackBar(
+        title: 'Success'.tr,
+        message: 'Password_updated_successfully'.tr,
+      );
+
+      // Navigate to login
+      Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    } catch (e) {
+      hasError.value = true;
+      errorMessage.value = e.toString();
+      
+      CustomSnackBar.showCustomErrorSnackBar(
+        title: 'Error'.tr,
+        message: 'Failed_to_update_password'.tr,
+      );
+      debugPrint('Error in resetPassword: $e');
     } finally {
       isLoading.value = false;
     }
@@ -222,7 +364,7 @@ class DoctorAuthController extends GetxController {
   Future<void> resendOTP(String email) async {
     try {
       isLoading.value = true;
-      await forgetPassword(email);
+      await forgetPasswordInit(email);
       otpDigits.assignAll(List.generate(otpLength, (index) => ''));
     } finally {
       isLoading.value = false;
