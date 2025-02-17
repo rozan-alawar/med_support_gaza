@@ -102,9 +102,11 @@ class DoctorVerifcationView extends GetView<DoctorAuthController> {
                         )
                       : const SizedBox()),
                   Obx(() => TextButton(
-                        onPressed: controller.canResend.value
-                            ? controller.resendOTP
-                            : null,
+                        onPressed: () {
+                          // controller.canResend.value
+                          //     ? controller.resendOTP
+                          //     : null;
+                        },
                         child: Text(
                           'ارسل OTP مرة أخرى',
                           style: TextStyle(

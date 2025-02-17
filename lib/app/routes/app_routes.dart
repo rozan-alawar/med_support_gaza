@@ -40,6 +40,8 @@ abstract class Routes {
   static const DOCTOR_NOTIFICATION = _Paths.DOCTOR_NOTIFICATION;
   static const DOCTOR_DETAILS = _Paths.DOCTOR_DETAILS;
   static const DOCTORS_LIST = _Paths.DOCTORS_LIST;
+  static const CONSULTATION_CHAT = _Paths.CONSULTATION_CHAT;
+
 }
 
 abstract class _Paths {
@@ -83,4 +85,5 @@ abstract class _Paths {
   static const DOCTOR_CHAT = '/doctor-chat';
   static const DOCTOR_NOTIFICATION = '/doctor-notification';
   static const DOCTOR_DETAILS = '/doctor-details';
+  static const CONSULTATION_CHAT = '/consultation-chat';
 }

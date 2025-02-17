@@ -87,7 +87,10 @@ class DoctroResetPasswordView extends GetView<DoctorAuthController> {
                   color: AppColors.primary,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      print('new password is valid');
+                      controller.resetPassword(
+                        newPassword: newPasswordController.text,
+                        confirmPassword: passwordController.text,
+                      );
                     }
                   },
                 ),

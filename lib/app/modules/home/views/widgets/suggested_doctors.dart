@@ -6,7 +6,6 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/patient_doctors_controller.dart';
-import 'package:med_support_gaza/app/modules/home/views/doctors_list_view.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 class SuggestedDoctors extends GetView<PatientDoctorsController> {
   const SuggestedDoctors({super.key});

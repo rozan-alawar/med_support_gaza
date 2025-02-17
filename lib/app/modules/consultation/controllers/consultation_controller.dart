@@ -1,83 +1,81 @@
-import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:med_support_gaza/app/data/models/message_model.dart';
+import 'package:med_support_gaza/app/data/models/consultation_model.dart';
+import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class ConsultationController extends GetxController {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final currentUserId = FirebaseAuth.instance.currentUser?.uid??1;
-  final messageController = TextEditingController();
+  final RxInt activeConsultations = 0.obs;
+  final RxList<ConsultationModel> consultations = <ConsultationModel>[].obs;
+  final RxBool isLoading = false.obs;
 
-  final RxList<MessageModel> messages = <MessageModel>[].obs;
-
-  late StreamSubscription<QuerySnapshot> _messagesSubscription;
-
+  // Mock data for testing
   @override
   void onInit() {
     super.onInit();
-    _setupMessagesListener();
+    // Add some sample consultations
+    consultations.addAll([
+      ConsultationModel(
+        id: '1',
+        doctorName: 'Dr. Sarah Wilson',
+        specialty: 'Cardiology',
+        date: DateTime.now().add(const Duration(days: 1)), // Tomorrow
+        time: '14:00',
+        status: 'upcoming',
+      ),
+      ConsultationModel(
+        id: '2',
+        doctorName: 'Dr. Michael Chen',
+        specialty: 'Neurology',
+        date: DateTime.now(),
+        time: '10:30',
+        status: 'active',
+      ),
+    ]);
+
+    // Update active consultations count
+    updateActiveConsultations();
   }
 
-  void _setupMessagesListener() {
-    _messagesSubscription = _firestore
-        .collection('chats')
-        .doc(_getChatId())
-        .collection('messages')
-        .orderBy('timestamp', descending: true)
-        .snapshots()
-        .listen((snapshot) {
-      messages.value = snapshot.docs
-          .map((doc) => MessageModel.fromJson(doc.data()))
-          .toList();
-    });
+  void updateActiveConsultations() {
+    activeConsultations.value = consultations
+        .where((c) => c.status == 'active')
+        .length;
+  }
+  void startChat(ConsultationModel consultation) {
+    Get.toNamed(Routes.CONSULTATION_CHAT, arguments: consultation);
   }
 
-  String _getChatId() {
-    final List<String> ids = ["currentUserId"," doctor.id"]..sort();
-    return ids.join('_');
+  // Get consultations by status
+  List<ConsultationModel> getConsultationsByStatus(String status) {
+    return consultations
+        .where((consultation) => consultation.status == status)
+        .toList();
   }
 
-  Future<void> sendMessage() async {
-    if (messageController.text
-        .trim()
-        .isEmpty) return;
-
-    final message = MessageModel(
-      id: DateTime
-          .now()
-          .millisecondsSinceEpoch
-          .toString(),
-      senderId: "currentUserId",
-      receiverId: "doctor.id",
-      content: messageController.text.trim(),
-      timestamp: DateTime.now(),
+  // Check if user can make new consultation
+  bool canBookNewConsultation(DateTime proposedDate, String proposedTime) {
+    // Check if there's any active or upcoming consultation at the same time
+    return !consultations.any((consultation) =>
+    consultation.status != 'completed' &&
+        consultation.date.year == proposedDate.year &&
+        consultation.date.month == proposedDate.month &&
+        consultation.date.day == proposedDate.day &&
+        consultation.time == proposedTime
     );
+  }
 
-    try {
-      await _firestore
-          .collection('chats')
-          .doc(_getChatId())
-          .collection('messages')
-          .doc(message.id)
-          .set(message.toJson());
-
-      messageController.clear();
-    } catch (e) {
-      print('Error sending message: $e');
-      Get.snackbar('Error', 'Failed to send message');
+  // Add new consultation
+  void addConsultation(ConsultationModel consultation) {
+    if (canBookNewConsultation(consultation.date, consultation.time)) {
+      consultations.add(consultation);
+      updateActiveConsultations();
+    } else {
+      Get.snackbar(
+        'Error',
+        'You already have a consultation at this time',
+        backgroundColor: Colors.red[100],
+        colorText: Colors.red[900],
+      );
     }
-  }
-
-  void startVoiceRecord() {
-  }
-
-  @override
-  void onClose() {
-    _messagesSubscription.cancel();
-    messageController.dispose();
-    super.onClose();
   }
 }

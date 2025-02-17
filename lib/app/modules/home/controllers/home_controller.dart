@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
+import 'package:med_support_gaza/app/modules/consultation/controllers/consultation_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
@@ -25,6 +26,7 @@ class HomeController extends GetxController {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final RxBool hasActiveConsultation = false.obs;
 
 
   void changeBottomNavIndex(int index) {
@@ -36,8 +38,16 @@ class HomeController extends GetxController {
     super.onInit();
     _loadAppointments();
     loadUserData();
+    setupConsultationListener();
+
   }
 
+  void setupConsultationListener() {
+    // Listen for active consultations and update badge
+    ever(Get.find<ConsultationController>().activeConsultations, (activeCount) {
+      hasActiveConsultation.value = activeCount > 0;
+    });
+  }
   void _loadAppointments() {
     try {
       final userId = _authService.currentUser?.uid;

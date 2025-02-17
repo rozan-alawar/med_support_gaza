@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/data/models/health_tip.dart';
-import 'package:med_support_gaza/app/modules/home/views/widgets/health_tips.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class HealthTipsController extends GetxController {
@@ -53,4 +52,4 @@ class HealthTipsController extends GetxController {
       'bullets': tip.bullets
     });
   }
-  }
+}

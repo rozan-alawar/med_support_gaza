@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:med_support_gaza/app/data/api_paths.dart';
 import 'package:med_support_gaza/app/data/network_helper/dio_helper.dart';
 
-
 import '../network_helper/api_exception.dart';
 
 class AuthAPIService {

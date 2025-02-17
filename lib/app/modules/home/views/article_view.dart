@@ -7,7 +7,7 @@ import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/articles_controller.dart';
 
 class ArticleTipView extends GetView<HealthTipsController> {
-  const ArticleTipView({Key? key}) : super(key: key);
+  const ArticleTipView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +15,12 @@ class ArticleTipView extends GetView<HealthTipsController> {
 
     return Scaffold(
       appBar: AppBar(
-
-      title: CustomText( arguments['title']??"",  fontWeight: FontWeight.bold,fontSize: 16.sp,),
-centerTitle: true,
+        title: CustomText(
+          arguments['title'] ?? "",
+          fontWeight: FontWeight.bold,
+          fontSize: 16.sp,
+        ),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -26,7 +29,6 @@ centerTitle: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             24.height,
             Container(
               width: double.infinity,
@@ -39,7 +41,7 @@ centerTitle: true,
                     color: Colors.black.withOpacity(0.05),
                     blurRadius: 10,
                     spreadRadius: 0,
-                    offset: Offset(0, 2),
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
@@ -59,9 +61,9 @@ centerTitle: true,
                 fontWeight: FontWeight.bold,
               ),
               16.height,
-              ...((arguments['bullets'.tr] as String).split('|').map((bullet) =>
-                  _buildBulletPoint(bullet.trim())
-              )).toList(),
+              ...((arguments['bullets'.tr] as String)
+                  .split('|')
+                  .map((bullet) => _buildBulletPoint(bullet.trim()))),
             ],
           ],
         ),
@@ -80,7 +82,7 @@ centerTitle: true,
             child: Container(
               width: 6.w,
               height: 6.w,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
