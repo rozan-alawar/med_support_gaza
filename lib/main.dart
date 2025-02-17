@@ -49,8 +49,8 @@ class MyApp extends StatelessWidget {
             fallbackLocale: const Locale('en', 'US'),
             locale: TranslationController.initalLang,
             translations: Translation(),
-            // initialRoute: AppPages.INITIAL,
-            initialRoute: Routes.HOME,
+             initialRoute: AppPages.INITIAL,
+          //  initialRoute: Routes.HOME,
             getPages: AppPages.routes,
             defaultTransition: Transition.fadeIn,
             onUnknownRoute: (settings) {

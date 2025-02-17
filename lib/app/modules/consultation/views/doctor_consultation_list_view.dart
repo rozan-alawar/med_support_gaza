@@ -29,7 +29,7 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
                   final message = controller.messages[index];
                   return GestureDetector(
                     onTap: () {
-                    //  Get.toNamed(Routes.DOCTOR_CHAT);
+                      Get.toNamed(Routes.DOCTOR_CHAT);
                     },
                     child: Container(
                       //color: AppColors.background,

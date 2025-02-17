@@ -45,11 +45,92 @@ class DoctorConsultationView extends GetView<DoctorConsultationController> {
           ],
         ),
       ),
-      body: Center(
+      body: Column(
+        children: [
+          Expanded(
+            child: Obx(() => ListView.builder(
+                  padding: EdgeInsets.all(8.0),
+                  itemCount: controller.messages.length,
+                  itemBuilder: (context, index) {
+                    final message = controller.messages[index];
+                    bool isDoctor = message['name'] == 'saja';
+                    return _buildMessageBubble(
+                        message['message'] ?? "", message['time'] ?? "",
+                        isDoctor: isDoctor);
+                  },
+                )),
+          ),
+          _buildMessageInput(),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildMessageBubble(String message, String time,
+      {bool isDoctor = true}) {
+    return Align(
+      alignment: isDoctor ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 4.0),
+        padding: EdgeInsets.all(12.0),
+         decoration:BoxDecoration(
+              color: isDoctor ? AppColors.primary : Colors.grey[100],
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r),
+                bottomLeft: Radius.circular(isDoctor ? 16.r : 0),
+                bottomRight: Radius.circular(isDoctor ? 0 : 16.r),
+              ),
+            ),
+        // BoxDecoration(
+        //   color: isDoctor ? Colors.teal : Colors.grey[200],
+        //   borderRadius: BorderRadius.circular(8.0),
+        // ),
         child: Column(
-          children: [CustomText('chat')],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              message,
+              style: TextStyle(color: isDoctor ? Colors.white : Colors.black),
+            ),
+            SizedBox(height: 4.0),
+            Text(
+              time,
+              style: TextStyle(
+                  color: isDoctor ? Colors.white70 : Colors.black54,
+                  fontSize: 12.0),
+            ),
+          ],
         ),
       ),
     );
   }
+
+  Widget _buildMessageInput() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          10.width,
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'مراسلة',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.send),
+            onPressed: () {},
+            color: Colors.teal,
+          ),
+        ],
+      ),
+    );
+  }
+
 }
