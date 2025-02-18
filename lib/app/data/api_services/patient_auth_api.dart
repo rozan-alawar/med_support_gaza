@@ -31,7 +31,7 @@ class PatientAuthAPIService {
     required String passwordConfirmation,
     required String firstName,
     required String lastName,
-    required int age,
+    required String age,
     required String gender,
     required String phoneNumber,
     required String address,

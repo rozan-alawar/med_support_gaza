@@ -121,7 +121,9 @@ class PatientSignUpView extends GetView<AuthController> {
                 Obx(
                   () => CustomButton(
                     text: 'SignUp'.tr,
-                    color:controller.isLoading.value?AppColors.textLight: AppColors.primary,
+                    color: controller.isLoading.value
+                        ? AppColors.textLight
+                        : AppColors.primary,
                     isDisable: controller.isLoading.value,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -133,7 +135,7 @@ class PatientSignUpView extends GetView<AuthController> {
                           phoneNo: phoneController.text.trim(),
                           age: ageController.text.trim(),
                           gender: gender.value.toString(),
-                          country: 'Gaza'
+                          address: 'Gaza',
                         );
                       }
                     },
