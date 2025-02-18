@@ -1,7 +1,7 @@
 class Links {
   static var baseLink =
       'http://medsupport-gaza-cfd5c72a1744.herokuapp.com/api/';
-  static var login = 'login';
+  static var login = '/patient/login';
   static var register = 'register';
   static var logout = 'logout';
   static var doctorRegister = 'doctor/register';
@@ -19,5 +19,4 @@ class Links {
   static var getPatientConsultationDetails = 'patient/consultation';
   static var getPatientPrescriptions = 'patient/prescriptions';
   static var getPatientPrescriptionDetails = 'patient/prescription';
-  static var verify = '/verify';
 }

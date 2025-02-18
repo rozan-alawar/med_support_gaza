@@ -19,11 +19,11 @@ Future<void> initializeServices() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await CacheHelper.init();
-  
+
   // Initialize GetX services
   Get.put<GetStorage>(GetStorage());
   Get.put(FirebaseService());
-  
+
   // Populate initial data
   final firebaseService = Get.find<FirebaseService>();
   await firebaseService.populateSampleData();
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-  
+
   Route<dynamic> _handleUnknownRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) => ErrorView(
@@ -81,3 +81,4 @@ class MyApp extends StatelessWidget {
 
 //admin@gmail.com
 //admin123
+
