@@ -19,4 +19,5 @@ class Links {
   static var getPatientConsultationDetails = 'patient/consultation';
   static var getPatientPrescriptions = 'patient/prescriptions';
   static var getPatientPrescriptionDetails = 'patient/prescription';
+  static var verify = '/verify';
 }

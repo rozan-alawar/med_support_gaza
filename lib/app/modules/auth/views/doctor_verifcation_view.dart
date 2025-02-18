@@ -37,18 +37,91 @@ class DoctorVerifcationView extends GetView<DoctorAuthController> {
                 color: AppColors.accent,
                 fontWeight: FontWeight.bold,
               ),
-              40.height,
-              _OTPInputFields(
-                controller: controller,
-                formKey: _formKey,
+              60.height,
+              Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    4,
+                    (index) => Container(
+                      width: 60,
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        maxLength: 1,
+                        onChanged: (value) {
+                          controller.setDigit(index, value);
+                          if (value.isNotEmpty && index < 3) {
+                            FocusScope.of(context).nextFocus();
+                          }
+                        },
+                        initialValue: controller.otpDigits[index],
+                        decoration: InputDecoration(
+                          counterText: '',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: Color(0xFF009688),
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              40.height,
-              _VerifyButton(
-                controller: controller,
-                formKey: _formKey,
+              60.height,
+              Obx(
+                () => CustomButton(
+                  text: 'Confirm'.tr,
+                  color: AppColors.primary,
+                  isDisable: controller.isLoading.value,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      controller.verifyOTP();
+                    }
+                  },
+                ),
               ),
-              16.height,
-              _ResendTimerSection(controller: controller),
+              const SizedBox(height: 16),
+              // Resend Timer
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(() => !controller.canResend.value
+                      ? Text(
+                          '00:${controller.timeRemaining.value.toString().padLeft(2, '0')}',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                        )
+                      : const SizedBox()),
+                  Obx(() => TextButton(
+                        onPressed: () {
+                          // controller.canResend.value
+                          //     ? controller.resendOTP
+                          //     : null;
+                        },
+                        child: Text(
+                          'ارسل OTP مرة أخرى',
+                          style: TextStyle(
+                            color: controller.canResend.value
+                                ? const Color(0xFF009688)
+                                : Colors.grey,
+                          ),
+                        ),
+                      )),
+                ],
+              ),
             ],
           ),
         ),
