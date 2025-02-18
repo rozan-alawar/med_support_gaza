@@ -69,7 +69,7 @@ class AuthAPIService {
     Function? onLoading,
   }) {
     DioHelper.post(
-      Links.verify,
+      Links.login,
       data: {
         'phone_code': phoneCode,
         'phone_number': phoneNumber,

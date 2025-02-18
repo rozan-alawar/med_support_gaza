@@ -105,7 +105,7 @@ class AppPages {
         binding: DoctorAuthBinding()),
     GetPage(
         name: _Paths.DOCTOR_LOGIN,
-        page: () => DoctroLoginView(),
+        page: () => DoctorLoginView(),
         binding: DoctorAuthBinding()),
     GetPage(
         name: _Paths.DOCTOR_FORGET_PASSWORD,
