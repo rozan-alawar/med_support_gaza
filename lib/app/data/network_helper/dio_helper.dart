@@ -38,6 +38,7 @@ class DioHelper {
     String url, {
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
+    String? contentType,
     required Function(Response response) onSuccess,
     Function(ApiException)? onError,
     Function(int total, int progress)?
@@ -58,6 +59,7 @@ class DioHelper {
         onSendProgress: onSendProgress,
         queryParameters: queryParameters,
         options: Options(
+           contentType:contentType ,
             headers: headers,
             receiveTimeout: const Duration(seconds: TIME_OUT_DURATION),
             sendTimeout: const Duration(seconds: TIME_OUT_DURATION)),
