@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +8,12 @@ import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/services/localizations/translation_contoller.dart';
 import 'package:med_support_gaza/app/core/utils/app_theme.dart';
 import 'package:med_support_gaza/app/core/widgets/custem_error_widget.dart';
+import 'package:med_support_gaza/app/data/api_services/doctor_auth_api.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
+import 'package:med_support_gaza/app/data/network_helper/dio_client.dart';
 import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
+import 'app/data/network_helper/dio_helper.dart';
 import 'app/routes/app_pages.dart';
 
 Future<void> initializeServices() async {
@@ -19,14 +23,22 @@ Future<void> initializeServices() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await CacheHelper.init();
-  
+
   // Initialize GetX services
   Get.put<GetStorage>(GetStorage());
   Get.put(FirebaseService());
-  
+
+  // api services initialization
+  Get.lazyPut(() => Dio());
+  Get.lazyPut(() => DioClient(Get.find<Dio>()));
+  Get.lazyPut(() => DoctorAuthApi());
+
   // Populate initial data
   final firebaseService = Get.find<FirebaseService>();
   await firebaseService.populateSampleData();
+
+  // Initialize DioHelper
+  DioHelper.init();
 }
 
 void main() async {
@@ -63,7 +75,7 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-  
+
   Route<dynamic> _handleUnknownRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) => ErrorView(
@@ -81,3 +93,7 @@ class MyApp extends StatelessWidget {
 
 //admin@gmail.com
 //admin123
+
+
+    // "email": "doctor1@gmail.com",
+    // "password": "password123"

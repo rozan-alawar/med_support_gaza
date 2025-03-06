@@ -90,7 +90,7 @@ class DoctorForgetPasswordView extends GetView<DoctorAuthController> {
 
   void _handleSendOTP() {
     if (_formKey.currentState!.validate()) {
-      controller.forgetPassword(
+      controller.forgetPasswordInit(
         email: _emailController.text.trim(),
       ).then((_) {
         if (!controller.hasError.value) {

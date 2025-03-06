@@ -99,7 +99,7 @@ class DioHelper {
       }
 
       var exception = ApiException(
-        message: (error.response!.data["message"].toString()) != "null"
+        message: (error.response!.data["message"]?.toString()) != "null"
             ? (error.response!.data["message"].toString())
             : "",
         url: Links.baseLink + url,
