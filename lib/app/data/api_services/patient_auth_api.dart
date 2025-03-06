@@ -1,26 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:med_support_gaza/app/data/api_paths.dart';
+import 'package:med_support_gaza/app/data/network_helper/api_exception.dart';
 import 'package:med_support_gaza/app/data/network_helper/dio_helper.dart';
 
-import '../network_helper/api_exception.dart';
-
-class AuthAPIService {
+class PatientAuthAPIService {
 //------------------------ SIGN IN -----------------------------
 
   static void signIn({
-    required String phoneCode,
-    required String phoneNumber,
-    // required RxBool loading,
+    required String email,
+    required String password,
     required dynamic Function(Response<dynamic>) onSuccess,
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
     DioHelper.post(
-      Links.login,
-      data: {
-        'phone_code': phoneCode,
-        'phone_number': phoneNumber,
-      },
+      Links.PATIENT_LOGIN,
+      data: {'email': email, 'password': password},
       onSuccess: onSuccess,
       onError: onError,
       onLoading: onLoading,
@@ -30,27 +25,33 @@ class AuthAPIService {
 //------------------------ SIGN UP -----------------------------
 
   static void signUp({
+    required String username,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
     required String firstName,
     required String lastName,
-    required String email,
-    required String dob,
+    required String age,
     required String gender,
     required String phoneNumber,
-    required String phoneCode,
+    required String address,
     required dynamic Function(Response<dynamic>) onSuccess,
-    dynamic Function(ApiException)? onError,
+    Function(ApiException)? onError,
     Function? onLoading,
   }) {
     DioHelper.post(
-      Links.login,
+      Links.PATIENT_REGISTER,
       data: {
+        'username': username,
+        'email': email,
+        'password': password,
+        'password_confirmation': passwordConfirmation,
         'first_name': firstName,
         'last_name': lastName,
-        'email': email,
-        'dob': dob,
+        'age': age,
         'gender': gender,
         'phone_number': phoneNumber,
-        'phone_code': phoneCode,
+        'address': address,
       },
       onSuccess: onSuccess,
       onError: onError,
@@ -69,7 +70,7 @@ class AuthAPIService {
     Function? onLoading,
   }) {
     DioHelper.post(
-      Links.verify,
+      Links.PATIENT_LOGIN,
       data: {
         'phone_code': phoneCode,
         'phone_number': phoneNumber,
@@ -90,7 +91,7 @@ class AuthAPIService {
     Function? onLoading,
   }) {
     DioHelper.post(
-      Links.logout,
+      Links.PATIENT_LOGOUT,
       data: {'token': token},
       onSuccess: onSuccess,
       onError: onError,

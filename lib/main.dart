@@ -93,7 +93,3 @@ class MyApp extends StatelessWidget {
 
 //admin@gmail.com
 //admin123
-
-
-    // "email": "doctor1@gmail.com",
-    // "password": "password123"

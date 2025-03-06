@@ -110,7 +110,7 @@ class DoctorAuthApi {
     required String token,
   }) async{
   Response response = await Get.find<DioClient>().dio.post(
-      Links.logout,
+      Links.doctorLogout,
       data: {'token': token},
     );
     return response;

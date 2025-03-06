@@ -44,6 +44,7 @@ class DoctorAuthController extends GetxController {
   final RxList<String> otpDigits = List.generate(otpLength, (index) => '').obs;
   final RxInt timeRemaining = otpResendDelay.obs;
   final RxBool canResend = false.obs;
+  final RxString verificationEmail = ''.obs;
 
   // Error handling state
   final RxBool hasError = false.obs;
@@ -191,18 +192,18 @@ class DoctorAuthController extends GetxController {
     timeRemaining.value = otpResendDelay;
     canResend.value = false;
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (timeRemaining.value == 0) {
-        canResend.value = true;
-        timer.cancel();
-      } else {
+      if (timeRemaining.value > 0) {
         timeRemaining.value--;
+      } else {
+        timer.cancel();
+        canResend.value = true;
       }
     });
   }
 
   /// Sets OTP digit at specified index
   void setDigit(int index, String value) {
-    if (value.length <= 1 && index < otpLength) {
+    if (index >= 0 && index < otpLength) {
       otpDigits[index] = value;
     }
   }
@@ -222,16 +223,24 @@ class DoctorAuthController extends GetxController {
   Future<void> verifyOTP() async {
     try {
       isLoading.value = true;
-      final otp = otpDigits.join();
+      hasError.value = false;
+      errorMessage.value = '';
 
+      // Combine OTP digits
+      final otp = otpDigits.join();
+      
       if (otp.length != otpLength) {
-        throw 'Please enter complete OTP';
+        throw Exception('Please enter all OTP digits');
       }
 
-      // Add actual OTP verification logic here
-      await Future.delayed(const Duration(seconds: 2));
-      Get.offAllNamed(Routes.DOCTOR_RESET_PASSWORD);
+      // Here you would typically verify the OTP with your backend
+      // For now, we'll just navigate to reset password
+      await Future.delayed(const Duration(seconds: 1)); // Simulated verification
+      
+      Get.toNamed(Routes.DOCTOR_RESET_PASSWORD);
     } catch (e) {
+      hasError.value = true;
+      errorMessage.value = e.toString();
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr,
         message: e.toString(),
@@ -239,6 +248,16 @@ class DoctorAuthController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  @override
+  void onClose() {
+    // Reset verification state
+    otpDigits.assignAll(List.generate(otpLength, (index) => ''));
+    timeRemaining.value = otpResendDelay;
+    canResend.value = false;
+    verificationEmail.value = '';
+    super.onClose();
   }
 }
 

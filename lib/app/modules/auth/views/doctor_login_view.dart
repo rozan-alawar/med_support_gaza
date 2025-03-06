@@ -25,12 +25,7 @@ class DoctorLoginView extends GetView<DoctorAuthController> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                _buildLoginForm(),
-                _buildLoadingIndicator(),
-              ],
-            ),
+            child: _buildLoginForm(),
           ),
         ),
       ),
@@ -114,8 +109,8 @@ class DoctorLoginView extends GetView<DoctorAuthController> {
       () => CustomButton(
         text: 'Login'.tr,
         width: double.infinity,
-        color: controller.isLoading.value 
-            ? AppColors.textLight 
+        color: controller.isLoading.value
+            ? AppColors.textLight
             : AppColors.primary,
         isDisable: controller.isLoading.value,
         onPressed: _handleLogin,
