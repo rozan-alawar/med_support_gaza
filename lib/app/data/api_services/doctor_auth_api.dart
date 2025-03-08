@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:get/instance_manager.dart';
 import 'package:med_support_gaza/app/data/api_paths.dart';
-import '../network_helper/api_exception.dart';
 import '../network_helper/dio_client.dart';
-import '../network_helper/dio_helper.dart';
 
 class DoctorAuthApi {
   DoctorAuthApi();
@@ -28,22 +26,23 @@ class DoctorAuthApi {
       'last_name': lName,
       'email': email,
       'password': password,
-      'password_confirmation': passwordConfirmation,
-      'gender': gender,
-      'phone_number': phoneNumber,
-      'major': major,
       'country': country,
+      'phone_number': phoneNumber,
+      'gender': gender,
+      'major': major,
       'certificate': await MultipartFile.fromFile(certificatePath,
           filename: certificatePath.split('/').last),
+      'password_confirmation': passwordConfirmation,
     }); // Adjust filename as needed
 
     // Make the POST request
     Response response = await Get.find<DioClient>().dio.post(
           Links.doctorRegister,
           data: formData,
-          options: Options(
-            contentType: 'multipart/form-data',
-          ),
+          options: Options(headers: {
+            'Content-Type': 'multipart/form-data',
+            'Accept': 'application/json',
+          }, followRedirects: true),
         );
     return response;
   }
@@ -74,7 +73,7 @@ class DoctorAuthApi {
     return response;
   }
 
-  // verify-otp function 
+  // verify-otp function
   Future<Response<dynamic>> verifyOTP({
     required int otp,
     required String email,
@@ -82,9 +81,8 @@ class DoctorAuthApi {
     Response response = await Get.find<DioClient>().dio.post(
       Links.verifyOTP,
       data: {
-         'otp' : otp,
+        'otp': otp,
         'email': email,
-
       },
     );
     return response;
@@ -106,10 +104,10 @@ class DoctorAuthApi {
     return response;
   }
 
- Future<Response<dynamic>> logout({
+  Future<Response<dynamic>> logout({
     required String token,
-  }) async{
-  Response response = await Get.find<DioClient>().dio.post(
+  }) async {
+    Response response = await Get.find<DioClient>().dio.post(
       Links.doctorLogout,
       data: {'token': token},
     );

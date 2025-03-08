@@ -104,6 +104,16 @@ class DoctorAuthController extends GetxController {
     required String specialty,
     required String gender,
   }) async {
+    print(''' fName: $firstName,
+      lName: $lastName,
+      email: $email,
+      password: $password,
+      passwordConfirmation: $passwordConfirmation,
+      major: $specialty,
+      phoneNumber: $phone,
+      gender: $gender,
+      country: $country,
+      certificatePath: ${selectedFilePath.value}''');
     final response = await Get.find<DoctorAuthApi>().register(
       fName: firstName,
       lName: lastName,
@@ -127,18 +137,32 @@ class DoctorAuthController extends GetxController {
       password: password,
     );
     DoctorModel doctor_model = DoctorModel.fromJson(response.data);
-    CacheHelper.saveData(key: 'isLoggedIn', value: true);
-    CacheHelper.saveData(key: 'doctro', value: doctor_model.doctor);
+    saveDoctorData(doctor_model);
     Get.offAllNamed(Routes.DOCTOR_HOME);
   }
 
-  /// Handles forget password request for doctors
+  void saveDoctorData(DoctorModel doctorModel) {
+    CacheHelper.saveData(key: 'isLoggedIn', value: true);
+    CacheHelper.saveData(key: 'token', value: doctorModel.token);
+    final doctor = doctorModel.doctor;
+    if (doctor != null) {
+      CacheHelper.saveData(key: 'firstName', value: doctor.firstName);
+      CacheHelper.saveData(key: 'lastName', value: doctor.lastName);
+      CacheHelper.saveData(key: 'major', value: doctor.major);
+      CacheHelper.saveData(key: 'averageRating', value: doctor.averageRating);
+      CacheHelper.saveData(key: 'email', value: doctor.email);
+      CacheHelper.saveData(key: 'phoneNumber', value: doctor.phoneNumber);
+      CacheHelper.saveData(key: 'country', value: doctor.country);
+      CacheHelper.saveData(key: 'gender', value: doctor.gender);
+      CacheHelper.saveData(key: 'certificate', value: doctor.certificate);
+    }
+  }
+
+  // Handles forget password request for doctors
   Future<void> forgetPasswordInit({required String email}) async {
-    isLoading.value = true;
     // Use DoctorAuthApi for password reset
     await Get.find<DoctorAuthApi>().forgetPassword(email: email);
     startTimer();
-    isLoading.value = false;
   }
 
   Future<void> verfiyOTP(String email, int otp) async {
@@ -151,40 +175,21 @@ class DoctorAuthController extends GetxController {
     required String newPassword,
     required String confirmPassword,
   }) async {
-    try {
-      if (newPassword != confirmPassword) {
-        throw Exception('Passwords do not match');
-      }
+    await Get.find<DoctorAuthApi>().resetPassword(
+        email: email,
+        password: newPassword,
+        passwordConfirmation: confirmPassword);
+    // Navigate to login
+    Get.offAllNamed(Routes.DOCTOR_LOGIN);
+  }
 
-      isLoading.value = true;
-      hasError.value = false;
-      errorMessage.value = '';
-
-      // Use DoctorAuthApi for password reset
-      await Get.find<DoctorAuthApi>().resetPassword(
-          email: email,
-          password: newPassword,
-          passwordConfirmation: confirmPassword);
-
-      CustomSnackBar.showCustomSnackBar(
-        title: 'Success'.tr,
-        message: 'Password_updated_successfully'.tr,
-      );
-
-      // Navigate to login
-      Get.offAllNamed(Routes.DOCTOR_LOGIN);
-    } catch (e) {
-      hasError.value = true;
-      errorMessage.value = e.toString();
-
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Failed_to_update_password'.tr,
-      );
-      debugPrint('Error in resetPassword: $e');
-    } finally {
-      isLoading.value = false;
-    }
+  Future<void> signOut() async {
+    await Get.find<DoctorAuthApi>()
+        .logout(token: CacheHelper.getData(key: 'token'));
+    CacheHelper.removeData(key: 'isLoggedIn');
+    CacheHelper.removeData(key: 'token');
+    Get.offAllNamed(Routes.DOCTOR_LOGIN);
+  
   }
 
   /// Starts OTP timer countdown
@@ -228,15 +233,16 @@ class DoctorAuthController extends GetxController {
 
       // Combine OTP digits
       final otp = otpDigits.join();
-      
+
       if (otp.length != otpLength) {
         throw Exception('Please enter all OTP digits');
       }
 
       // Here you would typically verify the OTP with your backend
       // For now, we'll just navigate to reset password
-      await Future.delayed(const Duration(seconds: 1)); // Simulated verification
-      
+      await Future.delayed(
+          const Duration(seconds: 1)); // Simulated verification
+
       Get.toNamed(Routes.DOCTOR_RESET_PASSWORD);
     } catch (e) {
       hasError.value = true;

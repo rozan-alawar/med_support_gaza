@@ -29,9 +29,9 @@ Future<void> initializeServices() async {
   Get.put(FirebaseService());
 
   // api services initialization
-  Get.lazyPut(() => Dio());
-  Get.lazyPut(() => DioClient(Get.find<Dio>()));
-  Get.lazyPut(() => DoctorAuthApi());
+  Get.lazyPut(() => Dio(), fenix: true);
+  Get.lazyPut(() => DioClient(Get.find<Dio>()), fenix: true);
+  Get.lazyPut(() => DoctorAuthApi(), fenix: true);
 
   // Populate initial data
   final firebaseService = Get.find<FirebaseService>();

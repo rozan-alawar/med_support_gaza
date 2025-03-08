@@ -191,13 +191,13 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                   children: [
                     Obx(() => Radio(
                           activeColor: AppColors.primary,
-                          value: 'Male',
+                          value: 'male',
                           groupValue: gender.value,
                           onChanged: (value) => gender.value = value.toString(),
                         )),
                     CustomText('Male'.tr),
                     Obx(() => Radio(
-                          value: 'Female',
+                          value: 'female',
                           activeColor: AppColors.primary,
                           groupValue: gender.value,
                           onChanged: (value) => gender.value = value.toString(),

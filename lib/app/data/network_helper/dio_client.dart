@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:med_support_gaza/app/data/api_paths.dart';
 
 import '../../core/widgets/custom_snackbar_widget.dart';
@@ -14,15 +15,16 @@ class DioClient {
       ..options.receiveTimeout =
           const Duration(seconds: DioConfig.receiveTimeout)
       ..options.sendTimeout = const Duration(seconds: DioConfig.sendTimeout)
-      ..options.responseType = ResponseType.json;
+      ..options.responseType = ResponseType.json
+      ..options.followRedirects = true;
     dio.interceptors.add(ErrorInterceptor());
   }
 }
 
 class DioConfig {
-  static const int connectTimeout = 30;
-  static const int receiveTimeout = 30;
-  static const int sendTimeout = 30;
+  static const int connectTimeout = 60;
+  static const int receiveTimeout = 60;
+  static const int sendTimeout = 60;
 }
 
 class ErrorInterceptor extends Interceptor {
@@ -34,6 +36,8 @@ class ErrorInterceptor extends Interceptor {
     print('''| [DIO] Request: ${options.method} ${options.uri}
 | ${options.data.toString()}
 ''');
+    print('Request Headers: ${options.headers}');
+    print('Request Body: ${options.data}');
 
     handler.next(options);
   }
@@ -55,7 +59,22 @@ class ErrorInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    print('Dio Error : ' + err.message.toString());
+    print(
+        "└------------------------------------------------------------------------------");
+    print('Dio Error Type: ${err.type}');
+    print('Dio Error Message: ${err.message}');
+    print('Dio Error Response: ${err.response}');
+    print('Dio Error RequestOptions: ${err.requestOptions.uri}');
+
+    if (err.response != null) {
+      print('Response Status Code: ${err.response?.statusCode}');
+      print('Response Data: ${err.response?.data}');
+    }
+    // Special handling for redirects
+    if (err.response?.statusCode == 302) {
+      print('Received redirect response: ${err.response?.headers['location']}');
+      // You might want to follow the redirect manually or handle it differently
+    }
     final error = DioExceptions.fromDioError(err);
     CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr, message: error.message);
@@ -104,6 +123,10 @@ class DioExceptions implements Exception {
       500: 'Internal server error',
       502: 'Bad gateway',
     };
+    // Check if the error response contains a message
+    if (error != null && error is Map && error.containsKey('message')) {
+      return error['message'].toString();
+    }
     return errorMessages[statusCode] ?? 'Oops something went wrong';
   }
 
