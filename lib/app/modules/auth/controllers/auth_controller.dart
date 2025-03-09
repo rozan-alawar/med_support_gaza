@@ -251,7 +251,7 @@ class AuthController extends GetxController {
   final RxBool isPasswordVisible = true.obs;
   final RxBool isLoading = false.obs;
   final RxBool hasError = false.obs;
-  UserModel? currentUser;
+  PatientModel? currentUser;
 
   // OTP Related
   final RxList<String> otpDigits = List.generate(otpLength, (index) => '').obs;
@@ -329,13 +329,14 @@ class AuthController extends GetxController {
       password: password,
       onSuccess: (response) {
         isLoading.value = false;
+        print(response);
         AuthResponseModel loginResponse =
             AuthResponseModel.fromJson(response.data);
         _showSuccessMessage(loginResponse.message);
         CacheHelper.saveData(key: 'isLoggedIn', value: true);
-        currentUser = loginResponse.user;
+        currentUser = loginResponse.patient;
         CacheHelper.saveData(
-            key: 'user', value: json.encode(currentUser!.patient));
+            key: 'user', value: json.encode(currentUser!));
         Get.offAllNamed(Routes.HOME);
       },
       onError: (e) {

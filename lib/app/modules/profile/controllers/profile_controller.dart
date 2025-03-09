@@ -18,7 +18,7 @@ class ProfileController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RxBool isLoading = false.obs;
-   Rx<PatientModel?> currentUser =    Rx<PatientModel?>(AuthController().currentUser?.patient) ;
+   Rx<PatientModel?> currentUser =    Rx<PatientModel?>(AuthController().currentUser) ;
 
 
 

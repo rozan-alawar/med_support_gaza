@@ -24,7 +24,6 @@ Future<void> initializeServices() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await CacheHelper.init();
-   DioHelper.init();
 
   // Initialize GetX services
   Get.put<GetStorage>(GetStorage());

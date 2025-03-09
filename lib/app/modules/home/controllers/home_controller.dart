@@ -39,7 +39,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    patient =AuthController().currentUser?.patient;
+    patient =AuthController().currentUser;
     // _loadAppointments();
     loadUserData();
     // setupConsultationListener();
@@ -122,31 +122,17 @@ class HomeController extends GetxController {
     }
   }
 
+
 // User Data Management
   Future<void> loadUserData() async {
     try {
-      dynamic user = await CacheHelper.getData(key: 'user');
-      patient = PatientModel.fromJson(json.decode(user));
-      print(
-          "fnnffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\n$patient ");
-      // if (user == null) {
-      //   Get.offAllNamed(Routes.AUTH);
-      //   return;
-      // }
-
-      final docSnapshot =
-          await _firestore.collection('patients').doc(user.uid).get();
-
-      if (docSnapshot.exists) {
-        currentUser.value = PatientModel.fromJson(docSnapshot.data()!);
-        userName.value =
-            "${currentUser.value?.firstName ?? ''} ${currentUser.value?.lastName ?? ''}";
-      } else {
-        CustomSnackBar.showCustomErrorSnackBar(
-          title: 'Error'.tr,
-          message: 'User data not found'.tr,
-        );
+      final userData = CacheHelper.getData(key: 'user');
+      if (userData != null) {
+        patient = PatientModel.fromJson(json.decode(userData));
+      }else{
+        Get.back();
       }
+
     } catch (e) {
       print('Error loading user data: $e');
       CustomSnackBar.showCustomErrorSnackBar(
