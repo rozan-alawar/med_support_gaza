@@ -19,7 +19,7 @@ class DoctorConsultationView extends GetView<DoctorConsultationController> {
           children: [
             CircleAvatar(
                 radius: 20.r,
-                backgroundColor: Color(0xffEEEEEE),
+                backgroundColor: const Color(0xffEEEEEE),
                 child: Icon(
                   Icons.person,
                   color: AppColors.textLight,
@@ -49,7 +49,7 @@ class DoctorConsultationView extends GetView<DoctorConsultationController> {
         children: [
           Expanded(
             child: Obx(() => ListView.builder(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   itemCount: controller.messages.length,
                   itemBuilder: (context, index) {
                     final message = controller.messages[index];
@@ -72,8 +72,8 @@ class DoctorConsultationView extends GetView<DoctorConsultationController> {
     return Align(
       alignment: isDoctor ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4.0),
-        padding: EdgeInsets.all(12.0),
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        padding: const EdgeInsets.all(12.0),
          decoration:BoxDecoration(
               color: isDoctor ? AppColors.primary : Colors.grey[100],
               borderRadius: BorderRadius.only(
@@ -94,7 +94,7 @@ class DoctorConsultationView extends GetView<DoctorConsultationController> {
               message,
               style: TextStyle(color: isDoctor ? Colors.white : Colors.black),
             ),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             Text(
               time,
               style: TextStyle(
@@ -124,7 +124,7 @@ class DoctorConsultationView extends GetView<DoctorConsultationController> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send),
+            icon: const Icon(Icons.send),
             onPressed: () {},
             color: Colors.teal,
           ),

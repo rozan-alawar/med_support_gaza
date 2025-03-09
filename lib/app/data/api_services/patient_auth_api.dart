@@ -59,27 +59,66 @@ class PatientAuthAPIService {
     );
   }
 
-  //------------------------ VERIFY PHONE NUMBER -----------------------------
+  //------------------------ FORGET PASSWORD -----------------------------
 
-  static void verifyNumber({
-    required String phoneCode,
-    required String phoneNumber,
-    required String codeNumber,
+  static void forgetPassword({
+    required String email,
     required dynamic Function(Response<dynamic>) onSuccess,
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
     DioHelper.post(
-      Links.PATIENT_LOGIN,
+      Links.FORGET_PASSWORD,
       data: {
-        'phone_code': phoneCode,
-        'phone_number': phoneNumber,
-        'code_number': codeNumber,
+        'email': email,
       },
       onSuccess: onSuccess,
       onError: onError,
       onLoading: onLoading,
     );
+  }
+
+  //------------------------ VERIFY OTP -----------------------------
+  static void verifyOtp({
+    required String email,
+    required String otp,
+    required dynamic Function(Response<dynamic>) onSuccess,
+    dynamic Function(ApiException)? onError,
+    Function? onLoading,
+  }) {
+    DioHelper.post(
+      Links.VERIFY_OTP,
+      data: {
+        'email': email,
+        'otp': otp,
+      },
+      onSuccess: onSuccess,
+      onError: onError,
+      onLoading: onLoading,
+    );
+  }
+
+  //------------------------ RESET PASSWORD -----------------------------
+  static void resetPassword({
+    required String email,
+    required String newPassword,
+    required String confirmPassword,
+    required dynamic Function(Response<dynamic>) onSuccess,
+    dynamic Function(ApiException)? onError,
+    Function? onLoading,
+  }) {
+    DioHelper.post(
+      Links.RESET_PASSWORD,
+      data: {
+        'email': email,
+        'new_password': newPassword,
+        'confirm_password': confirmPassword,
+      },
+      onSuccess: onSuccess,
+      onError: onError,
+      onLoading: onLoading,
+    );
+
   }
 
   //------------------------ LOGOUT -----------------------------

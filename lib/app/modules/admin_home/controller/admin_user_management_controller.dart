@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
-import 'package:med_support_gaza/app/data/models/patient_model.dart';
 
 import '../../../routes/app_pages.dart';
 
@@ -94,25 +94,25 @@ class AdminUserManagementController extends GetxController {
     ];
 
     patients.value = [
-      PatientModel(
-        id: '1',
+      PatientModel(userId: 1,
+        id:1,
         firstName: 'Mohamed',
         lastName: 'Ahmed',
         email: 'mohammed@gmail.com',
-        phoneNo: '+970 59-876-5432',
-        age: '35',
+        phoneNumber: '+970 59-876-5432',
+        age: 35,
         gender: 'Male',
-        country: 'Palestine',
+        address: 'Palestine',
       ),
       PatientModel(
-        id: '2',
+        id: 2,
         firstName: 'Fatema',
         lastName: 'Ali',
         email: 'fatima@gmail.com',
-        phoneNo: '+970 59-765-4321',
-        age: '28',
+        phoneNumber: '+970 59-765-4321',
+        age: 28,
         gender: 'Female',
-        country: 'Palestine',
+        address: 'Palestine',
       ),
     ];
 

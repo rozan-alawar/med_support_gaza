@@ -7,9 +7,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_collections.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
+import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/data/models/specialization_model.dart';
-import '../models/patient_model.dart';
 
 
 class FirebaseService extends GetxService {
@@ -242,10 +242,10 @@ class FirebaseService extends GetxService {
       );
 
       if (userCredential.user != null) {
-        await _firestore
-            .collection(FirebaseCollections.patients)
-            .doc(userCredential.user!.uid)
-            .set(patient.copyWith(id: userCredential.user!.uid).toJson());
+        // await _firestore
+        //     .collection(FirebaseCollections.patients)
+        //     .doc(userCredential.user!.uid)
+        //     .set(patient.copyWith(id: userCredential.user!.uid.toString()).toJson());
 
         // Send email verification
         await userCredential.user!.sendEmailVerification();

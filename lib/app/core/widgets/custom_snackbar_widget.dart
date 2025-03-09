@@ -31,6 +31,7 @@ class CustomSnackBar {
       duration: duration ?? const Duration(seconds: 3),
       margin: const EdgeInsets.only(top: 10, left: 10, right: 10,bottom: 20),
       colorText: Colors.white,
+
       backgroundColor: color ?? Colors.redAccent,
       icon: const Icon(
         Icons.error,

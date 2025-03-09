@@ -35,19 +35,18 @@ class DioHelper {
   static const int TIME_OUT_DURATION = 15000;
 
   static post(
-    String url, {
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    String? contentType,
-    required Function(Response response) onSuccess,
-    Function(ApiException)? onError,
-    Function(int total, int progress)?
+      String url, {
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required Function(Response response) onSuccess,
+        Function(ApiException)? onError,
+        Function(int total, int progress)?
         onSendProgress, // while sending (uploading) progress
-    Function(int total, int progress)?
+        Function(int total, int progress)?
         onReceiveProgress, // while receiving data(response)
-    Function? onLoading,
-    dynamic data,
-  }) async {
+        Function? onLoading,
+        dynamic data,
+      }) async {
     try {
       // 1) indicate loading state
       onLoading?.call();
@@ -59,23 +58,22 @@ class DioHelper {
         onSendProgress: onSendProgress,
         queryParameters: queryParameters,
         options: Options(
-           contentType:contentType ,
             headers: headers,
             receiveTimeout: const Duration(seconds: TIME_OUT_DURATION),
             sendTimeout: const Duration(seconds: TIME_OUT_DURATION)),
       );
       // 3) return response (api done successfully)
       await onSuccess.call(response);
-    } on DioException catch (error) {
+    } on DioError catch (error) {
       // dio error (api reach the server but not performed successfully
       // no internet connection
 
       log("onError $onError");
       if (error.message!.toLowerCase().contains('socket')) {
         onError?.call(ApiException(
-              message: Strings.noInternetConnection.tr,
-              url: Links.baseLink + url,
-            )) ??
+          message: Strings.noInternetConnection.tr,
+          url: Links.baseLink + url,
+        )) ??
             _handleError(Strings.noInternetConnection.tr);
       }
 
@@ -99,7 +97,7 @@ class DioHelper {
       }
 
       var exception = ApiException(
-        message: (error.response!.data["message"]?.toString()) != "null"
+        message: (error.response!.data["message"].toString()) != "null"
             ? (error.response!.data["message"].toString())
             : "",
         url: Links.baseLink + url,
@@ -110,17 +108,17 @@ class DioHelper {
       // No internet connection
       log("No internet connection");
       onError?.call(ApiException(
-            message: Strings.noInternetConnection.tr,
-            url: Links.baseLink + url,
-          )) ??
+        message: Strings.noInternetConnection.tr,
+        url: Links.baseLink + url,
+      )) ??
           _handleError(Strings.noInternetConnection.tr);
     } on TimeoutException {
       // Api call went out of time
       log("Api call went out of time");
       onError?.call(ApiException(
-            message: Strings.serverNotResponding.tr,
-            url: Links.baseLink + url,
-          )) ??
+        message: Strings.serverNotResponding.tr,
+        url: Links.baseLink + url,
+      )) ??
           _handleError(Strings.serverNotResponding.tr);
     }
     // catch (error) {
@@ -136,12 +134,12 @@ class DioHelper {
   // GET request
   static get(String url,
       {Map<String, dynamic>? headers,
-      Map<String, dynamic>? queryParameters,
-      required Function(Response response) onSuccess,
-      required Function(ApiException)? onError,
-      Function(int value, int progress)? onReceiveProgress,
-      Function? onLoading,
-      bool isBenzolLink = false}) async {
+        Map<String, dynamic>? queryParameters,
+        required Function(Response response) onSuccess,
+        required Function(ApiException)? onError,
+        Function(int value, int progress)? onReceiveProgress,
+        Function? onLoading,
+        bool isBenzolLink = false}) async {
     try {
       // 1) indicate loading state
       onLoading?.call();
@@ -151,34 +149,34 @@ class DioHelper {
       if (isBenzolLink == false) {
         response = await _dio
             .get(
-              url,
-              onReceiveProgress: onReceiveProgress,
-              queryParameters: queryParameters,
-              options: Options(
-                headers: headers,
-              ),
-            )
+          url,
+          onReceiveProgress: onReceiveProgress,
+          queryParameters: queryParameters,
+          options: Options(
+            headers: headers,
+          ),
+        )
             .timeout(const Duration(seconds: TIME_OUT_DURATION));
       } else {
         response = await _benzolDio
             .get(
-              url,
-              onReceiveProgress: onReceiveProgress,
-              queryParameters: queryParameters,
-              options: Options(
-                headers: headers,
-              ),
-            )
+          url,
+          onReceiveProgress: onReceiveProgress,
+          queryParameters: queryParameters,
+          options: Options(
+            headers: headers,
+          ),
+        )
             .timeout(const Duration(seconds: TIME_OUT_DURATION));
       }
       await onSuccess(response);
-    } on DioException catch (error) {
+    } on DioError catch (error) {
       log("Dio Error");
       if (error.message!.toLowerCase().contains('socket')) {
         onError?.call(ApiException(
-              message: Strings.noInternetConnection,
-              url: url,
-            )) ??
+          message: Strings.noInternetConnection,
+          url: url,
+        )) ??
             _handleError(Strings.noInternetConnection);
       }
       if (error.response == null) {
@@ -200,17 +198,17 @@ class DioHelper {
       log("SocketException");
 
       onError?.call(ApiException(
-            message: Strings.noInternetConnection,
-            url: url,
-          )) ??
+        message: Strings.noInternetConnection,
+        url: url,
+      )) ??
           _handleError(Strings.noInternetConnection);
     } on TimeoutException {
       log("SocketException");
 
       onError?.call(ApiException(
-            message: Strings.serverNotResponding,
-            url: url,
-          )) ??
+        message: Strings.serverNotResponding,
+        url: url,
+      )) ??
           _handleError(Strings.serverNotResponding);
     }
     // catch (error) {
@@ -224,18 +222,18 @@ class DioHelper {
 
   // PUT request
   static put(
-    String url, {
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    required Function(Response response) onSuccess,
-    Function(ApiException)? onError,
-    Function(int total, int progress)?
+      String url, {
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required Function(Response response) onSuccess,
+        Function(ApiException)? onError,
+        Function(int total, int progress)?
         onSendProgress, // while sending (uploading) progress
-    Function(int total, int progress)?
+        Function(int total, int progress)?
         onReceiveProgress, // while receiving data(response)
-    Function? onLoading,
-    dynamic data,
-  }) async {
+        Function? onLoading,
+        dynamic data,
+      }) async {
     try {
       // 1) indicate loading state
       onLoading?.call();
@@ -253,14 +251,14 @@ class DioHelper {
       );
       // 3) return response (api done successfully)
       await onSuccess.call(response);
-    } on DioException catch (error) {
+    } on DioError catch (error) {
       // dio error (api reach the server but not performed successfully
       // no internet connection
       if (error.message!.toLowerCase().contains('socket')) {
         onError?.call(ApiException(
-              message: Strings.noInternetConnection.tr,
-              url: url,
-            )) ??
+          message: Strings.noInternetConnection.tr,
+          url: url,
+        )) ??
             _handleError(Strings.noInternetConnection.tr);
       }
 
@@ -292,38 +290,38 @@ class DioHelper {
     } on SocketException {
       // No internet connection
       onError?.call(ApiException(
-            message: Strings.noInternetConnection.tr,
-            url: url,
-          )) ??
+        message: Strings.noInternetConnection.tr,
+        url: url,
+      )) ??
           _handleError(Strings.noInternetConnection.tr);
     } on TimeoutException {
       // Api call went out of time
       onError?.call(ApiException(
-            message: Strings.serverNotResponding.tr,
-            url: url,
-          )) ??
+        message: Strings.serverNotResponding.tr,
+        url: url,
+      )) ??
           _handleError(Strings.serverNotResponding.tr);
     } catch (error) {
       log("asd");
       // unexpected error for example (parsing json error)
       onError?.call(ApiException(
-            message: error.toString(),
-            url: url,
-          )) ??
+        message: error.toString(),
+        url: url,
+      )) ??
           _handleError(error.toString());
     }
   }
 
   // DELETE request
   static delete(
-    String url, {
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    required Function(Response response) onSuccess,
-    Function(ApiException)? onError,
-    Function? onLoading,
-    dynamic data,
-  }) async {
+      String url, {
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required Function(Response response) onSuccess,
+        Function(ApiException)? onError,
+        Function? onLoading,
+        dynamic data,
+      }) async {
     try {
       // 1) indicate loading state
       onLoading?.call();
@@ -339,14 +337,14 @@ class DioHelper {
       );
       // 3) return response (api done successfully)
       await onSuccess.call(response);
-    } on DioException catch (error) {
+    } on DioError catch (error) {
       // dio error (api reach the server but not performed successfully
       // no internet connection
       if (error.message!.toLowerCase().contains('socket')) {
         onError?.call(ApiException(
-              message: Strings.noInternetConnection.tr,
-              url: url,
-            )) ??
+          message: Strings.noInternetConnection.tr,
+          url: url,
+        )) ??
             _handleError(Strings.noInternetConnection.tr);
       }
 
@@ -378,23 +376,23 @@ class DioHelper {
     } on SocketException {
       // No internet connection
       onError?.call(ApiException(
-            message: Strings.noInternetConnection.tr,
-            url: url,
-          )) ??
+        message: Strings.noInternetConnection.tr,
+        url: url,
+      )) ??
           _handleError(Strings.noInternetConnection.tr);
     } on TimeoutException {
       // Api call went out of time
       onError?.call(ApiException(
-            message: Strings.serverNotResponding.tr,
-            url: url,
-          )) ??
+        message: Strings.serverNotResponding.tr,
+        url: url,
+      )) ??
           _handleError(Strings.serverNotResponding.tr);
     } catch (error) {
       // unexpected error for example (parsing json error)
       onError?.call(ApiException(
-            message: error.toString(),
-            url: url,
-          )) ??
+        message: error.toString(),
+        url: url,
+      )) ??
           _handleError(error.toString());
     }
   }
@@ -402,10 +400,10 @@ class DioHelper {
   /// download file
   static download(
       {required String url, // file url
-      required String savePath, // where to save file
-      Function(ApiException)? onError,
-      Function(int value, int progress)? onReceiveProgress,
-      required Function onSuccess}) async {
+        required String savePath, // where to save file
+        Function(ApiException)? onError,
+        Function(int value, int progress)? onReceiveProgress,
+        required Function onSuccess}) async {
     try {
       await _dio.download(
         url,
@@ -423,9 +421,9 @@ class DioHelper {
     if (getx.Get.isDialogOpen!) {
       getx.Get.back();
     }
-    // String msg =
-        // apiException.response?.data?['message'] ?? apiException.message;
-    // log("msg1  $msg");
+    String msg =
+        apiException.response?.body?['message'] ?? apiException.message;
+    log("msg1  $msg");
     // CustomSnackBar.showCustomErrorSnackBar(message: msg, title: 'Error');
   }
 
@@ -440,7 +438,7 @@ class DioHelper {
 }
 
 final dioLoggerInterceptor =
-    InterceptorsWrapper(onRequest: (RequestOptions options, handler) {
+InterceptorsWrapper(onRequest: (RequestOptions options, handler) {
   String headers = "";
   options.headers.forEach((key, value) {
     headers += "| $key: $value";
@@ -457,7 +455,7 @@ final dioLoggerInterceptor =
   log("└------------------------------------------------------------------------------");
   handler.next(response);
   // return response; // continue
-}, onError: (DioException error, handler) async {
+}, onError: (DioError error, handler) async {
   log("| [DIO] Error: ${error.error}: ${error.response.toString()}");
   log("└------------------------------------------------------------------------------");
   handler.next(error); //continue

@@ -141,7 +141,6 @@ class _OTPInputFields extends StatelessWidget {
   const _OTPInputFields({
     required this.controller,
     required this.formKey,
-    super.key,
   });
 
   @override
@@ -205,7 +204,6 @@ class _VerifyButton extends StatelessWidget {
   const _VerifyButton({
     required this.controller,
     required this.formKey,
-    super.key,
   });
 
   @override
@@ -230,7 +228,6 @@ class _ResendTimerSection extends StatelessWidget {
 
   const _ResendTimerSection({
     required this.controller,
-    super.key,
   });
 
   @override

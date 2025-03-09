@@ -59,7 +59,7 @@ class PatientProfileView extends GetView<ProfileController> {
               )),
               8.height,
               Obx(() => CustomText(
-                controller.currentUser.value?.email ?? '',
+                controller.currentUser.value?.id.toString() ?? '',
                 fontSize: 14.sp,
                 color: Colors.grey[600],
               )),
@@ -109,13 +109,13 @@ class PatientProfileView extends GetView<ProfileController> {
           _buildInfoItem(
             icon: Icons.phone,
             title: 'phone'.tr,
-            value: controller.currentUser.value?.phoneNo ?? '',
+            value: controller.currentUser.value?.phoneNumber ?? '',
           ),
           12.height,
           _buildInfoItem(
             icon: Icons.cake,
             title: 'age'.tr,
-            value: controller.currentUser.value?.age ?? '',
+            value: controller.currentUser.value?.age.toString() ?? '',
           ),
           12.height,
           _buildInfoItem(
@@ -127,7 +127,7 @@ class PatientProfileView extends GetView<ProfileController> {
           _buildInfoItem(
             icon: Icons.location_on,
             title: 'country'.tr,
-            value: controller.currentUser.value?.country ?? '',
+            value: controller.currentUser.value?.address ?? '',
           ),
         ],
       )),

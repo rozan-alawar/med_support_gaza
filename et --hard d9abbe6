@@ -1,0 +1,99 @@
+[33mb16b4a7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33mba41698[m HEAD@{1}: reset: moving to HEAD~1
+[33md9abbe6[m HEAD@{2}: commit (merge): update patient auth [connecting with API]
+[33mba41698[m HEAD@{3}: commit: update patient auth [connecting with API]
+[33mb16b4a7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m HEAD@{4}: commit: update patient auth
+[33m139e151[m HEAD@{5}: commit: update patient api service
+[33m1384068[m HEAD@{6}: commit: change api path
+[33m86b5c9b[m HEAD@{7}: commit (merge): change api path
+[33m43a4091[m HEAD@{8}: commit: change api path
+[33mde2d187[m HEAD@{9}: commit: Refactor code
+[33m2253fe4[m HEAD@{10}: commit: add info about app to README
+[33mb63dbd3[m HEAD@{11}: commit: add info about app to README
+[33m8745601[m HEAD@{12}: commit: refactor doctor auth controller
+[33mbcc29cc[m HEAD@{13}: commit: refactor auth controller
+[33md63ddec[m HEAD@{14}: commit: refactor doctor forget pasword
+[33me713685[m HEAD@{15}: commit: refactor patient forget password
+[33m6303306[m HEAD@{16}: commit: refactor patient login
+[33me7d841f[m HEAD@{17}: commit: refactor doctor login
+[33m64354a1[m HEAD@{18}: commit: refactor main file code
+[33m1569aeb[m HEAD@{19}: commit: update code
+[33m47f0dbc[m HEAD@{20}: commit: update chat controller
+[33mb798008[m HEAD@{21}: commit: create active chat
+[33m8fd2e32[m HEAD@{22}: commit: update active consultation
+[33m18a8289[m HEAD@{23}: commit: update consultation
+[33m0ec1121[m HEAD@{24}: commit: Add Consultation view
+[33m435be9d[m HEAD@{25}: pull: Merge made by the 'ort' strategy.
+[33mdf9ef50[m HEAD@{26}: commit: booking appointment from doctor profile
+[33m8dab160[m HEAD@{27}: commit: add doctor profile screen
+[33mf86598c[m HEAD@{28}: commit: add list all doctors screen
+[33m242f908[m HEAD@{29}: pull: Merge made by the 'ort' strategy.
+[33m3446936[m HEAD@{30}: commit: update
+[33m797d062[m HEAD@{31}: commit: Fix Error
+[33m3cf1df8[m HEAD@{32}: commit: Add Article View
+[33madcad09[m HEAD@{33}: commit: Update Patient Home Screen
+[33me4f820f[m HEAD@{34}: commit: Refactor code
+[33m934ebd6[m HEAD@{35}: commit: Refactor code
+[33me872bab[m HEAD@{36}: commit: Update Patient Home UI
+[33md53c2fd[m HEAD@{37}: commit: Update Admin Notification UI
+[33mb5e413d[m HEAD@{38}: commit: Add Admin Notification
+[33mfa839e2[m HEAD@{39}: commit: ADD Update Article UI
+[33m9b77210[m HEAD@{40}: pull: Fast-forward
+[33m083eb44[m HEAD@{41}: commit: Refactor some code
+[33m92d8cc9[m HEAD@{42}: commit: Update Admin UI
+[33m5b10ead[m HEAD@{43}: commit: Add Admin Content Management
+[33mc699db5[m HEAD@{44}: commit: Update Admin's UI
+[33m0e8ebaa[m HEAD@{45}: commit: Add Admin Users Management Screen
+[33mc4a1150[m HEAD@{46}: pull: Merge made by the 'ort' strategy.
+[33m0c1af52[m HEAD@{47}: commit: Update Admin Home UI
+[33mc39ae80[m HEAD@{48}: commit: Fix Patient Appointment
+[33m546fc6c[m HEAD@{49}: pull: Merge made by the 'ort' strategy.
+[33m54a382d[m HEAD@{50}: commit: Fix Errors
+[33m588cf75[m HEAD@{51}: commit: Update Appointment Booking
+[33ma7170af[m HEAD@{52}: commit: Add Doctor Profile & Edit Profile Screens
+[33m36c444d[m HEAD@{53}: commit: Update UI
+[33mba3200b[m HEAD@{54}: commit (merge): Update
+[33m4a32bad[m HEAD@{55}: commit: Update
+[33m4bcf803[m HEAD@{56}: commit: Update Doctor UI
+[33me8ee772[m HEAD@{57}: pull: Fast-forward
+[33m8444f1c[m HEAD@{58}: commit: Update Chat UI
+[33m08b9fee[m HEAD@{59}: commit (merge): Update Patient Profile Screen & Edit Patient Screen
+[33m79bca8a[m HEAD@{60}: commit: Update Patient Profile Screen & Edit Patient Screen
+[33m3fa247c[m HEAD@{61}: commit: Add Firestore DataBase (Home & Appointment Booking)
+[33m67bb283[m HEAD@{62}: pull: Merge made by the 'ort' strategy.
+[33md670212[m HEAD@{63}: commit: Solve Errors
+[33m2143443[m HEAD@{64}: commit: Add Consultation Screen & Logic
+[33m722e4bb[m HEAD@{65}: commit: Add Profile Screen
+[33m987d279[m HEAD@{66}: commit: Add Firebase Setup & Update Auth
+[33m6f6efd0[m HEAD@{67}: commit: Add Firebase Setup & Update Auth
+[33m9e42008[m HEAD@{68}: commit (merge): Add Appoinment Booking Screens
+[33m2723b22[m HEAD@{69}: commit: Add Appoinment Booking Screens
+[33me2dda4b[m HEAD@{70}: commit: Add Home Screen
+[33me4c6805[m HEAD@{71}: commit: Add Patient Home View
+[33mb68b46c[m HEAD@{72}: commit: Add Verification Screen
+[33m2fc0208[m HEAD@{73}: commit: Add Verification Screen
+[33mb54b2e0[m HEAD@{74}: commit: Edit Auth Controller
+[33m88539ff[m HEAD@{75}: commit: Edit Selection View
+[33md8638cb[m HEAD@{76}: commit: Edit Doctor onboarding
+[33m2b179c3[m HEAD@{77}: commit: Add Reset Password Screen
+[33mfefed13[m HEAD@{78}: pull origin master --rebase (finish): returning to refs/heads/master
+[33mfefed13[m HEAD@{79}: pull origin master --rebase (pick): Remove gradle-wrapper.properties from tracking
+[33m7fc668d[m HEAD@{80}: pull origin master --rebase (pick): Remove gradle-wrapper.properties from tracking
+[33m71f676e[m HEAD@{81}: pull origin master --rebase (start): checkout 71f676e9d513f2ec93e75dc9765403769572edef
+[33m3c719f4[m HEAD@{82}: reset: moving to HEAD
+[33m3c719f4[m HEAD@{83}: commit: Remove gradle-wrapper.properties from tracking
+[33m43e23e4[m HEAD@{84}: commit: Remove gradle-wrapper.properties from tracking
+[33m4337e61[m HEAD@{85}: commit: Update Patient Forget Password Screen
+[33mec7dd76[m HEAD@{86}: commit: Update Patient Sign Up & Sign In Screens
+[33m517199d[m HEAD@{87}: commit (merge): EDIT PATIENT AUTH
+[33m586f453[m HEAD@{88}: commit: EDIT PATIENT AUTH
+[33m0fa2695[m HEAD@{89}: commit: UPDATE CUSTOM WIDGET
+[33md5f04b1[m HEAD@{90}: pull: Fast-forward
+[33mb4a9618[m HEAD@{91}: commit: UPDATE APP COLORS
+[33md8d44ea[m HEAD@{92}: pull: Merge made by the 'ort' strategy.
+[33m861a90a[m HEAD@{93}: commit: UPDATE TRANSLATIONS
+[33mf999a9e[m HEAD@{94}: commit: ADD APP ICONS & IMAGES
+[33mc11e8b7[m HEAD@{95}: commit: fix errors
+[33mb943716[m HEAD@{96}: commit: project setup
+[33m1775857[m HEAD@{97}: commit: delete unusable folders
+[33m934b6c9[m HEAD@{98}: commit (initial): init commit

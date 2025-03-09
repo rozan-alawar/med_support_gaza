@@ -231,6 +231,7 @@
 
 // INTEGRATE WITH API
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/services/cache_helper.dart';
@@ -250,7 +251,7 @@ class AuthController extends GetxController {
   final RxBool isPasswordVisible = true.obs;
   final RxBool isLoading = false.obs;
   final RxBool hasError = false.obs;
-  UserModel? currentUser;
+  PatientModel? currentUser;
 
   // OTP Related
   final RxList<String> otpDigits = List.generate(otpLength, (index) => '').obs;
@@ -260,8 +261,8 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    UserModel? user = CacheHelper.getData(key: 'user');
-    currentUser = user;
+    // UserModel? user = json.decode(CacheHelper.getData(key: 'user'));
+    // currentUser = user;
     startTimer();
   }
 
@@ -328,12 +329,14 @@ class AuthController extends GetxController {
       password: password,
       onSuccess: (response) {
         isLoading.value = false;
+        print(response);
         AuthResponseModel loginResponse =
             AuthResponseModel.fromJson(response.data);
         _showSuccessMessage(loginResponse.message);
         CacheHelper.saveData(key: 'isLoggedIn', value: true);
-        currentUser = loginResponse.user;
-        CacheHelper.saveData(key: 'user', value: loginResponse.user.patient);
+        currentUser = loginResponse.patient;
+        CacheHelper.saveData(
+            key: 'user', value: json.encode(currentUser!));
         Get.offAllNamed(Routes.HOME);
       },
       onError: (e) {
@@ -346,14 +349,30 @@ class AuthController extends GetxController {
       },
     );
   }
+  //------------------------ FORGET PASSWORD -----------------------------
 
   Future<void> forgetPassword({required String email}) async {
     try {
       isLoading.value = true;
       hasError.value = false;
 
-      // await _firebaseService.sendPasswordResetEmail(email);
-      Get.toNamed(Routes.VERIFICATION);
+      PatientAuthAPIService.forgetPassword(
+        email: email,
+        onSuccess: (response) {
+          isLoading.value = false;
+          _showSuccessMessage(response.data['message']);
+          Get.toNamed(Routes.VERIFICATION);
+        },
+        onError: (e) {
+          isLoading.value = false;
+          hasError.value = true;
+          _handleError('Error'.tr, e.message);
+        },
+        onLoading: () {
+          isLoading.value = true;
+        },
+      );
+      Get.toNamed(Routes.VERIFICATION,arguments: {email});
     } catch (e) {
       hasError.value = true;
       _handleError('Error'.tr, e.toString());
@@ -361,6 +380,35 @@ class AuthController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  //------------------------ RESET PASSWORD -----------------------------
+
+  Future<void> resetPassword(
+      {required String email, required String password}) async {
+    isLoading.value = true;
+    hasError.value = false;
+
+    PatientAuthAPIService.resetPassword(
+      email: email,
+      newPassword: password,
+      confirmPassword: password,
+      onSuccess: (response) {
+        isLoading.value = false;
+        _showSuccessMessage(response.data['message']);
+        Get.offAllNamed(Routes.AUTH);
+      },
+      onError: (e) {
+        isLoading.value = false;
+        hasError.value = true;
+        _handleError('Error'.tr, e.message);
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
+  }
+
+  //------------------------ VERIFY OTP -----------------------------
 
   void startTimer() {
     _otpTimer?.cancel();
@@ -388,7 +436,7 @@ class AuthController extends GetxController {
     startTimer();
   }
 
-  Future<void> verifyOTP() async {
+  Future<void> verifyOTP({required String email}) async {
     try {
       isLoading.value = true;
       hasError.value = false;
@@ -397,8 +445,22 @@ class AuthController extends GetxController {
       if (otp.length != otpLength) {
         throw 'PleaseEnterCompleteOTP'.tr;
       }
-
-      // Add your OTP verification logic here
+      PatientAuthAPIService.verifyOtp(
+        otp: otp,
+        email: email,
+        onSuccess: (response) {
+          isLoading.value = false;
+          _showSuccessMessage(response.data['message']);
+          Get.offAllNamed(Routes.NEW_PASSWORD);
+        },
+        onError: (e) {
+          isLoading.value = false;
+          hasError.value = true;
+          _handleError('Error'.tr, e.message);
+        }, onLoading: () {
+        isLoading.value = true;
+      },
+      );
 
       Get.offAllNamed(Routes.NEW_PASSWORD);
     } catch (e) {
