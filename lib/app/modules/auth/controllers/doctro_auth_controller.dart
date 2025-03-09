@@ -10,11 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-<<<<<<< HEAD
-=======
 import 'package:med_support_gaza/app/data/models/doctor.dart';
 import 'package:path/path.dart' as path;
->>>>>>> e443eb92b28eaf1cf0443e94da7636eefd633bc9
 
 import '../../../core/services/cache_helper.dart';
 import '../../../core/widgets/custom_snackbar_widget.dart';
@@ -139,8 +136,8 @@ class DoctorAuthController extends GetxController {
       email: email,
       password: password,
     );
-    DoctorModel doctor_model = DoctorModel.fromJson(response.data);
-    saveDoctorData(doctor_model);
+    DoctorModel doctorModel = DoctorModel.fromJson(response.data);
+    saveDoctorData(doctorModel);
     Get.offAllNamed(Routes.DOCTOR_HOME);
   }
 
@@ -192,7 +189,6 @@ class DoctorAuthController extends GetxController {
     CacheHelper.removeData(key: 'isLoggedIn');
     CacheHelper.removeData(key: 'token');
     Get.offAllNamed(Routes.DOCTOR_LOGIN);
-  
   }
 
   /// Starts OTP timer countdown

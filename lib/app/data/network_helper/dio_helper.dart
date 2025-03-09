@@ -35,7 +35,6 @@ class DioHelper {
   static const int TIME_OUT_DURATION = 15000;
 
   static post(
-<<<<<<< HEAD
       String url, {
         Map<String, dynamic>? headers,
         Map<String, dynamic>? queryParameters,
@@ -46,21 +45,6 @@ class DioHelper {
         Function? onLoading,
         dynamic data,
       }) async {
-=======
-    String url, {
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    String? contentType,
-    required Function(Response response) onSuccess,
-    Function(ApiException)? onError,
-    Function(int total, int progress)?
-        onSendProgress, // while sending (uploading) progress
-    Function(int total, int progress)?
-        onReceiveProgress, // while receiving data(response)
-    Function? onLoading,
-    dynamic data,
-  }) async {
->>>>>>> e443eb92b28eaf1cf0443e94da7636eefd633bc9
     try {
       // Indicate loading state
       onLoading?.call();
@@ -73,17 +57,10 @@ class DioHelper {
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
         options: Options(
-<<<<<<< HEAD
           headers: headers,
           receiveTimeout: const Duration(seconds: TIME_OUT_DURATION),
           sendTimeout: const Duration(seconds: TIME_OUT_DURATION),
         ),
-=======
-           contentType:contentType ,
-            headers: headers,
-            receiveTimeout: const Duration(seconds: TIME_OUT_DURATION),
-            sendTimeout: const Duration(seconds: TIME_OUT_DURATION)),
->>>>>>> e443eb92b28eaf1cf0443e94da7636eefd633bc9
       );
 
       // Call success function
@@ -129,13 +106,9 @@ class DioHelper {
       }
 
       var exception = ApiException(
-<<<<<<< HEAD
-        message: errorMessage,
-=======
         message: (error.response!.data["message"]?.toString()) != "null"
             ? (error.response!.data["message"].toString())
             : "",
->>>>>>> e443eb92b28eaf1cf0443e94da7636eefd633bc9
         url: Links.baseLink + url,
         statusCode: statusCode,
       );
