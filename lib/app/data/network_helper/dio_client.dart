@@ -78,6 +78,8 @@ class ErrorInterceptor extends Interceptor {
     final error = DioExceptions.fromDioError(err);
     CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr, message: error.message);
+
+    handler.next(err);
   }
 }
 

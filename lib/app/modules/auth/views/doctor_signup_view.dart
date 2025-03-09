@@ -158,6 +158,7 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                     absorbing: false,
                     child: CustomTextField(
                       readOnly: true,
+                      validator: (value) => value!.isValidfileName,
                       hintText: 'upload_medical_certificate'.tr,
                       controller: uploadFileController,
                       suffixIcon: IconButton(

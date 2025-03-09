@@ -130,8 +130,9 @@ class DoctorAuthController extends GetxController {
       );
     } finally {
       isLoading.value = false;
-      Get.offAllNamed(Routes.DOCTOR_LOGIN);
     }
+
+    Get.offAllNamed(Routes.DOCTOR_LOGIN);
   }
 
   /// Handles doctor sign in
@@ -147,8 +148,8 @@ class DoctorAuthController extends GetxController {
       saveDoctorData(doctor_model);
     } finally {
       isLoading.value = false;
-      Get.offAllNamed(Routes.DOCTOR_HOME);
     }
+    Get.offAllNamed(Routes.DOCTOR_HOME);
   }
 
   void saveDoctorData(DoctorModel doctorModel) {
