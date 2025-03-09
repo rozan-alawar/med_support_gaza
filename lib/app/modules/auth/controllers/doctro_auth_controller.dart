@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -70,7 +70,7 @@ class DoctorAuthController extends GetxController {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: allowedFileExtensions,
+        allowedExtensions: [...allowedFileExtensions, 'jpg', 'jpeg', 'png'],
       );
 
       if (result != null && result.files.isNotEmpty) {
@@ -86,7 +86,7 @@ class DoctorAuthController extends GetxController {
     } catch (e) {
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr,
-        message: 'file_error_message'.tr,
+        message: e.toString(),
       );
       debugPrint('Error picking file: $e');
     }
@@ -104,7 +104,9 @@ class DoctorAuthController extends GetxController {
     required String specialty,
     required String gender,
   }) async {
-    print(''' fName: $firstName,
+    try {
+      isLoading.value = true;
+      print(''' fName: $firstName,
       lName: $lastName,
       email: $email,
       password: $password,
@@ -114,31 +116,39 @@ class DoctorAuthController extends GetxController {
       gender: $gender,
       country: $country,
       certificatePath: ${selectedFilePath.value}''');
-    final response = await Get.find<DoctorAuthApi>().register(
-      fName: firstName,
-      lName: lastName,
-      email: email,
-      password: password,
-      passwordConfirmation: passwordConfirmation,
-      major: specialty,
-      phoneNumber: phone,
-      gender: gender,
-      country: country,
-      certificatePath: selectedFilePath.value,
-    );
-    Get.offAllNamed(Routes.DOCTOR_LOGIN);
+      await Get.find<DoctorAuthApi>().register(
+        fName: firstName,
+        lName: lastName,
+        email: email,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+        major: specialty,
+        phoneNumber: phone,
+        gender: gender,
+        country: country,
+        certificatePath: selectedFilePath.value,
+      );
+    } finally {
+      isLoading.value = false;
+      Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    }
   }
 
   /// Handles doctor sign in
   Future<void> signIn({required String email, required String password}) async {
     // Use DoctorAuthApi for login
-    final response = await Get.find<DoctorAuthApi>().login(
-      email: email,
-      password: password,
-    );
-    DoctorModel doctor_model = DoctorModel.fromJson(response.data);
-    saveDoctorData(doctor_model);
-    Get.offAllNamed(Routes.DOCTOR_HOME);
+    try {
+      isLoading.value = true;
+      final response = await Get.find<DoctorAuthApi>().login(
+        email: email,
+        password: password,
+      );
+      DoctorModel doctor_model = DoctorModel.fromJson(response.data);
+      saveDoctorData(doctor_model);
+    } finally {
+      isLoading.value = false;
+      Get.offAllNamed(Routes.DOCTOR_HOME);
+    }
   }
 
   void saveDoctorData(DoctorModel doctorModel) {
@@ -175,12 +185,17 @@ class DoctorAuthController extends GetxController {
     required String newPassword,
     required String confirmPassword,
   }) async {
-    await Get.find<DoctorAuthApi>().resetPassword(
-        email: email,
-        password: newPassword,
-        passwordConfirmation: confirmPassword);
-    // Navigate to login
-    Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    try {
+      isLoading.value = true;
+      await Get.find<DoctorAuthApi>().resetPassword(
+          email: email,
+          password: newPassword,
+          passwordConfirmation: confirmPassword);
+    } finally {
+      isLoading.value = false;
+      // Navigate to login
+      Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    }
   }
 
   Future<void> signOut() async {
@@ -189,7 +204,6 @@ class DoctorAuthController extends GetxController {
     CacheHelper.removeData(key: 'isLoggedIn');
     CacheHelper.removeData(key: 'token');
     Get.offAllNamed(Routes.DOCTOR_LOGIN);
-  
   }
 
   /// Starts OTP timer countdown

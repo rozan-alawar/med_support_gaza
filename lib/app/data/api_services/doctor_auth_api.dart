@@ -1,9 +1,11 @@
 import 'dart:io';
-
+import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:get/instance_manager.dart';
 import 'package:med_support_gaza/app/data/api_paths.dart';
 import '../network_helper/dio_client.dart';
+import 'package:mime/mime.dart';
+
 
 class DoctorAuthApi {
   DoctorAuthApi();
@@ -21,6 +23,8 @@ class DoctorAuthApi {
     required String certificatePath,
   }) async {
     // Create FormData for file upload
+    final file = File(certificatePath);
+    final fileType = lookupMimeType(certificatePath);
     FormData formData = FormData.fromMap({
       'first_name': fName,
       'last_name': lName,
@@ -30,8 +34,11 @@ class DoctorAuthApi {
       'phone_number': phoneNumber,
       'gender': gender,
       'major': major,
-      'certificate': await MultipartFile.fromFile(certificatePath,
-          filename: certificatePath.split('/').last),
+      'certificate': await MultipartFile.fromFile(
+        file.path,
+        filename: file.path.split('/').last,
+        contentType: MediaType.parse(fileType!),
+      ),
       'password_confirmation': passwordConfirmation,
     }); // Adjust filename as needed
 
@@ -39,10 +46,13 @@ class DoctorAuthApi {
     Response response = await Get.find<DioClient>().dio.post(
           Links.doctorRegister,
           data: formData,
-          options: Options(headers: {
-            'Content-Type': 'multipart/form-data',
-            'Accept': 'application/json',
-          }, followRedirects: true),
+          options: Options(
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Accept': 'application/json',
+            },
+            followRedirects: true,
+          ),
         );
     return response;
   }
