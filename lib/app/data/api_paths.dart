@@ -26,4 +26,9 @@ class Links {
   static var getPatientConsultationDetails = 'patient/consultation';
   static var getPatientPrescriptions = 'patient/prescriptions';
   static var getPatientPrescriptionDetails = 'patient/prescription';
+  static var verify = '/verify';
+  static var forgotPassword = '/forgot-password';
+  static var resetPassword = '/reset-password';
+  static var verifyOTP = 'verify-otp';
+  static var doctorLogout = '/doctor/logout';
 }

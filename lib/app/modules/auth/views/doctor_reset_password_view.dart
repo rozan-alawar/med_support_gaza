@@ -88,6 +88,7 @@ class DoctroResetPasswordView extends GetView<DoctorAuthController> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       controller.resetPassword(
+                        email: '',
                         newPassword: newPasswordController.text,
                         confirmPassword: passwordController.text,
                       );

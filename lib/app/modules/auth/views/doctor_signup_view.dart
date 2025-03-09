@@ -21,6 +21,8 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController specialityController = TextEditingController();
@@ -104,6 +106,32 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                   ),
                 ),
                 16.height,
+                Obx(
+                  () => CustomTextField(
+                    hintText: 'ConfirmPassword'.tr,
+                    controller: confirmPasswordController,
+                    obscureText: controller.isPasswordVisible2.value,
+                    validator: (value) {
+                      if (value == null) {
+                        return 'enter_password'.tr;
+                      } else if (passwordController.text.compareTo(value) !=
+                          0) {
+                        return 'confirmation_maessage'.tr;
+                      }
+                      return null;
+                    },
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        size: 18.h,
+                        controller.isPasswordVisible2.value
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
+                      onPressed: () => controller.togglePasswordVisibility2(),
+                    ),
+                  ),
+                ),
+                16.height,
                 CustomTextField(
                   hintText: 'PhoneNumber'.tr,
                   controller: phoneController,
@@ -163,13 +191,13 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                   children: [
                     Obx(() => Radio(
                           activeColor: AppColors.primary,
-                          value: 'Male',
+                          value: 'male',
                           groupValue: gender.value,
                           onChanged: (value) => gender.value = value.toString(),
                         )),
                     CustomText('Male'.tr),
                     Obx(() => Radio(
-                          value: 'Female',
+                          value: 'female',
                           activeColor: AppColors.primary,
                           groupValue: gender.value,
                           onChanged: (value) => gender.value = value.toString(),
@@ -187,23 +215,36 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                     isDisable: controller.isLoading.value,
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        File? documentFile;
-                        if (controller.selectedFilePath.value.isNotEmpty) {
-                          documentFile =
-                              File(controller.selectedFilePath.value);
-                        }
-                        await controller.signUp(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                          firstName: firstNameController.text.trim(),
-                          lastName: lastNameController.text.trim(),
-                          phone: phoneController.text.trim(),
-                          country: countryController.text.trim(),
-                          specialty: specialityController.text.trim(),
-                          documentFile: documentFile,
-                          age: ageController.text.trim(),
-                          gender: gender.value,
-                        );
+                        controller.signUp(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
+                            passwordConfirmation:
+                                confirmPasswordController.text.trim(),
+                            firstName: firstNameController.text.trim(),
+                            lastName: lastNameController.text.trim(),
+                            phone: phoneController.text.trim(),
+                            country: countryController.text.trim(),
+                            specialty: specialityController.text.trim(),
+                            gender: gender.value,
+                            );
+
+                        // File? documentFile;
+                        // if (controller.selectedFilePath.value.isNotEmpty) {
+                        //   documentFile =
+                        //       File(controller.selectedFilePath.value);
+                        // }
+                        // await controller.signUp(
+                        //   email: emailController.text.trim(),
+                        //   password: passwordController.text.trim(),
+                        //   firstName: firstNameController.text.trim(),
+                        //   lastName: lastNameController.text.trim(),
+                        //   phone: phoneController.text.trim(),
+                        //   country: countryController.text.trim(),
+                        //   specialty: specialityController.text.trim(),
+                        //   documentFile: documentFile,
+                        //   age: ageController.text.trim(),
+                        //   gender: gender.value,
+                        // );
                       }
                     },
                   ),

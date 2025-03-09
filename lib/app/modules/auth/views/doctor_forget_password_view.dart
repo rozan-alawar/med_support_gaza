@@ -29,7 +29,6 @@ class DoctorForgetPasswordView extends GetView<DoctorAuthController> {
             child: Stack(
               children: [
                 _buildForgetPasswordForm(),
-                _buildLoadingIndicator(),
               ],
             ),
           ),
@@ -90,21 +89,10 @@ class DoctorForgetPasswordView extends GetView<DoctorAuthController> {
 
   void _handleSendOTP() {
     if (_formKey.currentState!.validate()) {
-      controller.forgetPassword(
+      controller.forgetPasswordInit(
         email: _emailController.text.trim(),
-      ).then((_) {
-        if (!controller.hasError.value) {
-          Get.toNamed(Routes.DOCTOR_VERIFICATION);
-        }
-      });
+      );
+      Get.toNamed(Routes.DOCTOR_VERIFICATION);
     }
-  }
-
-  Widget _buildLoadingIndicator() {
-    return Obx(
-      () => controller.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
-          : const SizedBox.shrink(),
-    );
   }
 }

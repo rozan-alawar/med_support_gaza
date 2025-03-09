@@ -247,9 +247,10 @@ class _ResendTimerSection extends StatelessWidget {
           ),
           Obx(
             () => TextButton(
-              onPressed: controller.canResend.value
-                  ? controller.handleResendOTP
-                  : null,
+              onPressed: () {},
+              // controller.canResend.value
+              //     ?controller.handleResendOTP
+              //     : null,
               child: Text(
                 'Resend OTP'.tr,
                 style: TextStyle(
