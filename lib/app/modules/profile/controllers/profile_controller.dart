@@ -1,20 +1,26 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import 'package:med_support_gaza/app/data/models/patient_model.dart';
+import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
+import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class ProfileController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RxBool isLoading = false.obs;
-  final Rx<PatientModel?> currentUser = Rx<PatientModel?>(null);
+   Rx<PatientModel?> currentUser =    Rx<PatientModel?>(AuthController().currentUser?.patient) ;
+
+
 
   // Edit Profile Controllers
   final TextEditingController firstNameController = TextEditingController();
@@ -42,16 +48,12 @@ class ProfileController extends GetxController {
   Future<void> loadUserData() async {
     try {
       isLoading.value = true;
-      final user = _auth.currentUser;
-      if (user != null) {
-        final docSnapshot =
-            await _firestore.collection('patients').doc(user.uid).get();
+      dynamic user = await CacheHelper.getData(key: 'user');
+      currentUser.value = PatientModel.fromJson(json.decode(user));
 
-        if (docSnapshot.exists) {
-          currentUser.value = PatientModel.fromJson(docSnapshot.data()!);
           _initializeControllers();
-        }
-      }
+
+
     } catch (e) {
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr,
@@ -63,14 +65,14 @@ class ProfileController extends GetxController {
   }
 
   void _initializeControllers() {
-    final user = currentUser.value;
+    PatientModel? user = currentUser.value;
     if (user != null) {
       firstNameController.text = user.firstName;
       lastNameController.text = user.lastName;
-      phoneController.text = user.phoneNo;
-      ageController.text = user.age;
+      phoneController.text = user.phoneNumber;
+      ageController.text = user.age.toString();
       selectedGender.value = user.gender;
-      selectedCountry.value = user.country;
+      selectedCountry.value = user.address.toString();
     }
   }
 

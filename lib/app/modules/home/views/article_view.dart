@@ -64,6 +64,7 @@ class ArticleTipView extends GetView<HealthTipsController> {
               ...((arguments['bullets'.tr] as String)
                   .split('|')
                   .map((bullet) => _buildBulletPoint(bullet.trim()))),
+             
             ],
           ],
         ),
@@ -89,6 +90,7 @@ class ArticleTipView extends GetView<HealthTipsController> {
             ),
           ),
           12.width,
+          
           Expanded(
             child: CustomText(
               text,
@@ -98,8 +100,10 @@ class ArticleTipView extends GetView<HealthTipsController> {
               textAlign: TextAlign.justify,
             ),
           ),
+          
         ],
       ),
     );
   }
 }
+

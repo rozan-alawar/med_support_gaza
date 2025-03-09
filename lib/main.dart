@@ -8,6 +8,7 @@ import 'package:med_support_gaza/app/core/services/localizations/translation_con
 import 'package:med_support_gaza/app/core/utils/app_theme.dart';
 import 'package:med_support_gaza/app/core/widgets/custem_error_widget.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
+import 'package:med_support_gaza/app/data/network_helper/dio_helper.dart';
 import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
 import 'app/routes/app_pages.dart';
@@ -19,6 +20,7 @@ Future<void> initializeServices() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await CacheHelper.init();
+   DioHelper.init();
 
   // Initialize GetX services
   Get.put<GetStorage>(GetStorage());

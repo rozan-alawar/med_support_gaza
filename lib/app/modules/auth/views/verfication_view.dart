@@ -85,7 +85,7 @@ class VerificationView extends GetView<AuthController> {
                   isDisable: controller.isLoading.value,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      controller.verifyOTP();
+                      controller.verifyOTP(email: Get.arguments as String);
                     }
                   },
                 ),

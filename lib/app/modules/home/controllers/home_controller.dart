@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
+import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
+import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/consultation_controller.dart';
-import 'package:med_support_gaza/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:med_support_gaza/app/data/models/patient_model.dart';
 
 class HomeController extends GetxController {
   // Navigation state
@@ -27,7 +30,7 @@ class HomeController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RxBool hasActiveConsultation = false.obs;
-
+  PatientModel? patient ;
 
   void changeBottomNavIndex(int index) {
     currentIndex.value = index;
@@ -36,10 +39,10 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadAppointments();
+    patient =AuthController().currentUser?.patient;
+    // _loadAppointments();
     loadUserData();
-    setupConsultationListener();
-
+    // setupConsultationListener();
   }
 
   void setupConsultationListener() {
@@ -48,6 +51,7 @@ class HomeController extends GetxController {
       hasActiveConsultation.value = activeCount > 0;
     });
   }
+
   void _loadAppointments() {
     try {
       final userId = _authService.currentUser?.uid;
@@ -121,11 +125,14 @@ class HomeController extends GetxController {
 // User Data Management
   Future<void> loadUserData() async {
     try {
-      final user = _auth.currentUser;
-      if (user == null) {
-        Get.offAllNamed(Routes.AUTH);
-        return;
-      }
+      dynamic user = await CacheHelper.getData(key: 'user');
+      patient = PatientModel.fromJson(json.decode(user));
+      print(
+          "fnnffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\n$patient ");
+      // if (user == null) {
+      //   Get.offAllNamed(Routes.AUTH);
+      //   return;
+      // }
 
       final docSnapshot =
           await _firestore.collection('patients').doc(user.uid).get();
@@ -196,7 +203,7 @@ class HomeController extends GetxController {
   // Sign out
   Future<void> signOut() async {
     try {
-      await _auth.signOut();
+      // await _auth.signOut();
       Get.offAllNamed('/auth');
     } catch (e) {
       CustomSnackBar.showCustomErrorSnackBar(

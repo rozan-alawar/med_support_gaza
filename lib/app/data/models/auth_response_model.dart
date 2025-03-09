@@ -1,3 +1,4 @@
+
 class AuthResponseModel {
   final String message;
   final String token;
@@ -25,7 +26,7 @@ class AuthResponseModel {
 }
 
 class UserModel {
-  final int id;
+  final String id;
   final String username;
   final String email;
   final String role;
@@ -48,7 +49,7 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json['id'],
+        id: json['id'].toString(),
         username: json['username'],
         email: json['email'],
         role: json['role'],
@@ -79,51 +80,50 @@ class UserModel {
 class PatientModel {
   final int id;
   final int userId;
+  final String email;
   final String firstName;
   final String lastName;
   final int age;
   final String gender;
   final String phoneNumber;
   final String address;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+
 
   PatientModel({
     required this.id,
-    required this.userId,
+     this.userId = 1,
     required this.firstName,
     required this.lastName,
+    required this.email,
     required this.age,
     required this.gender,
     required this.phoneNumber,
     required this.address,
-    required this.createdAt,
-    required this.updatedAt,
+
   });
 
   factory PatientModel.fromJson(Map<String, dynamic> json) => PatientModel(
-        id: json['id'],
-        userId: json['user_id'],
-        firstName: json['first_name'],
-        lastName: json['last_name'],
-        age: json['age'],
-        gender: json['gender'],
-        phoneNumber: json['phone_number'],
-        address: json['address'],
-        createdAt: DateTime.parse(json['created_at']),
-        updatedAt: DateTime.parse(json['updated_at']),
-      );
+    id: json['id'],
+    userId: json['user_id'],
+    firstName: json['first_name'],
+    email: json['email']??"rosanalawer2002@gmail.com",
+    lastName: json['last_name'],
+    age: json['age'],
+    gender: json['gender'],
+    phoneNumber: json['phone_number'],
+    address: json['address'],
+
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'user_id': userId,
-        'first_name': firstName,
-        'last_name': lastName,
-        'age': age,
-        'gender': gender,
-        'phone_number': phoneNumber,
-        'address': address,
-        'created_at': createdAt.toIso8601String(),
-        'updated_at': updatedAt.toIso8601String(),
-      };
+    'id': id,
+    'user_id': userId,
+    'first_name': firstName,
+    'last_name': lastName,
+    'age': age,
+    'gender': gender,
+    'phone_number': phoneNumber,
+    'address': address,
+
+  };
 }

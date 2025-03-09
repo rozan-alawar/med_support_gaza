@@ -28,7 +28,6 @@ class PatientLoginView extends GetView<AuthController> {
             child: Stack(
               children: [
                 _buildLoginForm(),
-                _buildLoadingIndicator(),
               ],
             ),
           ),

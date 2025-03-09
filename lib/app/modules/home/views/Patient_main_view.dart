@@ -24,11 +24,10 @@ class PatientMainView extends GetView<HomeController> {
               },
               child: ListView(
                 children: [
-                  Obx(
-                    () => Row(
+                 Row(
                       children: [
                         CustomText(
-                          controller.userName.value.tr,
+                         ' ${controller.patient!.firstName} ${controller.patient!.lastName}',
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
@@ -43,9 +42,8 @@ class PatientMainView extends GetView<HomeController> {
                         ),
                       ],
                     ),
-                  ),
                   40.height,
-                  _buildScheduleButton(),
+                  _buildScheduleButton(controller),
                   SizedBox(height: 20.h),
                   24.height,
                   const SuggestedDoctors(),
@@ -60,7 +58,7 @@ class PatientMainView extends GetView<HomeController> {
   }
 }
 
-Widget _buildScheduleButton() {
+Widget _buildScheduleButton(HomeController controller) {
   return InkWell(
     onTap: () => Get.toNamed(Routes.APPOINTMENT_BOOKING),
     child: Container(

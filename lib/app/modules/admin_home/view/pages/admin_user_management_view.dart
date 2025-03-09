@@ -5,6 +5,7 @@ import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/data/models/patient_model.dart';
 
@@ -184,7 +185,7 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
                     Icon(Icons.phone, size: 14.sp, color: Colors.grey),
                     4.width,
                     CustomText(
-                      patient.phoneNo,
+                      patient.phoneNumber,
                       fontSize: 12.sp,
                       color: Colors.grey[600],
                     ),
@@ -195,7 +196,7 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
           ),
           IconButton(
             icon: const Icon(Icons.delete_outline, color: Colors.red),
-            onPressed: () => controller.deleteUser(patient.id!, false),
+            onPressed: () => controller.deleteUser(patient.id.toString(), false),
           ),
         ],
       ),

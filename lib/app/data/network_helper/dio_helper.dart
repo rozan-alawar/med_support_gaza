@@ -35,100 +35,105 @@ class DioHelper {
   static const int TIME_OUT_DURATION = 15000;
 
   static post(
-    String url, {
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? queryParameters,
-    required Function(Response response) onSuccess,
-    Function(ApiException)? onError,
-    Function(int total, int progress)?
-        onSendProgress, // while sending (uploading) progress
-    Function(int total, int progress)?
-        onReceiveProgress, // while receiving data(response)
-    Function? onLoading,
-    dynamic data,
-  }) async {
+      String url, {
+        Map<String, dynamic>? headers,
+        Map<String, dynamic>? queryParameters,
+        required Function(Response response) onSuccess,
+        Function(ApiException)? onError,
+        Function(int total, int progress)? onSendProgress,
+        Function(int total, int progress)? onReceiveProgress,
+        Function? onLoading,
+        dynamic data,
+      }) async {
     try {
-      // 1) indicate loading state
+      // Indicate loading state
       onLoading?.call();
-      // 2) try to perform http request
+
+      // Perform HTTP request
       var response = await _dio.post(
         url,
         data: data,
+        queryParameters: queryParameters,
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
-        queryParameters: queryParameters,
         options: Options(
-            headers: headers,
-            receiveTimeout: const Duration(seconds: TIME_OUT_DURATION),
-            sendTimeout: const Duration(seconds: TIME_OUT_DURATION)),
+          headers: headers,
+          receiveTimeout: const Duration(seconds: TIME_OUT_DURATION),
+          sendTimeout: const Duration(seconds: TIME_OUT_DURATION),
+        ),
       );
-      // 3) return response (api done successfully)
+
+      // Call success function
       await onSuccess.call(response);
     } on DioException catch (error) {
-      // dio error (api reach the server but not performed successfully
-      // no internet connection
+      print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+      print('${error.message} rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+      log("DioException occurred: ${error.toString()}");
 
-      log("onError $onError");
-      if (error.message!.toLowerCase().contains('socket')) {
-        onError?.call(ApiException(
-              message: Strings.noInternetConnection.tr,
-              url: Links.baseLink + url,
-            )) ??
-            _handleError(Strings.noInternetConnection.tr);
-      }
+      String errorMessage = Strings.someThingWentWorng.tr; // Default message
+      int statusCode = error.response?.statusCode ?? 0;
 
-      // no response
-      if (error.response == null) {
-        var exception = ApiException(
-          url: Links.baseLink + url,
-          message: error.message!,
-        );
-        return onError?.call(exception) ?? handleApiError(exception);
-      }
+      if (error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.receiveTimeout) {
+        errorMessage = Strings.serverNotResponding.tr;
+      } else if (error.type == DioExceptionType.badResponse && error.response != null) {
+        var responseData = error.response!.data;
 
-      // check if the error is 500 (server problem)
-      if (error.response?.statusCode == 500) {
-        var exception = ApiException(
-          message: Strings.serverError.tr,
-          url: Links.baseLink + url,
-          statusCode: 500,
-        );
-        return onError?.call(exception) ?? handleApiError(exception);
+        if (responseData is Map<String, dynamic>) {
+          // Extract main error message
+          if (responseData.containsKey("message") && responseData["message"] is String) {
+            errorMessage = responseData["message"];
+          }
+
+          // Extract validation errors (if present)
+          if (responseData.containsKey("errors")) {
+            var errors = responseData["errors"];
+            if (errors is Map<String, dynamic>) {
+              for (var key in errors.keys) {
+                var errorList = errors[key];
+                if (errorList is List && errorList.isNotEmpty) {
+                  errorMessage = errorList.first.toString();
+                  break;
+                }
+              }
+            }
+          }
+        }
+
+        statusCode = error.response?.statusCode ?? 400;
+      } else if (error.type == DioExceptionType.unknown) {
+        errorMessage = Strings.noInternetConnection.tr;
       }
 
       var exception = ApiException(
-        message: (error.response!.data["message"].toString()) != "null"
-            ? (error.response!.data["message"].toString())
-            : "",
+        message: errorMessage,
         url: Links.baseLink + url,
-        statusCode: error.response?.statusCode ?? 404,
+        statusCode: statusCode,
       );
+
       return onError?.call(exception) ?? handleApiError(exception);
     } on SocketException {
-      // No internet connection
       log("No internet connection");
-      onError?.call(ApiException(
-            message: Strings.noInternetConnection.tr,
-            url: Links.baseLink + url,
-          )) ??
-          _handleError(Strings.noInternetConnection.tr);
+      return onError?.call(ApiException(
+        message: Strings.noInternetConnection.tr,
+        url: Links.baseLink + url,
+      )) ?? _handleError(Strings.noInternetConnection.tr);
     } on TimeoutException {
-      // Api call went out of time
-      log("Api call went out of time");
-      onError?.call(ApiException(
-            message: Strings.serverNotResponding.tr,
-            url: Links.baseLink + url,
-          )) ??
-          _handleError(Strings.serverNotResponding.tr);
+      log("API call timed out");
+      return onError?.call(ApiException(
+        message: Strings.serverNotResponding.tr,
+        url: Links.baseLink + url,
+      )) ?? _handleError(Strings.serverNotResponding.tr);
+    } catch (error, stackTrace) {
+      log("Unexpected error: $error\n$stackTrace");
+      return onError?.call(ApiException(
+        message: error.toString(),
+        url: Links.baseLink + url,
+      )) ?? handleApiError(ApiException(
+        message: error.toString(),
+        url: Links.baseLink + url,
+      ));
     }
-    // catch (error) {
-    // unexpected error for example (parsing json error)
-    // log("unexpected error for example (parsing json error)");
-    // onError?.call(ApiException(
-    //       message: error.toString(),
-    //       url: url,
-    //     )) ??
-    //     _handleError(error.toString());
   }
 
   // GET request

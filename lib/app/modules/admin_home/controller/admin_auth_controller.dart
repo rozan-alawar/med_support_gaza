@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
 
 import '../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../data/firebase_services/firebase_handler.dart';
 import '../../../data/firebase_services/firebase_services.dart';
-import '../../../data/models/patient_model.dart';
 import '../../../routes/app_pages.dart';
 
 class AdminController extends GetxController {
