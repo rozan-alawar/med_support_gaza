@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -25,6 +26,7 @@ class DoctorAuthController extends GetxController {
   static const int otpLength = 4;
   static const int otpResendDelay = 15;
   static const List<String> allowedFileExtensions = ['pdf', 'doc', 'docx'];
+  final RxString email1 = ''.obs;
 
   // State management
   final RxBool isLogin = true.obs;
@@ -170,14 +172,22 @@ class DoctorAuthController extends GetxController {
   }
 
   // Handles forget password request for doctors
+  Future<void> forgetPassword({required String email}) async {
+    try {
+      isLoading.value = true;
+      email1.value = email;
+      // Use DoctorAuthApi for password reset
+      await forgetPasswordInit(email: email);
+    } finally {
+      isLoading.value = false;
+      startTimer();
+    }
+    Get.offNamed(Routes.DOCTOR_VERIFICATION);
+  }
+
   Future<void> forgetPasswordInit({required String email}) async {
     // Use DoctorAuthApi for password reset
     await Get.find<DoctorAuthApi>().forgetPassword(email: email);
-    startTimer();
-  }
-
-  Future<void> verfiyOTP(String email, int otp) async {
-    await Get.find<DoctorAuthApi>().verifyOTP(otp: otp, email: email);
   }
 
   /// Resets the user's password
@@ -192,11 +202,17 @@ class DoctorAuthController extends GetxController {
           email: email,
           password: newPassword,
           passwordConfirmation: confirmPassword);
+      email1.value = email;
     } finally {
       isLoading.value = false;
-      // Navigate to login
-      Get.offAllNamed(Routes.DOCTOR_LOGIN);
-    }
+    } // Navigate to login
+    Get.offAllNamed(Routes.DOCTOR_LOGIN);
+  }
+
+  Future<void> resendOTP() async {
+    otpDigits.assignAll(List.generate(otpLength, (index) => ''));
+    await forgetPasswordInit(email: email1.value);
+    startTimer();
   }
 
   Future<void> signOut() async {
@@ -228,44 +244,27 @@ class DoctorAuthController extends GetxController {
     }
   }
 
-  /// Handles OTP resend request
-  Future<void> resendOTP(String email) async {
-    try {
-      isLoading.value = true;
-      await forgetPasswordInit(email: email);
-      otpDigits.assignAll(List.generate(otpLength, (index) => ''));
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
   /// Verifies entered OTP
   Future<void> verifyOTP() async {
     try {
       isLoading.value = true;
-      hasError.value = false;
-      errorMessage.value = '';
-
       // Combine OTP digits
       final otp = otpDigits.join();
 
       if (otp.length != otpLength) {
-        throw Exception('Please enter all OTP digits');
+        CustomSnackBar.showCustomErrorSnackBar(
+            title: 'Error'.tr, message: 'Please enter all OTP digits');
+        return;
       }
-
-      // Here you would typically verify the OTP with your backend
-      // For now, we'll just navigate to reset password
-      await Future.delayed(
-          const Duration(seconds: 1)); // Simulated verification
-
+      await Get.find<DoctorAuthApi>().verifyOTP(otp: otp, email: email1.value);
       Get.toNamed(Routes.DOCTOR_RESET_PASSWORD);
     } catch (e) {
-      hasError.value = true;
-      errorMessage.value = e.toString();
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: e.toString(),
-      );
+      if (e is DioException) {
+        if (e.response?.statusCode== 400) {
+          // Handle invalid or expired OTP error
+          print('Invalid or expired OTP');
+        }
+      }
     } finally {
       isLoading.value = false;
     }

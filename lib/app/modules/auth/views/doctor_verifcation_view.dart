@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -106,10 +108,10 @@ class DoctorVerifcationView extends GetView<DoctorAuthController> {
                         )
                       : const SizedBox()),
                   Obx(() => TextButton(
-                        onPressed: () {
-                          // controller.canResend.value
-                          //     ? controller.resendOTP
-                          //     : null;
+                        onPressed: () async {
+                          if (controller.canResend.value) {
+                            await controller.resendOTP();
+                          }
                         },
                         child: Text(
                           'ارسل OTP مرة أخرى',
@@ -247,10 +249,11 @@ class _ResendTimerSection extends StatelessWidget {
           ),
           Obx(
             () => TextButton(
-              onPressed: () {},
-              // controller.canResend.value
-              //     ?controller.handleResendOTP
-              //     : null,
+              onPressed: () async {
+                if (controller.canResend.value) {
+                  await controller.resendOTP();
+                }
+              },
               child: Text(
                 'Resend OTP'.tr,
                 style: TextStyle(

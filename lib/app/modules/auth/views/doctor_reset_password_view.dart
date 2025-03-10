@@ -19,6 +19,13 @@ class DoctroResetPasswordView extends GetView<DoctorAuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Get.back(),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 20.w,
@@ -65,7 +72,7 @@ class DoctroResetPasswordView extends GetView<DoctorAuthController> {
                         return 'enter_password'.tr;
                       } else if (newPasswordController.text.compareTo(value) !=
                           0) {
-                        return  'confirmation_maessage'.tr;
+                        return 'confirmation_maessage'.tr;
                       }
                       return null;
                     },
@@ -88,7 +95,7 @@ class DoctroResetPasswordView extends GetView<DoctorAuthController> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       controller.resetPassword(
-                        email: '',
+                        email: controller.email1.value,
                         newPassword: newPasswordController.text,
                         confirmPassword: passwordController.text,
                       );
