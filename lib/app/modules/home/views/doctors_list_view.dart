@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
-import 'package:med_support_gaza/app/data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/data/models/doctor.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/patient_doctors_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
@@ -76,7 +77,7 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
     });
   }
 
-  Widget _buildDoctorCard(DoctorModel doctor) {
+  Widget _buildDoctorCard(Doctor doctor) {
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
@@ -113,13 +114,13 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                  doctor.fullName,
+                                 '${ doctor.firstName} ${ doctor.lastName}',
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 4.height,
                                 CustomText(
-                                  doctor.speciality,
+                                  doctor.major.toString(),
                                   fontSize: 14.sp,
                                   color: Colors.grey[600],
                                 ),
@@ -129,21 +130,11 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
                         ],
                       ),
                       12.height,
-                      Row(
-                        children: [
-                          _buildInfoChip(
-                            Icons.star,
-                            '${doctor.rating}',
-                            Colors.amber,
-                          ),
-                          12.width,
-                          _buildInfoChip(
-                            Icons.work_outline,
-                            '${doctor.experience} ${'Years'.tr}',
-                            AppColors.primary,
-                          ),
-                        ],
-                      ),
+                      _buildInfoChip(
+                          Icons.location_on_outlined,
+                          doctor.country.toString(),
+                          AppColors.primary,
+                        ),
                     ],
                   ),
                 ),
@@ -155,7 +146,7 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
     );
   }
 
-  Widget _buildDoctorAvatar(DoctorModel doctor) {
+  Widget _buildDoctorAvatar(Doctor doctor) {
     return Container(
       width: 70.w,
       height: 70.w,
@@ -168,9 +159,9 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(35.r),
-        child: doctor.profileImage != null
+        child: doctor.firstName != null
             ? Image.network(
-                doctor.profileImage!,
+                ImageAssets.doctros,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(),
               )

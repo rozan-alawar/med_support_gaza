@@ -333,10 +333,15 @@ class AuthController extends GetxController {
         AuthResponseModel loginResponse =
             AuthResponseModel.fromJson(response.data);
         _showSuccessMessage(loginResponse.message);
+        // Save login status
         CacheHelper.saveData(key: 'isLoggedIn', value: true);
+
+        // Save user data
         currentUser = loginResponse.patient;
-        CacheHelper.saveData(
-            key: 'user', value: json.encode(currentUser!));
+        CacheHelper.saveData(key: 'user', value: json.encode(currentUser!));
+
+        // Save token
+        CacheHelper.saveData(key: 'token', value: loginResponse.token);
         Get.offAllNamed(Routes.HOME);
       },
       onError: (e) {
@@ -372,7 +377,7 @@ class AuthController extends GetxController {
           isLoading.value = true;
         },
       );
-      Get.toNamed(Routes.VERIFICATION,arguments: {email});
+      Get.toNamed(Routes.VERIFICATION, arguments: {email});
     } catch (e) {
       hasError.value = true;
       _handleError('Error'.tr, e.toString());
@@ -457,9 +462,10 @@ class AuthController extends GetxController {
           isLoading.value = false;
           hasError.value = true;
           _handleError('Error'.tr, e.message);
-        }, onLoading: () {
-        isLoading.value = true;
-      },
+        },
+        onLoading: () {
+          isLoading.value = true;
+        },
       );
 
       Get.offAllNamed(Routes.NEW_PASSWORD);
