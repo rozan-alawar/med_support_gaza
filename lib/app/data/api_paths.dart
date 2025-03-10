@@ -6,10 +6,12 @@ class Links {
   static var PATIENT_LOGIN = 'patient/login';
   static var PATIENT_REGISTER = 'patient/register';
   static var PATIENT_LOGOUT = 'patient/logout';
-  static var PATIENT_PROFILE = 'patient/profile';
   static var FORGET_PASSWORD = 'forgot-password';
   static var RESET_PASSWORD = 'reset-password';
   static var VERIFY_OTP = 'verify-otp';
+
+  static var PATIENT_PROFILE = 'patient/profile';
+  static var UPDATE_PROFILE = 'patient/update-profile';
 
   static var GET_DOCTORS = 'doctors/search';
   static var SEARCH_DOCTOR = 'doctors/search';

@@ -18,7 +18,8 @@ class PatientProfileView extends GetView<ProfileController> {
       body: Obx(() => controller.isLoading.value
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
-        onRefresh: () => controller.loadUserData(),
+        onRefresh: () => controller.getProfile()
+        ,
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           physics: const AlwaysScrollableScrollPhysics(),
@@ -59,7 +60,7 @@ class PatientProfileView extends GetView<ProfileController> {
               )),
               8.height,
               Obx(() => CustomText(
-                controller.currentUser.value?.id.toString() ?? '',
+                controller.currentUser.value?.email.toString() ?? '',
                 fontSize: 14.sp,
                 color: Colors.grey[600],
               )),
@@ -72,8 +73,8 @@ class PatientProfileView extends GetView<ProfileController> {
 
   Widget _buildProfileImage() {
     return Container(
-      width: 120.w,
-      height: 120.w,
+      width: 100.w,
+      height: 100.h,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.grey[100],

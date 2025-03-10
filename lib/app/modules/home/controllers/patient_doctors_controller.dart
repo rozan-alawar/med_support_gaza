@@ -29,7 +29,7 @@ class PatientDoctorsController extends GetxController {
         // GetDoctorsResponse getDoctors =
         // GetDoctorsResponse.fromJson(response.data);
         doctors.value = data.map((e) => Doctor.fromJson(e)).toList();
-fetchTopDoctors();
+        fetchTopDoctors();
         isLoading.value = false;
       },
       onError: (e) {
@@ -44,7 +44,6 @@ fetchTopDoctors();
       },
     );
   }
-
 
   //
   // Future<void> fetchSpecialties() async {
@@ -86,7 +85,6 @@ fetchTopDoctors();
   //     }
   //   }
 
-
   Future<void> fetchTopDoctors() async {
     isLoading.value = true;
     try {
@@ -118,7 +116,7 @@ fetchTopDoctors();
     final filtered = doctors.where((Doctor doctor) {
       final searchLower = query.toLowerCase();
       return doctor.firstName!.toLowerCase().contains(searchLower) ||
-       doctor.lastName!.toLowerCase().contains(searchLower) ||
+          doctor.lastName!.toLowerCase().contains(searchLower) ||
           doctor.major!.toLowerCase().contains(searchLower);
     }).toList();
 
