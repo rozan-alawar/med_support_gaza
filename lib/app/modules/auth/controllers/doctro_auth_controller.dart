@@ -154,6 +154,7 @@ class DoctorAuthController extends GetxController {
     Get.offAllNamed(Routes.DOCTOR_HOME);
   }
 
+  /// Saves doctor data to cache after a successful login
   void saveDoctorData(DoctorModel doctorModel) {
     CacheHelper.saveData(key: 'isLoggedIn', value: true);
     CacheHelper.saveData(key: 'token', value: doctorModel.token);
@@ -169,6 +170,22 @@ class DoctorAuthController extends GetxController {
       CacheHelper.saveData(key: 'gender', value: doctor.gender);
       CacheHelper.saveData(key: 'certificate', value: doctor.certificate);
     }
+  }
+
+  /// Removes all cached data associated with the currently logged in doctor. This
+  /// is called when the doctor signs out.
+  void removeDoctorData() {
+    CacheHelper.removeData(key: 'isLoggedIn');
+    CacheHelper.removeData(key: 'token');
+    CacheHelper.removeData(key: 'firstName');
+    CacheHelper.removeData(key: 'lastName');
+    CacheHelper.removeData(key: 'major');
+    CacheHelper.removeData(key: 'averageRating');
+    CacheHelper.removeData(key: 'email');
+    CacheHelper.removeData(key: 'phoneNumber');
+    CacheHelper.removeData(key: 'country');
+    CacheHelper.removeData(key: 'gender');
+    CacheHelper.removeData(key: 'certificate');
   }
 
   // Handles forget password request for doctors
@@ -218,8 +235,7 @@ class DoctorAuthController extends GetxController {
   Future<void> signOut() async {
     await Get.find<DoctorAuthApi>()
         .logout(token: CacheHelper.getData(key: 'token'));
-    CacheHelper.removeData(key: 'isLoggedIn');
-    CacheHelper.removeData(key: 'token');
+    removeDoctorData();
     Get.offAllNamed(Routes.DOCTOR_LOGIN);
   }
 
@@ -260,7 +276,7 @@ class DoctorAuthController extends GetxController {
       Get.toNamed(Routes.DOCTOR_RESET_PASSWORD);
     } catch (e) {
       if (e is DioException) {
-        if (e.response?.statusCode== 400) {
+        if (e.response?.statusCode == 400) {
           // Handle invalid or expired OTP error
           print('Invalid or expired OTP');
         }
