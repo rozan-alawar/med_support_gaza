@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import 'package:med_support_gaza/app/data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/data/models/doctor.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/patient_doctors_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 class SuggestedDoctors extends GetView<PatientDoctorsController> {
@@ -54,7 +55,7 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
     );
   }
 
-  Widget _buildDoctorCard(DoctorModel doctor) {
+  Widget _buildDoctorCard(Doctor doctor) {
     return Container(
       width: 160.w,
       margin: EdgeInsets.only(right: 16.w, bottom: 10),
@@ -83,10 +84,10 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
                 ),
                 child: Center(
-                  child: doctor.profileImage != null
+                  child: doctor.firstName != null
                       ? CircleAvatar(
                     radius: 32.r,
-                    backgroundImage: NetworkImage(doctor.profileImage!),
+                    backgroundImage: NetworkImage(ImageAssets.doctros),
                   )
                       : CircleAvatar(
                     radius: 32.r,
@@ -101,7 +102,7 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
                 child: Column(
                   children: [
                     CustomText(
-                      doctor.fullName,
+                      '${ doctor.firstName} ${ doctor.lastName}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       fontSize: 14.sp,
@@ -109,7 +110,7 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
                     ),
                     4.height,
                     CustomText(
-                      doctor.speciality,
+                      doctor.major.toString(),
                       fontSize: 12.sp,
                       color: Colors.grey[600],
                     ),
@@ -120,7 +121,7 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
                         Icon(Icons.star, color: Colors.amber, size: 16.sp),
                         4.width,
                         CustomText(
-                          doctor.rating.toString(),
+                          doctor.country.toString(),
                           fontSize: 12.sp,
                           color: Colors.grey[600],
                         ),

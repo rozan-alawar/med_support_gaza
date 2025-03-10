@@ -11,6 +11,9 @@ class Links {
   static var RESET_PASSWORD = 'reset-password';
   static var VERIFY_OTP = 'verify-otp';
 
+  static var GET_DOCTORS = 'doctors/search';
+  static var SEARCH_DOCTOR = 'doctors/search';
+
   static var doctorRegister = 'doctor/register';
   static var doctorLogin = 'doctor/login';
   static var getDoctorSpecialties = 'doctor/specialties';

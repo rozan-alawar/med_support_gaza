@@ -1,144 +1,102 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:med_support_gaza/app/data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/data/api_services/patient_home_api.dart';
+import 'package:med_support_gaza/app/data/models/doctor.dart';
+import 'package:med_support_gaza/app/data/models/get_doctors_response.dart';
 
 class PatientDoctorsController extends GetxController {
   final searchController = TextEditingController();
-  final RxList<DoctorModel> doctors = <DoctorModel>[].obs;
+  final RxList<Doctor> doctors = <Doctor>[].obs;
   final RxList<String> specialties = <String>[].obs;
   final RxString selectedSpecialty = ''.obs;
   final RxBool isLoading = false.obs;
-  final RxList<DoctorModel> topDoctors = <DoctorModel>[].obs;
+  final RxList<Doctor> topDoctors = <Doctor>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchTopDoctors();
-    fetchDoctors();
+    getDoctors();
     fetchSpecialties();
   }
+  //------------------------ GET DOCTORS -----------------------------
+
+  void getDoctors() {
+    HomeAPIService.getDoctors(
+      onSuccess: (response) {
+        isLoading.value = false;
+        final List<dynamic> data = response.data['doctors'];
+        // GetDoctorsResponse getDoctors =
+        // GetDoctorsResponse.fromJson(response.data);
+        doctors.value = data.map((e) => Doctor.fromJson(e)).toList();
+fetchTopDoctors();
+        isLoading.value = false;
+      },
+      onError: (e) {
+        isLoading.value = false;
+        CustomSnackBar.showCustomErrorSnackBar(
+          title: 'Error'.tr,
+          message: e.message,
+        );
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
+  }
+
+
+  //
+  // Future<void> fetchSpecialties() async {
+  //   try {
+  //     isLoading.value = true;
+  //     final response = await DoctorAPIService.getSpecialties();
+  //     specialties.value = response;
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+  //
+  // void onSearchChanged(String query) {
+  //   if (query.isEmpty) {
+  //     doctors.value = allDoctors;
+  //     return;
+  //   }
+  //
+  //   final searchLower = query.toLowerCase();
+  //   final filtered = allDoctors.where((doctor) {
+  //     return doctor.fullName.toLowerCase().contains(searchLower) ||
+  //         doctor.speciality.toLowerCase().contains(searchLower);
+  //   }).toList();
+  //
+  //   doctors.value = filtered;
+  // }
+  //
+  // Future<void> refreshDoctors() async {
+  //   await fetchDoctors();
+  // } Future<void> fetchTopDoctors() async {
+  //     isLoading.value = true;
+  //     try {
+  //       topDoctors.clear();
+  //       for (int i = 0; i < doctors.length && i < 2; i++) {
+  //         topDoctors.add(doctors[i]);
+  //       }
+  //     } finally {
+  //       isLoading.value = false;
+  //     }
+  //   }
+
 
   Future<void> fetchTopDoctors() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
-      // Implement API call
-      await Future.delayed(const Duration(seconds: 1)); // Mock delay
-      topDoctors.value = [
-        DoctorModel(
-            id: '1',
-            firstName: 'Ahmed',
-            lastName: 'Mohammed',
-            email: 'ahmed@example.com',
-            phoneNo: '+970591234567',
-            speciality: 'Cardiology',
-            country: 'Palestine',
-            gender: 'Male',
-            rating: 4.9,
-            experience: 15,
-            medicalCertificateUrl: 'url',
-            about: 'Experienced cardiologist with focus on preventive care',
-            expertise: ['Heart Disease', 'Hypertension'],
-            languages: ['Arabic', 'English'],
-            isApproved: true,
-            isVerified: true),
-        DoctorModel(
-            id: '3',
-            firstName: 'Rozan',
-            lastName: 'Alawar',
-            email: 'rozan@example.com',
-            phoneNo: '+970597654321',
-            speciality: 'Pediatrics',
-            country: 'Palestine',
-            gender: 'Female',
-            rating: 4.8,
-            experience: 10,
-            medicalCertificateUrl: 'url',
-            about: 'Dedicated pediatrician focused on child development',
-            expertise: ['Child Care', 'Vaccinations'],
-            languages: ['Arabic', 'English', 'French'],
-            isApproved: true,
-            isVerified: true),
-        DoctorModel(
-            id: '2',
-            firstName: 'Sara',
-            lastName: 'Ahmad',
-            email: 'sara@example.com',
-            phoneNo: '+970597654321',
-            speciality: 'Pediatrics',
-            country: 'Palestine',
-            gender: 'Female',
-            rating: 4.8,
-            experience: 10,
-            medicalCertificateUrl: 'url',
-            about: 'Dedicated pediatrician focused on child development',
-            expertise: ['Child Care', 'Vaccinations'],
-            languages: ['Arabic', 'English', 'French'],
-            isApproved: true,
-            isVerified: true),
-      ];
+      topDoctors.clear();
+      for (int i = 0; i < doctors.length && i < 2; i++) {
+        topDoctors.add(doctors[i]);
+      }
     } finally {
       isLoading.value = false;
     }
-  }
-
-  void fetchDoctors() {
-    isLoading.value = true;
-
-    doctors.value = [
-      DoctorModel(
-          id: '1',
-          firstName: 'Ahmed',
-          lastName: 'Mohammed',
-          email: 'ahmed@example.com',
-          phoneNo: '+970591234567',
-          speciality: 'Cardiology',
-          country: 'Palestine',
-          gender: 'Male',
-          rating: 4.9,
-          experience: 15,
-          medicalCertificateUrl: 'url',
-          about: 'Experienced cardiologist with focus on preventive care',
-          expertise: ['Heart Disease', 'Hypertension'],
-          languages: ['Arabic', 'English'],
-          isApproved: true,
-          isVerified: true),
-      DoctorModel(
-          id: '2',
-          firstName: 'Sara',
-          lastName: 'Ahmad',
-          email: 'sara@example.com',
-          phoneNo: '+970597654321',
-          speciality: 'Pediatrics',
-          country: 'Palestine',
-          gender: 'Female',
-          rating: 4.8,
-          experience: 10,
-          medicalCertificateUrl: 'url',
-          about: 'Dedicated pediatrician focused on child development',
-          expertise: ['Child Care', 'Vaccinations'],
-          languages: ['Arabic', 'English', 'French'],
-          isApproved: true,
-          isVerified: true),
-      DoctorModel(
-          id: '3',
-          firstName: 'Rozan',
-          lastName: 'Alawar',
-          email: 'rozan@example.com',
-          phoneNo: '+970597654321',
-          speciality: 'Pediatrics',
-          country: 'Palestine',
-          gender: 'Female',
-          rating: 4.8,
-          experience: 10,
-          medicalCertificateUrl: 'url',
-          about: 'Dedicated pediatrician focused on child development',
-          expertise: ['Child Care', 'Vaccinations'],
-          languages: ['Arabic', 'English', 'French'],
-          isApproved: true,
-          isVerified: true),
-    ];
-
-    isLoading.value = false;
   }
 
   void fetchSpecialties() {
@@ -153,21 +111,22 @@ class PatientDoctorsController extends GetxController {
 
   void onSearchChanged(String query) {
     if (query.isEmpty) {
-      fetchDoctors();
+      getDoctors();
       return;
     }
 
-    final filtered = doctors.where((doctor) {
+    final filtered = doctors.where((Doctor doctor) {
       final searchLower = query.toLowerCase();
-      return doctor.fullName.toLowerCase().contains(searchLower) ||
-          doctor.speciality.toLowerCase().contains(searchLower);
+      return doctor.firstName!.toLowerCase().contains(searchLower) ||
+       doctor.lastName!.toLowerCase().contains(searchLower) ||
+          doctor.major!.toLowerCase().contains(searchLower);
     }).toList();
 
     doctors.value = filtered;
   }
 
   Future<void> refreshDoctors() async {
-    fetchDoctors();
+    getDoctors();
   }
 
   @override
