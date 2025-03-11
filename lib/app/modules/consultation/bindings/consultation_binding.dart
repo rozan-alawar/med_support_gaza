@@ -6,11 +6,14 @@ import '../controllers/consultation_controller.dart';
 class ConsultationBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ConsultationController>(
-      () => ConsultationController(),
+    Get.lazyPut<ConsultationsController>(
+      () => ConsultationsController(userId: Get.arguments['userId']),
     );
     Get.lazyPut<ChatController>(
-          () => ChatController(),
+          () => ChatController(
+            userId: Get.arguments['userId'],
+            consultationId: Get.arguments['consultationId'],
+          ),
     );
   }
 }

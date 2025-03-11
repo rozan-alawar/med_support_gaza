@@ -18,7 +18,8 @@ class HomeController extends GetxController {
 
   // User state
   final RxString userName = ''.obs;
-  final Rx<PatientModel?> currentUser = Rx<PatientModel?>(null);
+  final Rx<PatientModel?> currentUser = Rx<PatientModel?>( PatientModel.fromJson(json.decode(  CacheHelper.getData(key: 'user')))
+  );
 
   final FirebaseService _appointmentService = Get.find<FirebaseService>();
   final FirebaseService _authService = Get.find<FirebaseService>();
@@ -44,13 +45,13 @@ class HomeController extends GetxController {
     loadUserData();
     // setupConsultationListener();
   }
-
-  void setupConsultationListener() {
-    // Listen for active consultations and update badge
-    ever(Get.find<ConsultationController>().activeConsultations, (activeCount) {
-      hasActiveConsultation.value = activeCount > 0;
-    });
-  }
+  //
+  // void setupConsultationListener() {
+  //   // Listen for active consultations and update badge
+  //   ever(Get.find<ConsultationsController>().activeConsultations, (activeCount) {
+  //     hasActiveConsultation.value = activeCount > 0;
+  //   });
+  // }
 
   void _loadAppointments() {
     try {
