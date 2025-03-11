@@ -36,4 +36,6 @@ class Links {
   static var resetPassword = '/reset-password';
   static var verifyOTP = 'verify-otp';
   static var doctorLogout = '/doctor/logout';
+  static var doctorProfile = '/doctor/profile';
+   static var doctorUpdateProfile = '/doctor/update-profile';
 }
