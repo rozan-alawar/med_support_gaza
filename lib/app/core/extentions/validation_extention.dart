@@ -75,4 +75,12 @@ extension ValidationExt on String {
     }
   }
   
+  
+  String? get isValidfileName {
+    if (isEmpty) {
+      return "enter_certificate_file".tr;
+    }else {
+      return null;
+    }
+  }
 }

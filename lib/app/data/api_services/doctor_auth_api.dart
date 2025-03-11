@@ -6,7 +6,6 @@ import 'package:med_support_gaza/app/data/api_paths.dart';
 import '../network_helper/dio_client.dart';
 import 'package:mime/mime.dart';
 
-
 class DoctorAuthApi {
   DoctorAuthApi();
 
@@ -76,6 +75,13 @@ class DoctorAuthApi {
   }) async {
     Response response = await Get.find<DioClient>().dio.post(
       Links.forgotPassword,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        followRedirects: true,
+      ),
       data: {
         'email': email,
       },
@@ -85,13 +91,20 @@ class DoctorAuthApi {
 
   // verify-otp function
   Future<Response<dynamic>> verifyOTP({
-    required int otp,
+    required String otp,
     required String email,
   }) async {
     Response response = await Get.find<DioClient>().dio.post(
       Links.verifyOTP,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        followRedirects: true,
+      ),
       data: {
-        'otp': otp,
+        'otp': int.parse(otp),
         'email': email,
       },
     );
@@ -105,6 +118,13 @@ class DoctorAuthApi {
   }) async {
     Response response = await Get.find<DioClient>().dio.post(
       Links.resetPassword,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        followRedirects: true,
+      ),
       data: {
         'email': email,
         'password': password,
@@ -119,6 +139,13 @@ class DoctorAuthApi {
   }) async {
     Response response = await Get.find<DioClient>().dio.post(
       Links.doctorLogout,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        followRedirects: true,
+      ),
       data: {'token': token},
     );
     return response;
