@@ -18,7 +18,7 @@ class DoctorProfileAPI {
     final res = await Get.find<DioClient>().dio.get(Links.doctorProfile,
         options: Options(
           headers: {
-            "token": token,
+          'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
@@ -68,7 +68,7 @@ class DoctorProfileAPI {
       data: formData,
       options: Options(
         headers: {
-          "token": token,
+          'Authorization': 'Bearer $token',
           'Content-Type': 'multipart/form-data',
           'Accept': 'application/json',
         },

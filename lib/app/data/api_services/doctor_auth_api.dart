@@ -141,12 +141,12 @@ class DoctorAuthApi {
       Links.doctorLogout,
       options: Options(
         headers: {
+           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
         followRedirects: true,
       ),
-      data: {'token': token},
     );
     return response;
   }
