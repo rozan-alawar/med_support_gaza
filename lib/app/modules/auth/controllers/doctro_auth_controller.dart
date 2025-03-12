@@ -130,11 +130,13 @@ class DoctorAuthController extends GetxController {
         country: country,
         certificatePath: selectedFilePath.value,
       );
+      Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    } catch (e) {
+      isLoading.value = false;
+      print(e);
     } finally {
       isLoading.value = false;
     }
-
-    Get.offAllNamed(Routes.DOCTOR_LOGIN);
   }
 
   /// Handles doctor sign in
@@ -148,16 +150,21 @@ class DoctorAuthController extends GetxController {
       );
       DoctorModel doctor_model = DoctorModel.fromJson(response.data);
       saveDoctorData(doctor_model);
+      Get.offAllNamed(Routes.DOCTOR_HOME);
+    } catch (e) {
+      isLoading.value = false;
+      print(e);
     } finally {
       isLoading.value = false;
     }
-    Get.offAllNamed(Routes.DOCTOR_HOME);
   }
 
   /// Saves doctor data to cache after a successful login
   void saveDoctorData(DoctorModel doctorModel) {
     CacheHelper.saveData(key: 'isLoggedIn', value: true);
-    CacheHelper.saveData(key: 'token', value: doctorModel.token);
+    if (doctorModel.token != null) {
+      CacheHelper.saveData(key: 'token', value: doctorModel.token);
+    }
     final doctor = doctorModel.doctor;
     if (doctor != null) {
       CacheHelper.saveData(key: 'firstName', value: doctor.firstName);
@@ -195,11 +202,14 @@ class DoctorAuthController extends GetxController {
       email1.value = email;
       // Use DoctorAuthApi for password reset
       await forgetPasswordInit(email: email);
+      Get.offNamed(Routes.DOCTOR_VERIFICATION);
+    } catch (e) {
+      isLoading.value = false;
+      print(e);
     } finally {
       isLoading.value = false;
       startTimer();
     }
-    Get.offNamed(Routes.DOCTOR_VERIFICATION);
   }
 
   Future<void> forgetPasswordInit({required String email}) async {
@@ -220,10 +230,13 @@ class DoctorAuthController extends GetxController {
           password: newPassword,
           passwordConfirmation: confirmPassword);
       email1.value = email;
+      Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    } catch (e) {
+      isLoading.value = false;
+      print(e);
     } finally {
       isLoading.value = false;
     } // Navigate to login
-    Get.offAllNamed(Routes.DOCTOR_LOGIN);
   }
 
   Future<void> resendOTP() async {
@@ -233,10 +246,14 @@ class DoctorAuthController extends GetxController {
   }
 
   Future<void> signOut() async {
-    await Get.find<DoctorAuthApi>()
-        .logout(token: CacheHelper.getData(key: 'token'));
-    removeDoctorData();
-    Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    try {
+      Get.find<DoctorAuthApi>()
+          .logout(token: CacheHelper.getData(key: 'token'));
+      removeDoctorData();
+      Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    } catch (e) {
+      print(e);
+    }
   }
 
   /// Starts OTP timer countdown
@@ -279,6 +296,8 @@ class DoctorAuthController extends GetxController {
         if (e.response?.statusCode == 400) {
           // Handle invalid or expired OTP error
           print('Invalid or expired OTP');
+        } else {
+          print(e);
         }
       }
     } finally {

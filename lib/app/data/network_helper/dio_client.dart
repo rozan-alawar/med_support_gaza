@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/data/api_paths.dart';
 
 import '../../core/widgets/custom_snackbar_widget.dart';
+import '../../routes/app_pages.dart';
 
 class DioClient {
   Dio dio;
@@ -79,6 +81,11 @@ class ErrorInterceptor extends Interceptor {
     CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr, message: error.message);
 
+    // If the error is 401, log out the user and clear storage
+    if (err.response?.statusCode == 401) {
+      CacheHelper.removeData( key:'token');
+      Get.offAllNamed(Routes.DOCTOR_LOGIN);
+    }
     handler.next(err);
   }
 }

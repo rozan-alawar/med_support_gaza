@@ -55,13 +55,13 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
               _buildProfileImage(),
               16.height,
               Obx(() => CustomText(
-                    '${controller.doctorData.value?.firstName ?? ''} ${controller.doctorData.value?.lastName ?? ''}',
+                    '${controller.doctorData.value?.doctor?.firstName ?? ''} ${controller.doctorData.value?.doctor?.lastName ?? ''}',
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
                   )),
               8.height,
               Obx(() => CustomText(
-                    controller.doctorData.value?.email ?? '',
+                    controller.doctorData.value?.doctor?.email ?? '',
                     fontSize: 14.sp,
                     color: Colors.grey[600],
                   )),
@@ -83,14 +83,14 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
           color: AppColors.primary,
           width: 2.w,
         ),
-        image: controller.doctorData.value?.profileImage != null
+        image: controller.doctorData.value?.doctor?.image != null
             ? DecorationImage(
-                image: NetworkImage(controller.doctorData.value!.profileImage!),
+                image: NetworkImage( controller.doctorData.value?.doctor?.image ?? ''),
                 fit: BoxFit.cover,
               )
             : null,
       ),
-      child: controller.doctorData.value?.profileImage == null
+      child: controller.doctorData.value?.doctor?.image  == null
           ? Icon(
               Icons.person,
               size: 60.sp,
@@ -119,25 +119,25 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
               _buildInfoItem(
                 icon: Icons.phone,
                 title: 'Phone'.tr,
-                value: controller.doctorData.value?.phoneNo ?? '059659878',
+                value: controller.doctorData.value?.doctor?.phoneNumber ?? '059659878',
               ),
               12.height,
               _buildInfoItem(
                 icon: Icons.medical_services_outlined,
                 title: 'Specialty'.tr,
-                value: controller.doctorData.value?.speciality ?? 'General',
+                value: controller.doctorData.value?.doctor?.major ?? 'General',
               ),
               12.height,
               _buildInfoItem(
                 icon: Icons.person,
                 title: 'Gender'.tr,
-                value: controller.doctorData.value?.gender ?? 'Male',
+                value: controller.doctorData.value?.doctor?.gender ?? 'Male',
               ),
               12.height,
               _buildInfoItem(
                 icon: Icons.location_on,
                 title: 'Country'.tr,
-                value: controller.doctorData.value?.country ?? 'Egypt',
+                value: controller.doctorData.value?.doctor?.country ?? 'Egypt',
               ),
             ],
           )),
@@ -170,29 +170,15 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
               _buildInfoItem(
                 icon: Icons.star,
                 title: 'Rating'.tr,
-                value: '${controller.doctorData.value?.rating ?? 0.0}',
-              ),
-              12.height,
-              _buildInfoItem(
-                icon: Icons.work,
-                title: 'Experience'.tr,
-                value: '${controller.doctorData.value?.experience ?? 0} years',
+                value: '${controller.doctorData.value?.doctor?.averageRating ?? 0.0}',
               ),
               12.height,
               _buildInfoItem(
                 icon: Icons.language,
                 title: 'Languages'.tr,
-                value: controller.doctorData.value?.languages.join(', ') ??
+                value:
                     'Arabic',
               ),
-              if (controller.doctorData.value?.about.isNotEmpty ?? false) ...[
-                12.height,
-                _buildInfoItem(
-                  icon: Icons.info_outline,
-                  title: 'About'.tr,
-                  value: controller.doctorData.value?.about ?? '',
-                ),
-              ],
             ],
           )),
     );

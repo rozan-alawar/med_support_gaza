@@ -68,15 +68,15 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
                 color: AppColors.primary,
                 width: 2.w,
               ),
-              image: controller.doctorData.value?.profileImage != null
+              image: controller.doctorData.value?.doctor?.image != null
                   ? DecorationImage(
                       image: NetworkImage(
-                          controller.doctorData.value!.profileImage!),
+                          controller.doctorData.value!.doctor?.image ?? ''),
                       fit: BoxFit.cover,
                     )
                   : null,
             ),
-            child: controller.doctorData.value?.profileImage == null
+            child: controller.doctorData.value?.doctor?.image == null
                 ? Icon(
                     Icons.person,
                     size: 60.sp,
@@ -132,6 +132,14 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
           prefixIcon: Icons.phone_outlined,
           keyboardType: TextInputType.phone,
           validator: (value) => value?.isValidPhone,
+        ),
+        16.height,
+        CustomTextField(
+          controller: controller.emailController,
+          hintText: 'Email'.tr,
+          prefixIcon: Icons.email_outlined,
+          keyboardType: TextInputType.emailAddress,
+          validator: (value) => value?.isValidEmail,
         ),
         16.height,
         Container(
@@ -266,13 +274,6 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
               ],
             ),
           ),
-        ),
-        16.height,
-        CustomTextField(
-          controller: controller.experienceController,
-          hintText: 'Years of Experience'.tr,
-          prefixIcon: Icons.work_outline,
-          keyboardType: TextInputType.number,
         ),
         16.height,
         CustomTextField(
