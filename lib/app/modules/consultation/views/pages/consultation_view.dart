@@ -13,29 +13,46 @@ import 'package:med_support_gaza/app/modules/consultation/views/pages/chat_view.
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/active_chat_card.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/consultation_card.dart';
 
-class ConsultationsScreen extends StatelessWidget {
+class ConsultationsView extends StatelessWidget {
   final String userId;
 
-  ConsultationsScreen({required this.userId});
+  ConsultationsView({required this.userId});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Consultations', style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.teal,
-          bottom: TabBar(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.h),
+          child: SafeArea(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
 
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(30.r),
+              ),
+              child: TabBar(
+                indicator: BoxDecoration(
+                  // color: Colors.teal,
+                  // borderRadius: BorderRadius.circular(30.r),
+                  borderRadius: BorderRadius.circular(50.r),
+                  color: AppColors.primary.withOpacity(0.4),
 
-            indicatorColor: Colors.white,
-            labelColor: Colors.white,
-            tabs: [
-              Tab(text: 'Active'.tr),
-              Tab(text: 'Upcoming'.tr),
-              Tab(text: 'Past'.tr),
-            ],
+                ),
+                // labelColor: AppColors.primary,
+
+                unselectedLabelColor: Colors.grey[700],
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelStyle: TextStyle(color: Colors.black,fontSize: 15.sp,fontWeight: FontWeight.bold,),
+                tabs: [
+                  Tab(text: 'Active'.tr),
+                  Tab(text: 'Upcoming'.tr),
+                  Tab(text: 'Past'.tr),
+                ],
+              ),
+            ),
           ),
         ),
         body: TabBarView(
@@ -63,7 +80,7 @@ class ConsultationsScreen extends StatelessWidget {
           return Center(
             child: Text(
               'No $status consultations',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.black,fontSize: 14.sp),
             ),
           );
         }
@@ -80,9 +97,9 @@ class ConsultationsScreen extends StatelessWidget {
               userId: userId,
               onTap: () {
                 Get.to(() => ChatView(
-                  consultationId: consultation.id,
-                  userId: userId,
-                ));
+                      consultationId: consultation.id,
+                      userId: userId,
+                    ));
               },
             );
           },

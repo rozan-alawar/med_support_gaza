@@ -13,7 +13,9 @@ class ConsultationsController extends GetxController {
   final ChatService _chatService = ChatService();
   final String userId;
 
-  final activeConsultations = <ConsultationModel>[].obs;
+  final activeConsultations = <ConsultationModel>[
+    ConsultationModel(id: "215", doctorId: "5451", doctorName: "doctorName", patientId: "patientId", patientName: "patientName", startTime: Timestamp.now(), endTime: Timestamp.fromDate(DateTime.now()), status: "active")
+  ].obs;
   final upcomingConsultations = <ConsultationModel>[].obs;
   final pastConsultations = <ConsultationModel>[].obs;
   final isLoading = true.obs;

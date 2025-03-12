@@ -27,7 +27,7 @@ class PatientHomeView extends GetView<HomeController> {
             index: controller.currentIndex.value,
             children:  [
               PatientMainView(),
-              ConsultationsScreen(userId: controller.currentUser.value!.id.toString()),
+              ConsultationsView(userId: controller.currentUser.value!.id.toString()),
               PatientProfileView(),
             ],
           ),
