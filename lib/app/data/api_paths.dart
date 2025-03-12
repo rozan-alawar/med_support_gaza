@@ -35,5 +35,7 @@ class Links {
   static var verifyOTP = 'verify-otp';
   static var doctorLogout = '/logout';
   static var doctorProfile = '/doctor/profile';
-   static var doctorUpdateProfile = '/doctor/update-profile';
+  static var doctorUpdateProfile = '/doctor/update-profile';
+  static var doctorAddSchedule  = '/doctor/schedule';
+  static var doctorAppointments= 'doctor/appointments';
 }
