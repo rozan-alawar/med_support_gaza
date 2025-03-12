@@ -27,6 +27,7 @@ class DoctorAuthController extends GetxController {
   static const int otpResendDelay = 15;
   static const List<String> allowedFileExtensions = ['pdf', 'doc', 'docx'];
   final RxString email1 = ''.obs;
+  String? doctorName;
 
   // State management
   final RxBool isLogin = true.obs;
@@ -149,6 +150,7 @@ class DoctorAuthController extends GetxController {
         password: password,
       );
       DoctorModel doctor_model = DoctorModel.fromJson(response.data);
+     doctorName =  '${doctor_model.doctor?.firstName} ${doctor_model.doctor?.lastName}';
       saveDoctorData(doctor_model);
       Get.offAllNamed(Routes.DOCTOR_HOME);
     } catch (e) {

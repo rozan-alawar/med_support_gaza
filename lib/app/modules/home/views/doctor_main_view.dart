@@ -8,6 +8,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/appointment_card.dart';
 import '../../../core/widgets/quick_stats_card.dart';
 import '../../../routes/app_pages.dart';
+import '../../auth/controllers/doctro_auth_controller.dart';
 import '../controllers/doctor_home_controller.dart';
 
 class DoctorMainView extends GetView<DoctorHomeController> {
@@ -22,30 +23,6 @@ class DoctorMainView extends GetView<DoctorHomeController> {
             padding: const EdgeInsets.all(16.0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
-                  width: 77.w,
-                  height: 77.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey[100],
-                    border: Border.all(
-                      color: AppColors.primary,
-                      width: 2.w,
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.person,
-                    size: 60.sp,
-                    color: Colors.grey[400],
-                  )),
-              23.height,
-              CustomText(
-                'دكتور أمين أمين',
-                color: AppColors.primary,
-                fontFamily: 'LamaSans',
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
               45.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
