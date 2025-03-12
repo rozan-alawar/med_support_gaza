@@ -19,7 +19,6 @@ class DoctorProfileController extends GetxController {
   late TextEditingController lastNameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
-  late TextEditingController aboutController;
 
   // Observable values
   final selectedGender = ''.obs;
@@ -50,6 +49,7 @@ class DoctorProfileController extends GetxController {
       firstNameController.text = doctor?.firstName ?? "";
       lastNameController.text = doctor?.lastName ?? "";
       phoneController.text = doctor?.phoneNumber ?? "";
+      emailController.text = doctor?.email ?? "";
       selectedGender.value = doctor?.gender ?? "";
       selectedCountry.value = doctor?.country ?? "";
       selectedSpeciality.value = doctor?.major ?? "";
@@ -72,6 +72,9 @@ class DoctorProfileController extends GetxController {
       final response = await _doctorProfileApi.getDoctorProfile(token: token);
       doctorData.value = DoctorModel.fromJson(response.data);
       populateFields();
+    } catch (e) {
+      isLoading.value = false;
+      print(e);
     } finally {
       isLoading.value = false;
     }
@@ -209,7 +212,6 @@ class DoctorProfileController extends GetxController {
     lastNameController.dispose();
     phoneController.dispose();
     emailController.dispose();
-    aboutController.dispose();
     super.onClose();
   }
 }

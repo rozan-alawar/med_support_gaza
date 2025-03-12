@@ -18,7 +18,7 @@ class DoctorProfileAPI {
     final res = await Get.find<DioClient>().dio.get(Links.doctorProfile,
         options: Options(
           headers: {
-          'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
@@ -27,6 +27,7 @@ class DoctorProfileAPI {
 
     return res;
   }
+
   Future<di.Response<dynamic>> updateDoctorProfile({
     String? email,
     String? fName,
@@ -38,6 +39,14 @@ class DoctorProfileAPI {
     String? imagePath,
     required String token,
   }) async {
+    print(''''first_name': $fName,
+      'last_name': $lName,
+      'email': $email,
+      'country': $country,
+      'phone_number': $phoneNumber,
+      'gender': $gender,
+      'major': $major,''');
+      
     di.FormData formData = di.FormData.fromMap({
       'first_name': fName,
       'last_name': lName,
@@ -64,17 +73,17 @@ class DoctorProfileAPI {
     }
 
     final res = await Get.find<DioClient>().dio.post(
-      Links.doctorUpdateProfile,
-      data: formData,
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json',
-        },
-        followRedirects: true,
-      ),
-    );
+          Links.doctorUpdateProfile,
+          data: formData,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'multipart/form-data',
+              'Accept': 'application/json',
+            },
+            followRedirects: true,
+          ),
+        );
 
     return res;
   }

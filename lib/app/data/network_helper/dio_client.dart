@@ -39,7 +39,7 @@ class ErrorInterceptor extends Interceptor {
 | ${options.data.toString()}
 ''');
     print('Request Headers: ${options.headers}');
-    print('Request Body: ${options.data}');
+    print('Request Body: ${options.data.toString()}');
 
     handler.next(options);
   }

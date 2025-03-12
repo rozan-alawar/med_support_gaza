@@ -162,7 +162,7 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
                   Expanded(
                     child: Obx(() => RadioListTile<String>(
                           title: CustomText('Male'.tr),
-                          value: 'Male',
+                          value: 'male',
                           groupValue: controller.selectedGender.value,
                           onChanged: (value) =>
                               controller.selectedGender.value = value!,
@@ -173,7 +173,7 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
                   Expanded(
                     child: Obx(() => RadioListTile<String>(
                           title: CustomText('Female'.tr),
-                          value: 'Female',
+                          value: 'female',
                           groupValue: controller.selectedGender.value,
                           onChanged: (value) =>
                               controller.selectedGender.value = value!,
@@ -274,12 +274,6 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
               ],
             ),
           ),
-        ),
-        16.height,
-        CustomTextField(
-          controller: controller.aboutController,
-          hintText: 'About'.tr,
-          prefixIcon: Icons.info_outline,
         ),
         16.height,
         _buildLanguagesSelection(),
