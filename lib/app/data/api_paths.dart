@@ -38,4 +38,6 @@ class Links {
   static var doctorUpdateProfile = '/doctor/update-profile';
   static var doctorAddSchedule  = '/doctor/schedule';
   static var doctorAppointments= 'doctor/appointments';
+  static var doctorDeleteAppointment= 'doctor/appointment';
+
 }

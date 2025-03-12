@@ -20,7 +20,6 @@ class DoctorAppointmentManagementController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     // Replace with actual doctorId
     final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
     loadAppointments();

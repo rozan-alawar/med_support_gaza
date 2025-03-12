@@ -32,7 +32,6 @@ class DoctorAppointmentAPI {
     required String startTime,
     required String endTime,
   }) async {
-    // if doctor available he can make this request
     final res = await Get.find<DioClient>().dio.post(Links.doctorAddSchedule,
         options: Options(
           headers: {
@@ -48,6 +47,22 @@ class DoctorAppointmentAPI {
           "end_time": endTime,
           "period": "half hour"
         });
+
+    return res;
+  }
+
+  Future<di.Response<dynamic>> delelteDoctorAppointment({
+    required String token,
+    required String id,
+  }) async {
+    final res = await Get.find<DioClient>().dio.delete('${Links.doctorDeleteAppointment}/$id',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json'
+          },
+          followRedirects: true,
+        ));
 
     return res;
   }
