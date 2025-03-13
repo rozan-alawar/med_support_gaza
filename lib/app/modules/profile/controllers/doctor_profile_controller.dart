@@ -99,7 +99,6 @@ class DoctorProfileController extends GetxController {
         phoneNumber: phoneController.text.trim(),
         major: selectedSpeciality.value,
         country: selectedCountry.value,
-        imagePath: selectedImagePath.value,
       );
 
       await fetchDoctorData(); // Refresh data
@@ -139,7 +138,11 @@ class DoctorProfileController extends GetxController {
       if (image != null) {
         isLoading.value = true;
         selectedImagePath.value = image.path;
-        await updateProfile();
+        final token = CacheHelper.getData(key: 'token');
+        await _doctorProfileApi.updateDoctorImageProfile(
+          imagePath: image.path,
+          token: token,
+        );
 
         Get.snackbar(
           'Success',
