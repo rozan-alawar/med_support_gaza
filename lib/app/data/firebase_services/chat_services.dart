@@ -6,6 +6,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<void> bookAppointment({
+    required String doctorId,
+    required String patientId,
+    required Timestamp startTime,
+    required Timestamp endTime,
+  }) async {
+    // إنشاء سجل استشارة جديد مع الحالة "upcoming"
+    await _firestore.collection('consultations').add({
+      'doctorId': doctorId,
+      'patientId': patientId,
+      'status': 'upcoming',
+      'startTime': startTime,
+      'endTime': endTime,
+    });
+  }
+
   // Get consultations by status and user ID
   Stream<QuerySnapshot> getConsultations(String userId, String status) {
     return _firestore

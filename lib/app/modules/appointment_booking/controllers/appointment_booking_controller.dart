@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
 import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/data/models/specialization_model.dart';
+import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
+import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class AppointmentBookingController extends GetxController {
@@ -30,6 +33,8 @@ class AppointmentBookingController extends GetxController {
   final RxString errorMessage = ''.obs;
 
   final RxBool isDirectBooking = false.obs;
+  final ChatService _chatService = ChatService();
+
 
   @override
   void onInit() {
@@ -202,12 +207,11 @@ class AppointmentBookingController extends GetxController {
   }
 
   Future<void> confirmBooking() async {
-    try {
       isLoading.value = true;
 
       final appointment = AppointmentModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        patientId: patientId ?? _firebaseService.currentUser!.uid,
+        patientId: HomeController().currentUser!.value!.id.toString()??"mkcjhdk",
         doctorId: selectedDoctorId.value,
         doctorName: selectedDoctorName.value,
         patientName: patientName,
@@ -220,8 +224,15 @@ class AppointmentBookingController extends GetxController {
           selectedTime.value?.minute ?? DateTime.monday,
         ),
       );
-
-      await _firebaseService.saveAppointment(appointment);
+print(selectedTime.value!.hour.toString());
+      await _chatService.bookAppointment(doctorId:  selectedDoctorId!.value,
+       patientId: HomeController().currentUser!.value!.id.toString()
+        ,
+       endTime:  addMinutesToTimestamp(   convertTimeOfDayToTimestamp(selectedTime.value!), 30)
+   ,
+      startTime:  convertTimeOfDayToTimestamp(selectedTime.value!),
+      );
+     CustomSnackBar.showCustomSnackBar(message:" Text('تم حجز الموعد بنجاح')",title: 'done');
 
       CustomSnackBar.showCustomSnackBar(
         title: 'Success'.tr,
@@ -229,14 +240,21 @@ class AppointmentBookingController extends GetxController {
       );
 
       Get.offNamed(Routes.HOME);
-    } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: e.toString(),
-      );
-    } finally {
-      isLoading.value = false;
-    }
+
+  }
+
+
+  Timestamp convertTimeOfDayToTimestamp(TimeOfDay timeOfDay) {
+    DateTime now = DateTime.now();
+    DateTime dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    return Timestamp.fromDate(dateTime);
+  }
+
+
+  Timestamp addMinutesToTimestamp(Timestamp timestamp, int minutes) {
+    DateTime dateTime = timestamp.toDate();
+    DateTime newDateTime = dateTime.add(Duration(minutes: minutes));
+    return Timestamp.fromDate(newDateTime);
   }
 
   final List<String> stepTitles = [
