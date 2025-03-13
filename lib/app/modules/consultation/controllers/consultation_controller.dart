@@ -1,81 +1,90 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
+import 'package:med_support_gaza/app/modules/consultation/views/pages/chat_view.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
-class ConsultationController extends GetxController {
-  final RxInt activeConsultations = 0.obs;
-  final RxList<ConsultationModel> consultations = <ConsultationModel>[].obs;
-  final RxBool isLoading = false.obs;
 
-  // Mock data for testing
+class ConsultationsController extends GetxController {
+  final ChatService _chatService = ChatService();
+  final String userId;
+
+  final activeConsultations = <ConsultationModel>[
+    ConsultationModel(id: "215", doctorId: "5451", doctorName: "doctorName", patientId: "patientId", patientName: "patientName", startTime: Timestamp.now(), endTime: Timestamp.fromDate(DateTime.now()), status: "active")
+  ].obs;
+  final upcomingConsultations = <ConsultationModel>[].obs;
+  final pastConsultations = <ConsultationModel>[].obs;
+  final isLoading = true.obs;
+
+  ConsultationsController({required this.userId});
+
   @override
   void onInit() {
     super.onInit();
-    // Add some sample consultations
-    consultations.addAll([
-      ConsultationModel(
-        id: '1',
-        doctorName: 'Dr. Sarah Wilson',
-        specialty: 'Cardiology',
-        date: DateTime.now().add(const Duration(days: 1)), // Tomorrow
-        time: '14:00',
-        status: 'upcoming',
-      ),
-      ConsultationModel(
-        id: '2',
-        doctorName: 'Dr. Michael Chen',
-        specialty: 'Neurology',
-        date: DateTime.now(),
-        time: '10:30',
-        status: 'active',
-      ),
-    ]);
-
-    // Update active consultations count
-    updateActiveConsultations();
+    _loadConsultations();
   }
 
-  void updateActiveConsultations() {
-    activeConsultations.value = consultations
-        .where((c) => c.status == 'active')
-        .length;
-  }
-  void startChat(ConsultationModel consultation) {
-    Get.toNamed(Routes.CONSULTATION_CHAT, arguments: consultation);
+  void _loadConsultations() {
+    // Listen to active consultations
+    _chatService.getConsultations(userId, 'active').listen((snapshot) {
+      activeConsultations.value = _mapConsultations(snapshot);
+      isLoading.value = false;
+    });
+
+    // Listen to upcoming consultations
+    _chatService.getConsultations(userId, 'upcoming').listen((snapshot) {
+      upcomingConsultations.value = _mapConsultations(snapshot);
+    });
+
+    // Listen to past consultations
+    _chatService.getConsultations(userId, 'past').listen((snapshot) {
+      pastConsultations.value = _mapConsultations(snapshot);
+    });
   }
 
-  // Get consultations by status
-  List<ConsultationModel> getConsultationsByStatus(String status) {
-    return consultations
-        .where((consultation) => consultation.status == status)
-        .toList();
-  }
-
-  // Check if user can make new consultation
-  bool canBookNewConsultation(DateTime proposedDate, String proposedTime) {
-    // Check if there's any active or upcoming consultation at the same time
-    return !consultations.any((consultation) =>
-    consultation.status != 'completed' &&
-        consultation.date.year == proposedDate.year &&
-        consultation.date.month == proposedDate.month &&
-        consultation.date.day == proposedDate.day &&
-        consultation.time == proposedTime
-    );
-  }
-
-  // Add new consultation
-  void addConsultation(ConsultationModel consultation) {
-    if (canBookNewConsultation(consultation.date, consultation.time)) {
-      consultations.add(consultation);
-      updateActiveConsultations();
-    } else {
-      Get.snackbar(
-        'Error',
-        'You already have a consultation at this time',
-        backgroundColor: Colors.red[100],
-        colorText: Colors.red[900],
+  List<ConsultationModel> _mapConsultations(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return ConsultationModel.fromMap(
+          doc.id,
+          doc.data() as Map<String, dynamic>
       );
+    }).toList();
+  }
+
+  // Check and update consultation statuses periodically
+  void startStatusChecker() {
+    Timer.periodic(Duration(minutes: 1), (timer) {
+      _checkConsultationStatuses();
+    });
+  }
+
+  void _checkConsultationStatuses() {
+    final now = Timestamp.now();
+
+    // Check if any upcoming consultations should be active
+    for (var consultation in upcomingConsultations) {
+      if (now.compareTo(consultation.startTime) >= 0) {
+        _chatService.updateConsultationStatus(consultation.id, 'active');
+      }
     }
+
+    // Check if any active consultations should be past
+    for (var consultation in activeConsultations) {
+      if (now.compareTo(consultation.endTime) >= 0) {
+        _chatService.updateConsultationStatus(consultation.id, 'past');
+      }
+    }
+  }
+
+  // Navigate to chat screen
+  void openChat(ConsultationModel consultation) {
+    Get.to(() => ChatView(
+      consultationId: consultation.id,
+      userId: userId,
+    ));
   }
 }

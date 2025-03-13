@@ -10,6 +10,7 @@ import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/api_services/patient_profile_api.dart';
 import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
@@ -18,16 +19,15 @@ class ProfileController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RxBool isLoading = false.obs;
-   Rx<PatientModel?> currentUser =    Rx<PatientModel?>(AuthController().currentUser) ;
-
-
+  Rx<PatientModel?> currentUser =
+      Rx<PatientModel?>(AuthController().currentUser);
 
   // Edit Profile Controllers
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
-  final RxString selectedGender = ''.obs;
+  final RxString selectedGender = 'Female'.obs;
   final RxString selectedCountry = ''.obs;
 
   @override
@@ -51,9 +51,7 @@ class ProfileController extends GetxController {
       dynamic user = await CacheHelper.getData(key: 'user');
       currentUser.value = PatientModel.fromJson(json.decode(user));
 
-          _initializeControllers();
-
-
+      _initializeControllers();
     } catch (e) {
       CustomSnackBar.showCustomErrorSnackBar(
         title: 'Error'.tr,
@@ -76,57 +74,42 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> updateProfile() async {
-    try {
-      if (!_validateInputs()) return;
+  void updateProfile() async {
+    isLoading.value = true;
 
-      isLoading.value = true;
-      final user = _auth.currentUser;
-      if (user == null) return;
+    PatientProfileAPIService.updatePatientProfile(
+        firstName: firstNameController.text.trim(),
+    lastName: lastNameController.text.trim(),
+    phone_number: phoneController.text.trim(),
+    age:  int.parse(ageController.text.trim()),
+    gender: selectedGender.value,
+address: selectedCountry.value,
 
-      final updatedData = {
-        'firstName': firstNameController.text.trim(),
-        'lastName': lastNameController.text.trim(),
-        'phoneNo': phoneController.text.trim(),
-        'age': ageController.text.trim(),
-        'gender': selectedGender.value,
-        'country': selectedCountry.value,
-      };
+      onSuccess: (response) async {
 
-      await _firestore.collection('patients').doc(user.uid).update(updatedData);
+        isLoading.value = false;
+        final patient = response.data['patient'];
+        currentUser.value = PatientModel.fromJson(patient);
+        await getProfile();
 
-      await loadUserData();
+        CacheHelper.saveData(key: 'user', value: json.encode(currentUser.value!));
 
-      CustomSnackBar.showCustomSnackBar(
-        title: 'Success'.tr,
-        message: 'Profile updated successfully'.tr,
-      );
-
-      Get.back();
-    } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Failed to update profile'.tr,
-      );
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  bool _validateInputs() {
-    if (firstNameController.text.trim().isEmpty ||
-        lastNameController.text.trim().isEmpty ||
-        phoneController.text.trim().isEmpty ||
-        ageController.text.trim().isEmpty ||
-        selectedGender.value.isEmpty ||
-        selectedCountry.value.isEmpty) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Please fill all fields'.tr,
-      );
-      return false;
-    }
-    return true;
+        CustomSnackBar.showCustomSnackBar(
+          title: 'Success'.tr,
+          message: 'Profile updated successfully'.tr,
+        );
+      },
+      onError: (e) {
+        isLoading.value = false;
+        CustomSnackBar.showCustomErrorSnackBar(
+          title: 'Error'.tr,
+          message: e.message,
+        );
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
   }
 
   Future<void> signOut() async {
@@ -139,6 +122,28 @@ class ProfileController extends GetxController {
         message: 'Failed to sign out'.tr,
       );
     }
+  }
+
+  Future<void> getProfile() async {
+    isLoading.value = true;
+
+    PatientProfileAPIService.getPatientProfile(
+      onSuccess: (response) {
+        isLoading.value = false;
+        final patient = response.data['patient'];
+        currentUser.value = PatientModel.fromJson(patient);
+      },
+      onError: (e) {
+        isLoading.value = false;
+        CustomSnackBar.showCustomErrorSnackBar(
+          title: 'Error'.tr,
+          message: e.message,
+        );
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
   }
 
   void onLanguageTap() {

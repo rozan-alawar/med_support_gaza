@@ -1,275 +1,275 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/chat_controller.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/pages/message_bubbel.dart';
 
-class ChatView extends GetView<ChatController> {
-  const ChatView({super.key});
+class ChatView extends StatelessWidget {
+  final String consultationId;
+  final String userId;
+
+  ChatView({required this.consultationId, required this.userId});
 
   @override
   Widget build(BuildContext context) {
+    final ChatController controller = Get.put(ChatController(
+        userId: userId,
+        consultationId: consultationId
+    ));
+
     return Scaffold(
-      appBar: _buildAppBar(context),
-      body: Column(
-        children: [
-          _buildConsultationInfo(),
-          _buildChatMessages(),
-          _buildInputField(),
-        ],
-      ),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppColors.primary,
-      elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => Get.back(),
-      ),
-      title: Row(
-        children: [
-          CircleAvatar(
-            radius: 20.r,
-            backgroundColor: Colors.white,
-            child: Text(
-              controller.consultation.doctorName.substring(0, 2).toUpperCase(),
-              style: const TextStyle(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          12.width,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                controller.consultation.doctorName,
-                color: Colors.white,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomText(
-                controller.consultation.specialty,
-                color: Colors.white70,
-                fontSize: 12.sp,
-              ),
-            ],
-          ),
-        ],
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.info_outline, color: Colors.white),
-          onPressed: () => _showConsultationDetails(context),
+      appBar: AppBar(
+        title: Obx(() => Text(
+          controller.consultation.value?.doctorName ?? 'Consultation',
+          style: TextStyle(color: Colors.white),
+        )),
+        backgroundColor: Colors.teal,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Get.back(),
         ),
-      ],
-    );
-  }
-
-  Widget _buildConsultationInfo() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
-      color: AppColors.primary.withOpacity(0.1),
-      child: Row(
-        children: [
-          Icon(Icons.access_time, size: 16.r, color: AppColors.primary),
-          8.width,
-          Expanded(
-            child: Obx(() => CustomText(
-                  controller.remainingTime.value,
-                  fontSize: 12.sp,
-                  color: AppColors.primary,
-                )),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.info_outline, color: Colors.white),
+            onPressed: () {
+              // Show consultation details
+              _showConsultationDetails(context, controller.consultation.value);
+            },
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildChatMessages() {
-    return Expanded(
-      child: Obx(() {
+      body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator());
         }
 
-        if (controller.messages.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.chat_bubble_outline,
-                  size: 48.sp,
-                  color: Colors.grey[300],
-                ),
-                16.height,
-                CustomText(
-                  'Start your consultation by sending a message',
-                  fontSize: 14.sp,
-                  color: Colors.grey[600],
-                ),
-              ],
+        return Column(
+          children: [
+            // Status banner
+            _buildStatusBanner(controller),
+
+            // Messages list
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.all(10),
+                itemCount: controller.messages.length,
+                itemBuilder: (context, index) {
+                  final message = controller.messages[index];
+                  final isUser = message.senderId == userId;
+
+                  return _buildMessageBubble(message, isUser);
+                },
+              ),
             ),
-          );
-        }
 
-        return ListView.builder(
-          reverse: true,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-          itemCount: controller.messages.length,
-          itemBuilder: (context, index) {
-            final message = controller.messages[index];
-            return MessageBubble(
-              message: message,
-              isMe: message.senderId == controller.currentUserId,
-            );
-          },
+            // Input field - only visible for active consultations
+            if (controller.canSendMessage)
+              _buildMessageInput(controller),
+
+            // Past consultation notice
+            if (controller.isConsultationPast)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16),
+                color: Colors.grey.shade200,
+                child: Text(
+                  'This consultation has ended',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+              ),
+
+            // Upcoming consultation notice
+            if (controller.isConsultationUpcoming)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16),
+                color: Colors.blue.shade100,
+                child: Text(
+                  'This consultation will start at ${_formatTime(controller.consultation.value?.startTime)}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue.shade800,
+                  ),
+                ),
+              ),
+          ],
         );
       }),
     );
   }
 
-  Widget _buildInputField() {
+  Widget _buildStatusBanner(ChatController controller) {
+    final consultation = controller.consultation.value;
+    if (consultation == null) return SizedBox();
+
+    Color backgroundColor;
+    String statusText;
+
+    switch (consultation.status) {
+      case 'active':
+        backgroundColor = Colors.green.shade100;
+        statusText = controller.remainingTime.value;
+        break;
+      case 'upcoming':
+        backgroundColor = Colors.blue.shade100;
+        statusText = 'Upcoming - ${_formatDate(consultation.startTime)}';
+        break;
+      case 'past':
+        backgroundColor = Colors.grey.shade200;
+        statusText = 'Consultation ended';
+        break;
+      default:
+        backgroundColor = Colors.grey.shade100;
+        statusText = '';
+    }
+
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      color: backgroundColor,
+      child: Row(
+        children: [
+          Icon(
+            consultation.status == 'active' ? Icons.timer :
+            consultation.status == 'upcoming' ? Icons.event : Icons.event_busy,
+            size: 18,
+          ),
+          SizedBox(width: 8),
+          Text(
+            statusText,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(MessageModel message, bool isUser) {
+    return Align(
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 5),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
+          color: isUser ? Colors.teal : Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        constraints: BoxConstraints(maxWidth: 250),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              message.text,
+              style: TextStyle(
+                color: isUser ? Colors.white : Colors.black,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              _formatTime(message.timestamp) ?? '',
+              style: TextStyle(
+                fontSize: 10,
+                color: isUser ? Colors.white70 : Colors.black54,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMessageInput(ChatController controller) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
+            offset: Offset(0, -2),
+            blurRadius: 2,
+            color: Colors.black.withOpacity(0.1),
           ),
         ],
       ),
-      child: SafeArea(
-        child: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.attach_file, color: AppColors.primary),
-              onPressed: controller.pickFile,
-            ),
-            Expanded(
-              child: TextField(
-                controller: controller.messageController,
-                decoration: InputDecoration(
-                  hintText: 'Type a message...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24.r),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey[100],
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 8.h,
-                  ),
-                ),
-                maxLines: null,
-                textCapitalization: TextCapitalization.sentences,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              onChanged: (value) => controller.message.value = value,
+              decoration: InputDecoration(
+                hintText: 'Type a message...',
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(10),
               ),
             ),
-            8.width,
-            CircleAvatar(
-              radius: 20.r,
-              backgroundColor: AppColors.primary,
-              child: IconButton(
-                icon: Icon(Icons.send, color: Colors.white, size: 20.r),
-                onPressed: () {
-                  if (controller.messageController.text.trim().isNotEmpty) {
-                    controller.sendMessage();
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+          IconButton(
+            icon: Icon(Icons.send, color: Colors.teal),
+            onPressed: controller.sendMessage,
+          ),
+        ],
       ),
     );
   }
 
-  void _showConsultationDetails(BuildContext context) {
-    Get.bottomSheet(
-      Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-        ),
-        child: Column(
+  void _showConsultationDetails(BuildContext context, ConsultationModel? consultation) {
+    if (consultation == null) return;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Consultation Details'),
+        content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomText(
-              'Consultation Details',
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-            16.height,
-            _buildDetailRow('Doctor', controller.consultation.doctorName),
-            _buildDetailRow('Specialty', controller.consultation.specialty),
-            _buildDetailRow(
-                'Date', controller.formatDate(controller.consultation.date)),
-            _buildDetailRow('Time', controller.consultation.time),
-            _buildDetailRow(
-                'Status', controller.consultation.status.capitalizeFirst!),
-            24.height,
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Get.back(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  padding: EdgeInsets.symmetric(vertical: 12.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                ),
-                child: CustomText(
-                  'Close',
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            _detailRow('Doctor', consultation.doctorName),
+            SizedBox(height: 8),
+            _detailRow('Date', _formatDate(consultation.startTime)),
+            SizedBox(height: 8),
+            _detailRow('Time', '${_formatTime(consultation.startTime)} - ${_formatTime(consultation.endTime)}'),
+            SizedBox(height: 8),
+            _detailRow('Status', consultation.status.toUpperCase()),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 100.w,
-            child: CustomText(
-              label,
-              fontSize: 14.sp,
-              color: Colors.grey[600],
-            ),
-          ),
-          Expanded(
-            child: CustomText(
-              value,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-            ),
+        actions: [
+          TextButton(
+            child: Text('Close'),
+            onPressed: () => Navigator.of(context).pop(),
           ),
         ],
       ),
     );
+  }
+
+  Widget _detailRow(String label, String? value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('$label: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Expanded(child: Text(value ?? 'N/A')),
+      ],
+    );
+  }
+
+  String? _formatTime(Timestamp? timestamp) {
+    if (timestamp == null) return null;
+    return DateFormat('hh:mm a').format(timestamp.toDate());
+  }
+
+  String? _formatDate(Timestamp? timestamp) {
+    if (timestamp == null) return null;
+    return DateFormat('MMM dd, yyyy').format(timestamp.toDate());
   }
 }

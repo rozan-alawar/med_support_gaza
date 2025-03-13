@@ -26,8 +26,8 @@ class DoctorAppointmentManagementController extends GetxController {
   void onInit() {
     super.onInit();
     // Replace with actual doctorId
-    final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    loadAppointments();
+    // final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    loadAvailableAppointments();
     generateAvailableTimes();
     //getDayilyappointment();
   }
@@ -39,7 +39,7 @@ class DoctorAppointmentManagementController extends GetxController {
     for (int hour = 9; hour <= 16; hour++) {
       // For each hour, create :00 and :30 slots
       String period = hour < 12 ? 'AM' : 'PM';
-      int displayHour = hour > 12 ? hour - 12 : hour;
+      int displayHour =hour > 12 ? hour - 12 : hour;
 
       // Add XX:00 slot
       availableTimes
@@ -153,7 +153,7 @@ class DoctorAppointmentManagementController extends GetxController {
     }
   }
 
-  void loadAppointments() async {
+  void loadAvailableAppointments() async {
     String? token = CacheHelper.getData(key: 'token');
 
     if (token == null) {
@@ -163,7 +163,7 @@ class DoctorAppointmentManagementController extends GetxController {
     try {
       isloading.value = true;
       String? status;
-  
+
       status = 'Available';
       final response = await Get.find<DoctorAppointmentAPI>()
           .getDoctorAppointments(token: token, status: status);

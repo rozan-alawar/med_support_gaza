@@ -20,8 +20,11 @@ class DioHelper {
       BaseOptions(
         baseUrl: Links.baseLink,
         receiveDataWhenStatusError: true,
+
       ),
     );
+    _dio.options.followRedirects = false;
+
     _benzolDio = Dio(
       BaseOptions(
         baseUrl: Links.baseLink,
@@ -30,6 +33,8 @@ class DioHelper {
     );
     _dio.interceptors.add(dioLoggerInterceptor);
     _benzolDio.interceptors.add(dioLoggerInterceptor);
+    _benzolDio.options.followRedirects = false;
+
   }
 
   static const int TIME_OUT_DURATION = 15000;

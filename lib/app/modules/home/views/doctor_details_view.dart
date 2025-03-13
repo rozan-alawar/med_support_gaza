@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import 'package:med_support_gaza/app/data/models/doctor_model.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
+import 'package:med_support_gaza/app/data/models/doctor.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class DoctorDetailsView extends StatelessWidget {
-  final DoctorModel doctor = Get.arguments;
+  final Doctor doctor = Get.arguments;
 
    DoctorDetailsView({super.key});
 
@@ -70,8 +70,8 @@ class DoctorDetailsView extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50.r),
-              child: doctor.profileImage != null
-                  ? Image.network(doctor.profileImage!, fit: BoxFit.cover)
+              child: doctor.firstName != null
+                  ? Image.network("https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg?t=st=1741747042~exp=1741750642~hmac=7185e5b1732ff76b29494d4239254b8563ac95e0a8aa8c3ebb87372381193fad&w=900", fit: BoxFit.cover)
                   : Icon(Icons.person, size: 50.r, color: AppColors.primary),
             ),
           ),
@@ -81,36 +81,36 @@ class DoctorDetailsView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  doctor.fullName,
+                  '${ doctor.firstName} ${ doctor.lastName}',
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
                 8.height,
                 CustomText(
-                  doctor.speciality,
+                  doctor.major??"Null",
                   fontSize: 14.sp,
                   color: Colors.grey[600],
                 ),
                 8.height,
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 16.r),
-                    4.width,
-                    CustomText(
-                      '${doctor.rating}',
-                      fontSize: 14.sp,
-                      color: Colors.grey[800],
-                    ),
-                    16.width,
-                    Icon(Icons.work_outline, color: AppColors.primary, size: 16.r),
-                    4.width,
-                    CustomText(
-                      '${doctor.experience} ${'Years'.tr}',
-                      fontSize: 14.sp,
-                      color: Colors.grey[800],
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Icon(Icons.star, color: Colors.amber, size: 16.r),
+                //     4.width,
+                //     CustomText(
+                //       '${doctor.rating}',
+                //       fontSize: 14.sp,
+                //       color: Colors.grey[800],
+                //     ),
+                //     16.width,
+                //     Icon(Icons.work_outline, color: AppColors.primary, size: 16.r),
+                //     4.width,
+                //     CustomText(
+                //       '${doctor.experience} ${'Years'.tr}',
+                //       fontSize: 14.sp,
+                //       color: Colors.grey[800],
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -129,12 +129,12 @@ class DoctorDetailsView extends StatelessWidget {
           _buildInfoItem(
             Icons.phone_outlined,
             'Phone'.tr,
-            doctor.phoneNo,
+            doctor.phoneNumber??"0000000",
           ),
           _buildInfoItem(
             Icons.location_on_outlined,
             'Location'.tr,
-            doctor.country,
+            doctor.country??"Null",
           ),
 
         ],
@@ -175,11 +175,11 @@ class DoctorDetailsView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           12.height,
-          CustomText(
-            doctor.about,
-            fontSize: 14.sp,
-            color: Colors.grey[600],
-          ),
+          // CustomText(
+          //   doctor.about,
+          //   fontSize: 14.sp,
+          //   color: Colors.grey[600],
+          // ),
         ],
       ),
     );
@@ -198,22 +198,22 @@ class DoctorDetailsView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           12.height,
-          Wrap(
-            spacing: 8.w,
-            runSpacing: 8.h,
-            children: doctor.expertise.map((expertise) => Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20.r),
-              ),
-              child: CustomText(
-                expertise,
-                fontSize: 12.sp,
-                color: AppColors.primary,
-              ),
-            )).toList(),
-          ),
+          // Wrap(
+          //   spacing: 8.w,
+          //   runSpacing: 8.h,
+          //   children: doctor.expertise.map((expertise) => Container(
+          //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+          //     decoration: BoxDecoration(
+          //       color: AppColors.primary.withOpacity(0.1),
+          //       borderRadius: BorderRadius.circular(20.r),
+          //     ),
+          //     child: CustomText(
+          //       expertise,
+          //       fontSize: 12.sp,
+          //       color: AppColors.primary,
+          //     ),
+          //   )).toList(),
+          // ),
         ],
       ),
     );
@@ -232,29 +232,29 @@ class DoctorDetailsView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           12.height,
-          Wrap(
-            spacing: 8.w,
-            runSpacing: 8.h,
-            children: doctor.languages.map((language) => Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20.r),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.language, size: 16.r, color: Colors.blue),
-                  4.width,
-                  CustomText(
-                    language,
-                    fontSize: 12.sp,
-                    color: Colors.blue,
-                  ),
-                ],
-              ),
-            )).toList(),
-          ),
+          // Wrap(
+          //   spacing: 8.w,
+          //   runSpacing: 8.h,
+          //   children: doctor.languages.map((language) => Container(
+          //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+          //     decoration: BoxDecoration(
+          //       color: Colors.blue.withOpacity(0.1),
+          //       borderRadius: BorderRadius.circular(20.r),
+          //     ),
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         Icon(Icons.language, size: 16.r, color: Colors.blue),
+          //         4.width,
+          //         CustomText(
+          //           language,
+          //           fontSize: 12.sp,
+          //           color: Colors.blue,
+          //         ),
+          //       ],
+          //     ),
+          //   )).toList(),
+          // ),
         ],
       ),
     );

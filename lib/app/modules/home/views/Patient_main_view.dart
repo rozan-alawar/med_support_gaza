@@ -17,31 +17,35 @@ class PatientMainView extends GetView<HomeController> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 20.h),
             child: RefreshIndicator(
               onRefresh: () async {
                 await controller.refreshData();
               },
               child: ListView(
                 children: [
-                 Row(
-                      children: [
-                        CustomText(
-                         ' ${controller.patient!.firstName} ${controller.patient!.lastName}',
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
+                 Padding(
+                   padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+                   child: Row(
+                        children: [
+                        Obx(()=>  CustomText(
+                           ' ${controller.patient.value!.firstName} ${controller.patient.value!.lastName}',
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                 ),
                         ),
-                        const Spacer(),
-                        CircleAvatar(
-                          radius: 20.r,
-                          backgroundColor: AppColors.primary,
-                          child: const Icon(
-                            Icons.person,
-                            color: AppColors.white,
+                          const Spacer(),
+                          CircleAvatar(
+                            radius: 20.r,
+                            backgroundColor: AppColors.primary,
+                            child: const Icon(
+                              Icons.person,
+                              color: AppColors.white,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                 ),
                   40.height,
                   _buildScheduleButton(controller),
                   SizedBox(height: 20.h),
@@ -59,29 +63,32 @@ class PatientMainView extends GetView<HomeController> {
 }
 
 Widget _buildScheduleButton(HomeController controller) {
-  return InkWell(
-    onTap: () => Get.toNamed(Routes.APPOINTMENT_BOOKING),
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.add_circle_outline_sharp,
-            color: Colors.white,
-          ),
-          12.width,
-          CustomText(
-            'Schedule New Appointment'.tr,
-            fontSize: 12.sp,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ],
+  return Padding(
+    padding:  EdgeInsets.symmetric(horizontal: 8.0.w),
+    child: InkWell(
+      onTap: () => Get.toNamed(Routes.APPOINTMENT_BOOKING),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+        decoration: BoxDecoration(
+          color: AppColors.primary,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.add_circle_outline_sharp,
+              color: Colors.white,
+            ),
+            12.width,
+            CustomText(
+              'Schedule New Appointment'.tr,
+              fontSize: 12.sp,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ],
+        ),
       ),
     ),
   );

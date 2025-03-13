@@ -209,7 +209,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CONSULTATION_CHAT,
-      page: () => const ChatView(),
+      page: () =>  ChatView(  userId: Get.arguments['userId'],
+        consultationId: Get.arguments['consultationId'],),
       binding: ConsultationBinding(),
     ),
   ];

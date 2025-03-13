@@ -1,68 +1,65 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ConsultationModel {
-   String id;
-   String doctorName;
-   String specialty;
-   DateTime date;
-   String time;
-   String status; // 'upcoming', 'active', 'completed'
+  final String id;
+  final String doctorId;
+  final String doctorName;
+  final String? speciality;
+  final String patientId;
+  final String patientName;
+  final Timestamp startTime;
+  final Timestamp endTime;
+  final String status;
 
   ConsultationModel({
     required this.id,
+    required this.doctorId,
     required this.doctorName,
-    required this.specialty,
-    required this.date,
-    required this.time,
+    this.speciality,
+    required this.patientId,
+    required this.patientName,
+    required this.startTime,
+    required this.endTime,
     required this.status,
   });
 
-  // Get doctor initials
-  String get doctorInitials {
-    final nameParts = doctorName.split(' ');
-    if (nameParts.length >= 2) {
-      return '${nameParts[0][0]}${nameParts[1][0]}'.toUpperCase();
-    }
-    return doctorName.substring(0, 2).toUpperCase();
-  }
-
-  // Format date
-  String get formattedDate {
-    final now = DateTime.now();
-    final tomorrow = DateTime(now.year, now.month, now.day + 1);
-
-    if (date.year == now.year &&
-        date.month == now.month &&
-        date.day == now.day) {
-      return 'Today';
-    } else if (date.year == tomorrow.year &&
-        date.month == tomorrow.month &&
-        date.day == tomorrow.day) {
-      return 'Tomorrow';
-    }
-    return '${date.day}/${date.month}/${date.year}';
-  }
-
-  // Check if consultation is happening now
-  bool get isActive => status == 'active';
-
-  // Check if consultation can be joined
-  bool get canJoin {
-    if (status != 'upcoming' && status != 'active') return false;
-
-    final now = DateTime.now();
-    final consultationHour = int.parse(time.split(':')[0]);
-    final consultationMinute = int.parse(time.split(':')[1]);
-
-    final consultationTime = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      consultationHour,
-      consultationMinute,
+  factory ConsultationModel.fromMap(String id, Map<String, dynamic> map) {
+    return ConsultationModel(
+      id: id,
+      doctorId: map['doctorId'] ?? '',
+      doctorName: map['doctorName'] ?? 'Doctor',
+      speciality: map['speciality'],
+      patientId: map['patientId'] ?? '',
+      patientName: map['patientName'] ?? 'Patient',
+      startTime: map['startTime'] ?? Timestamp.now(),
+      endTime: map['endTime'] ?? Timestamp.now(),
+      status: map['status'] ?? 'past',
     );
+  }
+}
 
-    // Can join 5 minutes before until 30 minutes after start time
-    return now.isAfter(consultationTime.subtract(const Duration(minutes: 5))) &&
-        now.isBefore(consultationTime.add(const Duration(minutes: 30)));
+class MessageModel {
+  final String id;
+  final String senderId;
+  final String text;
+  final Timestamp timestamp;
+  final bool isRead;
+
+  MessageModel({
+    required this.id,
+    required this.senderId,
+    required this.text,
+    required this.timestamp,
+    required this.isRead,
+  });
+
+  factory MessageModel.fromMap(String id, Map<String, dynamic> map) {
+    return MessageModel(
+      id: id,
+      senderId: map['senderId'] ?? '',
+      text: map['text'] ?? '',
+      timestamp: map['timestamp'] ?? Timestamp.now(),
+      isRead: map['isRead'] ?? false,
+    );
   }
 }

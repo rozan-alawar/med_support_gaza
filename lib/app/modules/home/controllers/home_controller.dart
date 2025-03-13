@@ -10,6 +10,7 @@ import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/consultation_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:med_support_gaza/app/modules/profile/controllers/profile_controller.dart';
 
 class HomeController extends GetxController {
   // Navigation state
@@ -17,7 +18,8 @@ class HomeController extends GetxController {
 
   // User state
   final RxString userName = ''.obs;
-  final Rx<PatientModel?> currentUser = Rx<PatientModel?>(null);
+  final Rx<PatientModel?> currentUser = Rx<PatientModel?>( PatientModel.fromJson(json.decode(  CacheHelper.getData(key: 'user')))
+  );
 
   final FirebaseService _appointmentService = Get.find<FirebaseService>();
   final FirebaseService _authService = Get.find<FirebaseService>();
@@ -30,8 +32,8 @@ class HomeController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RxBool hasActiveConsultation = false.obs;
-  PatientModel? patient ;
-
+  Rx<PatientModel?> patient =
+  Rx<PatientModel?>(AuthController().currentUser);
   void changeBottomNavIndex(int index) {
     currentIndex.value = index;
   }
@@ -39,18 +41,17 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    patient =AuthController().currentUser;
     // _loadAppointments();
     loadUserData();
     // setupConsultationListener();
   }
-
-  void setupConsultationListener() {
-    // Listen for active consultations and update badge
-    ever(Get.find<ConsultationController>().activeConsultations, (activeCount) {
-      hasActiveConsultation.value = activeCount > 0;
-    });
-  }
+  //
+  // void setupConsultationListener() {
+  //   // Listen for active consultations and update badge
+  //   ever(Get.find<ConsultationsController>().activeConsultations, (activeCount) {
+  //     hasActiveConsultation.value = activeCount > 0;
+  //   });
+  // }
 
   void _loadAppointments() {
     try {
@@ -126,12 +127,19 @@ class HomeController extends GetxController {
 // User Data Management
   Future<void> loadUserData() async {
     try {
-      final userData = CacheHelper.getData(key: 'user');
-      if (userData != null) {
-        patient = PatientModel.fromJson(json.decode(userData));
+
+      final patientvalue  = ProfileController().currentUser.value;
+      if(patientvalue!=null){
+        patient.value = patientvalue;
       }else{
-        Get.back();
+        final userData = CacheHelper.getData(key: 'user');
+        if (userData != null) {
+          patient.value = PatientModel.fromJson(json.decode(userData));
+        }else{
+          Get.back();
+        }
       }
+
 
     } catch (e) {
       print('Error loading user data: $e');
