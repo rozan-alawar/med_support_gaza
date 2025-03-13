@@ -30,13 +30,14 @@ class AppointmentModel {
 
 class Appointment {
   int id;
-  dynamic patientId;
+  int? patientId;
   int doctorId;
   DateTime date;
   String period;
   String startTime;
   String endTime;
   String status;
+  String? patientName;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -49,13 +50,14 @@ class Appointment {
     required this.startTime,
     required this.endTime,
     required this.status,
+    required this.patientName,
     required this.createdAt,
     required this.updatedAt,
   });
 
   Appointment copyWith({
     int? id,
-    dynamic patientId,
+    int? patientId,
     int? doctorId,
     DateTime? date,
     String? period,
@@ -74,6 +76,7 @@ class Appointment {
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
         status: status ?? this.status,
+        patientName: patientName ?? this.patientName,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -86,6 +89,7 @@ class Appointment {
       period: json["period"],
       startTime: json["start_time"],
       endTime: json["end_time"],
+      patientName: json["patient_name"],
       status: json["status"],
       createdAt: DateTime.parse(json["created_at"]),
       updatedAt: DateTime.parse(json["updated_at"]));

@@ -53,7 +53,7 @@ class DoctorAppointmentAPI {
 
   Future<di.Response<dynamic>> delelteDoctorAppointment({
     required String token,
-    required String id,
+    required int id,
   }) async {
     final res = await Get.find<DioClient>().dio.delete('${Links.doctorDeleteAppointment}/$id',
         options: Options(
