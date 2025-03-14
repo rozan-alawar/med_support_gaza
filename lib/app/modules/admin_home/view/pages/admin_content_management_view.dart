@@ -18,7 +18,11 @@ class AdminContentManagementView extends GetView<ContentController> {
       length: 2,
       child: Scaffold(
 
-        body: _buildContentList(),
+        body: RefreshIndicator(
+          onRefresh: ()async {
+            controller.loadContent();
+          },
+            child: _buildContentList()),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Get.toNamed(Routes.ADD_CONTENT),
           backgroundColor: AppColors.primary,

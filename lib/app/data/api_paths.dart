@@ -20,6 +20,7 @@ class Links {
   static var ADMIN_LOGIN = 'login';
   static var ADMIN_LOGOUT = 'logout';
 
+  static var GET_ARTICLES = 'articles';
 
 
 
