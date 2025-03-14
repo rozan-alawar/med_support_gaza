@@ -267,7 +267,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
             tag: 'doctor-${doctor.id}',
             child: Obx(()=> DoctorCard(
                 doctor: doctor,
-                isSelected: controller.selectedDoctorId.value == doctor.id,
+                isSelected:( controller.selectedDoctorId.value == doctor.id).obs,
                 onTap: () => controller.selectDoctor(doctor),
               ),
             ),
@@ -340,7 +340,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
                     Divider(height: 24.h, color: Colors.grey[200]),
                     _buildConfirmationItem(
                       'Doctor'.tr,
-                      controller.selectedDoctor.value,
+                      controller.selectedDoctorName.value,
                       Icons.person_rounded,
                     ),
                     Divider(height: 24.h, color: Colors.grey[200]),

@@ -14,7 +14,7 @@ import 'package:med_support_gaza/app/modules/consultation/views/widgets/active_c
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/consultation_card.dart';
 
 class ConsultationsView extends StatelessWidget {
-  final String userId;
+  final int userId;
 
   ConsultationsView({required this.userId});
 
@@ -69,34 +69,32 @@ class ConsultationsView extends StatelessWidget {
   Widget _buildConsultationsList(String status) {
     final ChatService chatService = ChatService();
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: chatService.getConsultations(userId, status),
+    return StreamBuilder<List<ConsultationModel>>(
+      stream: chatService.getPatientConsultations(userId, status),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         }
 
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: Text(
               'No $status consultations',
-              style: TextStyle(color: Colors.black,fontSize: 14.sp),
+              style: TextStyle(color: Colors.black, fontSize: 14.sp),
             ),
           );
         }
-
         return ListView.builder(
-          itemCount: snapshot.data!.docs.length,
+          itemCount: snapshot.data!.length,
           itemBuilder: (context, index) {
-            final doc = snapshot.data!.docs[index];
-            final data = doc.data() as Map<String, dynamic>;
-            final consultation = ConsultationModel.fromMap(doc.id, data);
+            final consultation = snapshot.data![index];
 
             return ConsultationCard(
               consultation: consultation,
               userId: userId,
               onTap: () {
-                Get.to(() => ChatView(
+                Get.to(() =>
+                    ChatView(
                       consultationId: consultation.id,
                       userId: userId,
                     ));
@@ -109,9 +107,10 @@ class ConsultationsView extends StatelessWidget {
   }
 }
 
+
 class ConsultationCard extends StatelessWidget {
   final ConsultationModel consultation;
-  final String userId;
+  final int userId;
   final VoidCallback onTap;
 
   ConsultationCard({
@@ -139,7 +138,7 @@ class ConsultationCard extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: Colors.teal.shade100,
                     child: Text(
-                      consultation.doctorName.substring(0, 1).toUpperCase(),
+                      consultation.doctor.firstName!.substring(0, 1).toUpperCase(),
                       style: TextStyle(color: Colors.teal),
                     ),
                   ),
@@ -149,14 +148,15 @@ class ConsultationCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          consultation.doctorName,
+                          "${consultation.doctor.firstName} ${consultation.doctor.lastName}",
+
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
                         Text(
-                          consultation.speciality ?? 'Specialist',
+                          consultation.doctor.major ?? 'Specialist',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14,

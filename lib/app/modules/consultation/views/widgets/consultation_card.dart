@@ -1,12 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:med_support_gaza/app/core/extentions/string_extention.dart';
-// import 'package:med_support_gaza/app/core/utils/app_colors.dart';
-// import 'package:med_support_gaza/app/data/models/consultation_model.dart';
-//
-// import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-//
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +5,7 @@ import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 
 class ConsultationCard extends StatelessWidget {
   final ConsultationModel consultation;
-  final String userId;
+  final int userId;
   final VoidCallback onTap;
 
   ConsultationCard({
@@ -42,7 +33,9 @@ class ConsultationCard extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: Colors.teal.shade100,
                     child: Text(
-                      consultation.doctorName.substring(0, 1).toUpperCase(),
+                      consultation.doctor.firstName!
+                          .substring(0, 1)
+                          .toUpperCase(),
                       style: TextStyle(color: Colors.teal),
                     ),
                   ),
@@ -52,14 +45,14 @@ class ConsultationCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          consultation.doctorName,
+                          "${consultation.doctor.firstName} ${consultation.doctor.lastName}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
                         Text(
-                          consultation.speciality ?? 'Specialist',
+                          consultation.doctor.major??"major",
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14,

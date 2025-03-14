@@ -31,7 +31,7 @@ class DoctorProfileController extends GetxController {
     super.onInit();
     initializeControllers();
 
-    fetchDoctorData();
+    // fetchDoctorData();
   }
 
   void initializeControllers() {
@@ -56,26 +56,26 @@ class DoctorProfileController extends GetxController {
       selectedLanguages.value = Set<String>.from(doctor.languages);
     }
   }
-
-  Future<void> fetchDoctorData() async {
-    try {
-      isLoading.value = true;
-      final userId = _firebaseService.currentUser?.uid;
-      if (userId != null) {
-        doctorData.value = await _firebaseService.getDoctorData(userId);
-        populateFields();
-      }
-    } catch (e) {
-      print('Error fetching doctor data: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to load profile data',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isLoading.value = false;
-    }
-  }
+  //
+  // Future<void> fetchDoctorData() async {
+  //   try {
+  //     isLoading.value = true;
+  //     final userId = _firebaseService.currentUser?.uid;
+  //     if (userId != null) {
+  //       doctorData.value = await _firebaseService.getDoctorData(userId);
+  //       populateFields();
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching doctor data: $e');
+  //     Get.snackbar(
+  //       'Error',
+  //       'Failed to load profile data',
+  //       snackPosition: SnackPosition.BOTTOM,
+  //     );
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
 
   Future<void> updateProfile() async {
     if (!formKey.currentState!.validate()) return;
@@ -101,7 +101,7 @@ class DoctorProfileController extends GetxController {
 
       await _firebaseService.updateDoctorData(userId, updatedData);
 
-      await fetchDoctorData(); // Refresh data
+      // await fetchDoctorData(); // Refresh data
 
       Get.back(); // Return to profile page
       Get.snackbar(
@@ -155,7 +155,7 @@ class DoctorProfileController extends GetxController {
           'updatedAt': DateTime.now(),
         });
 
-        await fetchDoctorData();
+        // await fetchDoctorD/ata();
 
         Get.snackbar(
           'Success',

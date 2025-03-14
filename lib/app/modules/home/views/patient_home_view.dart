@@ -16,7 +16,7 @@ class PatientHomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ConsultationsController(userId:   controller.currentUser.value!.id.toString()));
+    Get.put(ConsultationsController(userId:   controller.currentUser.value!.id));
 
     return Scaffold(
       body: Obx(
@@ -27,7 +27,7 @@ class PatientHomeView extends GetView<HomeController> {
             index: controller.currentIndex.value,
             children:  [
               PatientMainView(),
-              ConsultationsView(userId: controller.currentUser.value!.id.toString()),
+              ConsultationsView(userId: controller.currentUser.value!.id),
               PatientProfileView(),
             ],
           ),

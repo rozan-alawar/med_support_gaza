@@ -12,23 +12,22 @@ import 'package:med_support_gaza/app/modules/consultation/views/pages/message_bu
 
 class ChatView extends StatelessWidget {
   final String consultationId;
-  final String userId;
+  final int userId;
 
   ChatView({required this.consultationId, required this.userId});
 
   @override
   Widget build(BuildContext context) {
-    final ChatController controller = Get.put(ChatController(
-        userId: userId,
-        consultationId: consultationId
-    ));
+    final ChatController controller =
+        Get.put(ChatController(userId: userId, consultationId: consultationId));
 
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(
-          controller.consultation.value?.doctorName ?? 'Consultation',
-          style: TextStyle(color: Colors.white),
-        )),
+              "${controller.consultation.value?.doctor.firstName} ${controller.consultation.value?.doctor.lastName} " ??
+                  'Consultation',
+              style: TextStyle(color: Colors.white),
+            )),
         backgroundColor: Colors.teal,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -69,8 +68,7 @@ class ChatView extends StatelessWidget {
             ),
 
             // Input field - only visible for active consultations
-            if (controller.canSendMessage)
-              _buildMessageInput(controller),
+            if (controller.canSendMessage) _buildMessageInput(controller),
 
             // Past consultation notice
             if (controller.isConsultationPast)
@@ -141,8 +139,11 @@ class ChatView extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            consultation.status == 'active' ? Icons.timer :
-            consultation.status == 'upcoming' ? Icons.event : Icons.event_busy,
+            consultation.status == 'active'
+                ? Icons.timer
+                : consultation.status == 'upcoming'
+                    ? Icons.event
+                    : Icons.event_busy,
             size: 18,
           ),
           SizedBox(width: 8),
@@ -223,7 +224,8 @@ class ChatView extends StatelessWidget {
     );
   }
 
-  void _showConsultationDetails(BuildContext context, ConsultationModel? consultation) {
+  void _showConsultationDetails(
+      BuildContext context, ConsultationModel? consultation) {
     if (consultation == null) return;
 
     showDialog(
@@ -234,11 +236,13 @@ class ChatView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _detailRow('Doctor', consultation.doctorName),
+            _detailRow('Doctor',
+                "${consultation.doctor.firstName} ${consultation.doctor.lastName} "),
             SizedBox(height: 8),
             _detailRow('Date', _formatDate(consultation.startTime)),
             SizedBox(height: 8),
-            _detailRow('Time', '${_formatTime(consultation.startTime)} - ${_formatTime(consultation.endTime)}'),
+            _detailRow('Time',
+                '${_formatTime(consultation.startTime)} - ${_formatTime(consultation.endTime)}'),
             SizedBox(height: 8),
             _detailRow('Status', consultation.status.toUpperCase()),
           ],

@@ -12,7 +12,7 @@ import 'package:file_picker/file_picker.dart';
 
 class ChatController extends GetxController {
   final ChatService _chatService = ChatService();
-  final String userId;
+  final int userId;
   final String consultationId;
 
   // Observable variables
@@ -37,20 +37,14 @@ class ChatController extends GetxController {
     _timer?.cancel();
     super.onClose();
   }
-
   void _loadConsultation() {
-    _chatService.getConsultation(consultationId).listen((snapshot) {
-      if (snapshot.exists) {
-        consultation.value = ConsultationModel.fromMap(
-            snapshot.id,
-            snapshot.data() as Map<String, dynamic>
-        );
-        isLoading.value = false;
+    _chatService.getConsultation(consultationId).listen((consultationModel) {
+      consultation.value = consultationModel;
+      isLoading.value = false;
 
-        // Start timer if consultation is active
-        if (consultation.value?.status == 'active') {
-          _startTimer();
-        }
+      // Start timer if consultation is active
+      if (consultation.value?.status == 'active') {
+        _startTimer();
       }
     });
   }
@@ -72,6 +66,9 @@ class ChatController extends GetxController {
       _chatService.sendMessage(
           consultationId,
           userId,
+          '${consultation.value!.doctor.firstName} ${consultation.value!.doctor.lastName}',
+
+
           message.value
       );
       message.value = '';

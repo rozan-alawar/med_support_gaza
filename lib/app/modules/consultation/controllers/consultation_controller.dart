@@ -11,11 +11,9 @@ import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class ConsultationsController extends GetxController {
   final ChatService _chatService = ChatService();
-  final String userId;
+  final int userId;
 
-  final activeConsultations = <ConsultationModel>[
-    ConsultationModel(id: "215", doctorId: "5451", doctorName: "doctorName", patientId: "patientId", patientName: "patientName", startTime: Timestamp.now(), endTime: Timestamp.fromDate(DateTime.now()), status: "active")
-  ].obs;
+  final activeConsultations = <ConsultationModel>[].obs;
   final upcomingConsultations = <ConsultationModel>[].obs;
   final pastConsultations = <ConsultationModel>[].obs;
   final isLoading = true.obs;
@@ -30,30 +28,24 @@ class ConsultationsController extends GetxController {
 
   void _loadConsultations() {
     // Listen to active consultations
-    _chatService.getConsultations(userId, 'active').listen((snapshot) {
-      activeConsultations.value = _mapConsultations(snapshot);
-      isLoading.value = false;
+    _chatService.getPatientConsultations(userId, 'active').listen((
+        consultations) {
+      activeConsultations.value = consultations;
     });
 
     // Listen to upcoming consultations
-    _chatService.getConsultations(userId, 'upcoming').listen((snapshot) {
-      upcomingConsultations.value = _mapConsultations(snapshot);
+    _chatService.getPatientConsultations(userId, 'upcoming').listen((
+        consultations) {
+      upcomingConsultations.value = consultations;
     });
 
     // Listen to past consultations
-    _chatService.getConsultations(userId, 'past').listen((snapshot) {
-      pastConsultations.value = _mapConsultations(snapshot);
+    _chatService.getPatientConsultations(userId, 'past').listen((
+        consultations) {
+      pastConsultations.value = consultations;
     });
   }
 
-  List<ConsultationModel> _mapConsultations(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      return ConsultationModel.fromMap(
-          doc.id,
-          doc.data() as Map<String, dynamic>
-      );
-    }).toList();
-  }
 
   // Check and update consultation statuses periodically
   void startStatusChecker() {
