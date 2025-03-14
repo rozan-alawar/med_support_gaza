@@ -1,3 +1,4 @@
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,6 @@ import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/pages/chat_view.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
-
 
 class ConsultationsController extends GetxController {
   final ChatService _chatService = ChatService();
@@ -23,31 +23,38 @@ class ConsultationsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadConsultations();
+    loadConsultations();
+    startStatusChecker(); // بدء الفحص الدوري لتحديث الحالة
   }
 
-  void _loadConsultations() {
-    // Listen to active consultations
-    _chatService.getPatientConsultations(userId, 'active').listen((
-        consultations) {
+  void loadConsultations() {
+    // استماع للاستشارات النشطة
+    _chatService.getPatientConsultations(userId, 'active').listen((consultations) {
       activeConsultations.value = consultations;
     });
 
-    // Listen to upcoming consultations
-    _chatService.getPatientConsultations(userId, 'upcoming').listen((
-        consultations) {
+    // استماع للاستشارات القادمة
+    _chatService.getPatientConsultations(userId, 'upcoming').listen((consultations) {
       upcomingConsultations.value = consultations;
     });
 
-    // Listen to past consultations
-    _chatService.getPatientConsultations(userId, 'past').listen((
-        consultations) {
+    // استماع للاستشارات الماضية
+    _chatService.getPatientConsultations(userId, 'past').listen((consultations) {
       pastConsultations.value = consultations;
     });
   }
 
+  String _getConsultationStatus(Timestamp startTime, Timestamp endTime) {
+    final now = Timestamp.now();
+    if (now.compareTo(startTime) < 0) {
+      return 'upcoming';
+    } else if (now.compareTo(endTime) < 0) {
+      return 'active';
+    } else {
+      return 'past';
+    }
+  }
 
-  // Check and update consultation statuses periodically
   void startStatusChecker() {
     Timer.periodic(Duration(minutes: 1), (timer) {
       _checkConsultationStatuses();
@@ -55,24 +62,15 @@ class ConsultationsController extends GetxController {
   }
 
   void _checkConsultationStatuses() {
-    final now = Timestamp.now();
-
-    // Check if any upcoming consultations should be active
-    for (var consultation in upcomingConsultations) {
-      if (now.compareTo(consultation.startTime) >= 0) {
-        _chatService.updateConsultationStatus(consultation.id, 'active');
-      }
-    }
-
-    // Check if any active consultations should be past
-    for (var consultation in activeConsultations) {
-      if (now.compareTo(consultation.endTime) >= 0) {
-        _chatService.updateConsultationStatus(consultation.id, 'past');
+    final allConsultations = [...upcomingConsultations, ...activeConsultations];
+    for (var consultation in allConsultations) {
+      final expectedStatus = _getConsultationStatus(consultation.startTime, consultation.endTime);
+      if (consultation.status != expectedStatus) {
+        _chatService.updateConsultationStatus(consultation.id, expectedStatus);
       }
     }
   }
 
-  // Navigate to chat screen
   void openChat(ConsultationModel consultation) {
     Get.to(() => ChatView(
       consultationId: consultation.id,

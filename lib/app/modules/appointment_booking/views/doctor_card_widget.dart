@@ -31,7 +31,7 @@ class DoctorCard extends GetView<AppointmentBookingController> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(16.r),
             border: Border.all(
-              color: controller.selectedDoctor!.value.id == doctor.id ? AppColors.primary : Colors.grey[200]!,
+              color: controller.selectedDoctor?.value.id == doctor.id ? AppColors.primary : Colors.grey[200]!,
               width: isSelected!.value ? 2 : 1,
             ),
             boxShadow: [

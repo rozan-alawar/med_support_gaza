@@ -13,7 +13,7 @@ import 'package:med_support_gaza/app/modules/consultation/views/pages/chat_view.
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/active_chat_card.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/consultation_card.dart';
 
-class ConsultationsView extends StatelessWidget {
+class ConsultationsView extends GetView<ConsultationsController> {
   final int userId;
 
   ConsultationsView({required this.userId});
@@ -55,12 +55,17 @@ class ConsultationsView extends StatelessWidget {
             ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            _buildConsultationsList('active'),
-            _buildConsultationsList('upcoming'),
-            _buildConsultationsList('past'),
-          ],
+        body: RefreshIndicator(
+    onRefresh:() async {
+    controller.loadConsultations();
+    },
+          child: TabBarView(
+            children: [
+              _buildConsultationsList('active'),
+              _buildConsultationsList('upcoming'),
+              _buildConsultationsList('past'),
+            ],
+          ),
         ),
       ),
     );

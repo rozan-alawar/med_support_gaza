@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/models/article_model.dart';
 import 'package:med_support_gaza/app/data/models/health_tip.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/articles_controller.dart';
 
@@ -29,17 +30,17 @@ class HealthTipsView extends GetView<HealthTipsController> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 8.w),
-              itemCount: controller.healthTips.length,
+              itemCount: controller.contentList.length,
               separatorBuilder: (context, index) => 12.height,
               itemBuilder: (context, index) => _buildTipCard(
-                controller.healthTips[index],
+                controller.contentList[index],
               ),
             )),
       ],
     );
   }
 
-  Widget _buildTipCard(HealthAwarenessTip tip) {
+  Widget _buildTipCard(Article tip) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -59,23 +60,38 @@ class HealthTipsView extends GetView<HealthTipsController> {
           onTap: () => controller.openArticle(tip),
           borderRadius: BorderRadius.circular(12.r),
           child: Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: EdgeInsets.symmetric(horizontal: 12.w ,vertical: 12.h ),
+            child: Row(
               children: [
-                CustomText(
-                  tip.title,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark,
+                ClipRRect(
+                  borderRadius:  BorderRadius.circular(12.r),
+                  child: Image.network(
+                    tip.image,
+                    width: 70.w,
+                    height: 80.h,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                8.height,
-                CustomText(
-                  tip.description,
-                  fontSize: 14.sp,
-                  color: AppColors.textLight,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                16.width,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      tip.title,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textDark,
+                    ),
+                    8.height,
+                    CustomText(
+                      tip.content,
+                      fontSize: 14.sp,
+                      color: AppColors.textLight,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    8.height,
+                  ],
                 ),
               ],
             ),
