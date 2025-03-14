@@ -68,15 +68,15 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
                 color: AppColors.primary,
                 width: 2.w,
               ),
-              image: controller.doctorData.value?.profileImage != null
+              image: controller.doctorData.value?.doctor?.image != null
                   ? DecorationImage(
                       image: NetworkImage(
-                          controller.doctorData.value!.profileImage!),
+                          controller.doctorData.value!.doctor?.image ?? ''),
                       fit: BoxFit.cover,
                     )
                   : null,
             ),
-            child: controller.doctorData.value?.profileImage == null
+            child: controller.doctorData.value?.doctor?.image == null
                 ? Icon(
                     Icons.person,
                     size: 60.sp,
@@ -134,6 +134,14 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
           validator: (value) => value?.isValidPhone,
         ),
         16.height,
+        CustomTextField(
+          controller: controller.emailController,
+          hintText: 'Email'.tr,
+          prefixIcon: Icons.email_outlined,
+          keyboardType: TextInputType.emailAddress,
+          validator: (value) => value?.isValidEmail,
+        ),
+        16.height,
         Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           decoration: BoxDecoration(
@@ -154,7 +162,7 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
                   Expanded(
                     child: Obx(() => RadioListTile<String>(
                           title: CustomText('Male'.tr),
-                          value: 'Male',
+                          value: 'male',
                           groupValue: controller.selectedGender.value,
                           onChanged: (value) =>
                               controller.selectedGender.value = value!,
@@ -165,7 +173,7 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
                   Expanded(
                     child: Obx(() => RadioListTile<String>(
                           title: CustomText('Female'.tr),
-                          value: 'Female',
+                          value: 'female',
                           groupValue: controller.selectedGender.value,
                           onChanged: (value) =>
                               controller.selectedGender.value = value!,
@@ -266,19 +274,6 @@ class DoctorEditProfileView extends GetView<DoctorProfileController> {
               ],
             ),
           ),
-        ),
-        16.height,
-        CustomTextField(
-          controller: controller.experienceController,
-          hintText: 'Years of Experience'.tr,
-          prefixIcon: Icons.work_outline,
-          keyboardType: TextInputType.number,
-        ),
-        16.height,
-        CustomTextField(
-          controller: controller.aboutController,
-          hintText: 'About'.tr,
-          prefixIcon: Icons.info_outline,
         ),
         16.height,
         _buildLanguagesSelection(),

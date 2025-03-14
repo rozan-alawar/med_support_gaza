@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
-import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
-import '../../../data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/data/api_services/doctor_profile_api.dart';
+import 'package:med_support_gaza/app/modules/auth/controllers/doctro_auth_controller.dart';
+import '../../../core/services/cache_helper.dart';
+import '../../../data/models/doctor.dart';
+import '../../../routes/app_pages.dart';
 
 class DoctorProfileController extends GetxController {
-  final FirebaseService _firebaseService = Get.find<FirebaseService>();
+  final DoctorProfileAPI _doctorProfileApi = Get.find<DoctorProfileAPI>();
   final isLoading = false.obs;
   final Rx<DoctorModel?> doctorData = Rx<DoctorModel?>(null);
 
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
+  late TextEditingController emailController;
   late TextEditingController phoneController;
-  late TextEditingController experienceController;
-  late TextEditingController aboutController;
 
   // Observable values
   final selectedGender = ''.obs;
   final selectedCountry = ''.obs;
   final selectedSpeciality = ''.obs;
   final selectedLanguages = <String>{}.obs;
-
+  final selectedImagePath = ''.obs;
   // Form key
   final formKey = GlobalKey<FormState>();
 
@@ -30,78 +33,75 @@ class DoctorProfileController extends GetxController {
   void onInit() {
     super.onInit();
     initializeControllers();
-
-    // fetchDoctorData();
+    fetchDoctorData();
   }
 
   void initializeControllers() {
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
+    emailController = TextEditingController();
     phoneController = TextEditingController();
-    experienceController = TextEditingController();
-    aboutController = TextEditingController();
   }
 
   void populateFields() {
-    if (doctorData.value != null) {
-      final doctor = doctorData.value!;
-      firstNameController.text = doctor.firstName;
-      lastNameController.text = doctor.lastName;
-      phoneController.text = doctor.phoneNo;
-      experienceController.text = doctor.experience.toString();
-      aboutController.text = doctor.about;
-      selectedGender.value = doctor.gender;
-      selectedCountry.value = doctor.country;
-      selectedSpeciality.value = doctor.speciality;
-      selectedLanguages.value = Set<String>.from(doctor.languages);
+    if (doctorData.value?.doctor != null) {
+      final doctor = doctorData.value?.doctor;
+      firstNameController.text = doctor?.firstName ?? "";
+      lastNameController.text = doctor?.lastName ?? "";
+      phoneController.text = doctor?.phoneNumber ?? "";
+      emailController.text = doctor?.email ?? "";
+      selectedGender.value = doctor?.gender ?? "";
+      selectedCountry.value = doctor?.country ?? "";
+      selectedSpeciality.value = doctor?.major ?? "";
+      selectedLanguages.value = getLanguagesFromDevice();
     }
   }
-  //
-  // Future<void> fetchDoctorData() async {
-  //   try {
-  //     isLoading.value = true;
-  //     final userId = _firebaseService.currentUser?.uid;
-  //     if (userId != null) {
-  //       doctorData.value = await _firebaseService.getDoctorData(userId);
-  //       populateFields();
-  //     }
-  //   } catch (e) {
-  //     print('Error fetching doctor data: $e');
-  //     Get.snackbar(
-  //       'Error',
-  //       'Failed to load profile data',
-  //       snackPosition: SnackPosition.BOTTOM,
-  //     );
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
+
+  Set<String> getLanguagesFromDevice() {
+    return {};
+  }
+
+  Future<void> fetchDoctorData() async {
+    try {
+      isLoading.value = true;
+      final token = CacheHelper.getData(key: 'token');
+      if (token == null) {
+        Get.offAllNamed(Routes.DOCTOR_LOGIN);
+        return;
+      }
+      final response = await _doctorProfileApi.getDoctorProfile(token: token);
+      doctorData.value = DoctorModel.fromJson(response.data);
+      populateFields();
+    } catch (e) {
+      isLoading.value = false;
+      print(e);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   Future<void> updateProfile() async {
     if (!formKey.currentState!.validate()) return;
 
     try {
       isLoading.value = true;
+      final token = CacheHelper.getData(key: 'token');
+      if (token == null) {
+        Get.offAllNamed(Routes.DOCTOR_LOGIN);
+        return;
+      }
+      await _doctorProfileApi.updateDoctorProfile(
+        email: emailController.text.trim(),
+        token: token,
+        fName: firstNameController.text.trim(),
+        lName: lastNameController.text.trim(),
+        gender: selectedGender.value,
+        phoneNumber: phoneController.text.trim(),
+        major: selectedSpeciality.value,
+        country: selectedCountry.value,
+      );
 
-      final userId = _firebaseService.currentUser?.uid;
-      if (userId == null) throw 'User not logged in';
-
-      final updatedData = {
-        'firstName': firstNameController.text.trim(),
-        'lastName': lastNameController.text.trim(),
-        'phoneNo': phoneController.text.trim(),
-        'gender': selectedGender.value,
-        'country': selectedCountry.value,
-        'speciality': selectedSpeciality.value,
-        'experience': int.tryParse(experienceController.text) ?? 0,
-        'about': aboutController.text.trim(),
-        'languages': selectedLanguages.toList(),
-        'updatedAt': DateTime.now(),
-      };
-
-      await _firebaseService.updateDoctorData(userId, updatedData);
-
-      // await fetchDoctorData(); // Refresh data
+      await fetchDoctorData(); // Refresh data
 
       Get.back(); // Return to profile page
       Get.snackbar(
@@ -137,25 +137,12 @@ class DoctorProfileController extends GetxController {
 
       if (image != null) {
         isLoading.value = true;
-        final userId = _firebaseService.currentUser?.uid;
-        if (userId == null) throw 'User not logged in';
-
-        // Delete old image if exists
-        if (doctorData.value?.profileImage != null) {
-          await _firebaseService.deleteOldProfileImage(userId);
-        }
-
-        final imageUrl = await _firebaseService.uploadDoctorImage(
-          image.path,
-          userId,
+        selectedImagePath.value = image.path;
+        final token = CacheHelper.getData(key: 'token');
+        await _doctorProfileApi.updateDoctorImageProfile(
+          imagePath: image.path,
+          token: token,
         );
-
-        await _firebaseService.updateDoctorData(userId, {
-          'profileImage': imageUrl,
-          'updatedAt': DateTime.now(),
-        });
-
-        // await fetchDoctorD/ata();
 
         Get.snackbar(
           'Success',
@@ -212,15 +199,14 @@ class DoctorProfileController extends GetxController {
 
   Future<void> signOut() async {
     try {
-      await _firebaseService.signOut();
-      Get.offAllNamed('/login');
+      Get.find<DoctorAuthController>().signOut();
     } catch (e) {
       print('Error signing out: $e');
     }
   }
 
   void editProfile() {
-    Get.toNamed('/edit-profile', arguments: doctorData.value);
+    Get.toNamed(Routes.EDIT_DOCTOR_PROFILE, arguments: doctorData.value);
   }
 
   @override
@@ -228,8 +214,7 @@ class DoctorProfileController extends GetxController {
     firstNameController.dispose();
     lastNameController.dispose();
     phoneController.dispose();
-    experienceController.dispose();
-    aboutController.dispose();
+    emailController.dispose();
     super.onClose();
   }
 }

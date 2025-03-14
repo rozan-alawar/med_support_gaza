@@ -121,12 +121,12 @@ class DoctorAppointmentManagementView
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                controller.getFormatedDate(appointment['date']),
+                                controller.getFormatedDate(appointment.date),
                                 fontSize: 15,
                               ),
                               const SizedBox(height: 5),
                               CustomText(
-                                appointment['startTime']!,
+                                appointment.startTime,
                                 fontSize: 12,
                               ),
                               const Spacer(),
