@@ -333,15 +333,15 @@ class AuthController extends GetxController {
         AuthResponseModel loginResponse =
             AuthResponseModel.fromJson(response.data);
         _showSuccessMessage(loginResponse.message);
-        // Save login status
-        CacheHelper.saveData(key: 'isLoggedIn', value: true);
 
-        // Save user data
+        CacheHelper.saveData(key: 'isLoggedIn', value: true);
+        CacheHelper.saveData(key: 'userType', value: 'patient');
+
         currentUser = loginResponse.patient;
         CacheHelper.saveData(key: 'user', value: json.encode(currentUser!));
 
-        // Save token
-        CacheHelper.saveData(key: 'token', value: loginResponse.token);
+        CacheHelper.saveData(key: 'token_patient', value: loginResponse.token);
+
         Get.offAllNamed(Routes.HOME);
       },
       onError: (e) {
@@ -428,6 +428,39 @@ class AuthController extends GetxController {
         timeRemaining.value--;
       }
     });
+  }
+  //------------------------ LOGOUT -----------------------------
+
+  void signOut() {
+    String token = CacheHelper.getData(key: 'token_patient');
+
+    if (token == null) {
+      _handleError('Error'.tr, 'No active session found');
+      Get.offAllNamed(Routes.AUTH);
+      return;
+    }
+
+    PatientAuthAPIService.logout(
+      token: token,
+      onSuccess: (response) {
+        isLoading.value = false;
+
+        CacheHelper.removeData(key: 'user');
+        CacheHelper.removeData(key: 'token_patient');
+
+        CacheHelper.removeData(key: 'isLoggedIn');
+        CacheHelper.removeData(key: 'userType');
+
+        Get.offAllNamed(Routes.AUTH);
+      },
+      onError: (e) {
+        isLoading.value = false;
+        _handleError('Error'.tr, e.message);
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
   }
 
   void setDigit(int index, String value) {

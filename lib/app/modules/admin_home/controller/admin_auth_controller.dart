@@ -52,15 +52,14 @@ class AdminController extends GetxController {
         AdminLoginResponseModel loginResponse =
         AdminLoginResponseModel.fromJson(response.data);
         _showSuccessMessage(loginResponse.message);
-        // Save login status
-        CacheHelper.saveData(key: 'isLoggedIn', value: true);
 
-        // Save user data
+        CacheHelper.saveData(key: 'isLoggedIn', value: true);
+        CacheHelper.saveData(key: 'userType', value: 'admin');
+
         admin.value = loginResponse.admin;
         CacheHelper.saveData(key: 'admin', value: json.encode(admin));
 
-        // Save token
-        CacheHelper.saveData(key: 'token', value: loginResponse.token);
+        CacheHelper.saveData(key: 'token_admin', value: loginResponse.token);
         Get.offAllNamed(Routes.ADMIN_HOME);
       },
       onError: (e) {
@@ -73,6 +72,38 @@ class AdminController extends GetxController {
     );
   }
 
+  //------------------------ SIGN OUT -----------------------------
+
+  void signOut() {
+    String token = CacheHelper.getData(key: 'token_admin');
+
+    if (token == null) {
+      _handleError('Error'.tr, 'No active session found');
+      Get.offAllNamed(Routes.User_Role_Selection);
+      return;
+    }
+
+    // AdminAuthAPIService.logout(
+    //   token: token,
+    //   onSuccess: (response) {
+    //     isLoading.value = false;
+
+        CacheHelper.removeData(key: 'admin');
+        CacheHelper.removeData(key: 'token_admin');
+        CacheHelper.removeData(key: 'isLoggedIn');
+        CacheHelper.removeData(key: 'userType');
+
+        Get.offAllNamed(Routes.User_Role_Selection);
+      // },
+    //   onError: (e) {
+    //     isLoading.value = false;
+    //     _handleError('Error'.tr, e.message);
+    //   },
+    //   onLoading: () {
+    //     isLoading.value = true;
+    //   },
+    // );
+  }
   void _handleError(String title, String message) {
     CustomSnackBar.showCustomErrorSnackBar(
       title: title,

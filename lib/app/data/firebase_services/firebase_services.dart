@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_collections.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
 import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
-import 'package:med_support_gaza/app/data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/data/models/doctor.dart';
 import 'package:med_support_gaza/app/data/models/specialization_model.dart';
 
 
@@ -467,7 +467,7 @@ class FirebaseService extends GetxService {
         return e.message ?? 'An authentication error occurred';
     }
   }
-  Future<List<DoctorModel>> getDoctorsBySpecialty(String specialty) async {
+  Future<List<Doctor>> getDoctorsBySpecialty(String specialty) async {
     try {
 
           final querySnapshot = await _firestore
@@ -483,30 +483,21 @@ class FirebaseService extends GetxService {
 
           return querySnapshot.docs.map((doc) {
             final data = doc.data();
-            return DoctorModel(
-              id: doc.id,
+            return Doctor(
+              userId:1,
+              id: 1,
               firstName: data['firstName'] ?? '',
               lastName: data['lastName'] ?? '',
               email: data['email'] ?? '',
-              phoneNo: data['phoneNo'] ?? '',
-              speciality: data['speciality'] ?? '',
+              phoneNumber: data['phoneNo'] ?? '',
+              major: data['speciality'] ?? '',
               country: data['country'] ?? '',
-              profileImage: data['profileImage'],
+              image: data['profileImage'],
               gender: data['gender'] ?? '',
-              isOnline: data['isOnline'] ?? false,
-              isAvailable: data['isAvailable'] ?? true,
-              medicalCertificateUrl: data['medicalCertificateUrl'] ?? '',
-              rating: (data['rating'] ?? 0.0).toDouble(),
-              experience: data['experience'] ?? 0,
-              languages: List<String>.from(data['languages'] ?? ['Arabic', 'English']),
-              createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
-              lastSeen: (data['lastSeen'] as Timestamp?)?.toDate(),
-              isVerified: data['isVerified'] ?? false,
-              workingHours: (data['workingHours'] as List?)
-                  ?.map((wh) => WorkingHours.fromJson(wh))
-                  .toList() ?? [],
-              about: data['about'] ?? '',
-              expertise: List<String>.from(data['expertise'] ?? []),
+
+              certificate: data['medicalCertificateUrl'] ?? '',
+              averageRating: (data['rating'] ?? 0.0).toDouble(),
+
             );
           }).toList();
         } catch (e) {

@@ -32,7 +32,6 @@ class AdminAuthAPIService {
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
-    final token = CacheHelper.getData(key: 'token');
 
     DioHelper.post(
       Links.ADMIN_LOGOUT,

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/models/article_model.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/articles_controller.dart';
 
 class ArticleTipView extends GetView<HealthTipsController> {
@@ -12,7 +15,7 @@ class ArticleTipView extends GetView<HealthTipsController> {
   @override
   Widget build(BuildContext context) {
     final arguments = Get.arguments as Map<String, String>;
-
+    Article tip = Article.fromJson(json.decode(arguments['article'] ?? ""));
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
@@ -27,9 +30,12 @@ class ArticleTipView extends GetView<HealthTipsController> {
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            24.height,
+            ClipRRect(
+              child: Image.network(tip.image,fit: BoxFit.cover,height: 200.h,width: double.infinity,),
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            20.height,
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(16.w),
@@ -45,65 +51,32 @@ class ArticleTipView extends GetView<HealthTipsController> {
                   ),
                 ],
               ),
-              child: CustomText(
-                arguments['description'.tr] ?? '',
-                fontSize: 14.sp,
-                height: 1.6,
-                color: AppColors.textLight,
-                textAlign: TextAlign.justify,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  24.height,
+                  CustomText(
+                    arguments['description'.tr] ?? '',
+                    fontSize: 14.sp,
+                    height: 1.6,
+                    color: AppColors.textLight,
+                    textAlign: TextAlign.justify,
+                  ),
+                  10.height,
+                  CustomText(
+                    arguments['summary'.tr] ?? '',
+                    fontSize: 14.sp,
+                    height: 1.6,
+                    color: AppColors.textLight,
+                    textAlign: TextAlign.justify,
+                  ),
+                ],
               ),
             ),
-            20.height,
-            if (arguments['bullets'] != null) ...[
-              CustomText(
-                'Key_Points'.tr,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
-              16.height,
-              ...((arguments['bullets'.tr] as String)
-                  .split('|')
-                  .map((bullet) => _buildBulletPoint(bullet.trim()))),
-             
-            ],
           ],
         ),
       ),
     );
   }
-
-  Widget _buildBulletPoint(String text) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 8.h),
-            child: Container(
-              width: 6.w,
-              height: 6.w,
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          12.width,
-          
-          Expanded(
-            child: CustomText(
-              text,
-              fontSize: 14.sp,
-              height: 1.6,
-              color: AppColors.textLight,
-              textAlign: TextAlign.justify,
-            ),
-          ),
-          
-        ],
-      ),
-    );
-  }
 }
-

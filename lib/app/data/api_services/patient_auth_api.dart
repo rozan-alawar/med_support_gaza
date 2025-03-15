@@ -130,7 +130,6 @@ class PatientAuthAPIService {
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
-    final token = CacheHelper.getData(key: 'token');
 
     DioHelper.post(
       Links.PATIENT_LOGOUT,

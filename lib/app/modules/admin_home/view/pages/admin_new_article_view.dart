@@ -68,7 +68,10 @@ class AddNewArticle extends GetView<ContentController> {
                     text: 'publish'.tr,
                     color: AppColors.primary,
                     isDisable: controller.isLoading.value,
-                    onPressed: controller.saveContent,
+                    // onPressed: controller.saveContent,
+                onPressed: () {
+
+                },
                   )),
             ],
           ),

@@ -6,10 +6,12 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/models/article_model.dart';
 import 'package:med_support_gaza/app/data/models/health_content_model.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_update_article_view.dart';
+
 class ContentCard extends StatelessWidget {
-  final HealthContentModel content;
+  final Article content;
 
   const ContentCard({super.key, required this.content});
 
@@ -39,8 +41,7 @@ class ContentCard extends StatelessWidget {
               child: SizedBox(
                 width: 86.w,
                 height: 100.w,
-
-                child: content.imageUrl != null
+                child: content.image != null
                     ? _buildArticleImage()
                     : _buildErrorPlaceholder(),
               ),
@@ -79,16 +80,16 @@ class ContentCard extends StatelessWidget {
 
   Widget _buildArticleImage() {
     try {
-      if (content.imageUrl!.startsWith('assets/')) {
-        return Image.asset(
-          content.imageUrl!,
+      if (content.image != null) {
+        return Image.network(
+          content.image!,
           fit: BoxFit.fill,
           errorBuilder: (_, __, ___) => _buildErrorPlaceholder(),
         );
       }
 
       return Image.file(
-        File(content.imageUrl!),
+        File(content.image!),
         fit: BoxFit.cover,
         errorBuilder: (_, __, ___) => _buildErrorPlaceholder(),
       );

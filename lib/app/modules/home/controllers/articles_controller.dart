@@ -1,16 +1,49 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/data/api_services/articles_api.dart';
+import 'package:med_support_gaza/app/data/models/article_model.dart';
 import 'package:med_support_gaza/app/data/models/health_tip.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class HealthTipsController extends GetxController {
   final RxList<HealthAwarenessTip> healthTips = <HealthAwarenessTip>[].obs;
+  final RxList<Article> contentList = <Article>[].obs;
+  final RxBool isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+    loadContent();
     loadHealthTips();
+  }
+
+  //------------------------ GET ARTICLES -----------------------------
+
+  void loadContent() {
+    ArticlesAPIService.getArticles(
+
+      onSuccess: (response) {
+        isLoading.value = false;
+        ArticleResponse articlesResponse =
+        ArticleResponse.fromJson(response.data);
+        contentList.value = articlesResponse.articles;
+              isLoading.value = false;
+      },
+      onError: (e) {
+        isLoading.value = false;
+        CustomSnackBar.showCustomErrorSnackBar(
+          title: 'Error'.tr,
+          message: e.message,
+        );
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
   }
 
   void loadHealthTips() {
@@ -45,11 +78,12 @@ class HealthTipsController extends GetxController {
     ];
   }
 
-  void openArticle(HealthAwarenessTip tip) {
+  void openArticle(Article tip) {
     Get.toNamed(Routes.ARTICLE_TIP, arguments: {
+      'article': json.encode(tip),
       'title': tip.title,
       'description': tip.content,
-      'bullets': tip.bullets
+      'summary': tip.summary
     });
   }
 }

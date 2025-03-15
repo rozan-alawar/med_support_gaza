@@ -8,6 +8,7 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
+import 'package:med_support_gaza/app/data/models/article_model.dart';
 
 import 'dart:io';
 
@@ -15,7 +16,7 @@ import 'package:med_support_gaza/app/data/models/health_content_model.dart';
 import 'package:med_support_gaza/app/modules/admin_home/controller/admin_content_controller.dart';
 
 class UpdateArticleView extends GetView<ContentController> {
-  final HealthContentModel article;
+  final Article article;
 
   const UpdateArticleView({super.key, required this.article});
 
@@ -86,7 +87,7 @@ class UpdateArticleView extends GetView<ContentController> {
                 text: 'update'.tr,
                 color: AppColors.primary,
                 isDisable: controller.isLoading.value,
-                onPressed: () => controller.updateArticle(article.id!),
+                onPressed: () => controller.updateArticle(article.id as String),
               )),
             ],
           ),
@@ -125,18 +126,18 @@ class UpdateArticleView extends GetView<ContentController> {
                 fit: BoxFit.cover,
               ),
             )
-                : article.imageUrl!.startsWith('assets/')
+                : article.image!=null
                 ? ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
-              child: Image.asset(
-                article.imageUrl!,
+              child: Image.network(
+                article.image,
                 fit: BoxFit.cover,
               ),
             )
                 : ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
               child: Image.file(
-                File(article.imageUrl!),
+                File(article.image!),
                 fit: BoxFit.cover,
               ),
             ),

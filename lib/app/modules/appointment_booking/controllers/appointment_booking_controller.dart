@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/data/api_services/patient_appointment_api.dart';
 import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
-import 'package:med_support_gaza/app/data/models/doctor_model.dart';
+import 'package:med_support_gaza/app/data/models/doctor.dart';
 import 'package:med_support_gaza/app/data/models/specialization_model.dart';
+import 'package:med_support_gaza/app/data/models/specializations_response.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 import 'package:med_support_gaza/app/modules/home/controllers/home_controller.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
@@ -15,18 +17,18 @@ import 'package:med_support_gaza/app/routes/app_pages.dart';
 class AppointmentBookingController extends GetxController {
   final FirebaseService _firebaseService = Get.find<FirebaseService>();
   final RxInt currentStep = 0.obs;
-  final RxString selectedSpecialization = ''.obs;
-  final RxString selectedDoctor = ''.obs;
+  Rxn<Specialization> selectedSpecialization = Rxn<Specialization>();
+  Rx<Doctor>? selectedDoctor;
   final Rxn<DateTime> selectedDate = Rxn<DateTime>();
   final Rxn<TimeOfDay> selectedTime = Rxn<TimeOfDay>();
   final RxBool isLoading = false.obs;
   final RxString selectedDoctorId = ''.obs;
   final RxString selectedDoctorName = ''.obs;
-  final RxList<SpecializationModel> specializations =
-      <SpecializationModel>[].obs;
+  final RxList<Specialization> specializations = <Specialization>[].obs;
   final RxString error = ''.obs;
 
-  final RxList<DoctorModel> availableDoctors = <DoctorModel>[].obs;
+  final RxList<Doctor> availableDoctors = <Doctor>[].obs;
+  RxList<Doctor> doctorsList = <Doctor>[].obs;
 
   final RxBool isLoadingDoctors = false.obs;
   final RxBool hasError = false.obs;
@@ -35,21 +37,20 @@ class AppointmentBookingController extends GetxController {
   final RxBool isDirectBooking = false.obs;
   final ChatService _chatService = ChatService();
 
-
   @override
   void onInit() {
     super.onInit();
+    getDoctorsSpecializations();
     // Check if we're booking with a specific doctor
     final arguments = Get.arguments;
     if (arguments != null && arguments['doctor'] != null) {
       isDirectBooking.value = true;
-      final DoctorModel doctor = arguments['doctor'];
-      selectedSpecialization.value = doctor.speciality;
+      final Doctor doctor = arguments['doctor'];
+      selectedSpecialization.value?.major = doctor.major ?? "null";
       selectDoctor(doctor);
       // Skip to time selection step
       currentStep.value = 2;
     }
-    ever(selectedSpecialization, (_) => loadDoctors());
   }
 
   // Patient data from auth
@@ -59,46 +60,111 @@ class AppointmentBookingController extends GetxController {
       "${_firebaseService.patientData.value?.firstName} ${_firebaseService.patientData.value?.lastName}" ??
       '';
 
-  Future<void> loadDoctors() async {
-    if (selectedSpecialization.value.isEmpty) return;
+//------------------------ GET DOCTORS SPECIALIZATIONS -----------------------------
 
-    try {
-      isLoadingDoctors.value = true;
-      hasError.value = false;
-      errorMessage.value = '';
-
-      // Query Firestore for doctors
-      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('doctors')
-          .where('speciality', isEqualTo: selectedSpecialization.value)
-          .where('isApproved', isEqualTo: true)
-          .get();
-
-      // Convert to DoctorModel list
-      final List<DoctorModel> doctors = querySnapshot.docs
-          .map(
-              (doc) => DoctorModel.fromJson(doc.data() as Map<String, dynamic>))
-          .where(
-              (doctor) => doctor.isAvailable) // Filter only available doctors
-          .toList();
-
-      // Sort by rating
-      doctors.sort((a, b) => b.rating.compareTo(a.rating));
-
-      availableDoctors.value = doctors;
-    } catch (e) {
-      hasError.value = true;
-      errorMessage.value = e.toString();
-      availableDoctors.clear();
-    } finally {
-      isLoadingDoctors.value = false;
-    }
+  void getDoctorsSpecializations() {
+    PatientAppointmentAPIService.getDoctorsSpecializations(
+      onSuccess: (response) {
+        isLoading.value = false;
+        final data = response.data;
+        final specializationsResponse = SpecializationsResponse.fromJson(data);
+        specializations.value = specializationsResponse.specializations;
+      },
+      onError: (e) {
+        isLoading.value = false;
+        CustomSnackBar.showCustomErrorSnackBar(
+          title: 'Error'.tr,
+          message: e.message,
+        );
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
   }
 
-  void selectDoctor(DoctorModel doctor) {
-    selectedDoctorId.value = doctor.id;
-    selectedDoctor.value = "${doctor.firstName} ${doctor.lastName}";
+//------------------------ GET DOCTORS BY SPECIALIZATIONS -----------------------------
 
+  void getDoctorsBySpecializations() {
+    if (selectedSpecialization?.value == null) return;
+
+    PatientAppointmentAPIService.getDoctorsBySpecialization(
+      specialization: selectedSpecialization.value?.major ?? "Null",
+      onSuccess: (response) {
+        isLoading.value = false;
+        final data = response.data['doctors'] as List;
+        doctorsList.value = data
+            .map((item) => Doctor.fromJson(item as Map<String, dynamic>))
+            .toList();
+        availableDoctors.value = doctorsList;
+      },
+      onError: (e) {
+        isLoading.value = false;
+        CustomSnackBar.showCustomErrorSnackBar(
+          title: 'Error'.tr,
+          message: e.message,
+        );
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
+  }
+  //
+  // Future<void> loadDoctors() async {
+  //   if (selectedSpecialization?.value == null) return;
+  //
+  //   try {
+  //     isLoadingDoctors.value = true;
+  //     hasError.value = false;
+  //     errorMessage.value = '';
+  //
+  //     // Query Firestore for doctors
+  //     final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //         .collection('doctors')
+  //         .where('speciality', isEqualTo: selectedSpecialization?.value)
+  //         .where('isApproved', isEqualTo: true)
+  //         .get();
+  //
+  //     // Convert to DoctorModel list
+  //     final List<Doctor> doctors = querySnapshot.docs
+  //         .map((doc) => Doctor.fromJson(doc.data() as Map<String, dynamic>))
+  //         .toList();
+  //     print(doctors);
+  //     print(doctors.first.firstName);
+  //
+  //     // Sort by rating
+  //     // doctors.sort((a, b) => b.rating.compareTo(a.rating));
+  //
+  //     availableDoctors.value = doctors;
+  //     availableDoctors.add(Doctor(
+  //         id: 5,
+  //         userId: 5,
+  //         firstName: "Mohammed",
+  //         lastName: "Nour",
+  //         email: "m@gmail.com",
+  //         major: "major",
+  //         country: "IT",
+  //         phoneNumber: "054865312",
+  //         averageRating: "4.5",
+  //         image: "image",
+  //         certificate: "certificate",
+  //         gender: "Male"));
+  //   } catch (e) {
+  //     hasError.value = true;
+  //     errorMessage.value = e.toString();
+  //     availableDoctors.clear();
+  //   } finally {
+  //     isLoadingDoctors.value = false;
+  //   }
+  // }
+
+  void selectDoctor(Doctor doctor) {
+    selectedDoctorId.value = doctor.id.toString();
+    selectedDoctor = doctor.obs;
+    selectedDoctorName.value = "${doctor.firstName} ${doctor.lastName}";
+
+    print(selectedDoctor);
     // Reset time selection when doctor changes
     selectedTime.value = null;
     selectedDate.value = null;
@@ -123,7 +189,7 @@ class AppointmentBookingController extends GetxController {
         confirmBooking();
       }
     } else {
-      if (currentStep.value == 0 && selectedSpecialization.value.isEmpty) {
+      if (currentStep.value == 0 && selectedSpecialization?.value == null) {
         CustomSnackBar.showCustomErrorSnackBar(
           title: 'Error'.tr,
           message: 'Please select a specialization'.tr,
@@ -155,18 +221,15 @@ class AppointmentBookingController extends GetxController {
     }
   }
 
-  List<TimeOfDay> getAvailableTimeSlots(DoctorModel doctor, DateTime date) {
+  List<TimeOfDay> getAvailableTimeSlots(Doctor doctor, DateTime date) {
     final dayOfWeek = date.weekday; // 1 = Monday, 7 = Sunday
 
     // Find working hours for selected day
-    final workingHours = doctor.workingHours.firstWhere(
-      (wh) => wh.dayOfWeek == dayOfWeek,
-      orElse: () => WorkingHours(
-          dayOfWeek: dayOfWeek,
-          startTime: '09:00',
-          endTime: '17:00',
-          isAvailable: false),
-    );
+    final workingHours = WorkingHours(
+        dayOfWeek: dayOfWeek,
+        startTime: '09:00',
+        endTime: '17:00',
+        isAvailable: false);
 
     if (!workingHours.isAvailable) return [];
 
@@ -201,55 +264,56 @@ class AppointmentBookingController extends GetxController {
     return time.hour + time.minute / 60.0;
   }
 
-  void selectSpecialization(String specialization) {
-    selectedSpecialization.value = specialization;
-    selectedDoctor.value = '';
+  void selectSpecialization(Specialization specialization) {
+    selectedSpecialization?.value = specialization;
+    getDoctorsBySpecializations();
+    selectedDoctorName.value = '';
   }
 
   Future<void> confirmBooking() async {
-      isLoading.value = true;
+    isLoading.value = true;
 
-      final appointment = AppointmentModel(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        patientId: HomeController().currentUser!.value!.id.toString()??"mkcjhdk",
-        doctorId: selectedDoctorId.value,
-        doctorName: selectedDoctorName.value,
-        patientName: patientName,
-        specialization: selectedSpecialization.value,
-        dateTime: DateTime(
-          selectedDate.value?.year ?? DateTime.january,
-          selectedDate.value?.month ?? DateTime.january,
-          selectedDate.value?.day ?? DateTime.monday,
-          selectedTime.value?.hour ?? DateTime.monday,
-          selectedTime.value?.minute ?? DateTime.monday,
-        ),
-      );
-print(selectedTime.value!.hour.toString());
-      await _chatService.bookAppointment(doctorId:  selectedDoctorId!.value,
-       patientId: HomeController().currentUser!.value!.id.toString()
-        ,
-       endTime:  addMinutesToTimestamp(   convertTimeOfDayToTimestamp(selectedTime.value!), 30)
-   ,
-      startTime:  convertTimeOfDayToTimestamp(selectedTime.value!),
-      );
-     CustomSnackBar.showCustomSnackBar(message:" Text('تم حجز الموعد بنجاح')",title: 'done');
+    final appointment = AppointmentModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      patientId:
+          HomeController().currentUser!.value!.id.toString() ?? "mkcjhdk",
+      doctorId: selectedDoctorId.value,
+      doctorName: selectedDoctorName.value,
+      patientName: patientName,
+      specialization: selectedSpecialization.value?.major ?? "Null",
+      dateTime: DateTime(
+        selectedDate.value?.year ?? DateTime.january,
+        selectedDate.value?.month ?? DateTime.january,
+        selectedDate.value?.day ?? DateTime.monday,
+        selectedTime.value?.hour ?? DateTime.monday,
+        selectedTime.value?.minute ?? DateTime.monday,
+      ),
+    );
+    print(selectedTime.value!.hour.toString());
+    await _chatService.bookAppointment(
+      doctor: selectedDoctor!.value,
+      patient: HomeController().currentUser.value!,
+      endTime: addMinutesToTimestamp(
+          convertTimeOfDayToTimestamp(selectedTime.value!), 30),
+      startTime: convertTimeOfDayToTimestamp(selectedTime.value!),
+    );
+    CustomSnackBar.showCustomSnackBar(
+        message: " Text('تم حجز الموعد بنجاح')", title: 'done');
 
-      CustomSnackBar.showCustomSnackBar(
-        title: 'Success'.tr,
-        message: 'Appointment booked successfully'.tr,
-      );
+    CustomSnackBar.showCustomSnackBar(
+      title: 'Success'.tr,
+      message: 'Appointment booked successfully'.tr,
+    );
 
-      Get.offNamed(Routes.HOME);
-
+    Get.offNamed(Routes.HOME);
   }
-
 
   Timestamp convertTimeOfDayToTimestamp(TimeOfDay timeOfDay) {
     DateTime now = DateTime.now();
-    DateTime dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    DateTime dateTime = DateTime(
+        now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
     return Timestamp.fromDate(dateTime);
   }
-
 
   Timestamp addMinutesToTimestamp(Timestamp timestamp, int minutes) {
     DateTime dateTime = timestamp.toDate();
@@ -272,17 +336,9 @@ print(selectedTime.value!.hour.toString());
       const TimeOfDay(hour: 10, minute: 30),
       const TimeOfDay(hour: 11, minute: 0),
       const TimeOfDay(hour: 11, minute: 30),
-    ];
-  }
-
-  List<Map<String, dynamic>> getSpecializations() {
-    return [
-      {'id': 1, 'title': 'Cardiology', 'availableDoctors': 4},
-      {'id': 2, 'title': 'Neurology', 'availableDoctors': 3},
-      {'id': 3, 'title': 'Pediatrics', 'availableDoctors': 5},
-      {'id': 4, 'title': 'Orthopedics', 'availableDoctors': 3},
-      {'id': 5, 'title': 'Dermatology', 'availableDoctors': 2},
-      {'id': 6, 'title': 'Ophthalmology', 'availableDoctors': 3},
+      const TimeOfDay(hour: 12, minute: 00),
+      const TimeOfDay(hour: 12, minute: 30),
+      const TimeOfDay(hour: 1, minute: 00),
     ];
   }
 
@@ -293,14 +349,14 @@ print(selectedTime.value!.hour.toString());
     try {
       isLoadingDoctors.value = true;
 
-      if (selectedSpecialization.value.isEmpty) {
+      if (selectedSpecialization?.value == null) {
         return [];
       }
 
       // Get doctors from Firebase
       final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('doctors')
-          .where('specialization', isEqualTo: selectedSpecialization.value)
+          .where('specialization', isEqualTo: selectedSpecialization?.value)
           .where('isActive', isEqualTo: true) // Only get active doctors
           .get();
 
