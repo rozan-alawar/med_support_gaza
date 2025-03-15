@@ -19,6 +19,7 @@ class DoctorAppointmentManagementController extends GetxController {
   var availableTimes = <String>[].obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   RxList<Appointment> appointments = <Appointment>[].obs;
+  RxList<Appointment> availableAppointments = <Appointment>[].obs;
   RxBool isloading = false.obs;
   var dayilyappointments = <Map<String, dynamic>>[].obs;
 
@@ -39,7 +40,7 @@ class DoctorAppointmentManagementController extends GetxController {
     for (int hour = 9; hour <= 16; hour++) {
       // For each hour, create :00 and :30 slots
       String period = hour < 12 ? 'AM' : 'PM';
-      int displayHour =hour > 12 ? hour - 12 : hour;
+      int displayHour = hour > 12 ? hour - 12 : hour;
 
       // Add XX:00 slot
       availableTimes
@@ -158,15 +159,13 @@ class DoctorAppointmentManagementController extends GetxController {
 
     if (token == null) {
       Get.toNamed(Routes.DOCTOR_LOGIN);
-      return;
+      return; 
     }
     try {
       isloading.value = true;
-      String? status;
-
-      status = 'Available';
+      appointments.clear();
       final response = await Get.find<DoctorAppointmentAPI>()
-          .getDoctorAppointments(token: token, status: status);
+          .getDoctorAppointments(token: token , status: 'Available' );
       appointments.value =
           AppointmentModel.fromJson(response.data).appointments;
     } catch (e) {

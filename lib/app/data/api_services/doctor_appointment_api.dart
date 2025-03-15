@@ -45,7 +45,6 @@ class DoctorAppointmentAPI {
           "date": date,
           "start_time": startTime,
           "end_time": endTime,
-          "period": "half hour"
         });
 
     return res;

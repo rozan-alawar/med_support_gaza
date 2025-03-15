@@ -90,6 +90,7 @@ class DoctorAppointmentManagementView
               width: 298.h,
               text: 'add'.tr,
               color: AppColors.primary,
+              isDisable: controller.isloading.value,
               onPressed: () async {
                 await controller.addAppointment();
               },
@@ -97,6 +98,7 @@ class DoctorAppointmentManagementView
             32.height,
             Expanded(
               child: Obx(() => GridView.builder(
+                    key: ValueKey(controller.appointments.hashCode),
                     itemCount: controller.appointments.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
