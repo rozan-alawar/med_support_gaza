@@ -42,7 +42,7 @@ class DoctorBookingView extends GetView<DoctorAppointmentManagementController> {
                           controller.appointments[index];
                       return BookingCard(
                         patientName:
-                         //   appointment.period ?? 
+                            appointment.patientName ?? 
                             'saja',
                         date: controller
                                 .getFormatedDate(appointment.date)

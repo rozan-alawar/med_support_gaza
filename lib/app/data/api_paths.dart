@@ -48,5 +48,8 @@ class Links {
   static var doctorAddSchedule  = '/doctor/schedule';
   static var doctorAppointments= 'doctor/appointments';
   static var doctorDeleteAppointment= 'doctor/appointment';
+  static var doctorPendingAppointments = 'doctor/appointments/pending';
+  static var doctorRejectAppointment = 'doctor/appointment/reject';
+  static var doctorAcceptAppointment = 'doctor/appointment/accept';
 
 }

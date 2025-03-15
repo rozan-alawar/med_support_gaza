@@ -19,7 +19,8 @@ class DoctorAppointmentManagementController extends GetxController {
   var availableTimes = <String>[].obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   RxList<Appointment> appointments = <Appointment>[].obs;
-  RxList<Appointment> availableAppointments = <Appointment>[].obs;
+  RxList<Appointment> PandingAppointments = <Appointment>[].obs;
+  RxList<Appointment> dayilyAppointments = <Appointment>[].obs;
   RxBool isloading = false.obs;
   var dayilyappointments = <Map<String, dynamic>>[].obs;
 
@@ -102,7 +103,7 @@ class DoctorAppointmentManagementController extends GetxController {
       if (response.data != null) {
         Appointment appointment =
             Appointment.fromJson(response.data['appointment']);
-        appointments.add(appointment);
+        loadAvailableAppointments();
       }
       print(' addAppointment :  $appointments');
 
@@ -145,7 +146,7 @@ class DoctorAppointmentManagementController extends GetxController {
       isloading.value = true;
       await Get.find<DoctorAppointmentAPI>()
           .delelteDoctorAppointment(token: token, id: appointments[index].id);
-      appointments.removeAt(index);
+      loadAvailableAppointments();
     } catch (e) {
       isloading.value = false;
       print(e.toString());
@@ -159,13 +160,13 @@ class DoctorAppointmentManagementController extends GetxController {
 
     if (token == null) {
       Get.toNamed(Routes.DOCTOR_LOGIN);
-      return; 
+      return;
     }
     try {
       isloading.value = true;
       appointments.clear();
       final response = await Get.find<DoctorAppointmentAPI>()
-          .getDoctorAppointments(token: token , status: 'Available' );
+          .getDoctorAppointments(token: token, status: 'Available');
       appointments.value =
           AppointmentModel.fromJson(response.data).appointments;
     } catch (e) {
@@ -176,9 +177,56 @@ class DoctorAppointmentManagementController extends GetxController {
     }
   }
 
-  void approveBooking(int index) {}
+  // void getDailyAppointment() async {
+  //   String? token = CacheHelper.getData(key: 'token');
 
-  void rejectBooking(int index) {}
+  //   if (token == null) {
+  //     Get.toNamed(Routes.DOCTOR_LOGIN);
+  //     return;
+  //   }
+  //   try {
+  //     isloading.value = true;
+  //     final response = await Get.find<DoctorAppointmentAPI>()
+  //         .getDoctorAppointments(token: token, status: 'Available');
+  //     dayilyAppointments.value =
+  //         AppointmentModel.fromJson(response.data).appointments;
+  //   } catch (e) {
+  //     isloading.value = false;
+  //     print(e.toString());
+  //   } finally {
+  //     isloading.value = false;
+  //   }
+
+  // }
+
+  void getPandingAppointment() async {
+     String? token = CacheHelper.getData(key: 'token');
+
+    if (token == null) {
+      Get.toNamed(Routes.DOCTOR_LOGIN);
+      return;
+    }
+    try {
+      isloading.value = true;
+      final response = await Get.find<DoctorAppointmentAPI>()
+          .getDoctorPendingAppointments(token: token);
+      PandingAppointments.value =
+          AppointmentModel.fromJson(response.data).appointments;
+    } catch (e) {
+      isloading.value = false;
+      print(e.toString());
+    } finally {
+      isloading.value = false;
+    }
+  }
+
+  void approveBooking(int index) {
+
+  }
+
+  void rejectBooking(int index) {
+
+  }
 
   // Helper functions
   bool isSameDay(DateTime date1, DateTime date2) {

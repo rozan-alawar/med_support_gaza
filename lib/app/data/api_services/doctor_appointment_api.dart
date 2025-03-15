@@ -54,14 +54,71 @@ class DoctorAppointmentAPI {
     required String token,
     required int id,
   }) async {
-    final res = await Get.find<DioClient>().dio.delete('${Links.doctorDeleteAppointment}/$id',
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/json'
-          },
-          followRedirects: true,
-        ));
+    final res = await Get.find<DioClient>()
+        .dio
+        .delete('${Links.doctorDeleteAppointment}/$id',
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+                'Accept': 'application/json'
+              },
+              followRedirects: true,
+            ));
+
+    return res;
+  }
+
+  Future<di.Response<dynamic>> getDoctorPendingAppointments({
+    required String token,
+  }) async {
+    final res =
+        await Get.find<DioClient>().dio.get(Links.doctorPendingAppointments,
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              followRedirects: true,
+            ));
+
+    return res;
+  }
+
+  Future<di.Response<dynamic>> rejectAppointments({
+    required String token,
+    required int id,
+  }) async {
+    final res = await Get.find<DioClient>()
+        .dio
+        .put('${Links.doctorRejectAppointment}/$id',
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              followRedirects: true,
+            ));
+
+    return res;
+  }
+
+  Future<di.Response<dynamic>> acceptAppointments({
+    required String token,
+    required int id,
+  }) async {
+    final res = await Get.find<DioClient>()
+        .dio
+        .put('${Links.doctorAcceptAppointment}/$id',
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              followRedirects: true,
+            ));
 
     return res;
   }
