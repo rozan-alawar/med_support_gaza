@@ -61,7 +61,7 @@ class DoctorMainView extends GetView<DoctorHomeController> {
                       final appointment = dayilyAppointments[index];
                       return AppointmentCard(
                         patientName: appointment.patientName??'unknown patient',
-                        date: appointment.date.toString(),
+                        date:  Get.find<DoctorAppointmentManagementController>().getFormatedDate(appointment.date),
                         time: appointment.startTime,
                       );
                     },
@@ -106,8 +106,8 @@ class DoctorMainView extends GetView<DoctorHomeController> {
                     itemBuilder: (context, index) {
                       final appointment = pandingAppointments[index];
                       return AppointmentCard(
-                        patientName: appointment.patientName!,
-                        date: appointment.date.toString(),
+                        patientName: appointment.patientName??'unknown patient',
+                        date:  Get.find<DoctorAppointmentManagementController>().getFormatedDate(appointment.date),
                         time: appointment.startTime,
                       );
                     },

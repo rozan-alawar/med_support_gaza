@@ -252,7 +252,7 @@ class DoctorAuthController extends GetxController {
       Get.find<DoctorAuthApi>()
           .logout(token: CacheHelper.getData(key: 'token'));
       removeDoctorData();
-      Get.offAllNamed(Routes.DOCTOR_LOGIN);
+      Get.offAllNamed(Routes.User_Role_Selection);
     } catch (e) {
       print(e);
     }

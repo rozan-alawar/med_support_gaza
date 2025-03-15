@@ -34,7 +34,7 @@ class AppointmentCard extends StatelessWidget {
           CustomText(
             '$date - $time',
             fontFamily: 'LamaSans',
-            fontSize: 12.sp,
+            fontSize: 10.sp,
           ),
           20.height,
           CustomButton(

@@ -38,15 +38,15 @@ class DailyScheduleView extends GetView<DoctorAppointmentManagementController> {
                   return ListView.builder(
                     itemCount: controller.dayilyAppointments.length,
                     itemBuilder: (context, index) {
-                      final appointment =
-                          controller.dayilyAppointments[index];
+                      final appointment = controller.dayilyAppointments[index];
                       return CustomAppointmentCard(
-                        patientName: appointment.patientName ?? 'unknown patient',
+                        patientName:
+                            appointment.patientName ?? 'unknown patient',
                         date: controller.getFormatedDate(appointment.date),
                         time: appointment.startTime,
                         butText: 'cancel_appointment'.tr,
                         onPressed: () {
-                          //controller.dayilyAppointments.removeAt(index);
+                          controller.cancelAppointment(index);
                         },
                       );
                     },

@@ -28,10 +28,10 @@ class DoctorAppointmentManagementController extends GetxController {
     super.onInit();
     // Replace with actual doctorId
     // final String doctorId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    getPandingAppointment();
+    getDayilyappointment();
     loadAvailableAppointments();
     generateAvailableTimes();
-    getPandingAppointment();
-    //getDayilyappointment();
   }
 
   void generateAvailableTimes() {
@@ -198,8 +198,6 @@ class DoctorAppointmentManagementController extends GetxController {
     try {
       final response = await Get.find<DoctorAppointmentAPI>()
           .acceptAppointment(token: token, id: PandingAppointments[index].id);
-      PandingAppointments.value =
-          AppointmentModel.fromJson(response.data).appointments;
       getPandingAppointment();
     } catch (e) {
       print(e.toString());
@@ -216,8 +214,7 @@ class DoctorAppointmentManagementController extends GetxController {
     try {
       final response = await Get.find<DoctorAppointmentAPI>()
           .rejectAppointment(token: token, id: PandingAppointments[index].id);
-      PandingAppointments.value =
-          AppointmentModel.fromJson(response.data).appointments;
+      getPandingAppointment();
     } catch (e) {
       print(e.toString());
     }
@@ -262,12 +259,9 @@ class DoctorAppointmentManagementController extends GetxController {
           AppointmentModel.fromJson(response.data).appointments;
       // Filter appointments for selected date
       for (var appointment in appointments) {
-        DateTime appointmentDate = (appointment.date);
-        print(
-            '-------------------- $appointmentDate--------------------------');
+        DateTime appointmentDate = appointment.date;
         if (isSameDay(appointmentDate, selectedDate.value) &&
             appointment.is_accepted == 'accepted') {
-          // Convert appointment time format if needed
           dayilyAppointments.add(appointment);
         }
         // Sort daily appointments by time
@@ -276,25 +270,26 @@ class DoctorAppointmentManagementController extends GetxController {
     } catch (e) {
       print(e.toString());
     }
-    
   }
-}
 
-  /// A controller for managing doctor appointments.
-  ///
-  /// This controller has methods for loading appointments, marking an appointment
-  /// as approved or rejected, and helper functions for formatting dates and
-  /// checking if two dates are the same.
-  ///
-  /// The appointments are stored in the [appointments] list and are loaded by the
-  /// [loadAppointments] method. The [dayilyappointments] list contains the daily
-  /// appointments for the selected date and is populated by the
-  /// [getDayilyappointment] method.
-  ///
-  /// The [approveBooking] and [rejectBooking] methods are used to change the
-  /// status of an appointment.
-  ///
-  /// The [isSameDay] method is used to check if two dates are the same.
-  ///
-  /// The [getFormatedDate] method is used to format a date as a string.
+ void cancelAppointment(int index) async {
+    String? token = CacheHelper.getData(key: 'token');
+
+    if (token == null) {
+      Get.toNamed(Routes.DOCTOR_LOGIN);
+      return;
+    }
+    try {
+      await Get.find<DoctorAppointmentAPI>()
+          .delelteDoctorAppointment(token: token, id: dayilyAppointments[index].id);
+      getDayilyappointment();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+
+
+
+}
 
