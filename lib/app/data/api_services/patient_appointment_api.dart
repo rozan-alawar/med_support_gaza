@@ -14,7 +14,7 @@ class PatientAppointmentAPIService {
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
-    final token = CacheHelper.getData(key: 'token');
+    final token = CacheHelper.getData(key: 'token_patient');
 
     DioHelper.get(
       Links.GET_DOCTORS_SPECIALIZATIONS,
@@ -33,7 +33,7 @@ class PatientAppointmentAPIService {
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
-    final token = CacheHelper.getData(key: 'token');
+    final token = CacheHelper.getData(key: 'token_patient');
     DioHelper.get(
       '${Links.GET_DOCTORS_BY_SPECIALIZATION}/$specialization',
       headers: {'Authorization': 'Bearer $token'},

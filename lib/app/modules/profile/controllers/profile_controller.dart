@@ -123,10 +123,10 @@ class ProfileController extends GetxController {
       return;
     }
 
-    PatientAuthAPIService.logout(
-      token: token,
-      onSuccess: (response) {
-        isLoading.value = false;
+    // PatientAuthAPIService.logout(
+    //   token: token,
+    //   onSuccess: (response) {
+    //     isLoading.value = false;
 
         CacheHelper.removeData(key: 'user');
         CacheHelper.removeData(key: 'token_patient');
@@ -135,15 +135,15 @@ class ProfileController extends GetxController {
         CacheHelper.removeData(key: 'userType');
 
         Get.offAllNamed(Routes.User_Role_Selection);
-      },
-      onError: (e) {
-        isLoading.value = false;
-        _handleError('Error'.tr, e.message);
-      },
-      onLoading: () {
-        isLoading.value = true;
-      },
-    );
+    //   },
+    //   onError: (e) {
+    //     isLoading.value = false;
+    //     _handleError('Error'.tr, e.message);
+    //   },
+    //   onLoading: () {
+    //     isLoading.value = true;
+    //   },
+    // );
   }
 
   Future<void> getProfile() async {

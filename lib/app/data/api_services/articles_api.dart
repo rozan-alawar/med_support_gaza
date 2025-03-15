@@ -14,7 +14,7 @@ class ArticlesAPIService {
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
-    final token = CacheHelper.getData(key: 'token');
+    final token = CacheHelper.getData(key: 'token_admin');
 
     DioHelper.get(
       Links.GET_ARTICLES,

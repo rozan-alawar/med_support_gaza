@@ -14,7 +14,7 @@ class PatientProfileAPIService {
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
-    final token = CacheHelper.getData(key: 'token');
+    final token = CacheHelper.getData(key: 'token_patient');
 
     DioHelper.get(
       Links.PATIENT_PROFILE,
@@ -36,7 +36,7 @@ class PatientProfileAPIService {
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
-    final token = CacheHelper.getData(key: 'token');
+    final token = CacheHelper.getData(key: 'token_patient');
 
     DioHelper.put(
       Links.UPDATE_PROFILE,

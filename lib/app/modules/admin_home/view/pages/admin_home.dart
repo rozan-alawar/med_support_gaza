@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/modules/admin_home/controller/admin_auth_controller.dart';
+import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_auth.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_content_management_view.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_doctors.dart';
 import 'package:med_support_gaza/app/modules/admin_home/view/pages/admin_insights.dart';
@@ -19,6 +21,7 @@ class AdminHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AdminHomeController controller = Get.put(AdminHomeController());
+    final AdminController authController = Get.put(AdminController());
 
     return SafeArea(
       child: Scaffold(
@@ -36,12 +39,13 @@ class AdminHome extends StatelessWidget {
                   visible: controller.selectedIndex.value == 0,
                   child: IconButton(
                     icon: SvgPicture.asset(
-                      IconAssets.bell,
-                      width: 26.w,
-                      height: 26.h,
+                      IconAssets.logOut,
+                      color: Colors.red,
+                      width: 22.w,
+                      height: 22.h,
                     ),
                     onPressed: () {
-                      Get.toNamed(Routes.ADMIN_NOTIFICATION);
+                      authController.signOut();
                     },
                   ),
                 )),

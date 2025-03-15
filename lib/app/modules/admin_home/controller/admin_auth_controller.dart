@@ -83,10 +83,10 @@ class AdminController extends GetxController {
       return;
     }
 
-    AdminAuthAPIService.logout(
-      token: token,
-      onSuccess: (response) {
-        isLoading.value = false;
+    // AdminAuthAPIService.logout(
+    //   token: token,
+    //   onSuccess: (response) {
+    //     isLoading.value = false;
 
         CacheHelper.removeData(key: 'admin');
         CacheHelper.removeData(key: 'token_admin');
@@ -94,15 +94,15 @@ class AdminController extends GetxController {
         CacheHelper.removeData(key: 'userType');
 
         Get.offAllNamed(Routes.User_Role_Selection);
-      },
-      onError: (e) {
-        isLoading.value = false;
-        _handleError('Error'.tr, e.message);
-      },
-      onLoading: () {
-        isLoading.value = true;
-      },
-    );
+      // },
+    //   onError: (e) {
+    //     isLoading.value = false;
+    //     _handleError('Error'.tr, e.message);
+    //   },
+    //   onLoading: () {
+    //     isLoading.value = true;
+    //   },
+    // );
   }
   void _handleError(String title, String message) {
     CustomSnackBar.showCustomErrorSnackBar(
