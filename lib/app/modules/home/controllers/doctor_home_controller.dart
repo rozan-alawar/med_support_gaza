@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 
+import '../../../data/models/appointment.dart';
+import '../../appointment_booking/controllers/doctor_appointment_management_controller.dart';
+
 class DoctorHomeController extends GetxController {
   final RxInt currentIndex = 0.obs;
 
@@ -7,11 +10,6 @@ class DoctorHomeController extends GetxController {
     currentIndex.value = index;
   }
 
-  var appointments = [
-    {'patientName': 'المريض أحمد أحمد', 'date': 'NOV 12', 'time': '10:00 AM'},
-    {'patientName': 'المريض محمد محمد', 'date': 'NOV 12', 'time': '11:00 AM'},
-    {'patientName': 'المريض محمد محمد', 'date': 'NOV 12', 'time': '11:00 AM'},
-  ].obs;
 
   var unreadMessages = 6.obs;
 }

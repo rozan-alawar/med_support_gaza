@@ -85,7 +85,7 @@ class DoctorAppointmentAPI {
     return res;
   }
 
-  Future<di.Response<dynamic>> rejectAppointments({
+  Future<di.Response<dynamic>> rejectAppointment({
     required String token,
     required int id,
   }) async {
@@ -104,7 +104,7 @@ class DoctorAppointmentAPI {
     return res;
   }
 
-  Future<di.Response<dynamic>> acceptAppointments({
+  Future<di.Response<dynamic>> acceptAppointment({
     required String token,
     required int id,
   }) async {
