@@ -16,16 +16,14 @@ class AppointmentModel {
         appointments: appointments ?? this.appointments,
       );
 
-
-  factory AppointmentModel.fromJson(Map<String, dynamic> json) => AppointmentModel(
-    status: json['status'],
-    appointments: json['appointments'] != null
-        ? List<Appointment>.from(
-            json['appointments'].map((x) => Appointment.fromJson(x)))
-        : [],
-  );
-
-
+  factory AppointmentModel.fromJson(Map<String, dynamic> json) =>
+      AppointmentModel(
+        status: json['status'],
+        appointments: json['appointments'] != null
+            ? List<Appointment>.from(
+                json['appointments'].map((x) => Appointment.fromJson(x)))
+            : [],
+      );
 }
 
 class Appointment {
@@ -33,26 +31,22 @@ class Appointment {
   int? patientId;
   int doctorId;
   DateTime date;
-  String period;
   String startTime;
   String endTime;
   String status;
+  String? is_accepted;
   String? patientName;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   Appointment({
     required this.id,
     required this.patientId,
     required this.doctorId,
     required this.date,
-    required this.period,
     required this.startTime,
     required this.endTime,
     required this.status,
     required this.patientName,
-    required this.createdAt,
-    required this.updatedAt,
+    this.is_accepted,
   });
 
   Appointment copyWith({
@@ -60,25 +54,22 @@ class Appointment {
     int? patientId,
     int? doctorId,
     DateTime? date,
-    String? period,
     String? startTime,
     String? endTime,
     String? status,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    String? patientName,
+    String? is_accepted,
   }) =>
       Appointment(
         id: id ?? this.id,
         patientId: patientId ?? this.patientId,
         doctorId: doctorId ?? this.doctorId,
         date: date ?? this.date,
-        period: period ?? this.period,
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
         status: status ?? this.status,
         patientName: patientName ?? this.patientName,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
+        is_accepted: is_accepted ?? this.is_accepted,
       );
 
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
@@ -86,11 +77,10 @@ class Appointment {
       patientId: json["patient_id"],
       doctorId: json["doctor_id"],
       date: DateTime.parse(json["date"]),
-      period: json["period"],
       startTime: json["start_time"],
       endTime: json["end_time"],
       patientName: json["patient_name"],
       status: json["status"],
-      createdAt: DateTime.parse(json["created_at"]),
-      updatedAt: DateTime.parse(json["updated_at"]));
+      is_accepted: json["is_accepted"],
+);
 }
