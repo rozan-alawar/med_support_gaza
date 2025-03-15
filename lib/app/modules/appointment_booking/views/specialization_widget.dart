@@ -28,7 +28,7 @@ class SpecializationWidget extends GetView<AppointmentBookingController> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(
-            color: controller.selectedSpecialization.value == title
+            color: controller.selectedSpecialization?.value?.major  == title
                 ?  AppColors.primary
                 : Colors.transparent,
             width: 2.w,

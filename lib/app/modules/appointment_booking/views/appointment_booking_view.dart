@@ -115,7 +115,6 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
   }
 
   Widget _buildSpecializationStep() {
-    final specializations = controller.getSpecializations();
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -123,13 +122,13 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
         mainAxisSpacing: 16.h,
         childAspectRatio: 1.6,
       ),
-      itemCount: specializations.length,
+      itemCount: controller.specializations.length,
       itemBuilder: (context, index) {
-        final specialization = specializations[index];
+        final specialization =  controller.specializations[index];
         return SpecializationWidget(
-          onTap: () => controller.selectSpecialization(specialization['title']),
-          title: specialization['title'],
-          availableDoctors: specialization['availableDoctors'],
+          onTap: () => controller.selectSpecialization(specialization),
+          title: specialization.major,
+          availableDoctors: specialization.doctorCount,
         );
       },
     );
@@ -218,7 +217,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
                 text: 'Try Again'.tr,
                 color: AppColors.primary,
                 width: 120.w,
-                onPressed: () => controller.loadDoctors(),
+                onPressed: () => controller.getDoctorsBySpecializations(),
               ),
             ],
           ),
@@ -239,7 +238,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
               ),
               8.height,
               CustomText(
-                'There are currently no doctors available\nfor ${controller.selectedSpecialization.value}'.tr,
+                'There are currently no doctors available\nfor ${controller.selectedSpecialization?.value}'.tr,
                 fontSize: 14.sp,
                 color: AppColors.textLight,
                 textAlign: TextAlign.center,
@@ -334,7 +333,8 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
                   children: [
                     _buildConfirmationItem(
                       'Specialization'.tr,
-                      controller.selectedSpecialization.value,
+                      controller.selectedSpecialization!.value?.major??"Null"
+                      ,
                       Icons.local_hospital_rounded,
                     ),
                     Divider(height: 24.h, color: Colors.grey[200]),
