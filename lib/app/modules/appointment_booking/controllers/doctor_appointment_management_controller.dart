@@ -22,7 +22,6 @@ class DoctorAppointmentManagementController extends GetxController {
   RxList<Appointment> PandingAppointments = <Appointment>[].obs;
   RxList<Appointment> dayilyAppointments = <Appointment>[].obs;
   RxBool isloading = false.obs;
-  var dayilyappointments = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
@@ -170,28 +169,6 @@ class DoctorAppointmentManagementController extends GetxController {
     }
   }
 
-  // void getDailyAppointment() async {
-  //   String? token = CacheHelper.getData(key: 'token');
-
-  //   if (token == null) {
-  //     Get.toNamed(Routes.DOCTOR_LOGIN);
-  //     return;
-  //   }
-  //   try {
-  //     isloading.value = true;
-  //     final response = await Get.find<DoctorAppointmentAPI>()
-  //         .getDoctorAppointments(token: token, status: 'Available');
-  //     dayilyAppointments.value =
-  //         AppointmentModel.fromJson(response.data).appointments;
-  //   } catch (e) {
-  //     isloading.value = false;
-  //     print(e.toString());
-  //   } finally {
-  //     isloading.value = false;
-  //   }
-
-  // }
-
   void getPandingAppointment() async {
     String? token = CacheHelper.getData(key: 'token');
 
@@ -268,41 +245,39 @@ class DoctorAppointmentManagementController extends GetxController {
 
   // get the daily appointment that is booking from a appointments list due to the date
 
-  // void getDayilyappointment() {
-  //   try {
-  //     // Clear current daily appointments
-  //     dayilyappointments.clear();
+  void getDayilyappointment() async {
+    String? token = CacheHelper.getData(key: 'token');
 
-  //     // Filter appointments for selected date
-  //     // for (var appointment in appointments) {
-  //     //   DateTime appointmentDate = (appointment['date'] as DateTime);
-  //     //   print(
-  //     //       '-------------------- $appointmentDate--------------------------');
-  //     //   if (isSameDay(appointmentDate, selectedDate.value) &&
-  //     //       appointment['isBooked'] == true) {
-  //     //     // Convert appointment time format if needed
-  //     //     dayilyappointments.add({
-  //     //       'patientName': appointment['patientName'],
-  //     //       'patientid': appointment['patientid'],
-  //     //       'date': appointment['date'],
-  //     //       'startTime': appointment['startTime'],
-  //     //       'isBooked': appointment['isBooked'],
-  //     //       'status': appointment['status'],
-  //     //       'createdAt': appointment['createdAt'],
-  //     //     });
-  //     //
-  //     //  }
-  //       // Sort daily appointments by time
-  //       dayilyappointments.sort(
-  //           (a, b) => (a['startTime'] ?? '').compareTo(b['startTime'] ?? ''));
-  //     }
-  //   } catch (e) {
-  //     CustomSnackBar.showCustomSnackBar(
-  //       title: 'Error',
-  //       message: 'Failed to load daily appointments: ${e.toString()}',
-  //     );
-  //   }
-  //}
+    if (token == null) {
+      Get.toNamed(Routes.DOCTOR_LOGIN);
+      return;
+    }
+
+    try {
+      dayilyAppointments.clear();
+      final response = await Get.find<DoctorAppointmentAPI>()
+          .getDoctorAppointments(token: token, status: 'Not Available');
+
+      final appointments =
+          AppointmentModel.fromJson(response.data).appointments;
+      // Filter appointments for selected date
+      for (var appointment in appointments) {
+        DateTime appointmentDate = (appointment.date);
+        print(
+            '-------------------- $appointmentDate--------------------------');
+        if (isSameDay(appointmentDate, selectedDate.value) &&
+            appointment.is_accepted == 'accepted') {
+          // Convert appointment time format if needed
+          dayilyAppointments.add(appointment);
+        }
+        // Sort daily appointments by time
+        dayilyAppointments.sort((a, b) => (a.startTime).compareTo(b.startTime));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    
+  }
 }
 
   /// A controller for managing doctor appointments.

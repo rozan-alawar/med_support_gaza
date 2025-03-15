@@ -28,7 +28,7 @@ class DailyScheduleView extends GetView<DoctorAppointmentManagementController> {
               ),
               Expanded(
                 child: Obx(() {
-                  if (controller.dayilyappointments.isEmpty) {
+                  if (controller.dayilyAppointments.isEmpty) {
                     return CustomText(
                       'no_appointment_message'.tr,
                       fontFamily: 'LamaSans',
@@ -36,17 +36,17 @@ class DailyScheduleView extends GetView<DoctorAppointmentManagementController> {
                     );
                   }
                   return ListView.builder(
-                    itemCount: controller.dayilyappointments.length,
+                    itemCount: controller.dayilyAppointments.length,
                     itemBuilder: (context, index) {
-                      final dayilyappointments =
-                          controller.dayilyappointments[index];
+                      final appointment =
+                          controller.dayilyAppointments[index];
                       return CustomAppointmentCard(
-                        patientName: dayilyappointments['patientName'] ?? 'saja',
-                        date: controller.getFormatedDate(dayilyappointments['date']) ?? '',
-                        time: dayilyappointments['startTime'] ?? '',
+                        patientName: appointment.patientName ?? 'unknown patient',
+                        date: controller.getFormatedDate(appointment.date),
+                        time: appointment.startTime,
                         butText: 'cancel_appointment'.tr,
                         onPressed: () {
-                          controller.dayilyappointments.removeAt(index);
+                          //controller.dayilyAppointments.removeAt(index);
                         },
                       );
                     },
