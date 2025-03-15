@@ -10,6 +10,7 @@ import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/api_services/patient_auth_api.dart';
 import 'package:med_support_gaza/app/data/api_services/patient_profile_api.dart';
 import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
@@ -78,21 +79,20 @@ class ProfileController extends GetxController {
     isLoading.value = true;
 
     PatientProfileAPIService.updatePatientProfile(
-        firstName: firstNameController.text.trim(),
-    lastName: lastNameController.text.trim(),
-    phone_number: phoneController.text.trim(),
-    age:  int.parse(ageController.text.trim()),
-    gender: selectedGender.value,
-address: selectedCountry.value,
-
+      firstName: firstNameController.text.trim(),
+      lastName: lastNameController.text.trim(),
+      phone_number: phoneController.text.trim(),
+      age: int.parse(ageController.text.trim()),
+      gender: selectedGender.value,
+      address: selectedCountry.value,
       onSuccess: (response) async {
-
         isLoading.value = false;
         final patient = response.data['patient'];
         currentUser.value = PatientModel.fromJson(patient);
         await getProfile();
 
-        CacheHelper.saveData(key: 'user', value: json.encode(currentUser.value!));
+        CacheHelper.saveData(
+            key: 'user', value: json.encode(currentUser.value!));
 
         CustomSnackBar.showCustomSnackBar(
           title: 'Success'.tr,
@@ -112,16 +112,38 @@ address: selectedCountry.value,
     );
   }
 
-  Future<void> signOut() async {
-    try {
-      await _auth.signOut();
-      Get.offAllNamed(Routes.AUTH);
-    } catch (e) {
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Failed to sign out'.tr,
-      );
+  //------------------------ SIGN OUT -----------------------------
+
+  void signOut() {
+    String token = CacheHelper.getData(key: 'token_patient');
+
+    if (token == null) {
+      _handleError('Error'.tr, 'No active session found');
+      Get.offAllNamed(Routes.User_Role_Selection);
+      return;
     }
+
+    PatientAuthAPIService.logout(
+      token: token,
+      onSuccess: (response) {
+        isLoading.value = false;
+
+        CacheHelper.removeData(key: 'user');
+        CacheHelper.removeData(key: 'token_patient');
+
+        CacheHelper.removeData(key: 'isLoggedIn');
+        CacheHelper.removeData(key: 'userType');
+
+        Get.offAllNamed(Routes.User_Role_Selection);
+      },
+      onError: (e) {
+        isLoading.value = false;
+        _handleError('Error'.tr, e.message);
+      },
+      onLoading: () {
+        isLoading.value = true;
+      },
+    );
   }
 
   Future<void> getProfile() async {
@@ -231,6 +253,13 @@ address: selectedCountry.value,
           ),
         ],
       ),
+    );
+  }
+
+  void _handleError(String title, String message) {
+    CustomSnackBar.showCustomErrorSnackBar(
+      title: title,
+      message: message,
     );
   }
 }
