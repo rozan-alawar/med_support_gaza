@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/services/cache_helper.dart';
-import '../../../core/services/status_service.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../data/api_services/doctor_appointment_api.dart';
+import '../../../data/firebase_services/chat_services.dart';
 import '../../../data/models/appointment.dart';
 import '../../../routes/app_pages.dart';
 
@@ -18,6 +16,8 @@ class DoctorAppointmentManagementController extends GetxController {
   var endTime = '09:30 AM'.obs;
   var availableTimes = <String>[].obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final ChatService _chatService = ChatService();
+
   RxList<Appointment> appointments = <Appointment>[].obs;
   RxList<Appointment> PandingAppointments = <Appointment>[].obs;
   RxList<Appointment> dayilyAppointments = <Appointment>[].obs;
@@ -199,6 +199,8 @@ class DoctorAppointmentManagementController extends GetxController {
       final response = await Get.find<DoctorAppointmentAPI>()
           .acceptAppointment(token: token, id: PandingAppointments[index].id);
       getPandingAppointment();
+      await _chatService.updateConsultationStatus(
+          '${PandingAppointments[index].id}', 'upcoming');
     } catch (e) {
       print(e.toString());
     }
@@ -215,6 +217,8 @@ class DoctorAppointmentManagementController extends GetxController {
       final response = await Get.find<DoctorAppointmentAPI>()
           .rejectAppointment(token: token, id: PandingAppointments[index].id);
       getPandingAppointment();
+      await _chatService.updateConsultationStatus(
+          '${PandingAppointments[index].id}', 'canceled');
     } catch (e) {
       print(e.toString());
     }
@@ -272,7 +276,7 @@ class DoctorAppointmentManagementController extends GetxController {
     }
   }
 
- void cancelAppointment(int index) async {
+  void cancelAppointment(int index) async {
     String? token = CacheHelper.getData(key: 'token');
 
     if (token == null) {
@@ -280,16 +284,11 @@ class DoctorAppointmentManagementController extends GetxController {
       return;
     }
     try {
-      await Get.find<DoctorAppointmentAPI>()
-          .delelteDoctorAppointment(token: token, id: dayilyAppointments[index].id);
+      await Get.find<DoctorAppointmentAPI>().delelteDoctorAppointment(
+          token: token, id: dayilyAppointments[index].id);
       getDayilyappointment();
     } catch (e) {
       print(e.toString());
     }
   }
-
-
-
-
 }
-
