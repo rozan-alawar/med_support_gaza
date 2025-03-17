@@ -50,7 +50,7 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            //  controller.loadConsultations();
+              controller.loadConsultations();
           },
           child: TabBarView(
             children: [
