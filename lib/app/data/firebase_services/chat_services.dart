@@ -106,6 +106,18 @@ class ChatService {
         .doc(consultationId)
         .update({'status': status});
   }
+  
+  Future<void> updateConsultationStatusByDoctor(String appointmentId, String status) async {
+    // Search for the appointment id in the consultations collection and update the status
+    final consultationsRef = _firestore.collection('consultations');
+    final consultationQuery = await consultationsRef.where('appointmentId', isEqualTo: appointmentId).get();
+    if (consultationQuery.docs.isNotEmpty) {
+      final consultationDocId = consultationQuery.docs.first.id;
+      await consultationsRef.doc(consultationDocId).update({'status': status});
+    } else {
+      throw Exception('Consultation not found');
+    }
+  }
 
   // Check if consultation time is active
   bool isConsultationActive(Timestamp startTime, Timestamp endTime) {

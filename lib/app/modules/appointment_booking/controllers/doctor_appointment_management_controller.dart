@@ -144,7 +144,7 @@ class DoctorAppointmentManagementController extends GetxController {
     }
     try {
       await Get.find<DoctorAppointmentAPI>()
-          .delelteDoctorAppointment(token: token, id: appointments[index].id);
+          .delelteDoctorAppointment(token: token, id: appointments[index].id);     
       loadAvailableAppointments();
     } catch (e) {
       print(e.toString());
@@ -199,7 +199,7 @@ class DoctorAppointmentManagementController extends GetxController {
       final response = await Get.find<DoctorAppointmentAPI>()
           .acceptAppointment(token: token, id: PandingAppointments[index].id);
       getPandingAppointment();
-      await _chatService.updateConsultationStatus(
+      await _chatService.updateConsultationStatusByDoctor(
           '${PandingAppointments[index].id}', 'upcoming');
     } catch (e) {
       print(e.toString());
@@ -217,7 +217,7 @@ class DoctorAppointmentManagementController extends GetxController {
       final response = await Get.find<DoctorAppointmentAPI>()
           .rejectAppointment(token: token, id: PandingAppointments[index].id);
       getPandingAppointment();
-      await _chatService.updateConsultationStatus(
+      await _chatService.updateConsultationStatusByDoctor(
           '${PandingAppointments[index].id}', 'canceled');
     } catch (e) {
       print(e.toString());
@@ -284,8 +284,10 @@ class DoctorAppointmentManagementController extends GetxController {
       return;
     }
     try {
+      int id = dayilyAppointments[index].id;
       await Get.find<DoctorAppointmentAPI>().delelteDoctorAppointment(
-          token: token, id: dayilyAppointments[index].id);
+          token: token, id: id);
+      await _chatService.updateConsultationStatusByDoctor('$id', 'canceled');
       getDayilyappointment();
     } catch (e) {
       print(e.toString());
