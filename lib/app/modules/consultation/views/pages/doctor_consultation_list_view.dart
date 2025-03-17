@@ -9,12 +9,13 @@ import '../../../../data/models/consultation_model.dart';
 import '../../../profile/controllers/doctor_profile_controller.dart';
 import '../../controllers/doctor_consultation_controller.dart';
 
-class DoctorConsultationListView extends GetView<DoctorConsultationController> {
-  DoctorConsultationListView({super.key});
-  final doctorController = Get.find<DoctorProfileController>();
+class DoctorConsultationListView extends GetView<DoctorConsultationController> { 
+   DoctorConsultationListView({super.key});
+ 
 
   @override
   Widget build(BuildContext context) {
+  
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -69,7 +70,7 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
 
     return StreamBuilder<List<ConsultationModel>>(
       stream: chatService.getDoctorConsultations(
-          doctorController.doctorData.value?.doctor?.id ?? 0, status),
+          Get.find<DoctorProfileController>().doctorData.value?.doctor?.id ?? 0, status),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -90,7 +91,7 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
 
             return ConsultationCard(
               consultation: consultation,
-              userId: doctorController.doctorData.value?.doctor?.id ?? 0,
+              userId: Get.find<DoctorProfileController>().doctorData.value?.doctor?.id ?? 0,
               onTap: () {
                 // Get.to(() =>
                 //     ChatView(
