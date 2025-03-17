@@ -66,35 +66,8 @@ class DoctorConsultationController extends GetxController {
     for (var consultation in allConsultations) {
       final expectedStatus = _getConsultationStatus(consultation.startTime, consultation.endTime);
       if (consultation.status != expectedStatus) {
-        // @TODO 
-        // change consultation id to consultation.appointmentId with the request is ready
-        _chatService.updateConsultationStatusByDoctor(consultation.id, expectedStatus);
+        _chatService.updateConsultationStatus(consultation.id, expectedStatus);
       }
     }
   }
-
-
-  var messages = [
-    {
-      'name': 'أمير العطار',
-      'message': 'شكراً لك دكتور',
-      'time': 'اليوم، 2:00 م'
-    },
-    {
-      'name': 'أمير العطار',
-      'message': 'أنا أنتظر الرد',
-      'time': 'اليوم، 2:00 م'
-    },
-    {
-      'name': 'أمير العطار',
-      'message': 'أنا أعاني من...',
-      'time': 'اليوم، 2:00 م'
-    },
-    {
-      'name': 'أمير العطار',
-      'message': 'أنا أنتظر الرد',
-      'time': 'اليوم، 2:00 م'
-    },
-    {'name': 'saja', 'message': 'مرحبا بك', 'time': 'اليوم، 2:00 م'},
-  ].obs;
 }

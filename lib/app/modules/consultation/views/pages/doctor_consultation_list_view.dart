@@ -4,18 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/modules/consultation/views/pages/doctor_chat_view.dart';
 import '../../../../data/firebase_services/chat_services.dart';
 import '../../../../data/models/consultation_model.dart';
 import '../../../profile/controllers/doctor_profile_controller.dart';
+import '../../bindings/doctor_chat_binding.dart';
 import '../../controllers/doctor_consultation_controller.dart';
 
-class DoctorConsultationListView extends GetView<DoctorConsultationController> { 
-   DoctorConsultationListView({super.key});
- 
+class DoctorConsultationListView extends GetView<DoctorConsultationController> {
+  DoctorConsultationListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-  
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -51,7 +51,7 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-              controller.loadConsultations();
+            controller.loadConsultations();
           },
           child: TabBarView(
             children: [
@@ -70,7 +70,8 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
 
     return StreamBuilder<List<ConsultationModel>>(
       stream: chatService.getDoctorConsultations(
-          Get.find<DoctorProfileController>().doctorData.value?.doctor?.id ?? 0, status),
+          Get.find<DoctorProfileController>().doctorData.value?.doctor?.id ?? 0,
+          status),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -91,13 +92,34 @@ class DoctorConsultationListView extends GetView<DoctorConsultationController> {
 
             return ConsultationCard(
               consultation: consultation,
-              userId: Get.find<DoctorProfileController>().doctorData.value?.doctor?.id ?? 0,
+              userId: Get.find<DoctorProfileController>()
+                      .doctorData
+                      .value
+                      ?.doctor
+                      ?.id ??
+                  0,
               onTap: () {
-                // Get.to(() =>
-                //     ChatView(
-                //       consultationId: consultation.id,
-                //       userId: userId,
-                //     ));
+    
+                Get.to(
+                    () => DoctorChatView(
+                          consultationId: consultation.id,
+                          userId: Get.find<DoctorProfileController>()
+                                  .doctorData
+                                  .value
+                                  ?.doctor
+                                  ?.id ??
+                              0,
+                        ),
+                    binding: DoctorChatBinding(),
+                    arguments: {
+                      'consultationId': consultation.id,
+                      'userId': Get.find<DoctorProfileController>()
+                              .doctorData
+                              .value
+                              ?.doctor
+                              ?.id ??
+                          0,
+                    });
               },
             );
           },
@@ -165,14 +187,15 @@ class ConsultationCard extends StatelessWidget {
               SizedBox(height: 12.h),
               Row(
                 children: [
-                 const  Icon(Icons.calendar_today, size: 16, color: Colors.grey),
+                  const Icon(Icons.calendar_today,
+                      size: 16, color: Colors.grey),
                   SizedBox(width: 8.w),
                   Text(
                     _formatDate(consultation.startTime),
                     style: TextStyle(color: Colors.grey.shade700),
                   ),
                   SizedBox(width: 16.w),
-                 const  Icon(Icons.access_time, size: 16, color: Colors.grey),
+                  const Icon(Icons.access_time, size: 16, color: Colors.grey),
                   SizedBox(width: 8.w),
                   Text(
                     '${_formatTime(consultation.startTime)} - ${_formatTime(consultation.endTime)}',
@@ -233,7 +256,7 @@ class ConsultationCard extends StatelessWidget {
     if (consultation.status == 'active') {
       return ElevatedButton.icon(
         onPressed: onTap,
-        icon:const Icon(Icons.chat),
+        icon: const Icon(Icons.chat),
         label: const Text('Chat Now'),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.teal,
@@ -259,11 +282,11 @@ class ConsultationCard extends StatelessWidget {
     } else {
       return OutlinedButton.icon(
         onPressed: onTap,
-        icon:const Icon(Icons.history),
-        label:const  Text('View History'),
+        icon: const Icon(Icons.history),
+        label: const Text('View History'),
         style: OutlinedButton.styleFrom(
           foregroundColor: Colors.grey,
-          side:const BorderSide(color: Colors.grey),
+          side: const BorderSide(color: Colors.grey),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),

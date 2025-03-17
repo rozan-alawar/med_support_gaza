@@ -25,7 +25,7 @@ import '../modules/auth/views/patient_new_password_view.dart';
 import '../modules/auth/views/verfication_view.dart';
 import '../modules/consultation/bindings/consultation_binding.dart';
 import '../modules/consultation/bindings/doctor_consultation_binding.dart';
-import '../modules/consultation/views/pages/doctor_consultation_view.dart';
+import '../modules/consultation/views/pages/doctor_chat_view.dart';
 import '../modules/home/bindings/doctor_home_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/article_view.dart';
@@ -189,10 +189,6 @@ class AppPages {
       name: _Paths.ARTICLE_TIP,
       page: () => const ArticleTipView(),
     ),
-    GetPage(
-        name: _Paths.DOCTOR_CHAT,
-        page: () => const DoctorConsultationView(),
-        binding: DoctroConsultationBinding()),
     GetPage(
       name: _Paths.DOCTORS_LIST,
       page: () => const PatientDoctorsView(),
