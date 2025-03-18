@@ -75,7 +75,8 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                 16.height,
                 GestureDetector(
                   onTap: () {
-                    showCountriesList(context);
+                    //showCountriesList(context);
+                    _showCountryPicker(context);
                   },
                   child: AbsorbPointer(
                     child: CustomTextField(
@@ -141,7 +142,8 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                 16.height,
                 GestureDetector(
                     onTap: () {
-                      showSpecialtyList(context);
+                      // showSpecialtyList(context);
+                      _showSpecialityPicker(context);
                     },
                     child: AbsorbPointer(
                       child: CustomTextField(
@@ -217,17 +219,17 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         controller.signUp(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                            passwordConfirmation:
-                                confirmPasswordController.text.trim(),
-                            firstName: firstNameController.text.trim(),
-                            lastName: lastNameController.text.trim(),
-                            phone: phoneController.text.trim(),
-                            country: countryController.text.trim(),
-                            specialty: specialityController.text.trim(),
-                            gender: gender.value,
-                            );
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                          passwordConfirmation:
+                              confirmPasswordController.text.trim(),
+                          firstName: firstNameController.text.trim(),
+                          lastName: lastNameController.text.trim(),
+                          phone: phoneController.text.trim(),
+                          country: countryController.text.trim(),
+                          specialty: specialityController.text.trim(),
+                          gender: gender.value,
+                        );
 
                         // File? documentFile;
                         // if (controller.selectedFilePath.value.isNotEmpty) {
@@ -316,6 +318,61 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
     );
   }
 
+  void _showSpecialityPicker(BuildContext context) {
+    Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.medical_services, color: AppColors.primary),
+                12.width,
+                CustomText(
+                  'Select Speciality'.tr,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ],
+            ),
+            16.height,
+            SizedBox(
+              height: Get.height * 0.4,
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: medicalSpecialties.length,
+                separatorBuilder: (context, index) => const Divider(height: 1),
+                itemBuilder: (context, index) {
+                  return ListTile(
+                      title: CustomText(medicalSpecialties[index]),
+                      onTap: () {
+                        controller.medicalSpecialty.value =
+                            medicalSpecialties[index];
+                        specialityController.text = medicalSpecialties[index];
+                        Get.back();
+                      },
+                      trailing: Obx(
+                        () => controller.medicalSpecialty.value ==
+                                medicalSpecialties[index]
+                            ? const Icon(Icons.check_circle,
+                                color: AppColors.primary)
+                            : const SizedBox(),
+                      ));
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
   void showCountriesList(BuildContext context) {
     // When tapped, show the dropdown
     showDialog(
@@ -348,6 +405,59 @@ class DoctorSignUpView extends GetView<DoctorAuthController> {
               ),
             ));
       },
+    );
+  }
+
+  void _showCountryPicker(BuildContext context) {
+    Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.location_on, color: AppColors.primary),
+                12.width,
+                CustomText(
+                  'Select Country'.tr,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ],
+            ),
+            16.height,
+            SizedBox(
+              height: Get.height * 0.4,
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: countries.length,
+                separatorBuilder: (context, index) => const Divider(height: 1),
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: CustomText(countries[index]),
+                    onTap: () {
+                      countryController.text = countries[index];
+                      controller.selectedCountry.value = countries[index];
+                      Get.back();
+                    },
+                    trailing: Obx(() =>
+                        controller.selectedCountry.value == countries[index]
+                            ? const Icon(Icons.check_circle,
+                                color: AppColors.primary)
+                            : const SizedBox()),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
     );
   }
 }
