@@ -33,9 +33,12 @@ class DoctorAuthApi {
       'phone_number': phoneNumber,
       'gender': gender,
       'major': major,
+      // Create MultipartFile from the file selected by the user
+      // filename will be set to "fName_lName_Certification" and the file type will be extracted from the file path
+      // The file path will be sent to the server as the value of the "certificate" field
       'certificate': await MultipartFile.fromFile(
         file.path,
-        filename: file.path.split('/').last,
+        filename: '${fName}_$lName _Certification',
         contentType: MediaType.parse(fileType!),
       ),
       'password_confirmation': passwordConfirmation,
@@ -138,16 +141,16 @@ class DoctorAuthApi {
     required String token,
   }) async {
     Response response = await Get.find<DioClient>().dio.post(
-      Links.doctorLogout,
-      options: Options(
-        headers: {
-           'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        followRedirects: true,
-      ),
-    );
+          Links.doctorLogout,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            followRedirects: true,
+          ),
+        );
     return response;
   }
 }
