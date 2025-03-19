@@ -87,8 +87,12 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
                   child: doctor.firstName != null
                       ? CircleAvatar(
                     radius: 32.r,
-                    backgroundImage: NetworkImage(ImageAssets.doctros),
-                  )
+                child:    Text(
+                      doctor.firstName!
+                          .substring(0, 1)
+                          .toUpperCase(),
+                      style: TextStyle(color: Colors.white,fontSize: 22.sp,fontWeight: FontWeight.bold),
+                    ),        backgroundColor: AppColors.primary,          )
                       : CircleAvatar(
                     radius: 32.r,
                     backgroundColor: Colors.white,
@@ -121,7 +125,7 @@ class SuggestedDoctors extends GetView<PatientDoctorsController> {
                         Icon(Icons.star, color: Colors.amber, size: 16.sp),
                         4.width,
                         CustomText(
-                          doctor.country.toString(),
+                          doctor.averageRating.toString(),
                           fontSize: 12.sp,
                           color: Colors.grey[600],
                         ),

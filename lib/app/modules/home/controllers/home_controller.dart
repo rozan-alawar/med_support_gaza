@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/models/%20appointment_model.dart';
 import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
+import 'package:med_support_gaza/app/modules/appointment_booking/controllers/appointment_booking_controller.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/consultation_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,6 +34,7 @@ class HomeController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RxBool hasActiveConsultation = false.obs;
+
   Rx<PatientModel?> patient =
   Rx<PatientModel?>(AuthController().currentUser);
   void changeBottomNavIndex(int index) {
@@ -43,6 +46,7 @@ class HomeController extends GetxController {
     super.onInit();
     // _loadAppointments();
     loadUserData();
+    ChatService().monitorAppointmentsStatus();
     // setupConsultationListener();
   }
   //

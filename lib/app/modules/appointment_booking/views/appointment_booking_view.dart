@@ -12,7 +12,6 @@ import 'package:med_support_gaza/app/modules/appointment_booking/views/specializ
 class AppointmentBookingView extends GetView<AppointmentBookingController> {
   const AppointmentBookingView({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,56 +114,27 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
   }
 
   Widget _buildSpecializationStep() {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16.w,
-        mainAxisSpacing: 16.h,
-        childAspectRatio: 1.6,
-      ),
-      itemCount: controller.specializations.length,
-      itemBuilder: (context, index) {
-        final specialization =  controller.specializations[index];
-        return SpecializationWidget(
-          onTap: () => controller.selectSpecialization(specialization),
-          title: specialization.major,
-          availableDoctors: specialization.doctorCount,
-        );
-      },
-    );
+    return controller.isLoading.value
+        ? Center(child: CircularProgressIndicator())
+        : GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16.w,
+              mainAxisSpacing: 16.h,
+              childAspectRatio: 1.6,
+            ),
+            itemCount: controller.specializations.length,
+            itemBuilder: (context, index) {
+              final specialization = controller.specializations[index];
+              return SpecializationWidget(
+                onTap: () => controller.selectSpecialization(specialization),
+                title: specialization.major,
+                availableDoctors: specialization.doctorCount,
+              );
+            },
+          );
   }
   //
-  // Widget _buildDoctorSelectionStep() {
-  //   final doctors = controller.getDoctors();
-  //   if (doctors.isEmpty) {
-  //     // Show a message when no doctors are available
-  //     return Align(
-  //       alignment: Alignment.center,
-  //       child: CustomText(
-  //         'No doctors available for this specialization.'.tr,
-  //         fontSize: 16.sp,
-  //         fontWeight: FontWeight.w600,
-  //         color: AppColors.textLight,
-  //       ),
-  //     );
-  //   }
-  //   return ListView.separated(
-  //     itemCount: doctors.length,
-  //     shrinkWrap: true,
-  //     physics: const BouncingScrollPhysics(),
-  //     separatorBuilder: (context, index) => 12.height,
-  //     itemBuilder: (context, index) {
-  //       final doctor = doctors[index];
-  //       return DoctorCard(
-  //         name: doctor['name'],
-  //         specialization: doctor['specialization'],
-  //         rating: doctor['rating'],
-  //         experience: doctor['experience'],
-  //         onTap: () => controller.selectDoctor(doctor['name']),
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget _buildDoctorSelectionStep() {
     return Obx(() {
@@ -229,7 +199,6 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               CustomText(
                 'No doctors available'.tr,
                 fontSize: 18.sp,
@@ -238,7 +207,8 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
               ),
               8.height,
               CustomText(
-                'There are currently no doctors available\nfor ${controller.selectedSpecialization?.value}'.tr,
+                'There are currently no doctors available\nfor ${controller.selectedSpecialization?.value}'
+                    .tr,
                 fontSize: 14.sp,
                 color: AppColors.textLight,
                 textAlign: TextAlign.center,
@@ -264,9 +234,11 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
           final doctor = controller.availableDoctors[index];
           return Hero(
             tag: 'doctor-${doctor.id}',
-            child: Obx(()=> DoctorCard(
+            child: Obx(
+              () => DoctorCard(
                 doctor: doctor,
-                isSelected:( controller.selectedDoctorId.value == doctor.id).obs,
+                isSelected:
+                    (controller.selectedDoctorId.value == doctor.id).obs,
                 onTap: () => controller.selectDoctor(doctor),
               ),
             ),
@@ -275,6 +247,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
       );
     });
   }
+
   Widget _buildConfirmationStep() {
     return Obx(() => Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
@@ -333,8 +306,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
                   children: [
                     _buildConfirmationItem(
                       'Specialization'.tr,
-                      controller.selectedSpecialization!.value?.major??"Null"
-                      ,
+                      controller.selectedSpecialization!.value?.major ?? "Null",
                       Icons.local_hospital_rounded,
                     ),
                     Divider(height: 24.h, color: Colors.grey[200]),
@@ -454,6 +426,90 @@ class _buildTimeSelectionStep extends GetView<AppointmentBookingController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           20.height,
+          // Date Selection Section
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 12,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 2),
+                )
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header Section
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.calendar_today_rounded,
+                        color: AppColors.primary,
+                        size: 20.sp,
+                      ),
+                    ),
+                    12.width,
+                    CustomText(
+                      'Select Date'.tr,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+                16.height,
+                CustomText(
+                  'Choose your appointment date'.tr,
+                  fontSize: 12.sp,
+                  color: Colors.grey[600],
+                ),
+                24.height,
+
+                // Date Selection Widget
+                Obx(() => Container(
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      decoration: BoxDecoration(
+                        color: Colors.teal.shade50,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: CalendarDatePicker(
+                        initialDate:
+                            controller.selectedDate.value ?? DateTime.now(),
+                        firstDate:
+                            DateTime.now(), // Cannot select dates before today
+                        lastDate: DateTime.now().add(const Duration(
+                            days:
+                                30)), // Can select up to 30 days in the future
+                        onDateChanged: (date) {
+                          controller.selectedDate(date);
+                        },
+                        selectableDayPredicate: (day) {
+                          // Optionally add logic to disable certain days (weekends, holidays, etc.)
+                          // For example, to disable weekends:
+                          // return day.weekday != DateTime.saturday && day.weekday != DateTime.sunday;
+                          return true;
+                        },
+                      ),
+                    )),
+              ],
+            ),
+          ),
+
+          20.height,
+
+          // Time Slots Section
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24),
@@ -503,67 +559,102 @@ class _buildTimeSelectionStep extends GetView<AppointmentBookingController> {
                   color: Colors.grey[600],
                 ),
                 24.height,
-      
+
                 // Time Slots Section
-                Obx(() => Wrap(
-                      spacing: 12.w,
-                      runSpacing: 16.h,
-                      children: List.generate(
-                        controller.getAvailableTimes().length,
-                        (index) {
-                          final time = controller.getAvailableTimes()[index];
-                          final isSelected =
-                              controller.selectedTime.value == time;
-      
-                          return InkWell(
-                            onTap: () => controller.selectTime(time),
-                            borderRadius: BorderRadius.circular(12.r),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 12.w,
-                                vertical: 12.h,
-                              ),
-                              decoration: BoxDecoration(
+                Obx(() {
+                  final availableTimes = controller.getAvailableTimes();
+
+                  if (availableTimes.isEmpty) {
+                    return Container(
+                      padding: EdgeInsets.all(20.w),
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.event_busy,
+                            size: 40.sp,
+                            color: Colors.grey[400],
+                          ),
+                          16.height,
+                          CustomText(
+                            'No available slots for this date'.tr,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey[600],
+                            textAlign: TextAlign.center,
+                          ),
+                          12.height,
+                          CustomText(
+                            'Please select another date'.tr,
+                            fontSize: 12.sp,
+                            color: Colors.grey[500],
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return Wrap(
+                    spacing: 12.w,
+                    runSpacing: 16.h,
+                    children: List.generate(
+                      availableTimes.length,
+                      (index) {
+                        final time = availableTimes[index];
+                        final isSelected =
+                            controller.selectedTime.value == time;
+
+                        return InkWell(
+                          onTap: () => controller.selectTime(time),
+                          borderRadius: BorderRadius.circular(12.r),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 12.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppColors.primary
+                                  : AppColors.primary.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(12.r),
+                              border: Border.all(
                                 color: isSelected
                                     ? AppColors.primary
-                                    : AppColors.primary.withOpacity(0.05),
-                                borderRadius: BorderRadius.circular(12.r),
-                                border: Border.all(
-                                  color: isSelected
-                                      ? AppColors.primary
-                                      : Colors.transparent,
-                                  width: 1.5.w,
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.schedule,
-                                    size: 16.sp,
-                                    color: isSelected
-                                        ? Colors.white
-                                        : AppColors.primary,
-                                  ),
-                                  6.height,
-                                  CustomText(
-                                    time.format(context),
-                                    fontSize: 13.sp,
-                                    fontWeight: isSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.normal,
-                                    color: isSelected
-                                        ? Colors.white
-                                        : Colors.grey[800],
-                                  ),
-                                ],
+                                    : Colors.transparent,
+                                width: 1.5.w,
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    )),
-      
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.schedule,
+                                  size: 16.sp,
+                                  color: isSelected
+                                      ? Colors.white
+                                      : AppColors.primary,
+                                ),
+                                6.height,
+                                CustomText(
+                                  time.format(context),
+                                  fontSize: 13.sp,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w600
+                                      : FontWeight.normal,
+                                  color: isSelected
+                                      ? Colors.white
+                                      : Colors.grey[800],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }),
+
                 // Additional Info Section
                 24.height,
                 Container(

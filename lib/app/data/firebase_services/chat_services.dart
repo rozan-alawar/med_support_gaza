@@ -13,7 +13,7 @@ class ChatService {
     required Timestamp startTime,
     required Timestamp endTime,
   }) async {
-    // Create a new consultation record with status "upcoming"
+    // Create a new consultation record with status "pending"
     await _firestore.collection('consultations').add({
       'doctor': doctor.toJson(),
       'doctorId': doctor.id,
@@ -22,9 +22,31 @@ class ChatService {
       'patient': patient.toJson(),
       'patientId': patient.id,
       'patientName': '${patient.firstName} ${patient.lastName}',
-      'status': 'upcoming',
+      'status': 'active',
       'startTime': startTime,
       'endTime': endTime,
+    });
+  }
+
+  void monitorAppointmentsStatus() {
+    _firestore.collection('consultations').snapshots().listen((snapshot) {
+      final now = Timestamp.now();
+
+      for (var doc in snapshot.docs) {
+        final startTime = doc['startTime'] as Timestamp;
+        final endTime = doc['endTime'] as Timestamp;
+        final status = doc['status'] as String;
+
+        if (now.seconds >= startTime.seconds &&
+            now.seconds <= endTime.seconds &&
+            status != 'active') {
+          doc.reference.update({'status': 'active'});
+        }
+
+        if (now.seconds > endTime.seconds && status != 'past') {
+          doc.reference.update({'status': 'past'});
+        }
+      }
     });
   }
 

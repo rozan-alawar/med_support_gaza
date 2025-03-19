@@ -15,8 +15,6 @@ import '../../../data/firebase_services/firebase_services.dart';
 import '../../../routes/app_pages.dart';
 
 class AdminController extends GetxController {
-  final FirebaseService _firebaseService = Get.find<FirebaseService>();
-
   final isLogin = true.obs;
   final isPasswordVisible = true.obs;
   final isLoading = false.obs;
@@ -89,7 +87,7 @@ class AdminController extends GetxController {
     //     isLoading.value = false;
 
         CacheHelper.removeData(key: 'admin');
-        CacheHelper.removeData(key: 'token_admin');
+        // CacheHelper.removeData(key: 'token_admin');
         CacheHelper.removeData(key: 'isLoggedIn');
         CacheHelper.removeData(key: 'userType');
 

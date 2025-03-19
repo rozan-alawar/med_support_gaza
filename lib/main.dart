@@ -9,6 +9,7 @@ import 'package:med_support_gaza/app/core/services/localizations/translation_con
 import 'package:med_support_gaza/app/core/utils/app_theme.dart';
 import 'package:med_support_gaza/app/core/widgets/custem_error_widget.dart';
 import 'package:med_support_gaza/app/data/api_services/doctor_auth_api.dart';
+import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
 import 'package:med_support_gaza/app/data/network_helper/dio_helper.dart';
 import 'package:med_support_gaza/app/data/network_helper/dio_client.dart';
@@ -41,6 +42,8 @@ Future<void> initializeServices() async {
 
   // Initialize DioHelper
   DioHelper.init();
+  ChatService().monitorAppointmentsStatus();
+
 }
 
 void main() async {
@@ -89,25 +92,6 @@ class MyApp extends StatelessWidget {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //rozanalawar@gmail.com
 //123123123
 
@@ -118,4 +102,4 @@ class MyApp extends StatelessWidget {
 //admin123
 
 //admin1@gmail.com
-//password123
+//`password123`
