@@ -28,7 +28,7 @@ class DoctorBookingView extends GetView<DoctorAppointmentManagementController> {
               ),
               Expanded(
                 child: Obx(() {
-                  if (controller.dayilyappointments.isEmpty) {
+                  if (controller.PandingAppointments.isEmpty) {
                     return CustomText(
                       'no_appointment_message'.tr,
                       fontFamily: 'LamaSans',
@@ -36,14 +36,14 @@ class DoctorBookingView extends GetView<DoctorAppointmentManagementController> {
                     );
                   }
                   return ListView.builder(
-                    itemCount: controller.appointments.length,
+                    itemCount: controller.PandingAppointments.length,
                     itemBuilder: (context, index) {
                       final appointment =
-                          controller.appointments[index];
+                          controller.PandingAppointments[index];
                       return BookingCard(
                         patientName:
-                         //   appointment.period ?? 
-                            'saja',
+                            appointment.patientName ?? 
+                            'Unknown Patient',
                         date: controller
                                 .getFormatedDate(appointment.date)
 ,

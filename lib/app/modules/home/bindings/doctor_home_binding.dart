@@ -14,10 +14,10 @@ class DoctorHomeBinding extends Bindings {
     Get.lazyPut<DoctorAppointmentManagementController>(
       () => DoctorAppointmentManagementController(),
     );
+    Get.lazyPut<DoctorProfileAPI>(() => DoctorProfileAPI());
+    Get.lazyPut<DoctorAppointmentAPI>(() => DoctorAppointmentAPI());
     Get.lazyPut<DoctorConsultationController>(
       () => DoctorConsultationController(),
     );
-    Get.lazyPut<DoctorProfileAPI>(() => DoctorProfileAPI());
-    Get.lazyPut<DoctorAppointmentAPI>(() => DoctorAppointmentAPI());
   }
 }

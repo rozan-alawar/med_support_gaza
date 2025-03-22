@@ -1,15 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'dart:io';
-import 'package:dio/src/response.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart' as di;
 import 'package:get/instance_manager.dart';
 import 'package:med_support_gaza/app/data/api_paths.dart';
 import '../network_helper/dio_client.dart';
 import 'package:mime/mime.dart';
-import '../api_paths.dart';
-import '../network_helper/dio_client.dart';
 
 class DoctorProfileAPI {
   Future<di.Response<dynamic>> getDoctorProfile({

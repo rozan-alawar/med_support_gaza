@@ -8,7 +8,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/appointment_card.dart';
 import '../../../core/widgets/quick_stats_card.dart';
 import '../../../routes/app_pages.dart';
-import '../../auth/controllers/doctro_auth_controller.dart';
+import '../../appointment_booking/controllers/doctor_appointment_management_controller.dart';
 import '../controllers/doctor_home_controller.dart';
 
 class DoctorMainView extends GetView<DoctorHomeController> {
@@ -49,18 +49,20 @@ class DoctorMainView extends GetView<DoctorHomeController> {
               SizedBox(
                 height: 190.h,
                 child: Obx(() {
-                  if (controller.appointments.isEmpty) {
+               final dayilyAppointments=   Get.find<DoctorAppointmentManagementController>()
+                      .dayilyAppointments;
+                  if (dayilyAppointments.isEmpty) {
                     return Center(child: Text('no_appointment_message'.tr));
                   }
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: controller.appointments.length,
+                    itemCount: dayilyAppointments.length,
                     itemBuilder: (context, index) {
-                      final appointment = controller.appointments[index];
+                      final appointment = dayilyAppointments[index];
                       return AppointmentCard(
-                        patientName: appointment['patientName']!,
-                        date: appointment['date']!,
-                        time: appointment['time']!,
+                        patientName: appointment.patientName??'unknown patient',
+                        date:  Get.find<DoctorAppointmentManagementController>().getFormatedDate(appointment.date),
+                        time: appointment.startTime,
                       );
                     },
                   );
@@ -92,18 +94,21 @@ class DoctorMainView extends GetView<DoctorHomeController> {
               SizedBox(
                 height: 190.h,
                 child: Obx(() {
-                  if (controller.appointments.isEmpty) {
+                  final pandingAppointments =
+                      Get.find<DoctorAppointmentManagementController>()
+                          .PandingAppointments;
+                  if (pandingAppointments.isEmpty) {
                     return Center(child: Text('no_appointment_message'.tr));
                   }
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: controller.appointments.length,
+                    itemCount: pandingAppointments.length,
                     itemBuilder: (context, index) {
-                      final appointment = controller.appointments[index];
+                      final appointment = pandingAppointments[index];
                       return AppointmentCard(
-                        patientName: appointment['patientName']!,
-                        date: appointment['date']!,
-                        time: appointment['time']!,
+                        patientName: appointment.patientName??'unknown patient',
+                        date:  Get.find<DoctorAppointmentManagementController>().getFormatedDate(appointment.date),
+                        time: appointment.startTime,
                       );
                     },
                   );

@@ -7,5 +7,6 @@ class DoctroConsultationBinding extends Bindings {
     Get.lazyPut<DoctorConsultationController>(
       () => DoctorConsultationController(),
     );
+    
   }
 }

@@ -15,8 +15,6 @@ import 'package:med_support_gaza/app/data/network_helper/dio_helper.dart';
 import 'package:med_support_gaza/app/data/network_helper/dio_client.dart';
 import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
-import 'app/core/services/status_service.dart';
-import 'app/data/network_helper/dio_helper.dart';
 import 'app/routes/app_pages.dart';
 
 Future<void> initializeServices() async {
