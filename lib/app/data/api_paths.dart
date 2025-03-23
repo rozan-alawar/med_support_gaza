@@ -20,7 +20,18 @@ class Links {
   static var ADMIN_LOGIN = 'login';
   static var ADMIN_LOGOUT = 'logout';
 
-  static var GET_ARTICLES = 'articles';
+  static var GET_PATIENTS = 'admin/patients';
+  static var GET_DOCTORS_List = 'admin/doctors';
+  static var DELETE_PATIENT = 'admin/deletepatient/';
+  static var DELETE_DOCTOR = 'admin/deletedoctor/';
+  static var GET_PENDING_DOCTORS = 'admin/doctor-requests';
+  static var APPROVE_DOCTOR = 'admin/approve-doctor';
+  static var DECLINE_DOCTOR = 'admin/reject-doctor';
+
+  static var GET_ARTICLES = 'articles?page=2';
+  static var ADD_ARTICLE = 'articles';
+  static var UPDATE_ARTICLE = 'articles/';
+
 
   static var GET_DOCTORS_SPECIALIZATIONS = 'patient/specializations';
   static var GET_DOCTORS_BY_SPECIALIZATION = 'patient/doctors';

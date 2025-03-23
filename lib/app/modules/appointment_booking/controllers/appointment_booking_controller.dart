@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
 import 'package:med_support_gaza/app/data/api_services/patient_appointment_api.dart';
 import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
@@ -19,7 +20,7 @@ class AppointmentBookingController extends GetxController {
   final RxInt currentStep = 0.obs;
   Rxn<Specialization> selectedSpecialization = Rxn<Specialization>();
   Rx<Doctor>? selectedDoctor;
-  final Rxn<DateTime> selectedDate = Rxn<DateTime>();
+  final selectedDate = Rx<DateTime?>(null);
   final Rxn<TimeOfDay> selectedTime = Rxn<TimeOfDay>();
   final RxBool isLoading = false.obs;
   final RxString selectedDoctorId = ''.obs;
@@ -205,7 +206,7 @@ class AppointmentBookingController extends GetxController {
         return;
       }
 
-      if (currentStep.value == 2 && selectedTime.value == null) {
+      if (currentStep.value == 2 && (selectedDate.value == null || selectedTime.value == null)) {
         CustomSnackBar.showCustomErrorSnackBar(
           title: 'Error'.tr,
           message: 'Please select date and time'.tr,
@@ -297,8 +298,7 @@ class AppointmentBookingController extends GetxController {
           convertTimeOfDayToTimestamp(selectedTime.value!), 30),
       startTime: convertTimeOfDayToTimestamp(selectedTime.value!),
     );
-    CustomSnackBar.showCustomSnackBar(
-        message: " Text('تم حجز الموعد بنجاح')", title: 'done');
+
 
     CustomSnackBar.showCustomSnackBar(
       title: 'Success'.tr,
@@ -328,19 +328,6 @@ class AppointmentBookingController extends GetxController {
     'ConfirmBooking'
   ];
 
-  List<TimeOfDay> getAvailableTimes() {
-    return [
-      const TimeOfDay(hour: 9, minute: 0),
-      const TimeOfDay(hour: 9, minute: 30),
-      const TimeOfDay(hour: 10, minute: 0),
-      const TimeOfDay(hour: 10, minute: 30),
-      const TimeOfDay(hour: 11, minute: 0),
-      const TimeOfDay(hour: 11, minute: 30),
-      const TimeOfDay(hour: 12, minute: 00),
-      const TimeOfDay(hour: 12, minute: 30),
-      const TimeOfDay(hour: 1, minute: 00),
-    ];
-  }
 
   final RxList<DoctorModel> doctors = <DoctorModel>[].obs;
 
@@ -535,5 +522,84 @@ class AppointmentBookingController extends GetxController {
   void selectTime(TimeOfDay time) {
     selectedTime.value = time;
     update();
+  }
+
+
+// Update the existing getAvailableTimes method to consider the selected date
+  List<TimeOfDay> getAvailableTimes() {
+    // If no date is selected, return empty list
+    if (selectedDate.value == null) {
+      return [];
+    }
+
+    // Check if the selected date is today
+    final now = DateTime.now();
+    final isToday = selectedDate.value!.year == now.year &&
+        selectedDate.value!.month == now.month &&
+        selectedDate.value!.day == now.day;
+
+    // Base available times
+    final availableTimes = [
+      const TimeOfDay(hour: 9, minute: 0),
+      const TimeOfDay(hour: 9, minute: 30),
+      const TimeOfDay(hour: 10, minute: 0),
+      const TimeOfDay(hour: 10, minute: 30),
+      const TimeOfDay(hour: 11, minute: 0),
+      const TimeOfDay(hour: 11, minute: 30),
+      const TimeOfDay(hour: 14, minute: 0),
+      const TimeOfDay(hour: 14, minute: 30),
+      const TimeOfDay(hour: 15, minute: 0),
+      const TimeOfDay(hour: 15, minute: 30),
+      const TimeOfDay(hour: 16, minute: 0),
+      const TimeOfDay(hour: 16, minute: 30),
+    ];
+
+    // If it's today, only show times that are in the future
+    if (isToday) {
+      final currentTime = TimeOfDay.fromDateTime(now);
+      return availableTimes.where((time) {
+        // Compare hours and minutes to determine if time is in the future
+        return time.hour > currentTime.hour ||
+            (time.hour == currentTime.hour && time.minute > currentTime.minute);
+      }).toList();
+    }
+
+    // Check if the selected date is a weekend (optional)
+    final dayOfWeek = selectedDate.value!.weekday;
+    if (dayOfWeek == DateTime.saturday || dayOfWeek == DateTime.sunday) {
+      // Return weekend hours (optional: you can provide limited weekend hours)
+      return availableTimes.where((time) =>
+      time.hour >= 10 && time.hour < 15
+      ).toList();
+    }
+
+    // For future dates that are not today, return all available times
+    return availableTimes;
+  }
+
+// Add this method to select a date
+  void selectDate(DateTime date) {
+    selectedDate.value = date;
+    // Clear the selected time when changing the date
+    selectedTime.value = null;
+    update();
+  }
+
+
+// Add a method to format the selected date and time for display
+  String getFormattedDateTime() {
+    if (selectedDate.value == null || selectedTime.value == null) {
+      return 'Not selected'.tr;
+    }
+
+    final date = selectedDate.value!;
+    final time = selectedTime.value!;
+
+    // Format the date (you can adjust the format as needed)
+    final dateFormat = DateFormat('EEE, MMM d, yyyy');
+    final formattedDate = dateFormat.format(date);
+
+    // Combine with the time
+    return '$formattedDate at ${time.format(Get.context!)}';
   }
 }

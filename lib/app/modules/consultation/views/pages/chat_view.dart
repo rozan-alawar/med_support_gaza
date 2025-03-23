@@ -8,7 +8,6 @@ import 'package:med_support_gaza/app/core/utils/app_colors.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/chat_controller.dart';
-import 'package:med_support_gaza/app/modules/consultation/views/pages/message_bubbel.dart';
 
 class ChatView extends StatelessWidget {
   final String consultationId;
@@ -48,60 +47,63 @@ class ChatView extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
 
-        return Column(
-          children: [
-            // Status banner
-            _buildStatusBanner(controller),
+        return Padding(
+          padding:  EdgeInsets.only(bottom: 0.h,),
+          child: Column(
+            children: [
+              // Status banner
+              _buildStatusBanner(controller),
 
-            // Messages list
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.all(10),
-                itemCount: controller.messages.length,
-                itemBuilder: (context, index) {
-                  final message = controller.messages[index];
-                  final isUser = message.senderId == userId;
+              // Messages list
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.all(10),
+                  itemCount: controller.messages.length,
+                  itemBuilder: (context, index) {
+                    final message = controller.messages[index];
+                    final isUser = message.senderId == userId;
 
-                  return _buildMessageBubble(message, isUser);
-                },
-              ),
-            ),
-
-            // Input field - only visible for active consultations
-            if (controller.canSendMessage) _buildMessageInput(controller),
-
-            // Past consultation notice
-            if (controller.isConsultationPast)
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16),
-                color: Colors.grey.shade200,
-                child: Text(
-                  'This consultation has ended',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                    color: Colors.grey.shade700,
-                  ),
+                    return _buildMessageBubble(message, isUser);
+                  },
                 ),
               ),
 
-            // Upcoming consultation notice
-            if (controller.isConsultationUpcoming)
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16),
-                color: Colors.blue.shade100,
-                child: Text(
-                  'This consultation will start at ${_formatTime(controller.consultation.value?.startTime)}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue.shade800,
+              // Input field - only visible for active consultations
+              if (controller.canSendMessage) _buildMessageInput(controller),
+
+              // Past consultation notice
+              if (controller.isConsultationPast)
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16),
+                  color: Colors.grey.shade200,
+                  child: Text(
+                    'This consultation has ended',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.grey.shade700,
+                    ),
                   ),
                 ),
-              ),
-          ],
+
+              // Upcoming consultation notice
+              if (controller.isConsultationUpcoming)
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16),
+                  color: Colors.blue.shade100,
+                  child: Text(
+                    'This consultation will start at ${_formatTime(controller.consultation.value?.startTime)}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue.shade800,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         );
       }),
     );

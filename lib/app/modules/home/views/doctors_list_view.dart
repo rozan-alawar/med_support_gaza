@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_assets.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/cached_image.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_textfield_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor.dart';
@@ -70,6 +71,7 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
           itemCount: controller.doctors.length,
           itemBuilder: (context, index) {
             final doctor = controller.doctors[index];
+            print(doctor.email);
             return _buildDoctorCard(doctor);
           },
         ),
@@ -95,7 +97,10 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => Get.toNamed(Routes.DOCTOR_DETAILS, arguments: doctor),
+          onTap: () {
+            Get.toNamed(Routes.DOCTOR_DETAILS, arguments: doctor);
+            print(doctor.phoneNumber);
+          },
           borderRadius: BorderRadius.circular(16.r),
           child: Padding(
             padding: EdgeInsets.all(16.w),
@@ -114,7 +119,7 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomText(
-                                 '${ doctor.firstName} ${ doctor.lastName}',
+                                  '${doctor.firstName} ${doctor.lastName}',
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -130,11 +135,21 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
                         ],
                       ),
                       12.height,
-                      _buildInfoChip(
-                          Icons.location_on_outlined,
-                          doctor.country.toString(),
-                          AppColors.primary,
-                        ),
+                      Row(
+                        children: [
+                          _buildInfoChip(
+                            icon: Icons.location_on_outlined,
+                            label: doctor.country.toString(),
+                            color: AppColors.primary,
+                          ),
+                          8.width,
+                          _buildInfoChip(
+                              icon: Icons.star_rate_rounded,
+                              label: doctor.averageRating.toString(),
+                              color: AppColors.primary,
+                              iconColor: Colors.yellow,size: 20.h),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -152,20 +167,12 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
       height: 70.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(
-          color: AppColors.primary.withOpacity(0.2),
-          width: 2,
-        ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(35.r),
-        child: doctor.firstName != null
-            ? Image.network(
-                ImageAssets.doctros,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(),
-              )
-            : _buildAvatarPlaceholder(),
+        borderRadius: BorderRadius.circular(50.r),
+        child: doctor.image != null
+            ? ImageWithAnimatedShader(imageUrl: doctor.image.toString())
+            : Icon(Icons.person, size: 50.r, color: AppColors.gray),
       ),
     );
   }
@@ -181,7 +188,11 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
     );
   }
 
-  Widget _buildInfoChip(IconData icon, String label, Color color) {
+  Widget _buildInfoChip(
+      {required IconData icon,
+      required String label,
+      required Color color,
+      Color? iconColor,double? size}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
@@ -191,7 +202,7 @@ class PatientDoctorsView extends GetView<PatientDoctorsController> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14.r, color: color),
+          Icon(icon, size: size??16.r, color: iconColor ?? color),
           4.width,
           CustomText(
             label,

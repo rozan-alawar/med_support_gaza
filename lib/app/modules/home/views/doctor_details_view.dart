@@ -3,20 +3,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/cached_image.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DoctorDetailsView extends StatelessWidget {
   final Doctor doctor = Get.arguments;
 
-   DoctorDetailsView({super.key});
+  DoctorDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    print(doctor.email);
     return Scaffold(
-      // backgroundColor: AppColors.background,
       appBar: AppBar(
         centerTitle: true,
         title: CustomText(
@@ -30,7 +32,7 @@ class DoctorDetailsView extends StatelessWidget {
         child: CustomButton(
           text: 'BookAppointment'.tr,
           color: AppColors.primary,
-          onPressed: () =>Get.toNamed(
+          onPressed: () => Get.toNamed(
             Routes.APPOINTMENT_BOOKING,
             arguments: {'doctor': doctor},
           ),
@@ -46,9 +48,8 @@ class DoctorDetailsView extends StatelessWidget {
             16.height,
             _buildAboutSection(),
             16.height,
-            _buildExpertiseSection(),
+            // _buildCertificateSection(),
             16.height,
-            _buildLanguagesSection(),
           ],
         ),
       ),
@@ -66,13 +67,16 @@ class DoctorDetailsView extends StatelessWidget {
             height: 100.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.primary, width: 2),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50.r),
-              child: doctor.firstName != null
-                  ? Image.network("https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg?t=st=1741747042~exp=1741750642~hmac=7185e5b1732ff76b29494d4239254b8563ac95e0a8aa8c3ebb87372381193fad&w=900", fit: BoxFit.cover)
-                  : Icon(Icons.person, size: 50.r, color: AppColors.primary),
+              child: doctor.image != null && doctor.image!.isNotEmpty
+                  ? ImageWithAnimatedShader(imageUrl: doctor.image.toString())
+                  : Icon(
+                      doctor.gender == "male" ? Icons.person : Icons.person_2,
+                      size: 50.r,
+                      color: AppColors.primary,
+                    ),
             ),
           ),
           16.width,
@@ -81,36 +85,28 @@ class DoctorDetailsView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  '${ doctor.firstName} ${ doctor.lastName}',
+                  'Dr. ${doctor.firstName} ${doctor.lastName}',
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
                 8.height,
                 CustomText(
-                  doctor.major??"Null",
+                  doctor.major ?? "Specialist",
                   fontSize: 14.sp,
                   color: Colors.grey[600],
                 ),
                 8.height,
-                // Row(
-                //   children: [
-                //     Icon(Icons.star, color: Colors.amber, size: 16.r),
-                //     4.width,
-                //     CustomText(
-                //       '${doctor.rating}',
-                //       fontSize: 14.sp,
-                //       color: Colors.grey[800],
-                //     ),
-                //     16.width,
-                //     Icon(Icons.work_outline, color: AppColors.primary, size: 16.r),
-                //     4.width,
-                //     CustomText(
-                //       '${doctor.experience} ${'Years'.tr}',
-                //       fontSize: 14.sp,
-                //       color: Colors.grey[800],
-                //     ),
-                //   ],
-                // ),
+                Row(
+                  children: [
+                    Icon(Icons.star, color: Colors.amber, size: 16.r),
+                    4.width,
+                    CustomText(
+                      doctor.averageRating ?? "0.0",
+                      fontSize: 14.sp,
+                      color: Colors.grey[800],
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -127,22 +123,27 @@ class DoctorDetailsView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildInfoItem(
+            Icons.email_outlined,
+            'Email'.tr,
+            doctor.email.toString() ,
+          ),
+          _buildInfoItem(
             Icons.phone_outlined,
             'Phone'.tr,
-            doctor.phoneNumber??"0000000",
+            doctor.phoneNumber ?? "N/A",
           ),
           _buildInfoItem(
             Icons.location_on_outlined,
             'Location'.tr,
-            doctor.country??"Null",
+            doctor.country ?? "N/A",
           ),
-
         ],
       ),
     );
   }
 
-  Widget _buildInfoItem(IconData icon, String title, String value, {Color? iconColor}) {
+  Widget _buildInfoItem(IconData icon, String title, String value,
+      {Color? iconColor}) {
     return Column(
       children: [
         Icon(icon, color: iconColor ?? AppColors.primary, size: 24.r),
@@ -157,6 +158,8 @@ class DoctorDetailsView extends StatelessWidget {
           value,
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
@@ -165,7 +168,7 @@ class DoctorDetailsView extends StatelessWidget {
   Widget _buildAboutSection() {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal:  24.w,vertical: 16.h),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -175,88 +178,96 @@ class DoctorDetailsView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           12.height,
-          // CustomText(
-          //   doctor.about,
-          //   fontSize: 14.sp,
-          //   color: Colors.grey[600],
-          // ),
+          CustomText(
+            'Dr. ${doctor.firstName} ${doctor.lastName} is a dedicated ${doctor.major} specialist with extensive experience in their field. They are currently offering medical consultations and support through our platform.',
+            fontSize: 14.sp,
+            color: Colors.grey[600],
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildExpertiseSection() {
+  Widget _buildCertificateSection() {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal:  24.w,vertical: 16.h),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            'Expertise'.tr,
+            'Certification'.tr,
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
           ),
           12.height,
-          // Wrap(
-          //   spacing: 8.w,
-          //   runSpacing: 8.h,
-          //   children: doctor.expertise.map((expertise) => Container(
-          //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          //     decoration: BoxDecoration(
-          //       color: AppColors.primary.withOpacity(0.1),
-          //       borderRadius: BorderRadius.circular(20.r),
-          //     ),
-          //     child: CustomText(
-          //       expertise,
-          //       fontSize: 12.sp,
-          //       color: AppColors.primary,
-          //     ),
-          //   )).toList(),
-          // ),
+          doctor.certificate != null && doctor.certificate!.isNotEmpty
+              ?    InkWell(
+            onTap: _launchCertificateUrl,
+                child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side:  BorderSide(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child:  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      'Download certificate',
+                      fontSize: 12.sp,
+
+                      color: AppColors.primary,
+                    ),
+                    Icon(
+                      Icons.download,
+                      color: AppColors.primary,
+                    ),
+                  ],
+                )
+                          ),
+              )
+
+
+              : CustomText(
+                  'NoCertificateAvailable'.tr,
+                  fontSize: 14.sp,
+                  color: Colors.grey[600],
+                ),
         ],
       ),
     );
   }
 
-  Widget _buildLanguagesSection() {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal:  24.w,vertical: 16.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomText(
-            'Languages'.tr,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-          ),
-          12.height,
-          // Wrap(
-          //   spacing: 8.w,
-          //   runSpacing: 8.h,
-          //   children: doctor.languages.map((language) => Container(
-          //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          //     decoration: BoxDecoration(
-          //       color: Colors.blue.withOpacity(0.1),
-          //       borderRadius: BorderRadius.circular(20.r),
-          //     ),
-          //     child: Row(
-          //       mainAxisSize: MainAxisSize.min,
-          //       children: [
-          //         Icon(Icons.language, size: 16.r, color: Colors.blue),
-          //         4.width,
-          //         CustomText(
-          //           language,
-          //           fontSize: 12.sp,
-          //           color: Colors.blue,
-          //         ),
-          //       ],
-          //     ),
-          //   )).toList(),
-          // ),
-        ],
-      ),
-    );
+  Future<void> _launchCertificateUrl() async {
+    if (doctor.certificate == null || doctor.certificate!.isEmpty) return;
+
+    final Uri url = Uri.parse(doctor.certificate!);
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        Get.snackbar(
+          'Error'.tr,
+          'CouldNotOpenCertificate'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error'.tr,
+        'CouldNotOpenCertificate'.tr,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
+
 }

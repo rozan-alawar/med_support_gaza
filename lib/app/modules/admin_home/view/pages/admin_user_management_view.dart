@@ -3,21 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/cached_image.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_button_widget.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
-import 'package:med_support_gaza/app/data/models/doctor_model.dart';
-import 'package:med_support_gaza/app/data/models/patient_model.dart';
+import 'package:med_support_gaza/app/data/models/doctor.dart';
+import 'package:med_support_gaza/app/modules/admin_home/controller/admin_home_controller.dart';
 
-import '../../controller/admin_user_management_controller.dart';
-
-class AdminUserManagementView extends GetView<AdminUserManagementController> {
+class AdminUserManagementView extends GetView<AdminHomeController> {
   const AdminUserManagementView({super.key});
 
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(
-      () => AdminUserManagementController(),
+      () => AdminHomeController(),
     );
     return DefaultTabController(
       length: 2,
@@ -82,6 +81,7 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
       child: TabBar(
         indicatorColor: AppColors.primary,
         labelColor: AppColors.primary,
+        labelStyle: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.bold),
         unselectedLabelColor: Colors.grey,
         tabs: [
           Tab(text: 'patients'.tr),
@@ -97,17 +97,18 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
         return const Center(child: CircularProgressIndicator());
       }
 
-      final patients = controller.filteredPatients;
-      if (patients.isEmpty) {
+      // final patients = controller.filteredPatients;
+      if (controller.patients.isEmpty) {
         return Center(child: Text('no_patients_found'.tr));
       }
 
       return RefreshIndicator(
-        onRefresh: controller.refreshUsers,
+        onRefresh: () async => controller.getPatients(),
         child: ListView.builder(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          itemCount: patients.length,
-          itemBuilder: (context, index) => _buildPatientCard(patients[index]),
+          itemCount: controller.patients.length,
+          itemBuilder: (context, index) =>
+              _buildPatientCard(controller.patients[index]),
         ),
       );
     });
@@ -119,17 +120,18 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
         return const Center(child: CircularProgressIndicator());
       }
 
-      final doctors = controller.filteredDoctors;
-      if (doctors.isEmpty) {
+      // final doctors = controller.filteredDoctors;
+      if (controller.doctors.isEmpty) {
         return Center(child: Text('no_doctors_found'.tr));
       }
 
       return RefreshIndicator(
-        onRefresh: controller.refreshUsers,
+        onRefresh: () async => controller.getDoctors(),
         child: ListView.builder(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          itemCount: doctors.length,
-          itemBuilder: (context, index) => _buildDoctorCard(doctors[index]),
+          itemCount: controller.doctors.length,
+          itemBuilder: (context, index) =>
+              _buildDoctorCard(controller.doctors[index]),
         ),
       );
     });
@@ -157,11 +159,12 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
             child: Text(
               patient.firstName[0].toUpperCase(),
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
               ),
             ),
+            backgroundColor: AppColors.primary.withOpacity(0.3),
           ),
           16.width,
           Expanded(
@@ -170,7 +173,7 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
               children: [
                 CustomText(
                   '${patient.firstName} ${patient.lastName}',
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                 ),
                 4.height,
@@ -196,14 +199,14 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
           ),
           IconButton(
             icon: const Icon(Icons.delete_outline, color: Colors.red),
-            onPressed: () => controller.deleteUser(patient.id.toString(), false),
+            onPressed: () => controller.deletePatient(patient.id.toString()),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDoctorCard(DoctorModel doctor) {
+  Widget _buildDoctorCard(Doctor doctor) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
@@ -222,23 +225,21 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
         children: [
           Row(
             children: [
-              if (doctor.profileImage != null)
-                CircleAvatar(
-                  radius: 25.r,
-                  backgroundImage: NetworkImage(doctor.profileImage!),
-                )
-              else
-                CircleAvatar(
+              ClipRRect(
+                borderRadius: BorderRadius.circular(50.r),
+                child: CircleAvatar(
                   radius: 25.r,
                   child: Text(
-                    doctor.firstName[0].toUpperCase(),
+                    doctor.firstName![0].toUpperCase(),
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  backgroundColor: AppColors.primary.withOpacity(0.3),
                 ),
+              ),
               16.width,
               Expanded(
                 child: Column(
@@ -246,12 +247,12 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
                   children: [
                     CustomText(
                       '${doctor.firstName} ${doctor.lastName}',
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                     ),
                     8.height,
                     CustomText(
-                      doctor.email,
+                      doctor.email.toString(),
                       fontSize: 12.sp,
                       color: Colors.grey[600],
                     ),
@@ -264,21 +265,28 @@ class AdminUserManagementView extends GetView<AdminUserManagementController> {
           Row(
             children: [
               Expanded(
-                  child: CustomButton(
-                      height: 35.h,
-                      fontSize: 11.sp,
-                      text: 'delete_user'.tr,
-                      color: Colors.red,
-                      onPressed: () => controller.deleteUser(doctor.id, true))),
+                child: CustomButton(
+                  height: 35.h,
+                  fontSize: 11.sp,
+                  text: 'delete_user'.tr,
+                  color: Colors.red,
+                  onPressed: () => controller.deleteDoctor(
+                    doctor.id.toString(),
+                  ),
+                ),
+              ),
               20.width,
               Expanded(
-                  child: CustomButton(
-                      text: 'send_email'.tr,
-                      fontSize: 11.sp,
-                      height: 35.h,
-                      color: AppColors.primary,
-                      onPressed: () =>
-                          controller.sendEmailToDoctor(doctor.id))),
+                child: CustomButton(
+                  text: 'send_email'.tr,
+                  fontSize: 11.sp,
+                  height: 35.h,
+                  color: AppColors.primary,
+                  onPressed: () => controller.sendEmailToDoctor(
+                    doctor.email.toString(),
+                  ),
+                ),
+              ),
             ],
           ),
         ],

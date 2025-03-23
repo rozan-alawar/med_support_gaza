@@ -42,6 +42,7 @@ class HealthTipsView extends GetView<HealthTipsController> {
 
   Widget _buildTipCard(Article tip) {
     return Container(
+      width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -73,25 +74,30 @@ class HealthTipsView extends GetView<HealthTipsController> {
                   ),
                 ),
                 16.width,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      tip.title,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textDark,
-                    ),
-                    8.height,
-                    CustomText(
-                      tip.content,
-                      fontSize: 14.sp,
-                      color: AppColors.textLight,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    8.height,
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        tip.title,
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 16.sp,
+                        maxLines: 1,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textDark,
+                      ),
+                      8.height,
+                      CustomText(
+                        tip.content,
+                  
+                        fontSize: 14.sp,
+                        color: AppColors.textLight,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      8.height,
+                    ],
+                  ),
                 ),
               ],
             ),
