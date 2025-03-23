@@ -12,8 +12,9 @@ import 'package:med_support_gaza/app/modules/consultation/controllers/chat_contr
 class ChatView extends StatelessWidget {
   final String consultationId;
   final int userId;
+  TextEditingController messageController = TextEditingController();
 
-  const ChatView(
+   ChatView(
       {super.key, required this.consultationId, required this.userId});
 
   @override
@@ -76,6 +77,7 @@ class ChatView extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.all(10),
+                  reverse: true,
                   itemCount: controller.messages.length,
                   itemBuilder: (context, index) {
                     final message = controller.messages[index];
@@ -227,8 +229,8 @@ class ChatView extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
-
-              onSubmitted: (value) => controller.sendMessage(),
+              controller: messageController,
+              onSubmitted: (value) => controller.sendMessage(messageController.text),
               onChanged: (value) => controller.message.value = value,
               decoration: const InputDecoration(
                 hintText: 'Type a message...',
@@ -240,7 +242,10 @@ class ChatView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.send, color: Colors.teal),
             onPressed:
-    ()=>controller.sendMessage(),
+    (){
+      controller.sendMessage(messageController.text);
+      messageController.clear();
+    },
           ),
         ],
       ),

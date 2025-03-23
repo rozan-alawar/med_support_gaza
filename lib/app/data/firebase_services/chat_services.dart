@@ -85,7 +85,9 @@ class ChatService {
     return _firestore
         .collection('consultations')
         .doc(consultationId)
+
         .snapshots()
+
         .map((snapshot) {
       if (snapshot.exists) {
         return ConsultationModel.fromMap(snapshot.id, snapshot.data()!);
@@ -102,7 +104,7 @@ class ChatService {
         .collection('consultations')
         .doc(consultationId)
         .collection('messages')
-        .orderBy('timestamp', descending: false)
+        .orderBy('timestamp', descending: true)
         .snapshots();
   }
 
