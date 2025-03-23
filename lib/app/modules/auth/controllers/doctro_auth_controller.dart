@@ -167,6 +167,7 @@ class DoctorAuthController extends GetxController {
   /// Saves doctor data to cache after a successful login
   void saveDoctorData(DoctorModel doctorModel) {
     CacheHelper.saveData(key: 'isLoggedIn', value: true);
+    CacheHelper.saveData(key: 'userType', value: 'doctor');
     if (doctorModel.token != null) {
       CacheHelper.saveData(key: 'token', value: doctorModel.token);
     }
@@ -188,6 +189,7 @@ class DoctorAuthController extends GetxController {
   /// is called when the doctor signs out.
   void removeDoctorData() {
     CacheHelper.removeData(key: 'isLoggedIn');
+    CacheHelper.removeData(key: 'userType');
     CacheHelper.removeData(key: 'token');
     CacheHelper.removeData(key: 'firstName');
     CacheHelper.removeData(key: 'lastName');
