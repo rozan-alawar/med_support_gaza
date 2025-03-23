@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
-import 'package:med_support_gaza/app/core/utils/app_colors.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/chat_controller.dart';
 
@@ -13,7 +10,8 @@ class ChatView extends StatelessWidget {
   final String consultationId;
   final int userId;
 
-  ChatView({required this.consultationId, required this.userId});
+  const ChatView(
+      {super.key, required this.consultationId, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +20,24 @@ class ChatView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text(
-              "${controller.consultation.value?.doctor.firstName} ${controller.consultation.value?.doctor.lastName} " ??
-                  'Consultation',
-              style: TextStyle(color: Colors.white),
-            )),
+        title: Obx(() => Row(
+          children: [
+
+            Text(
+                  "${controller.consultation.value?.doctor.firstName} ${controller.consultation.value?.doctor.lastName} " ??
+                      'Consultation',
+                  style: const TextStyle(color: Colors.white),
+                ),
+          ],
+        )),
         backgroundColor: Colors.teal,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.info_outline, color: Colors.white),
+            icon: const Icon(Icons.info_outline, color: Colors.white),
             onPressed: () {
               // Show consultation details
               _showConsultationDetails(context, controller.consultation.value);
@@ -44,11 +47,13 @@ class ChatView extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         return Padding(
-          padding:  EdgeInsets.only(bottom: 0.h,),
+          padding: EdgeInsets.only(
+            bottom: 0.h,
+          ),
           child: Column(
             children: [
               // Status banner
@@ -57,7 +62,7 @@ class ChatView extends StatelessWidget {
               // Messages list
               Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   itemCount: controller.messages.length,
                   itemBuilder: (context, index) {
                     final message = controller.messages[index];
@@ -75,7 +80,7 @@ class ChatView extends StatelessWidget {
               if (controller.isConsultationPast)
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   color: Colors.grey.shade200,
                   child: Text(
                     'This consultation has ended',
@@ -91,7 +96,7 @@ class ChatView extends StatelessWidget {
               if (controller.isConsultationUpcoming)
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   color: Colors.blue.shade100,
                   child: Text(
                     'This consultation will start at ${_formatTime(controller.consultation.value?.startTime)}',
@@ -111,7 +116,7 @@ class ChatView extends StatelessWidget {
 
   Widget _buildStatusBanner(ChatController controller) {
     final consultation = controller.consultation.value;
-    if (consultation == null) return SizedBox();
+    if (consultation == null) return const SizedBox();
 
     Color backgroundColor;
     String statusText;
@@ -136,7 +141,7 @@ class ChatView extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       color: backgroundColor,
       child: Row(
         children: [
@@ -148,10 +153,10 @@ class ChatView extends StatelessWidget {
                     : Icons.event_busy,
             size: 18,
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             statusText,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -162,13 +167,13 @@ class ChatView extends StatelessWidget {
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5),
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           color: isUser ? Colors.teal : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(15),
         ),
-        constraints: BoxConstraints(maxWidth: 250),
+        constraints: const BoxConstraints(maxWidth: 250),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -178,7 +183,7 @@ class ChatView extends StatelessWidget {
                 color: isUser ? Colors.white : Colors.black,
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               _formatTime(message.timestamp) ?? '',
               style: TextStyle(
@@ -194,12 +199,12 @@ class ChatView extends StatelessWidget {
 
   Widget _buildMessageInput(ChatController controller) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, -2),
+            offset: const Offset(0, -2),
             blurRadius: 2,
             color: Colors.black.withOpacity(0.1),
           ),
@@ -209,8 +214,9 @@ class ChatView extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
+              onSubmitted: (value) => controller.sendMessage(),
               onChanged: (value) => controller.message.value = value,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Type a message...',
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.all(10),
@@ -218,7 +224,7 @@ class ChatView extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send, color: Colors.teal),
+            icon: const Icon(Icons.send, color: Colors.teal),
             onPressed: controller.sendMessage,
           ),
         ],
@@ -233,25 +239,25 @@ class ChatView extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Consultation Details'),
+        title: const Text('Consultation Details'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _detailRow('Doctor',
                 "${consultation.doctor.firstName} ${consultation.doctor.lastName} "),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _detailRow('Date', _formatDate(consultation.startTime)),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _detailRow('Time',
                 '${_formatTime(consultation.startTime)} - ${_formatTime(consultation.endTime)}'),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _detailRow('Status', consultation.status.toUpperCase()),
           ],
         ),
         actions: [
           TextButton(
-            child: Text('Close'),
+            child: const Text('Close'),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -263,7 +269,7 @@ class ChatView extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('$label: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
         Expanded(child: Text(value ?? 'N/A')),
       ],
     );

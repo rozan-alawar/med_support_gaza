@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:med_support_gaza/app/data/models/auth_response_model.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
@@ -13,7 +12,6 @@ class ChatService {
     required Timestamp startTime,
     required Timestamp endTime,
   }) async {
-    // Create a new consultation record with status "pending"
     await _firestore.collection('consultations').add({
       'doctor': doctor.toJson(),
       'doctorId': doctor.id,
@@ -22,7 +20,7 @@ class ChatService {
       'patient': patient.toJson(),
       'patientId': patient.id,
       'patientName': '${patient.firstName} ${patient.lastName}',
-      'status': 'active',
+      'status': 'pending',
       'startTime': startTime,
       'endTime': endTime,
     });
@@ -51,7 +49,8 @@ class ChatService {
   }
 
   // Get consultations by status and user ID (patient)
-  Stream<List<ConsultationModel>> getPatientConsultations(int patientId, String status) {
+  Stream<List<ConsultationModel>> getPatientConsultations(
+      int patientId, String status) {
     return _firestore
         .collection('consultations')
         .where('patientId', isEqualTo: patientId)
@@ -66,7 +65,8 @@ class ChatService {
   }
 
   // Get consultations by status and doctor ID
-  Stream<List<ConsultationModel>> getDoctorConsultations(int doctorId, String status) {
+  Stream<List<ConsultationModel>> getDoctorConsultations(
+      int doctorId, String status) {
     return _firestore
         .collection('consultations')
         .where('doctorId', isEqualTo: doctorId)
@@ -107,7 +107,8 @@ class ChatService {
   }
 
   // Send a message
-  Future<void> sendMessage(String consultationId, int senderId, String senderName, String message) async {
+  Future<void> sendMessage(String consultationId, int senderId,
+      String senderName, String message) async {
     await _firestore
         .collection('consultations')
         .doc(consultationId)
@@ -122,17 +123,21 @@ class ChatService {
   }
 
   // Update consultation status (active -> past)
-  Future<void> updateConsultationStatus(String consultationId, String status) async {
+  Future<void> updateConsultationStatus(
+      String consultationId, String status) async {
     await _firestore
         .collection('consultations')
         .doc(consultationId)
         .update({'status': status});
   }
-  
-  Future<void> updateConsultationStatusByDoctor(String appointmentId, String status) async {
+
+  Future<void> updateConsultationStatusByDoctor(
+      String appointmentId, String status) async {
     // Search for the appointment id in the consultations collection and update the status
     final consultationsRef = _firestore.collection('consultations');
-    final consultationQuery = await consultationsRef.where('appointmentId', isEqualTo: appointmentId).get();
+    final consultationQuery = await consultationsRef
+        .where('appointmentId', isEqualTo: appointmentId)
+        .get();
     if (consultationQuery.docs.isNotEmpty) {
       final consultationDocId = consultationQuery.docs.first.id;
       await consultationsRef.doc(consultationDocId).update({'status': status});
@@ -148,7 +153,8 @@ class ChatService {
   }
 
   // Mark all messages as read
-  Future<void> markAllMessagesAsRead(String consultationId, String currentUserId) async {
+  Future<void> markAllMessagesAsRead(
+      String consultationId, String currentUserId) async {
     final messagesRef = _firestore
         .collection('consultations')
         .doc(consultationId)
@@ -172,7 +178,8 @@ class ChatService {
   }
 
   // Get unread message count for a consultation
-  Future<int> getUnreadMessageCount(String consultationId, String currentUserId) async {
+  Future<int> getUnreadMessageCount(
+      String consultationId, String currentUserId) async {
     final messagesRef = _firestore
         .collection('consultations')
         .doc(consultationId)
@@ -187,7 +194,8 @@ class ChatService {
   }
 
   // Check if a consultation has any unread messages
-  Future<bool> hasUnreadMessages(String consultationId, String currentUserId) async {
+  Future<bool> hasUnreadMessages(
+      String consultationId, String currentUserId) async {
     final count = await getUnreadMessageCount(consultationId, currentUserId);
     return count > 0;
   }

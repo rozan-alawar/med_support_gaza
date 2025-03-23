@@ -1,14 +1,9 @@
-
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
-import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
-import 'package:file_picker/file_picker.dart';
-
 
 class ChatController extends GetxController {
   final ChatService _chatService = ChatService();
@@ -37,6 +32,7 @@ class ChatController extends GetxController {
     _timer?.cancel();
     super.onClose();
   }
+
   void _loadConsultation() {
     _chatService.getConsultation(consultationId).listen((consultationModel) {
       consultation.value = consultationModel;
@@ -51,10 +47,10 @@ class ChatController extends GetxController {
 
   void _listenToMessages() {
     _chatService.getMessages(consultationId).listen((snapshot) {
-      messages.value = snapshot.docs.map((doc) => MessageModel.fromMap(
-          doc.id,
-          doc.data() as Map<String, dynamic>
-      )).toList();
+      messages.value = snapshot.docs
+          .map((doc) =>
+              MessageModel.fromMap(doc.id, doc.data() as Map<String, dynamic>))
+          .toList();
     });
   }
 
@@ -67,10 +63,7 @@ class ChatController extends GetxController {
           consultationId,
           userId,
           '${consultation.value!.doctor.firstName} ${consultation.value!.doctor.lastName}',
-
-
-          message.value
-      );
+          message.value);
       message.value = '';
     }
   }
@@ -79,7 +72,7 @@ class ChatController extends GetxController {
     final endTime = consultation.value?.endTime;
     if (endTime == null) return;
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final now = Timestamp.now();
       final diff = endTime.seconds - now.seconds;
 

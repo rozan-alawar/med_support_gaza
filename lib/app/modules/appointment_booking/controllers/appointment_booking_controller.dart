@@ -87,7 +87,7 @@ class AppointmentBookingController extends GetxController {
 //------------------------ GET DOCTORS BY SPECIALIZATIONS -----------------------------
 
   void getDoctorsBySpecializations() {
-    if (selectedSpecialization?.value == null) return;
+    if (selectedSpecialization.value == null) return;
 
     PatientAppointmentAPIService.getDoctorsBySpecialization(
       specialization: selectedSpecialization.value?.major ?? "Null",
@@ -190,7 +190,7 @@ class AppointmentBookingController extends GetxController {
         confirmBooking();
       }
     } else {
-      if (currentStep.value == 0 && selectedSpecialization?.value == null) {
+      if (currentStep.value == 0 && selectedSpecialization.value == null) {
         CustomSnackBar.showCustomErrorSnackBar(
           title: 'Error'.tr,
           message: 'Please select a specialization'.tr,
@@ -206,7 +206,8 @@ class AppointmentBookingController extends GetxController {
         return;
       }
 
-      if (currentStep.value == 2 && (selectedDate.value == null || selectedTime.value == null)) {
+      if (currentStep.value == 2 &&
+          (selectedDate.value == null || selectedTime.value == null)) {
         CustomSnackBar.showCustomErrorSnackBar(
           title: 'Error'.tr,
           message: 'Please select date and time'.tr,
@@ -266,7 +267,7 @@ class AppointmentBookingController extends GetxController {
   }
 
   void selectSpecialization(Specialization specialization) {
-    selectedSpecialization?.value = specialization;
+    selectedSpecialization.value = specialization;
     getDoctorsBySpecializations();
     selectedDoctorName.value = '';
   }
@@ -276,8 +277,7 @@ class AppointmentBookingController extends GetxController {
 
     final appointment = AppointmentModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      patientId:
-          HomeController().currentUser!.value!.id.toString() ?? "mkcjhdk",
+      patientId: HomeController().currentUser.value!.id.toString() ?? "mkcjhdk",
       doctorId: selectedDoctorId.value,
       doctorName: selectedDoctorName.value,
       patientName: patientName,
@@ -298,7 +298,6 @@ class AppointmentBookingController extends GetxController {
           convertTimeOfDayToTimestamp(selectedTime.value!), 30),
       startTime: convertTimeOfDayToTimestamp(selectedTime.value!),
     );
-
 
     CustomSnackBar.showCustomSnackBar(
       title: 'Success'.tr,
@@ -328,7 +327,6 @@ class AppointmentBookingController extends GetxController {
     'ConfirmBooking'
   ];
 
-
   final RxList<DoctorModel> doctors = <DoctorModel>[].obs;
 
   // Fetch doctors for selected specialization
@@ -336,14 +334,14 @@ class AppointmentBookingController extends GetxController {
     try {
       isLoadingDoctors.value = true;
 
-      if (selectedSpecialization?.value == null) {
+      if (selectedSpecialization.value == null) {
         return [];
       }
 
       // Get doctors from Firebase
       final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('doctors')
-          .where('specialization', isEqualTo: selectedSpecialization?.value)
+          .where('specialization', isEqualTo: selectedSpecialization.value)
           .where('isActive', isEqualTo: true) // Only get active doctors
           .get();
 
@@ -524,7 +522,6 @@ class AppointmentBookingController extends GetxController {
     update();
   }
 
-
 // Update the existing getAvailableTimes method to consider the selected date
   List<TimeOfDay> getAvailableTimes() {
     // If no date is selected, return empty list
@@ -554,11 +551,9 @@ class AppointmentBookingController extends GetxController {
       const TimeOfDay(hour: 16, minute: 30),
     ];
 
-    // If it's today, only show times that are in the future
     if (isToday) {
       final currentTime = TimeOfDay.fromDateTime(now);
       return availableTimes.where((time) {
-        // Compare hours and minutes to determine if time is in the future
         return time.hour > currentTime.hour ||
             (time.hour == currentTime.hour && time.minute > currentTime.minute);
       }).toList();
@@ -567,26 +562,21 @@ class AppointmentBookingController extends GetxController {
     // Check if the selected date is a weekend (optional)
     final dayOfWeek = selectedDate.value!.weekday;
     if (dayOfWeek == DateTime.saturday || dayOfWeek == DateTime.sunday) {
-      // Return weekend hours (optional: you can provide limited weekend hours)
-      return availableTimes.where((time) =>
-      time.hour >= 10 && time.hour < 15
-      ).toList();
+      return availableTimes
+          .where((time) => time.hour >= 10 && time.hour < 15)
+          .toList();
     }
 
-    // For future dates that are not today, return all available times
     return availableTimes;
   }
 
 // Add this method to select a date
   void selectDate(DateTime date) {
     selectedDate.value = date;
-    // Clear the selected time when changing the date
     selectedTime.value = null;
     update();
   }
 
-
-// Add a method to format the selected date and time for display
   String getFormattedDateTime() {
     if (selectedDate.value == null || selectedTime.value == null) {
       return 'Not selected'.tr;
@@ -595,11 +585,9 @@ class AppointmentBookingController extends GetxController {
     final date = selectedDate.value!;
     final time = selectedTime.value!;
 
-    // Format the date (you can adjust the format as needed)
     final dateFormat = DateFormat('EEE, MMM d, yyyy');
     final formattedDate = dateFormat.format(date);
 
-    // Combine with the time
     return '$formattedDate at ${time.format(Get.context!)}';
   }
 }
