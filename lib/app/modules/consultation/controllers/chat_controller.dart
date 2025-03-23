@@ -56,7 +56,7 @@ class ChatController extends GetxController {
 
   void sendMessage() {
     if (message.value.trim().isEmpty) return;
-
+print(message.value.trim());
     // Only allow sending if consultation is active
     if (consultation.value?.status == 'active') {
       _chatService.sendMessage(

@@ -543,6 +543,8 @@ class AppointmentBookingController extends GetxController {
       const TimeOfDay(hour: 10, minute: 30),
       const TimeOfDay(hour: 11, minute: 0),
       const TimeOfDay(hour: 11, minute: 30),
+      const TimeOfDay(hour: 13, minute: 30),
+      const TimeOfDay(hour: 13, minute: 0),
       const TimeOfDay(hour: 14, minute: 0),
       const TimeOfDay(hour: 14, minute: 30),
       const TimeOfDay(hour: 15, minute: 0),

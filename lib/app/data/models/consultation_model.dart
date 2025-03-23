@@ -91,7 +91,7 @@ class ConsultationModel {
 
 class MessageModel {
   final String id;
-  final String senderId;
+  final int senderId;
   final String text;
   final Timestamp timestamp;
   final bool isRead;

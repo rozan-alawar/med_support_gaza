@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
+import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/cached_image.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 import 'package:med_support_gaza/app/modules/consultation/controllers/chat_controller.dart';
 
@@ -22,7 +25,17 @@ class ChatView extends StatelessWidget {
       appBar: AppBar(
         title: Obx(() => Row(
           children: [
-
+            ClipRRect(
+              borderRadius: BorderRadius.circular(50.r),
+              child: controller.consultation.value?.doctor.image != null
+                  ? ImageWithAnimatedShader(imageUrl: controller.consultation.value!.doctor!.image!.toString(),width: 50.w,height: 50.h,)
+                  : Icon(
+                controller.consultation.value?.doctor.gender == "male" ? Icons.person : Icons.person_2,
+                size: 30.r,
+                color: AppColors.white,
+              ),
+            ),
+            16.width,
             Text(
                   "${controller.consultation.value?.doctor.firstName} ${controller.consultation.value?.doctor.lastName} " ??
                       'Consultation',
@@ -214,6 +227,7 @@ class ChatView extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
+
               onSubmitted: (value) => controller.sendMessage(),
               onChanged: (value) => controller.message.value = value,
               decoration: const InputDecoration(
@@ -225,7 +239,8 @@ class ChatView extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.send, color: Colors.teal),
-            onPressed: controller.sendMessage,
+            onPressed:
+    ()=>controller.sendMessage(),
           ),
         ],
       ),

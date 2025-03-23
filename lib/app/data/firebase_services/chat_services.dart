@@ -20,7 +20,7 @@ class ChatService {
       'patient': patient.toJson(),
       'patientId': patient.id,
       'patientName': '${patient.firstName} ${patient.lastName}',
-      'status': 'pending',
+      'status': 'active',
       'startTime': startTime,
       'endTime': endTime,
     });
