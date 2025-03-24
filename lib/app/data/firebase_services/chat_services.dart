@@ -10,6 +10,7 @@ class ChatService {
     required Doctor doctor,
     required PatientModel patient,
     required Timestamp startTime,
+    required DateTime date,
     required Timestamp endTime,
   }) async {
     await _firestore.collection('consultations').add({
@@ -22,6 +23,7 @@ class ChatService {
       'patientName': '${patient.firstName} ${patient.lastName}',
       'status': 'active',
       'startTime': startTime,
+      'date': date,
       'endTime': endTime,
     });
   }

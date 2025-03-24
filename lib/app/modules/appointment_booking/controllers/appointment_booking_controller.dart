@@ -275,41 +275,44 @@ class AppointmentBookingController extends GetxController {
   Future<void> confirmBooking() async {
     isLoading.value = true;
 
-    final appointment = AppointmentModel(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      patientId: HomeController().currentUser.value!.id.toString() ?? "mkcjhdk",
-      doctorId: selectedDoctorId.value,
-      doctorName: selectedDoctorName.value,
-      patientName: patientName,
-      specialization: selectedSpecialization.value?.major ?? "Null",
-      dateTime: DateTime(
-        selectedDate.value?.year ?? DateTime.january,
-        selectedDate.value?.month ?? DateTime.january,
-        selectedDate.value?.day ?? DateTime.monday,
-        selectedTime.value?.hour ?? DateTime.monday,
-        selectedTime.value?.minute ?? DateTime.monday,
-      ),
-    );
+    // final appointment = AppointmentModel(
+    //   id: DateTime.now().millisecondsSinceEpoch.toString(),
+    //   patientId: HomeController().currentUser.value!.id.toString() ?? "mkcjhdk",
+    //   doctorId: selectedDoctorId.value,
+    //   doctorName: selectedDoctorName.value,
+    //   patientName: patientName,
+    //   specialization: selectedSpecialization.value?.major ?? "Null",
+    //   dateTime: DateTime(
+    //     selectedDate.value?.year ?? DateTime.january,
+    //     selectedDate.value?.month ?? DateTime.january,
+    //     selectedDate.value?.day ?? DateTime.monday,
+    //     selectedTime.value?.hour ?? DateTime.monday,
+    //     selectedTime.value?.minute ?? DateTime.monday,
+    //   ),
+    // );
     print(selectedTime.value!.hour.toString());
     await _chatService.bookAppointment(
       doctor: selectedDoctor!.value,
       patient: HomeController().currentUser.value!,
+      date: selectedDate.value!,
       endTime: addMinutesToTimestamp(
-          convertTimeOfDayToTimestamp(selectedTime.value!), 30),
-      startTime: convertTimeOfDayToTimestamp(selectedTime.value!),
+          convertTimeOfDayToTimestamp(selectedDate.value!,selectedTime.value!), 30),
+      startTime: convertTimeOfDayToTimestamp(selectedDate.value!,selectedTime.value!),
     );
-       CustomSnackBar.showCustomSnackBar(
-          title: 'Success'.tr,
-          message: 'Appointment booked successfully'.tr,
-        );
 
-        Get.offNamed(Routes.HOME);
+    CustomSnackBar.showCustomSnackBar(
+      title: 'Success'.tr,
+      message: 'Appointment booked successfully'.tr,
+    );
+
+    Get.offNamed(Routes.HOME);
   }
 
-  Timestamp convertTimeOfDayToTimestamp(TimeOfDay timeOfDay) {
-    DateTime now = DateTime.now();
+
+  Timestamp convertTimeOfDayToTimestamp(DateTime selectedDate,TimeOfDay timeOfDay) {
+    DateTime date = selectedDate;
     DateTime dateTime = DateTime(
-        now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+        date.year, date.month, date.day, timeOfDay.hour, timeOfDay.minute);
     return Timestamp.fromDate(dateTime);
   }
 
