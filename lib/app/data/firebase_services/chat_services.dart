@@ -10,6 +10,7 @@ class ChatService {
     required Doctor doctor,
     required PatientModel patient,
     required Timestamp startTime,
+    required DateTime date,
     required Timestamp endTime,
   }) async {
     await _firestore.collection('consultations').add({
@@ -22,6 +23,7 @@ class ChatService {
       'patientName': '${patient.firstName} ${patient.lastName}',
       'status': 'active',
       'startTime': startTime,
+      'date': date,
       'endTime': endTime,
     });
   }
@@ -50,11 +52,12 @@ class ChatService {
 
   // Get consultations by status and user ID (patient)
   Stream<List<ConsultationModel>> getPatientConsultations(
-      int patientId, String status) {
+      int patientId, String status,DateTime date) {
     return _firestore
         .collection('consultations')
         .where('patientId', isEqualTo: patientId)
         .where('status', isEqualTo: status)
+        // .where('date', isEqualTo: Dat)
         .orderBy('startTime', descending: true)
         .snapshots()
         .map((snapshot) {
