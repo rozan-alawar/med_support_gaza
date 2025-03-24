@@ -5,11 +5,9 @@ import 'package:med_support_gaza/app/data/network_helper/api_exception.dart';
 import 'package:med_support_gaza/app/data/network_helper/dio_helper.dart';
 
 class PatientAppointmentAPIService {
-
 //------------------------ GET DOCTORS SPECIALIZATIONS -----------------------------
 
   static void getDoctorsSpecializations({
-
     required dynamic Function(Response<dynamic>) onSuccess,
     dynamic Function(ApiException)? onError,
     Function? onLoading,
@@ -43,6 +41,39 @@ class PatientAppointmentAPIService {
     );
   }
 
+  //------------------------ GET DOCTOR Availabile Time -----------------------------
 
+  static void getAllAppointmentsOfDoctor({
+    required int id,
+    required dynamic Function(Response<dynamic>) onSuccess,
+    dynamic Function(ApiException)? onError,
+    Function? onLoading,
+  }) {
+    final token = CacheHelper.getData(key: 'token_patient');
+    DioHelper.get(
+      '${Links.showDoctorAppointments}/$id',
+      headers: {'Authorization': 'Bearer $token'},
+      onSuccess: onSuccess,
+      onError: onError,
+      onLoading: onLoading,
+    );
+  }
 
+   //------------------------ Booking Appointment -----------------------------
+
+  static void bookingAppointment({
+    required int id,
+    required dynamic Function(Response<dynamic>) onSuccess,
+    dynamic Function(ApiException)? onError,
+    Function? onLoading,
+  }) {
+    final token = CacheHelper.getData(key: 'token_patient');
+    DioHelper.post(
+      '${Links.PatientBookingAppointment}/$id',
+      headers: {'Authorization': 'Bearer $token'},
+      onSuccess: onSuccess,
+      onError: onError,
+      onLoading: onLoading,
+    );
+  }
 }

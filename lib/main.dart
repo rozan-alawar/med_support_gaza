@@ -24,7 +24,6 @@ Future<void> initializeServices() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await CacheHelper.init();
-
   // Initialize GetX services
   Get.put<GetStorage>(GetStorage());
   Get.put(FirebaseService());
@@ -102,3 +101,6 @@ class MyApp extends StatelessWidget {
 
 //admin1@gmail.com
 //`password123`
+
+// herezsaja2020@gmail.com
+// password123

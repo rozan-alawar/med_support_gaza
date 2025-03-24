@@ -298,13 +298,12 @@ class AppointmentBookingController extends GetxController {
           convertTimeOfDayToTimestamp(selectedTime.value!), 30),
       startTime: convertTimeOfDayToTimestamp(selectedTime.value!),
     );
+       CustomSnackBar.showCustomSnackBar(
+          title: 'Success'.tr,
+          message: 'Appointment booked successfully'.tr,
+        );
 
-    CustomSnackBar.showCustomSnackBar(
-      title: 'Success'.tr,
-      message: 'Appointment booked successfully'.tr,
-    );
-
-    Get.offNamed(Routes.HOME);
+        Get.offNamed(Routes.HOME);
   }
 
   Timestamp convertTimeOfDayToTimestamp(TimeOfDay timeOfDay) {

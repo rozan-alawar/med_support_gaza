@@ -162,8 +162,12 @@ class DoctorAppointmentManagementController extends GetxController {
       appointments.clear();
       final response = await Get.find<DoctorAppointmentAPI>()
           .getDoctorAppointments(token: token, status: 'Available');
-      appointments.value =
-          AppointmentModel.fromJson(response.data).appointments;
+      DateTime now = DateTime.now();
+      appointments.value = AppointmentModel.fromJson(response.data)
+          .appointments
+          .where((element) =>
+              element.date.isAfter(DateTime(now.year, now.month, now.day, now.hour)))
+          .toList();
     } catch (e) {
       print(e.toString());
     }
@@ -180,8 +184,11 @@ class DoctorAppointmentManagementController extends GetxController {
       PandingAppointments.clear();
       final response = await Get.find<DoctorAppointmentAPI>()
           .getDoctorPendingAppointments(token: token);
+           DateTime now = DateTime.now();
       PandingAppointments.value =
-          AppointmentModel.fromJson(response.data).appointments;
+          AppointmentModel.fromJson(response.data).appointments.where((element) =>
+              element.date.isAfter(DateTime(now.year, now.month, now.day, now.hour)))
+          .toList();
       print(" PandingAppointments.length: ${PandingAppointments.length}");
     } catch (e) {
       print(e.toString());

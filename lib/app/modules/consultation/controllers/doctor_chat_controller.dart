@@ -5,12 +5,11 @@ import 'package:get/get.dart';
 import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 import '../../../data/firebase_services/chat_services.dart';
 
-
 class DoctorChatController extends GetxController {
   final ChatService _chatService = ChatService();
- final int userId;
+  final int userId;
   final String consultationId;
-  
+
   // Observable variables
   final messages = <MessageModel>[].obs;
   final consultation = Rx<ConsultationModel?>(null);
@@ -33,6 +32,7 @@ class DoctorChatController extends GetxController {
     _timer?.cancel();
     super.onClose();
   }
+
   void _loadConsultation() {
     _chatService.getConsultation(consultationId).listen((consultationModel) {
       consultation.value = consultationModel;
@@ -47,15 +47,17 @@ class DoctorChatController extends GetxController {
 
   void _listenToMessages() {
     _chatService.getMessages(consultationId).listen((snapshot) {
-      messages.value = snapshot.docs.map((doc) => MessageModel.fromMap(
-          doc.id,
-          doc.data() as Map<String, dynamic>
-      )).toList();
+      messages.value = snapshot.docs
+          .map((doc) =>
+              MessageModel.fromMap(doc.id, doc.data() as Map<String, dynamic>))
+          .toList()
+          .reversed
+          .toList();
     });
   }
 
-  void sendMessage() {
-    if (message.value.trim().isEmpty) return;
+  void sendMessage(String message) {
+    if (message.trim().isEmpty) return;
 
     // Only allow sending if consultation is active
     if (consultation.value?.status == 'active') {
@@ -63,11 +65,7 @@ class DoctorChatController extends GetxController {
           consultationId,
           userId,
           '${consultation.value!.patient.firstName} ${consultation.value!.patient.lastName}',
-
-
-          message.value
-      );
-      message.value = '';
+          message);
     }
   }
 
@@ -103,4 +101,3 @@ class DoctorChatController extends GetxController {
     return consultation.value?.status == 'upcoming';
   }
 }
- 
