@@ -96,7 +96,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.APPOINTMENT_BOOKING,
-      page: () => const AppointmentBookingView(),
+      page: () =>  AppointmentBookingView(),
       binding: AppointmentBookingBinding(),
     ),
     GetPage(

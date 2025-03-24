@@ -15,6 +15,7 @@ import 'package:med_support_gaza/app/data/network_helper/dio_helper.dart';
 import 'package:med_support_gaza/app/data/network_helper/dio_client.dart';
 import 'package:med_support_gaza/firebase_options.dart';
 import 'app/core/services/localizations/translation.dart';
+import 'app/modules/appointment_booking/controllers/appointment_booking_controller.dart';
 import 'app/routes/app_pages.dart';
 
 Future<void> initializeServices() async {
@@ -24,6 +25,7 @@ Future<void> initializeServices() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await CacheHelper.init();
+
   // Initialize GetX services
   Get.put<GetStorage>(GetStorage());
   Get.put(FirebaseService());
@@ -101,6 +103,3 @@ class MyApp extends StatelessWidget {
 
 //admin1@gmail.com
 //`password123`
-
-// herezsaja2020@gmail.com
-// password123
