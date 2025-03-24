@@ -10,7 +10,8 @@ import 'package:med_support_gaza/app/modules/appointment_booking/views/doctor_ca
 import 'package:med_support_gaza/app/modules/appointment_booking/views/specialization_widget.dart';
 
 class AppointmentBookingView extends GetView<AppointmentBookingController> {
-  const AppointmentBookingView({super.key});
+   AppointmentBookingView({super.key});
+  // final controller= Get.put(AppointmentBookingController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
             40.height,
             _buildHeader(),
             Expanded(
-              child: Obx(() => _buildStepContent()),
+              child: Obx(() => _buildStepContent(context)),
             ),
             30.height,
             CustomButton(
@@ -98,7 +99,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
     );
   }
 
-  Widget _buildStepContent() {
+  Widget _buildStepContent(BuildContext context) {
     switch (controller.currentStep.value) {
       case 0:
         return _buildSpecializationStep();
@@ -107,7 +108,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
       case 2:
         return const _buildTimeSelectionStep();
       case 3:
-        return _buildConfirmationStep();
+        return _buildConfirmationStep(context);
       default:
         return Container();
     }
@@ -248,7 +249,7 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
     });
   }
 
-  Widget _buildConfirmationStep() {
+  Widget _buildConfirmationStep(BuildContext context) {
     return Obx(() => Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
           decoration: BoxDecoration(
@@ -318,8 +319,10 @@ class AppointmentBookingView extends GetView<AppointmentBookingController> {
                     Divider(height: 24.h, color: Colors.grey[200]),
                     _buildConfirmationItem(
                       'Date & Time'.tr,
-                      controller.selectedTime.value?.format(Get.context!) ??
-                          'Not selected'.tr,
+                      '${
+                          controller.selectedDate.value?.day}/${controller.selectedDate.value?.month}/${controller.selectedDate.value?.year
+                      } at ${controller.selectedTime.value?.format(context)}'
+                     ,
                       Icons.access_time_rounded,
                     ),
                   ],
@@ -421,6 +424,7 @@ class _buildTimeSelectionStep extends GetView<AppointmentBookingController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.selectedDate.value ??= DateTime.now();
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -486,14 +490,14 @@ class _buildTimeSelectionStep extends GetView<AppointmentBookingController> {
                       ),
                       child: CalendarDatePicker(
                         initialDate:
-                            controller.selectedDate.value ?? DateTime.now(),
+                            controller.selectedDate.value,
                         firstDate:
                             DateTime.now(), // Cannot select dates before today
                         lastDate: DateTime.now().add(const Duration(
                             days:
                                 30)), // Can select up to 30 days in the future
                         onDateChanged: (date) {
-                          controller.selectedDate(date);
+                          controller.selectedDate.value = date;
                         },
                         selectableDayPredicate: (day) {
                           // Optionally add logic to disable certain days (weekends, holidays, etc.)

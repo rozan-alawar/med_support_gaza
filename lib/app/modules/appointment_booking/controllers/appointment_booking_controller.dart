@@ -282,15 +282,15 @@ class AppointmentBookingController extends GetxController {
     //   doctorName: selectedDoctorName.value,
     //   patientName: patientName,
     //   specialization: selectedSpecialization.value?.major ?? "Null",
-    //   dateTime: DateTime(
-    //     selectedDate.value?.year ?? DateTime.january,
-    //     selectedDate.value?.month ?? DateTime.january,
-    //     selectedDate.value?.day ?? DateTime.monday,
-    //     selectedTime.value?.hour ?? DateTime.monday,
-    //     selectedTime.value?.minute ?? DateTime.monday,
-    //   ),
+    //   // dateTime: DateTime(
+    //   //   selectedDate.value?.year ?? DateTime.january,
+    //   //   selectedDate.value?.month ?? DateTime.january,
+    //   //   selectedDate.value?.day ?? DateTime.monday,
+    //   //   selectedTime.value?.hour ?? DateTime.monday,
+    //   //   selectedTime.value?.minute ?? DateTime.monday,
+    //   // ),
+    //   dateTime: selectedDate.value ?? DateTime.now(),
     // );
-    print(selectedTime.value!.hour.toString());
     await _chatService.bookAppointment(
       doctor: selectedDoctor!.value,
       patient: HomeController().currentUser.value!,
@@ -307,7 +307,6 @@ class AppointmentBookingController extends GetxController {
 
     Get.offNamed(Routes.HOME);
   }
-
 
   Timestamp convertTimeOfDayToTimestamp(DateTime selectedDate,TimeOfDay timeOfDay) {
     DateTime date = selectedDate;

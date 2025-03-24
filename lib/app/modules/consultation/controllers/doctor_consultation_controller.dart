@@ -55,7 +55,7 @@ class DoctorConsultationController extends GetxController {
   }
 
   void startStatusChecker() {
-    Timer.periodic(const Duration(minutes: 2), (timer) {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
       _checkConsultationStatuses();
     });
   }
