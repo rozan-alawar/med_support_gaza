@@ -79,7 +79,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
     // print(bookController.)
 
     return StreamBuilder<List<ConsultationModel>>(
-      stream: chatService.getPatientConsultations(userId, status, DateTime.now()),
+      stream: chatService.getPatientConsultations(userId, status),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());

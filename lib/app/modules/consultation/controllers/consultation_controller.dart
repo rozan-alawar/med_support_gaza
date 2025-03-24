@@ -32,17 +32,17 @@ class ConsultationsController extends GetxController {
 
   void loadConsultations() {
     // استماع للاستشارات النشطة
-    _chatService.getPatientConsultations(userId, 'active', DateTime.now()).listen((consultations) {
+    _chatService.getPatientConsultations(userId, 'active',).listen((consultations) {
       activeConsultations.value = consultations;
     });
 
     // استماع للاستشارات القادمة
-    _chatService.getPatientConsultations(userId, 'upcoming', DateTime.now()).listen((consultations) {
+    _chatService.getPatientConsultations(userId, 'upcoming',).listen((consultations) {
       upcomingConsultations.value = consultations;
     });
 
     // استماع للاستشارات الماضية
-    _chatService.getPatientConsultations(userId, 'past', DateTime.now()).listen((consultations) {
+    _chatService.getPatientConsultations(userId, 'past').listen((consultations) {
       pastConsultations.value = consultations;
     });
   }

@@ -52,12 +52,11 @@ class ChatService {
 
   // Get consultations by status and user ID (patient)
   Stream<List<ConsultationModel>> getPatientConsultations(
-      int patientId, String status,DateTime date) {
+      int patientId, String status) {
     return _firestore
         .collection('consultations')
         .where('patientId', isEqualTo: patientId)
         .where('status', isEqualTo: status)
-        // .where('date', isEqualTo: Dat)
         .orderBy('startTime', descending: true)
         .snapshots()
         .map((snapshot) {
