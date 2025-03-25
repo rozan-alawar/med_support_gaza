@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,7 @@ class ContentController extends GetxController {
   void onInit() {
     super.onInit();
     loadContent();
+
     // searchController.addListener(_onSearchChanged);
   }
 
@@ -59,9 +62,11 @@ class ContentController extends GetxController {
     ArticlesAPIService.getArticles(
       onSuccess: (response) {
         isLoading.value = false;
-        ArticleResponse articlesResponse =
-            ArticleResponse.fromJson(response.data);
-        contentList.value = articlesResponse.articles;
+        final List<Article> articles = (response.data['articles'] as List)
+            .map((articleJson) => Article.fromJson(articleJson))
+            .toList();
+
+        contentList.value =articles;
         filteredContent.value = contentList;
         isLoading.value = false;
         articlesCount.value = contentList.length;
@@ -130,7 +135,8 @@ class ContentController extends GetxController {
             title: 'success'.tr,
             message: 'article_updated'.tr,
           );
-          loadContent(); // Reload content list after updating
+          loadContent();
+          clearForm();
           Get.back();
         },
         onError: (error) {

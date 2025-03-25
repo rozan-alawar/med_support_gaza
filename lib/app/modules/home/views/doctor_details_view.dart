@@ -120,18 +120,23 @@ class DoctorDetailsView extends StatelessWidget {
       color: Colors.white,
       padding: EdgeInsets.all(16.w),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildInfoItem(
-            Icons.email_outlined,
-            'Email'.tr,
-            doctor.email.toString() ,
+          Expanded(
+            child: _buildInfoItem(
+              Icons.email_outlined,
+              'Email'.tr,
+              doctor.email.toString() ,
+            ),
           ),
+          8.width,
           _buildInfoItem(
-            Icons.phone_outlined,
-            'Phone'.tr,
-            doctor.phoneNumber ?? "N/A",
-          ),
+              Icons.phone_outlined,
+              'Phone'.tr,
+              doctor.phoneNumber ?? "N/A",
+            ),
+          8.width,
+
           _buildInfoItem(
             Icons.location_on_outlined,
             'Location'.tr,

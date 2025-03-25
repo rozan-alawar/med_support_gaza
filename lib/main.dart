@@ -26,8 +26,9 @@ Future<void> initializeServices() async {
   await CacheHelper.init();
 
   // Initialize GetX services
-  Get.put<GetStorage>(GetStorage());
-  Get.put(FirebaseService());
+  Get.lazyPut(() =>GetStorage());
+  Get.lazyPut(() => FirebaseService());
+
 
   // api services initialization
   Get.lazyPut(() => Dio(), fenix: true);
@@ -94,11 +95,6 @@ class MyApp extends StatelessWidget {
 //rozanalawar@gmail.com
 //123123123
 
-//dr.rozan@gmail.com
-//rozan2002
-
-//admin@gmail.com
-//admin123
 
 //admin1@gmail.com
 //`password123`

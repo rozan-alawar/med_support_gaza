@@ -58,6 +58,7 @@ class ChatService {
         .orderBy('startTime', descending: true)
         .snapshots()
         .map((snapshot) {
+
       return snapshot.docs.map((doc) {
         return ConsultationModel.fromMap(doc.id, doc.data());
       }).toList();

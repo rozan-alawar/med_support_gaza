@@ -28,9 +28,11 @@ class HealthTipsController extends GetxController {
 
       onSuccess: (response) {
         isLoading.value = false;
-        ArticleResponse articlesResponse =
-        ArticleResponse.fromJson(response.data);
-        contentList.value = articlesResponse.articles;
+        final List<Article> articles = (response.data['articles'] as List)
+            .map((articleJson) => Article.fromJson(articleJson))
+            .toList();
+
+        contentList.value =articles;
               isLoading.value = false;
       },
       onError: (e) {
