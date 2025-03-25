@@ -54,17 +54,16 @@ class ChatController extends GetxController {
     });
   }
 
-  void sendMessage() {
-    if (message.value.trim().isEmpty) return;
-print(message.value.trim());
+  void sendMessage(String messageController) {
+    if (messageController.trim().isEmpty) return;
     // Only allow sending if consultation is active
     if (consultation.value?.status == 'active') {
       _chatService.sendMessage(
           consultationId,
           userId,
           '${consultation.value!.doctor.firstName} ${consultation.value!.doctor.lastName}',
-          message.value);
-      message.value = '';
+          messageController);
+      // message.value = '';
     }
   }
 

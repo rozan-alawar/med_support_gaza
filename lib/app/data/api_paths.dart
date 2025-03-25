@@ -58,4 +58,8 @@ class Links {
   static var doctorRejectAppointment = 'doctor/appointment/reject';
   static var doctorAcceptAppointment = 'doctor/appointment/accept';
 
+  // patient
+  //test
+  static var  showDoctorAppointments   = 'patient/doctorappointments';
+  static var PatientBookingAppointment   = 'patient/appointments';
 }

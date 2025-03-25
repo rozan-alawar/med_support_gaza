@@ -9,9 +9,12 @@ import 'package:med_support_gaza/app/data/models/consultation_model.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/pages/chat_view.dart';
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
+import '../../appointment_booking/controllers/appointment_booking_controller.dart';
+
 class ConsultationsController extends GetxController {
   final ChatService _chatService = ChatService();
   final int userId;
+
 
   final activeConsultations = <ConsultationModel>[].obs;
   final upcomingConsultations = <ConsultationModel>[].obs;
@@ -29,12 +32,12 @@ class ConsultationsController extends GetxController {
 
   void loadConsultations() {
     // استماع للاستشارات النشطة
-    _chatService.getPatientConsultations(userId, 'active').listen((consultations) {
+    _chatService.getPatientConsultations(userId, 'active',).listen((consultations) {
       activeConsultations.value = consultations;
     });
 
     // استماع للاستشارات القادمة
-    _chatService.getPatientConsultations(userId, 'upcoming').listen((consultations) {
+    _chatService.getPatientConsultations(userId, 'upcoming',).listen((consultations) {
       upcomingConsultations.value = consultations;
     });
 
