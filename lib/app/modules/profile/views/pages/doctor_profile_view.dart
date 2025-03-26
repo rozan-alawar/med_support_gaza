@@ -133,7 +133,7 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
               _buildInfoItem(
                 icon: Icons.person,
                 title: 'Gender'.tr,
-                value: controller.doctorData.value?.doctor?.gender ?? 'Male',
+                value: controller.doctorData.value?.doctor?.gender?.capitalizeFirst ?? 'Male',
               ),
               12.height,
               _buildInfoItem(

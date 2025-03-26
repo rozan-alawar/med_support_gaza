@@ -121,7 +121,7 @@ class DoctorAppointmentManagementController extends GetxController {
     List<String> timeSplit = selectedTime.value.split(':');
     int hour = int.parse(timeSplit[0]);
     int minute = int.parse(timeSplit[1].split(' ')[0]);
-    String period = timeSplit[1].split(' ')[1];
+    String period = timeSplit[1].split(' ')[1].trim();
     minute += 30;
     if (minute >= 60) {
       hour += 1;
@@ -144,7 +144,7 @@ class DoctorAppointmentManagementController extends GetxController {
     }
     try {
       await Get.find<DoctorAppointmentAPI>()
-          .delelteDoctorAppointment(token: token, id: appointments[index].id);     
+          .delelteDoctorAppointment(token: token, id: appointments[index].id);
       loadAvailableAppointments();
     } catch (e) {
       print(e.toString());
@@ -165,9 +165,35 @@ class DoctorAppointmentManagementController extends GetxController {
       DateTime now = DateTime.now();
       appointments.value = AppointmentModel.fromJson(response.data)
           .appointments
-          .where((element) =>
-              element.date.isAfter(DateTime(now.year, now.month, now.day, now.hour, now.minute)))
-          .toList();
+          .where((element) {
+        bool isAfter = element.date.isAfter(DateTime(
+          now.year,
+          now.month,
+          now.day,
+        ));
+        bool isSameDay = element.date == DateTime(now.year, now.month, now.day)
+            ? true
+            : false;
+        if (isAfter) {
+          return true;
+        }
+        if (isSameDay) {
+          // startTime is in the format "HH:mm AM/PM" it need to modifiy to 24- formate
+          // Convert "HH:mm AM/PM" to 24-hour format
+          final timeParts = element.startTime.split(':');
+          int hour = int.parse(timeParts[0].trim());
+          int minute = int.parse(timeParts[1].split(' ')[0].trim());
+          String period = timeParts[1].split(' ')[1].trim(); // AM or PM
+          if (period == "PM" && hour != 12) {
+            hour += 12;
+          } else if (period == "AM" && hour == 12) {
+            hour = 0;
+          }
+          final appointmentTime = DateTime(now.year, now.month, now.day, hour);
+          return appointmentTime.isAfter(DateTime.now());
+        }
+        return false;
+      }).toList();
     } catch (e) {
       print(e.toString());
     }
@@ -184,13 +210,14 @@ class DoctorAppointmentManagementController extends GetxController {
       PandingAppointments.clear();
       final response = await Get.find<DoctorAppointmentAPI>()
           .getDoctorPendingAppointments(token: token);
-              DateTime now = DateTime.now();
-      PandingAppointments.value =
-          AppointmentModel.fromJson(response.data).appointments.where((element) =>
-              element.date.isAfter(DateTime(now.year, now.month, now.day , now.minute)))
+      DateTime now = DateTime.now();
+      PandingAppointments.value = AppointmentModel.fromJson(response.data)
+          .appointments
+          .where((element) => element.date
+              .isAfter(DateTime(now.year, now.month, now.day, now.minute)))
           .toList();
       print(" PandingAppointments.length: ${PandingAppointments.length}");
-    } catch (e) { 
+    } catch (e) {
       print(e.toString());
     }
   }
@@ -292,8 +319,8 @@ class DoctorAppointmentManagementController extends GetxController {
     }
     try {
       int id = dayilyAppointments[index].id;
-      await Get.find<DoctorAppointmentAPI>().delelteDoctorAppointment(
-          token: token, id: id);
+      await Get.find<DoctorAppointmentAPI>()
+          .delelteDoctorAppointment(token: token, id: id);
       await _chatService.updateConsultationStatusByDoctor('$id', 'canceled');
       getDayilyappointment();
     } catch (e) {
