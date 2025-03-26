@@ -85,12 +85,13 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
         ),
         image: controller.doctorData.value?.doctor?.image != null
             ? DecorationImage(
-                image: NetworkImage( controller.doctorData.value?.doctor?.image ?? ''),
+                image: NetworkImage(
+                    controller.doctorData.value?.doctor?.image ?? ''),
                 fit: BoxFit.cover,
               )
             : null,
       ),
-      child: controller.doctorData.value?.doctor?.image  == null
+      child: controller.doctorData.value?.doctor?.image == null
           ? Icon(
               Icons.person,
               size: 60.sp,
@@ -119,7 +120,8 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
               _buildInfoItem(
                 icon: Icons.phone,
                 title: 'Phone'.tr,
-                value: controller.doctorData.value?.doctor?.phoneNumber ?? '059659878',
+                value: controller.doctorData.value?.doctor?.phoneNumber ??
+                    '059659878',
               ),
               12.height,
               _buildInfoItem(
@@ -131,7 +133,7 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
               _buildInfoItem(
                 icon: Icons.person,
                 title: 'Gender'.tr,
-                value: controller.doctorData.value?.doctor?.gender ?? 'Male',
+                value: controller.doctorData.value?.doctor?.gender?.capitalizeFirst ?? 'Male',
               ),
               12.height,
               _buildInfoItem(
@@ -170,14 +172,14 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
               _buildInfoItem(
                 icon: Icons.star,
                 title: 'Rating'.tr,
-                value: '${controller.doctorData.value?.doctor?.averageRating ?? 0.0}',
+                value:
+                    '${controller.doctorData.value?.doctor?.averageRating ?? 0.0}',
               ),
               12.height,
               _buildInfoItem(
                 icon: Icons.language,
                 title: 'Languages'.tr,
-                value:
-                    'Arabic',
+                value: 'Arabic',
               ),
             ],
           )),
@@ -239,7 +241,27 @@ class DoctorProfileView extends GetView<DoctorProfileController> {
         MenuItemWidget(
           icon: Icons.logout,
           title: 'Sign Out'.tr,
-          onTap: controller.signOut,
+          onTap: () {
+             Get.dialog(
+      AlertDialog(
+        title: Text('logout_confirmation'.tr),
+        content: Text('logout_message'.tr),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text('cancel'.tr),
+          ),
+          TextButton(
+            onPressed: controller.signOut,
+            child: Text(
+              'confirm'.tr,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+          },
           isLogout: true,
         ),
       ],

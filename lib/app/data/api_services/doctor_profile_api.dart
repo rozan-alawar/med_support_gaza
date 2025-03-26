@@ -33,8 +33,12 @@ class DoctorProfileAPI {
     String? phoneNumber,
     String? major,
     String? country,
+    required String imagePath,
     required String token,
   }) async {
+    final file = File(imagePath);
+    final fileType = lookupMimeType(imagePath);
+
     print(''''first_name': $fName,
       'last_name': $lName,
       'email': $email,
@@ -42,7 +46,7 @@ class DoctorProfileAPI {
       'phone_number': $phoneNumber,
       'gender': $gender,
       'major': $major,''');
-      
+
     di.FormData formData = di.FormData.fromMap({
       'first_name': fName,
       'last_name': lName,
@@ -51,8 +55,12 @@ class DoctorProfileAPI {
       'phone_number': phoneNumber,
       'gender': gender,
       'major': major,
+      'image': await di.MultipartFile.fromFile(
+        file.path,
+        filename: file.path.split('/').last,
+        contentType: MediaType.parse(fileType!),
+      ),
     });
-
 
     final res = await Get.find<DioClient>().dio.post(
           Links.doctorUpdateProfile,
@@ -70,35 +78,34 @@ class DoctorProfileAPI {
     return res;
   }
 
-
   Future<di.Response<dynamic>> updateDoctorImageProfile({
-  required String imagePath,
-  required String token,
-}) async {
-  final file = File(imagePath);
-  final fileType = lookupMimeType(imagePath);
+    required String imagePath,
+    required String token,
+  }) async {
+    final file = File(imagePath);
+    final fileType = lookupMimeType(imagePath);
 
-  di.FormData formData = di.FormData.fromMap({
-    'image': await di.MultipartFile.fromFile(
-      file.path,
-      filename: file.path.split('/').last,
-      contentType: MediaType.parse(fileType!),
-    ),
-  });
+    di.FormData formData = di.FormData.fromMap({
+      'image': await di.MultipartFile.fromFile(
+        file.path,
+        filename: file.path.split('/').last,
+        contentType: MediaType.parse(fileType!),
+      ),
+    });
 
-  final res = await Get.find<DioClient>().dio.post(
-        Links.doctorUpdateProfile,
-        data: formData,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type': 'multipart/form-data',
-            'Accept': 'application/json',
-          },
-          followRedirects: true,
-        ),
-      );
+    final res = await Get.find<DioClient>().dio.post(
+          Links.doctorUpdateProfile,
+          data: formData,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'multipart/form-data',
+              'Accept': 'application/json',
+            },
+            followRedirects: true,
+          ),
+        );
 
-  return res;
-}
+    return res;
+  }
 }

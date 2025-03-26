@@ -120,10 +120,19 @@ class DoctorLoginView extends GetView<DoctorAuthController> {
 
   void _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      controller.signIn(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+      String email = _emailController.text.trim();
+      String password = _passwordController.text.trim();
+      try {
+        await controller.signIn(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        _emailController.text = email;
+        _passwordController.text = password;
+      } catch (e) {
+        _emailController.text = email;
+        _passwordController.text = password;
+      }
     }
   }
 
