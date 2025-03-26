@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
+import 'package:med_support_gaza/app/data/api_services/doctor_auth_api.dart';
 import 'package:med_support_gaza/app/data/api_services/doctor_profile_api.dart';
 import 'package:med_support_gaza/app/modules/auth/controllers/doctro_auth_controller.dart';
 import '../../../core/services/cache_helper.dart';
@@ -199,7 +200,14 @@ class DoctorProfileController extends GetxController {
 
   Future<void> signOut() async {
     try {
-      Get.find<DoctorAuthController>().signOut();
+      String? token = CacheHelper.getData(key: 'token');
+
+      if (token == null) {
+        Get.offAllNamed(Routes.User_Role_Selection);
+        return;
+      }
+      await Get.find<DoctorAuthApi>().logout(token: token);
+      Get.offAllNamed(Routes.User_Role_Selection);
     } catch (e) {
       print('Error signing out: $e');
     }

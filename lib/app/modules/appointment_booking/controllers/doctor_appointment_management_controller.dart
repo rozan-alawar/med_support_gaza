@@ -166,7 +166,7 @@ class DoctorAppointmentManagementController extends GetxController {
       appointments.value = AppointmentModel.fromJson(response.data)
           .appointments
           .where((element) =>
-              element.date.isAfter(DateTime(now.year, now.month, now.day, now.hour)))
+              element.date.isAfter(DateTime(now.year, now.month, now.day, now.hour, now.minute)))
           .toList();
     } catch (e) {
       print(e.toString());
@@ -187,10 +187,10 @@ class DoctorAppointmentManagementController extends GetxController {
            DateTime now = DateTime.now();
       PandingAppointments.value =
           AppointmentModel.fromJson(response.data).appointments.where((element) =>
-              element.date.isAfter(DateTime(now.year, now.month, now.day, now.hour)))
+              element.date.isAfter(DateTime(now.year, now.month, now.day)))
           .toList();
       print(" PandingAppointments.length: ${PandingAppointments.length}");
-    } catch (e) {
+    } catch (e) { 
       print(e.toString());
     }
   }
