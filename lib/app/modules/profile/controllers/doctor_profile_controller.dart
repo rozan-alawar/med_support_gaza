@@ -54,6 +54,7 @@ class DoctorProfileController extends GetxController {
       selectedGender.value = doctor?.gender ?? "";
       selectedCountry.value = doctor?.country ?? "";
       selectedSpeciality.value = doctor?.major ?? "";
+      selectedImagePath.value = doctor?.image?? "";
       selectedLanguages.value = getLanguagesFromDevice();
     }
   }
@@ -100,27 +101,16 @@ class DoctorProfileController extends GetxController {
         phoneNumber: phoneController.text.trim(),
         major: selectedSpeciality.value,
         country: selectedCountry.value,
+        imagePath:selectedImagePath.value
+        
       );
 
       await fetchDoctorData(); // Refresh data
 
       Get.back(); // Return to profile page
-      Get.snackbar(
-        'Success',
-        'Profile updated successfully',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
     } catch (e) {
       print('Error updating profile: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to update profile',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+    
     } finally {
       isLoading.value = false;
     }
@@ -144,24 +134,10 @@ class DoctorProfileController extends GetxController {
           imagePath: image.path,
           token: token,
         );
-
-        Get.snackbar(
-          'Success',
-          'Profile image updated successfully',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
       }
     } catch (e) {
       print('Error updating profile image: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to update profile image',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+  
     } finally {
       isLoading.value = false;
     }
