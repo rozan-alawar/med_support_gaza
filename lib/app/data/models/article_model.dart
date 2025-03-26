@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Article {
   final int id;
   final int adminId;
@@ -58,37 +60,31 @@ class Article {
   }
 }
 
-
 class ArticleResponse {
-  final int code;
+  final String message;
   final List<Article> articles;
-  final int currentPage;
-  final int lastPage;
-  final String? nextPageUrl;
-  final String? prevPageUrl;
-  final int total;
 
   ArticleResponse({
-    required this.code,
+    required this.message,
     required this.articles,
-    required this.currentPage,
-    required this.lastPage,
-    this.nextPageUrl,
-    this.prevPageUrl,
-    required this.total,
   });
 
-  factory ArticleResponse.fromJson(Map<String, dynamic> json) {
+  factory ArticleResponse.fromJson(String jsonString) {
+    final Map<String, dynamic> jsonData = jsonDecode(jsonString);
+    final List<Article> articles = (jsonData['articles'] as List)
+        .map((articleJson) => Article.fromJson(articleJson))
+        .toList();
+
     return ArticleResponse(
-      code: json['code'],
-      articles: (json['articles']['data'] as List)
-          .map((article) => Article.fromJson(article))
-          .toList(),
-      currentPage: json['articles']['current_page'],
-      lastPage: json['articles']['last_page'],
-      nextPageUrl: json['articles']['next_page_url'],
-      prevPageUrl: json['articles']['prev_page_url'],
-      total: json['articles']['total'],
+      message: jsonData['message'],
+      articles: articles,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'message': message,
+      'articles': articles.map((article) => article.toJson()).toList(),
+    };
   }
 }

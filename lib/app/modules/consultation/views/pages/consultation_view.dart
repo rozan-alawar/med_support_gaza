@@ -13,6 +13,8 @@ import 'package:med_support_gaza/app/modules/consultation/views/pages/chat_view.
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/active_chat_card.dart';
 import 'package:med_support_gaza/app/modules/consultation/views/widgets/consultation_card.dart';
 
+import '../../../appointment_booking/controllers/appointment_booking_controller.dart';
+
 class ConsultationsView extends GetView<ConsultationsController> {
   final int userId;
 
@@ -73,6 +75,8 @@ class ConsultationsView extends GetView<ConsultationsController> {
 
   Widget _buildConsultationsList(String status) {
     final ChatService chatService = ChatService();
+    // final bookController= Get.find<AppointmentBookingController>();
+    // print(bookController.)
 
     return StreamBuilder<List<ConsultationModel>>(
       stream: chatService.getPatientConsultations(userId, status),
@@ -126,6 +130,7 @@ class ConsultationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(consultation.startTime.toDate());
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,

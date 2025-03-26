@@ -51,6 +51,7 @@ class AddNewArticle extends GetView<ContentController> {
                   // border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                 ),
                 child: TextFormField(
+
                   controller: controller.contentController,
                   validator: controller.validateContent,
                   maxLines: null,
@@ -58,6 +59,10 @@ class AddNewArticle extends GetView<ContentController> {
                     hintText: 'write_article_content'.tr,
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.all(16.w),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: const BorderSide(color: AppColors.error),
+                    ),
                   ),
                   textAlign: TextAlign.right,
                   textDirection: TextDirection.rtl,

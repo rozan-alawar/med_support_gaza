@@ -184,10 +184,10 @@ class DoctorAppointmentManagementController extends GetxController {
       PandingAppointments.clear();
       final response = await Get.find<DoctorAppointmentAPI>()
           .getDoctorPendingAppointments(token: token);
-           DateTime now = DateTime.now();
+              DateTime now = DateTime.now();
       PandingAppointments.value =
           AppointmentModel.fromJson(response.data).appointments.where((element) =>
-              element.date.isAfter(DateTime(now.year, now.month, now.day)))
+              element.date.isAfter(DateTime(now.year, now.month, now.day , now.minute)))
           .toList();
       print(" PandingAppointments.length: ${PandingAppointments.length}");
     } catch (e) { 
