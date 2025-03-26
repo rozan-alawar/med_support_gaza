@@ -46,18 +46,23 @@ class SpecializationWidget extends GetView<AppointmentBookingController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomText(
-              title,
-              fontSize: 13.sp,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF2D2D2D),
+            Expanded(
+              child: CustomText(
+                title,
+                fontSize: 13.sp,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF2D2D2D),
+              ),
             ),
             6.height,
             Row(
               children: [
-                CustomText(
-                  'AvailableDoctors'.tr,
-                  fontSize: 11.sp,
+                Expanded(
+                  child: CustomText(
+                    'AvailableDoctors'.tr,
+                    fontSize: 11.sp,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 4.width,
                 CustomText(

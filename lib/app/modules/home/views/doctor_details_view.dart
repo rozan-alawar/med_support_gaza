@@ -119,23 +119,20 @@ class DoctorDetailsView extends StatelessWidget {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.all(16.w),
-      child: Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
         children: [
-          Expanded(
-            child: _buildInfoItem(
-              Icons.email_outlined,
-              'Email'.tr,
-              doctor.email.toString() ,
-            ),
+          _buildInfoItem(
+            Icons.email_outlined,
+            'Email'.tr,
+            doctor.email.toString() ,
           ),
-          8.width,
+          16.height,
           _buildInfoItem(
               Icons.phone_outlined,
               'Phone'.tr,
               doctor.phoneNumber ?? "N/A",
             ),
-          8.width,
+          16.height,
 
           _buildInfoItem(
             Icons.location_on_outlined,
@@ -149,16 +146,16 @@ class DoctorDetailsView extends StatelessWidget {
 
   Widget _buildInfoItem(IconData icon, String title, String value,
       {Color? iconColor}) {
-    return Column(
+    return Row(
       children: [
         Icon(icon, color: iconColor ?? AppColors.primary, size: 24.r),
-        8.height,
+        8.width,
         CustomText(
           title,
           fontSize: 12.sp,
           color: Colors.grey[600],
         ),
-        4.height,
+        4.width,
         CustomText(
           value,
           fontSize: 14.sp,

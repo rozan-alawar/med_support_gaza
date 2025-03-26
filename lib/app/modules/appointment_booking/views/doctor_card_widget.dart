@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:med_support_gaza/app/core/extentions/space_extention.dart';
 import 'package:med_support_gaza/app/core/utils/app_colors.dart';
+import 'package:med_support_gaza/app/core/widgets/cached_image.dart';
 import 'package:med_support_gaza/app/core/widgets/custom_text_widget.dart';
 import 'package:med_support_gaza/app/data/models/doctor.dart';
 import 'package:med_support_gaza/app/modules/appointment_booking/controllers/appointment_booking_controller.dart';
@@ -46,8 +47,12 @@ class DoctorCard extends GetView<AppointmentBookingController> {
             children: [
               Row(
                 children: [
-                  _buildDoctorImage(),
-                  16.width,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50.r),
+                    child: doctor.image != null
+                        ? ImageWithAnimatedShader(imageUrl: doctor.image.toString(),width: 80.w,height: 90.h,)
+                        : Icon(Icons.person, size: 70.r, color: AppColors.gray),
+                  ),                  16.width,
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,20 +182,20 @@ class DoctorCard extends GetView<AppointmentBookingController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: Column(
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                'Languages'.tr,
+                'Languages: '.tr,
                 fontSize: 12.sp,
                 color: AppColors.textLight,
               ),
               4.height,
-              // CustomText(
-              //   doctor..join(', '),
-              //   fontSize: 13.sp,
-              //   fontWeight: FontWeight.w500,
-              // ),
+              CustomText(
+                'arabic'.tr,
+                fontSize: 12.sp,
+              ),
+
             ],
           ),
         ),
