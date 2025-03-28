@@ -81,7 +81,7 @@ class HealthTipsView extends GetView<HealthTipsController> {
                       CustomText(
                         tip.title,
                         overflow: TextOverflow.ellipsis,
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         maxLines: 1,
                         fontWeight: FontWeight.w600,
                         color: AppColors.textDark,
@@ -89,8 +89,7 @@ class HealthTipsView extends GetView<HealthTipsController> {
                       8.height,
                       CustomText(
                         tip.content,
-                  
-                        fontSize: 14.sp,
+                        fontSize: 12.sp,
                         color: AppColors.textLight,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,

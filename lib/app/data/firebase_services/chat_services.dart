@@ -21,7 +21,7 @@ class ChatService {
       'patient': patient.toJson(),
       'patientId': patient.id,
       'patientName': '${patient.firstName} ${patient.lastName}',
-      'status': 'active',
+      'status': 'upcoming',
       'startTime': startTime,
       'date': date,
       'endTime': endTime,

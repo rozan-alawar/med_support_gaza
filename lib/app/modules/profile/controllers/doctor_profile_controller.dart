@@ -182,6 +182,13 @@ class DoctorProfileController extends GetxController {
         Get.offAllNamed(Routes.User_Role_Selection);
         return;
       }
+
+      CacheHelper.removeData(key: 'doctor');
+      CacheHelper.removeData(key: 'token');
+
+      CacheHelper.removeData(key: 'isLoggedIn');
+      CacheHelper.removeData(key: 'userType');
+
       await Get.find<DoctorAuthApi>().logout(token: token);
       Get.offAllNamed(Routes.User_Role_Selection);
     } catch (e) {

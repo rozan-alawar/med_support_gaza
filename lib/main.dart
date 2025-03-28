@@ -5,9 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:med_support_gaza/app/core/services/cache_helper.dart';
+import 'package:med_support_gaza/app/core/services/connection_manager_service.dart';
 import 'package:med_support_gaza/app/core/services/localizations/translation_contoller.dart';
 import 'package:med_support_gaza/app/core/utils/app_theme.dart';
 import 'package:med_support_gaza/app/core/widgets/custem_error_widget.dart';
+import 'package:med_support_gaza/app/core/widgets/custom_snackbar_widget.dart';
+import 'package:med_support_gaza/app/core/widgets/no_internet_connection_widget.dart';
 import 'package:med_support_gaza/app/data/api_services/doctor_auth_api.dart';
 import 'package:med_support_gaza/app/data/firebase_services/chat_services.dart';
 import 'package:med_support_gaza/app/data/firebase_services/firebase_services.dart';
@@ -27,23 +30,17 @@ Future<void> initializeServices() async {
   await CacheHelper.init();
 
   // Initialize GetX services
-  Get.lazyPut(() =>GetStorage());
-  Get.lazyPut(() => FirebaseService());
-
+  Get.lazyPut(() => GetStorage());
+  await Get.putAsync(() => ConnectionManagerService().init());
 
   // api services initialization
   Get.lazyPut(() => Dio(), fenix: true);
   Get.lazyPut(() => DioClient(Get.find<Dio>()), fenix: true);
   Get.lazyPut(() => DoctorAuthApi(), fenix: true);
 
-  // Populate initial data
-  final firebaseService = Get.find<FirebaseService>();
-  await firebaseService.populateSampleData();
-
   // Initialize DioHelper
   DioHelper.init();
   ChatService().monitorAppointmentsStatus();
-
 }
 
 void main() async {
@@ -63,8 +60,20 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => _buildApp(),
     );
   }
+}
 
-  Widget _buildApp() {
+Widget _buildApp() {
+  return Obx(() {
+    bool isConnected = Get.find<ConnectionManagerService>().isConnected.value;
+
+    if (!isConnected) {
+      // CustomSnackBar.showCustomErrorSnackBar(
+      //   title: 'No Internet Connection',
+      //   message: 'Please check your internet connection.',
+      // );
+      return GetMaterialApp(home:  NoInternetWidget());
+    }
+
     return SafeArea(
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -79,19 +88,16 @@ class MyApp extends StatelessWidget {
         onUnknownRoute: _handleUnknownRoute,
       ),
     );
-  }
-
-  Route<dynamic> _handleUnknownRoute(RouteSettings settings) {
-    return MaterialPageRoute(
-      builder: (context) => ErrorView(
-        message: 'Route ${settings.name} not found',
-      ),
-    );
-  }
+  });
 }
 
-
-
+Route<dynamic> _handleUnknownRoute(RouteSettings settings) {
+  return MaterialPageRoute(
+    builder: (context) => ErrorView(
+      message: 'Route ${settings.name} not found',
+    ),
+  );
+}
 
 //rozanalawar@gmail.com
 //123123123
