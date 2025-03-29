@@ -23,8 +23,8 @@ class HomeController extends GetxController {
   final Rx<PatientModel?> currentUser = Rx<PatientModel?>( PatientModel.fromJson(json.decode(  CacheHelper.getData(key: 'user')))
   );
 
-  final FirebaseService _appointmentService = Get.find<FirebaseService>();
-  final FirebaseService _authService = Get.find<FirebaseService>();
+  // final FirebaseService _appointmentService = Get.find<FirebaseService>();
+  // final FirebaseService _authService = Get.find<FirebaseService>();
 
   final RxList<AppointmentModel> upcomingAppointments =
       <AppointmentModel>[].obs;
@@ -55,45 +55,45 @@ class HomeController extends GetxController {
   //   ever(Get.find<ConsultationsController>().activeConsultations, (activeCount) {
   //     hasActiveConsultation.value = activeCount > 0;
   //   });
+  // // }
+  //
+  // void _loadAppointments() {
+  //   try {
+  //     final userId = _authService.currentUser?.uid;
+  //     if (userId == null) {
+  //       error.value = 'No user logged in';
+  //       return;
+  //     }
+  //
+  //     // Listen to upcoming appointments stream
+  //     _appointmentService.getUpcomingAppointments(userId).listen(
+  //       (appointments) {
+  //         upcomingAppointments.value = appointments;
+  //         isLoading.value = false;
+  //       },
+  //       onError: (err) {
+  //         error.value = 'Error loading appointments: $err';
+  //         isLoading.value = false;
+  //       },
+  //     );
+  //     upcomingAppointments.sort((a, b) {
+  //       // First compare by date
+  //       int dateComparison = a.date.compareTo(b.date);
+  //       if (dateComparison != 0) return dateComparison;
+  //
+  //       // If dates are equal, compare by time
+  //       return a.time.compareTo(b.time);
+  //     });
+  //   } catch (e) {
+  //     print('Error loading appointments: $e');
+  //     CustomSnackBar.showCustomErrorSnackBar(
+  //       title: 'Error'.tr,
+  //       message: 'Failed to load appointments'.tr,
+  //     );
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
   // }
-
-  void _loadAppointments() {
-    try {
-      final userId = _authService.currentUser?.uid;
-      if (userId == null) {
-        error.value = 'No user logged in';
-        return;
-      }
-
-      // Listen to upcoming appointments stream
-      _appointmentService.getUpcomingAppointments(userId).listen(
-        (appointments) {
-          upcomingAppointments.value = appointments;
-          isLoading.value = false;
-        },
-        onError: (err) {
-          error.value = 'Error loading appointments: $err';
-          isLoading.value = false;
-        },
-      );
-      upcomingAppointments.sort((a, b) {
-        // First compare by date
-        int dateComparison = a.date.compareTo(b.date);
-        if (dateComparison != 0) return dateComparison;
-
-        // If dates are equal, compare by time
-        return a.time.compareTo(b.time);
-      });
-    } catch (e) {
-      print('Error loading appointments: $e');
-      CustomSnackBar.showCustomErrorSnackBar(
-        title: 'Error'.tr,
-        message: 'Failed to load appointments'.tr,
-      );
-    } finally {
-      isLoading.value = false;
-    }
-  }
 
   String getFormattedDate(DateTime date) {
     final now = DateTime.now();
@@ -118,14 +118,14 @@ class HomeController extends GetxController {
     return '$hour:$minute';
   }
 
-  Future<void> cancelAppointment(String appointmentId) async {
-    try {
-      await _appointmentService.updateAppointmentStatus(
-          appointmentId, 'cancelled');
-    } catch (e) {
-      error.value = 'Error cancelling appointment: $e';
-    }
-  }
+  // Future<void> cancelAppointment(String appointmentId) async {
+  //   try {
+  //     await _appointmentService.updateAppointmentStatus(
+  //         appointmentId, 'cancelled');
+  //   } catch (e) {
+  //     error.value = 'Error cancelling appointment: $e';
+  //   }
+  // }
 
 
 // User Data Management
@@ -160,7 +160,7 @@ class HomeController extends GetxController {
       await Future.wait([
         loadUserData(),
       ]);
-      _loadAppointments();
+      // _loadAppointments();
     } catch (e) {
       print('Error refreshing data: $e');
       CustomSnackBar.showCustomErrorSnackBar(

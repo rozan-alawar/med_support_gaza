@@ -57,25 +57,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => _buildApp(),
-    );
-  }
-}
-
-Widget _buildApp() {
-  return Obx(() {
-    bool isConnected = Get.find<ConnectionManagerService>().isConnected.value;
-
-    if (!isConnected) {
-      // CustomSnackBar.showCustomErrorSnackBar(
-      //   title: 'No Internet Connection',
-      //   message: 'Please check your internet connection.',
-      // );
-      return GetMaterialApp(home:  NoInternetWidget());
-    }
-
-    return SafeArea(
-      child: GetMaterialApp(
+      builder: (context, child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Med Support Gaza',
         theme: AppTheme.appTheme,
@@ -83,12 +65,43 @@ Widget _buildApp() {
         locale: TranslationController.initalLang,
         translations: Translation(),
         initialRoute: AppPages.INITIAL,
-        getPages: AppPages.routes,
+        getPages: [
+          ...AppPages.routes,
+
+          GetPage(
+            name: '/no-internet',
+            page: () => NoInternetWidget(
+              onRetry: () async {
+                final ConnectionManagerService connectionManager = Get.find<ConnectionManagerService>();
+                await connectionManager.checkConnectivity();
+              },
+            ),
+          ),
+        ],
         defaultTransition: Transition.fadeIn,
         onUnknownRoute: _handleUnknownRoute,
+        builder: (context, widget) {
+          final ConnectionManagerService connectionManager = Get.find<ConnectionManagerService>();
+
+          return Obx(() {
+            bool isConnected = connectionManager.isConnected.value;
+
+            if (!isConnected) {
+              return Material(
+                child: NoInternetWidget(
+                  onRetry: () async {
+                    await connectionManager.checkConnectivity();
+                  },
+                ),
+              );
+            }
+
+            return widget!;
+          });
+        },
       ),
     );
-  });
+  }
 }
 
 Route<dynamic> _handleUnknownRoute(RouteSettings settings) {
@@ -98,6 +111,9 @@ Route<dynamic> _handleUnknownRoute(RouteSettings settings) {
     ),
   );
 }
+
+
+
 
 //rozanalawar@gmail.com
 //123123123
