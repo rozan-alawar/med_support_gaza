@@ -63,18 +63,51 @@ dependencies:
   http:
   http_parser:
   mime:
+#  flutter_native_splash: ^2.3.5
+
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.14.3"
+  rename: ^3.0.2
+  flutter_lints: ^3.0.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21
+
+#flutter_native_splash:
+#  color: "#ffffff"
+#  image: assets/images/splash.jpeg
+##
+#  android_12:
+#    image: assets/images/splash.jpeg
+#    icon_background_color: "#ffffff"
+#
+#  # Text shown on splash screen
+#  # Note: If you want the full logo with "MSG" and "MED SUPPORT GAZA" text,
+#  # use an image with text already on it instead of these parameters
+#
+#  android: true
+#  ios: true
+#  web: false
+#
+#  fullscreen: true
+#
+#
+#  color_dark: "#121212"
+#  image_dark: assets/images/splash.jpeg
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
