@@ -49,3 +49,14 @@ Here is the final presentation we used to showcase the project:
 - Laravel (Backend)
 - Figma (UI/UX Design)
 
+
+## Team
+
+- Rozan M. Y. Abu Alawar 220201852 (Fluttr Developer)
+- Saja S. A. Herez 220201405 (Fluttr Developer)
+- Hanaa M.  M. Hamad 220200507 (UX UI Designer)
+- Nuha Kh. A. Sammour 220200810 (Backend Developer)
+- Aya Z. Kh. Albawwab 220200792 (Backend Developer)
+
+
+
