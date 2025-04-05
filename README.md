@@ -52,11 +52,34 @@ Here is the final presentation we used to showcase the project:
 
 ## Team
 
-- Rozan M. Y. Abu Alawar 220201852 (Fluttr Developer)
-- Saja S. A. Herez 220201405 (Fluttr Developer)
+- Rozan M. Y. Abu Alawar 220201852 (Flutter Developer)
+- Saja S. A. Herez 220201405 (Flutter Developer)
 - Hanaa M.  M. Hamad 220200507 (UX UI Designer)
 - Nuha Kh. A. Sammour 220200810 (Backend Developer)
 - Aya Z. Kh. Albawwab 220200792 (Backend Developer)
 
 
+## Backend Repository
+The backend of the MedSupport Gaza project
+
+🔗 [View Backend Repository](https://github.com/AyaZuheir1/MSG)
+
+
+## 👤 Demo Accounts
+
+To help you explore the app, here are some demo accounts you can use to log in:
+
+### 🔒 Management Account
+- **Email:** admin1@gmail.com  
+- **Password:** password123
+
+### 🧑‍⚕️ Doctor Account
+- **Email:** herezsaja2020@gmail.com  
+- **Password:** password123
+
+### 🧑‍💼 Patient Account
+- **Email:** rozanalawar@gmail.com  
+- **Password:** 123123123
+
+Feel free to create new accounts and explore additional features within the app.
 
