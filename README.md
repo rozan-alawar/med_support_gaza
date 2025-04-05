@@ -69,15 +69,15 @@ The backend of the MedSupport Gaza project
 
 To help you explore the app, here are some demo accounts you can use to log in:
 
-### 🔒 Management Account
+### Admin Account
 - **Email:** admin1@gmail.com  
 - **Password:** password123
 
-### 🧑‍⚕️ Doctor Account
+### Doctor Account
 - **Email:** herezsaja2020@gmail.com  
 - **Password:** password123
 
-### 🧑‍💼 Patient Account
+### Patient Account
 - **Email:** rozanalawar@gmail.com  
 - **Password:** 123123123
 
