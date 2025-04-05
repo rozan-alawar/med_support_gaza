@@ -1,4 +1,4 @@
-# MedSupport Gaza - Remote Medical Consultation App 🩺
+ # MedSupport Gaza - Remote Medical Consultation App 
 
 
 **MedSupport Gaza** is a mobile application developed to facilitate remote medical consultations for people in Gaza. The app bridges the gap between patients and healthcare professionals by offering easy access to virtual consultations, medical advice, and health information, especially in areas with limited healthcare infrastructure.
@@ -35,14 +35,14 @@ Watch a quick demo of how MedSupport Gaza works:
 🔗 [Watch Demo](https://drive.google.com/file/d/1c1TcwcG1pOzvUN32fUpmOLfJDaqYSrcx/view?usp=drive_link)
 
 
-## 📊 Presentation (PowerPoint)
+## Presentation (PowerPoint)
 
 Here is the final presentation we used to showcase the project:
 
 🔗 [View Presentation (PPT)](https://docs.google.com/presentation/d/1CWW-17y6G5tmrav6pbULsN5V9tnpkQQR/edit?usp=drive_link&ouid=112386082573091754840&rtpof=true&sd=true)
 
 
-## 🚀 Technologies Used
+## Technologies Used
 
 - Flutter
 - Firebase
