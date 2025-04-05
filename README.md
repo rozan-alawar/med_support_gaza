@@ -65,7 +65,7 @@ The backend of the MedSupport Gaza project
 🔗 [View Backend Repository](https://github.com/AyaZuheir1/MSG)
 
 
-## 👤 Demo Accounts
+## Demo Accounts
 
 To help you explore the app, here are some demo accounts you can use to log in:
 
