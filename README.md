@@ -64,6 +64,12 @@ The backend of the MedSupport Gaza project
 
 🔗 [View Backend Repository](https://github.com/AyaZuheir1/MSG)
 
+## UI/UX Design
+
+The design of MedSupport Gaza project:
+
+🔗 [View UI/UX Design on Figma](https://www.figma.com/design/ETmVOzS2sz8bPoMb6DSkfc/MedSupportGaza?node-id=0-1&p=f&t=HRLSwm077IwzpEfa-0)
+
 
 ## Demo Accounts
 
