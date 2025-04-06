@@ -41,9 +41,11 @@ class DailyScheduleView extends GetView<DoctorAppointmentManagementController> {
                       final appointment = controller.dayilyAppointments[index];
                       return CustomAppointmentCard(
                         patientName:
-                            appointment.patientName ?? 'unknown patient',
-                        date: controller.getFormatedDate(appointment.date),
-                        time: appointment.startTime,
+                            '${appointment.patient.firstName} ${appointment.patient.lastName}',
+                        date: controller
+                            .getFormatedDate(appointment.startTime.toDate()),
+                        time: controller.fomatTime(appointment.startTime) ??
+                            '00:00',
                         butText: 'cancel_appointment'.tr,
                         onPressed: () {
                           controller.cancelAppointment(index);

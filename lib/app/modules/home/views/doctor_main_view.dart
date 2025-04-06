@@ -9,6 +9,7 @@ import '../../../core/widgets/appointment_card.dart';
 import '../../../core/widgets/quick_stats_card.dart';
 import '../../../routes/app_pages.dart';
 import '../../appointment_booking/controllers/doctor_appointment_management_controller.dart';
+import '../../consultation/controllers/doctor_consultation_controller.dart';
 import '../controllers/doctor_home_controller.dart';
 
 class DoctorMainView extends GetView<DoctorHomeController> {
@@ -49,8 +50,9 @@ class DoctorMainView extends GetView<DoctorHomeController> {
               SizedBox(
                 height: 190.h,
                 child: Obx(() {
-               final dayilyAppointments=   Get.find<DoctorAppointmentManagementController>()
-                      .dayilyAppointments;
+                  final dayilyAppointments =
+                      Get.find<DoctorAppointmentManagementController>()
+                          .dayilyAppointments;
                   if (dayilyAppointments.isEmpty) {
                     return Center(child: Text('no_appointment_message'.tr));
                   }
@@ -60,9 +62,14 @@ class DoctorMainView extends GetView<DoctorHomeController> {
                     itemBuilder: (context, index) {
                       final appointment = dayilyAppointments[index];
                       return AppointmentCard(
-                        patientName: appointment.patientName??'unknown patient',
-                        date:  Get.find<DoctorAppointmentManagementController>().getFormatedDate(appointment.date),
-                        time: appointment.startTime,
+                        patientName:
+                            '${appointment.patient.firstName} ${appointment.patient.lastName}' ??
+                                'unknown patient',
+                        date: Get.find<DoctorAppointmentManagementController>()
+                            .getFormatedDate(appointment.startTime.toDate()),
+                        time: Get.find<DoctorAppointmentManagementController>()
+                                .fomatTime(appointment.startTime) ??
+                            '00:00',
                       );
                     },
                   );
@@ -106,9 +113,13 @@ class DoctorMainView extends GetView<DoctorHomeController> {
                     itemBuilder: (context, index) {
                       final appointment = pandingAppointments[index];
                       return AppointmentCard(
-                        patientName: appointment.patientName??'unknown patient',
-                        date:  Get.find<DoctorAppointmentManagementController>().getFormatedDate(appointment.date),
-                        time: appointment.startTime,
+                        patientName:
+                            '${appointment.patient.firstName} ${appointment.patient.lastName}',
+                        date: Get.find<DoctorAppointmentManagementController>()
+                            .getFormatedDate(appointment.startTime.toDate()),
+                        time: Get.find<DoctorAppointmentManagementController>()
+                                .fomatTime(appointment.startTime) ??
+                            '00:00',
                       );
                     },
                   );
@@ -123,7 +134,9 @@ class DoctorMainView extends GetView<DoctorHomeController> {
               ),
               10.height,
               QuickStatsCard(
-                unreadMessages: controller.unreadMessages.value,
+                unreadMessages: Get.find<DoctorConsultationController>()
+                    .totalUnreadMessages
+                    .value,
               ),
             ])),
       )),

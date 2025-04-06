@@ -175,6 +175,7 @@ class DoctorAuthController extends GetxController {
     if (doctor != null) {
       CacheHelper.saveData(key: 'firstName', value: doctor.firstName);
       CacheHelper.saveData(key: 'lastName', value: doctor.lastName);
+      CacheHelper.saveData(key: 'id', value: doctor.id);
       CacheHelper.saveData(key: 'major', value: doctor.major);
       CacheHelper.saveData(key: 'averageRating', value: doctor.averageRating);
       CacheHelper.saveData(key: 'email', value: doctor.email);
@@ -191,6 +192,7 @@ class DoctorAuthController extends GetxController {
     CacheHelper.removeData(key: 'isLoggedIn');
     CacheHelper.removeData(key: 'userType');
     CacheHelper.removeData(key: 'token');
+    CacheHelper.removeData(key: 'id');
     CacheHelper.removeData(key: 'firstName');
     CacheHelper.removeData(key: 'lastName');
     CacheHelper.removeData(key: 'major');

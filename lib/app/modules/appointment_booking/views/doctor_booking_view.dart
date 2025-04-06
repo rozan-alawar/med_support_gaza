@@ -42,12 +42,12 @@ class DoctorBookingView extends GetView<DoctorAppointmentManagementController> {
                           controller.PandingAppointments[index];
                       return BookingCard(
                         patientName:
-                            appointment.patientName ?? 
+                           '${appointment.patient.firstName} ${appointment.patient.lastName}' ?? 
                             'Unknown Patient',
                         date: controller
-                                .getFormatedDate(appointment.date)
+                                .getFormatedDate(appointment.startTime.toDate())
 ,
-                        time: appointment.startTime ,
+                        time: controller.fomatTime(appointment.startTime) ?? '00:00',
                         onApprove: () {
                           controller.approveBooking(index);
                         },

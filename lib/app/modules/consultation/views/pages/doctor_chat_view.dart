@@ -14,6 +14,7 @@ import '../../controllers/doctor_consultation_controller.dart';
 class DoctorChatView extends GetView<DoctorChatController> {
   final int userId;
   final String consultationId;
+  TextEditingController messageController = TextEditingController();
   DoctorChatView({required this.consultationId, required this.userId});
 
   @override
@@ -143,10 +144,10 @@ class DoctorChatView extends GetView<DoctorChatController> {
                     : Icons.event_busy,
             size: 18,
           ),
-         const SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             statusText,
-            style:const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -163,7 +164,7 @@ class DoctorChatView extends GetView<DoctorChatController> {
           color: isUser ? Colors.teal : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(15),
         ),
-        constraints:const  BoxConstraints(maxWidth: 250),
+        constraints: const BoxConstraints(maxWidth: 250),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -173,7 +174,7 @@ class DoctorChatView extends GetView<DoctorChatController> {
                 color: isUser ? Colors.white : Colors.black,
               ),
             ),
-           const SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               _formatTime(message.timestamp) ?? '',
               style: TextStyle(
@@ -194,7 +195,7 @@ class DoctorChatView extends GetView<DoctorChatController> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            offset:const Offset(0, -2),
+            offset: const Offset(0, -2),
             blurRadius: 2,
             color: Colors.black.withOpacity(0.1),
           ),
@@ -204,8 +205,9 @@ class DoctorChatView extends GetView<DoctorChatController> {
         children: [
           Expanded(
             child: TextField(
+              controller: messageController,
               onChanged: (value) => _controller.message.value = value,
-              decoration:const InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Type a message...',
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.all(10),
@@ -214,7 +216,10 @@ class DoctorChatView extends GetView<DoctorChatController> {
           ),
           IconButton(
             icon: const Icon(Icons.send, color: Colors.teal),
-            onPressed: _controller.sendMessage,
+            onPressed: ()async {
+               _controller.sendMessage(messageController.text);
+                 messageController.clear();
+            },
           ),
         ],
       ),
@@ -235,7 +240,7 @@ class DoctorChatView extends GetView<DoctorChatController> {
           children: [
             _detailRow('Patient',
                 "${consultation.patient.firstName} ${consultation.patient.lastName} "),
-           const SizedBox(height: 8),
+            const SizedBox(height: 8),
             _detailRow('Date', _formatDate(consultation.startTime)),
             const SizedBox(height: 8),
             _detailRow('Time',
