@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:med_support_gaza/app/core/services/cache_helper.dart';
 import 'package:med_support_gaza/app/data/api_paths.dart';
 import 'package:med_support_gaza/app/data/network_helper/api_exception.dart';
 import 'package:med_support_gaza/app/data/network_helper/dio_helper.dart';
@@ -15,7 +14,7 @@ class AdminAuthAPIService {
     Function? onLoading,
   }) {
     DioHelper.post(
-      Links.ADMIN_LOGIN,
+      Links.PATIENT_LOGIN,
       data: {'email': email, 'password': password},
       onSuccess: onSuccess,
       onError: onError,
@@ -32,10 +31,9 @@ class AdminAuthAPIService {
     dynamic Function(ApiException)? onError,
     Function? onLoading,
   }) {
-
     DioHelper.post(
-      Links.ADMIN_LOGOUT,
-      headers: {'Authorization': 'Bearer $token'},
+      Links.PATIENT_LOGOUT,
+      data: {'token': token},
       onSuccess: onSuccess,
       onError: onError,
       onLoading: onLoading,

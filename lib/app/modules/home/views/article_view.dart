@@ -16,26 +16,37 @@ class ArticleTipView extends GetView<HealthTipsController> {
   Widget build(BuildContext context) {
     final arguments = Get.arguments as Map<String, String>;
     Article tip = Article.fromJson(json.decode(arguments['article'] ?? ""));
+    List<String> title =        arguments['title']!=null?
+    arguments['title']!.split(" "):[];
+    String x="";
+    for(int i =0; i<title.length&& i<3; i++)
+      x= x+ " "+ title[i];
     return Scaffold(
-      appBar: AppBar(
-        title: CustomText(
-          arguments['title'] ?? "",
-          fontWeight: FontWeight.bold,
-          fontSize: 16.sp,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+appBar: AppBar(
+  centerTitle: true,
+  title:   CustomText(
+   x,
+    fontWeight: FontWeight.bold,
+    maxLines: 3,
+    fontSize: 16.sp,
+  ),
+),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           children: [
+20.height,
             ClipRRect(
               child: Image.network(tip.image,fit: BoxFit.cover,height: 200.h,width: double.infinity,),
               borderRadius: BorderRadius.circular(16.r),
             ),
-            20.height,
+            30.height,
+            CustomText(
+              arguments['title'] ?? "",
+              fontWeight: FontWeight.bold,
+              maxLines: 3,
+              fontSize: 16.sp,
+            ),
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(16.w),
@@ -60,6 +71,7 @@ class ArticleTipView extends GetView<HealthTipsController> {
                     arguments['description'.tr] ?? '',
                     fontSize: 14.sp,
                     height: 1.6,
+                    maxLines: 800,
                     color: AppColors.textLight,
                     textAlign: TextAlign.justify,
                   ),
