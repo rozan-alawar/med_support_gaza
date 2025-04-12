@@ -16,7 +16,6 @@ import 'package:med_support_gaza/app/modules/home/controllers/home_controller.da
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class AppointmentBookingController extends GetxController {
-  final FirebaseService _firebaseService = Get.find<FirebaseService>();
   final RxInt currentStep = 0.obs;
   Rxn<Specialization> selectedSpecialization = Rxn<Specialization>();
   Rx<Doctor>? selectedDoctor;
@@ -55,11 +54,8 @@ class AppointmentBookingController extends GetxController {
   }
 
   // Patient data from auth
-  String? get patientId => _firebaseService.currentUser?.uid;
 
-  String get patientName =>
-      "${_firebaseService.patientData.value?.firstName} ${_firebaseService.patientData.value?.lastName}" ??
-      '';
+
 
 //------------------------ GET DOCTORS SPECIALIZATIONS -----------------------------
 
@@ -479,24 +475,10 @@ class AppointmentBookingController extends GetxController {
     return time.hour + time.minute / 60.0;
   }
 
-  Future<void> fetchDoctorsBySpecialty(String specialty) async {
-    try {
-      isLoading.value = true;
-      availableDoctors.value =
-          await _firebaseService.getDoctorsBySpecialty(specialty);
-    } catch (e) {
-      print('Error fetching doctors: $e');
-      Get.snackbar('Error', 'Failed to fetch doctors');
-    } finally {
-      isLoading.value = false;
-    }
-  }
+
 
   bool validateBooking() {
-    if (patientId == null) {
-      Get.snackbar('Error', 'Please login first');
-      return false;
-    }
+
 
     if (selectedDoctorId.value.isEmpty) {
       CustomSnackBar.showCustomErrorSnackBar(

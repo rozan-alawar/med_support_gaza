@@ -63,7 +63,6 @@ dependencies:
   http:
   http_parser:
   mime:
-#  flutter_native_splash: ^2.3.5
 
 
 

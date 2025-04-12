@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,8 +15,6 @@ import 'package:med_support_gaza/app/modules/auth/controllers/auth_controller.da
 import 'package:med_support_gaza/app/routes/app_pages.dart';
 
 class ProfileController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RxBool isLoading = false.obs;
   Rx<PatientModel?> currentUser =
       Rx<PatientModel?>(AuthController().currentUser);
