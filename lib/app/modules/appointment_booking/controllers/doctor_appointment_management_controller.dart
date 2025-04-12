@@ -8,6 +8,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../data/api_services/doctor_appointment_api.dart';
 import '../../../data/firebase_services/chat_services.dart';
 import '../../../data/models/appointment.dart';
+import '../../../data/models/consultation_model.dart';
 import '../../../routes/app_pages.dart';
 
 class DoctorAppointmentManagementController extends GetxController {
@@ -19,8 +20,8 @@ class DoctorAppointmentManagementController extends GetxController {
   final ChatService _chatService = ChatService();
 
   RxList<Appointment> appointments = <Appointment>[].obs;
-  RxList<Appointment> PandingAppointments = <Appointment>[].obs;
-  RxList<Appointment> dayilyAppointments = <Appointment>[].obs;
+  RxList<ConsultationModel> PandingAppointments = <ConsultationModel>[].obs;
+  RxList<ConsultationModel> dayilyAppointments = <ConsultationModel>[].obs;
   RxBool isloading = false.obs;
 
   @override
@@ -208,14 +209,19 @@ class DoctorAppointmentManagementController extends GetxController {
     }
     try {
       PandingAppointments.clear();
-      final response = await Get.find<DoctorAppointmentAPI>()
-          .getDoctorPendingAppointments(token: token);
+      final consultationsStream = await _chatService.getDoctorConsultations(
+          CacheHelper.getData(key: 'id'), 'upcoming');
       DateTime now = DateTime.now();
-      PandingAppointments.value = AppointmentModel.fromJson(response.data)
-          .appointments
-          .where((element) => element.date
-              .isAfter(DateTime(now.year, now.month, now.day, now.minute)))
-          .toList();
+      await for (var consultations in consultationsStream) {
+        for (var consultation in consultations) {
+          DateTime consultationDate = consultation.startTime.toDate();
+          if (consultationDate
+              .isAfter(DateTime(now.year, now.month, now.day, now.minute))) {
+            PandingAppointments.add(consultation);
+          }
+        }
+      }
+      PandingAppointments.sort((a, b) => (a.startTime).compareTo(b.startTime));
       print(" PandingAppointments.length: ${PandingAppointments.length}");
     } catch (e) {
       print(e.toString());
@@ -230,11 +236,11 @@ class DoctorAppointmentManagementController extends GetxController {
       return;
     }
     try {
-      final response = await Get.find<DoctorAppointmentAPI>()
-          .acceptAppointment(token: token, id: PandingAppointments[index].id);
-      getPandingAppointment();
+      // final response = await Get.find<DoctorAppointmentAPI>().acceptAppointment(
+      //     token: token, id: int.parse(PandingAppointments[index].id));
       await _chatService.updateConsultationStatusByDoctor(
           '${PandingAppointments[index].id}', 'upcoming');
+      getPandingAppointment();
     } catch (e) {
       print(e.toString());
     }
@@ -248,11 +254,11 @@ class DoctorAppointmentManagementController extends GetxController {
       return;
     }
     try {
-      final response = await Get.find<DoctorAppointmentAPI>()
-          .rejectAppointment(token: token, id: PandingAppointments[index].id);
-      getPandingAppointment();
       await _chatService.updateConsultationStatusByDoctor(
           '${PandingAppointments[index].id}', 'canceled');
+           getPandingAppointment();
+      // final response = await Get.find<DoctorAppointmentAPI>().rejectAppointment(
+      //     token: token, id: int.parse(PandingAppointments[index].id));
     } catch (e) {
       print(e.toString());
     }
@@ -290,21 +296,19 @@ class DoctorAppointmentManagementController extends GetxController {
 
     try {
       dayilyAppointments.clear();
-      final response = await Get.find<DoctorAppointmentAPI>()
-          .getDoctorAppointments(token: token, status: 'Not Available');
+      final consultationsStream = _chatService.getDoctorConsultations(
+          CacheHelper.getData(key: 'id'), 'upcoming');
 
-      final appointments =
-          AppointmentModel.fromJson(response.data).appointments;
-      // Filter appointments for selected date
-      for (var appointment in appointments) {
-        DateTime appointmentDate = appointment.date;
-        if (isSameDay(appointmentDate, selectedDate.value) &&
-            appointment.is_accepted == 'accepted') {
-          dayilyAppointments.add(appointment);
+      await for (var consultations in consultationsStream) {
+        for (var consultation in consultations) {
+          DateTime consultationDate = consultation.startTime.toDate();
+          if (isSameDay(consultationDate, selectedDate.value)) {
+            dayilyAppointments.add(consultation);
+          }
         }
-        // Sort daily appointments by time
-        dayilyAppointments.sort((a, b) => (a.startTime).compareTo(b.startTime));
       }
+      // Sort daily appointments by time
+      dayilyAppointments.sort((a, b) => (a.startTime).compareTo(b.startTime));
     } catch (e) {
       print(e.toString());
     }
@@ -318,13 +322,19 @@ class DoctorAppointmentManagementController extends GetxController {
       return;
     }
     try {
-      int id = dayilyAppointments[index].id;
-      await Get.find<DoctorAppointmentAPI>()
-          .delelteDoctorAppointment(token: token, id: id);
-      await _chatService.updateConsultationStatusByDoctor('$id', 'canceled');
+      //int id = int.parse(dayilyAppointments[index].id);
+      // await Get.find<DoctorAppointmentAPI>()
+      //     .delelteDoctorAppointment(token: token, id: id);
+      await _chatService.updateConsultationStatusByDoctor(
+          dayilyAppointments[index].id, 'canceled');
       getDayilyappointment();
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  String? fomatTime(Timestamp? timestamp) {
+    if (timestamp == null) return null;
+    return DateFormat('hh:mm a').format(timestamp.toDate());
   }
 }

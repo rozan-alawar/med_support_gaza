@@ -32,7 +32,9 @@ class ConsultationModel {
         id: map['doctorId'],
         userId: null,
         firstName: map['doctorName']?.split(' ').first,
-        lastName: map['doctorName']?.split(' ').length > 1 ? map['doctorName'].split(' ').last : '',
+        lastName: map['doctorName']?.split(' ').length > 1
+            ? map['doctorName'].split(' ').last
+            : '',
         email: null,
         major: map['speciality'],
         country: null,
@@ -47,14 +49,17 @@ class ConsultationModel {
     // Create patient object from embedded data
     PatientModel patient;
     if (map['patient'] is Map) {
-      patient = PatientModel.fromJson(Map<String, dynamic>.from(map['patient']));
+      patient =
+          PatientModel.fromJson(Map<String, dynamic>.from(map['patient']));
     } else {
       // Try to create patient with minimal data (using default values where needed)
       patient = PatientModel(
         id: map['patientId'] ?? 0,
         userId: 1,
         firstName: map['patientName']?.split(' ').first ?? 'Unknown',
-        lastName: map['patientName']?.split(' ').length > 1 ? map['patientName'].split(' ').last : '',
+        lastName: map['patientName']?.split(' ').length > 1
+            ? map['patientName'].split(' ').last
+            : '',
         email: map['patientEmail'] ?? 'unknown@example.com',
         age: 0,
         gender: 'Unknown',
@@ -87,6 +92,10 @@ class ConsultationModel {
       'status': status,
     };
   }
+
+  @override
+  String toString() =>
+      'ConsultationModel(id: $id, doctor: $doctor, patient: $patient, startTime: ${startTime.toDate()}, endTime: ${endTime.toDate()}, status: $status)';
 }
 
 class MessageModel {

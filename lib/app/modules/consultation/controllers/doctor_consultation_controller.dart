@@ -13,37 +13,43 @@ class DoctorConsultationController extends GetxController {
   final pastConsultations = <ConsultationModel>[].obs;
   final ChatService _chatService = ChatService();
   final doctorController = Get.find<DoctorProfileController>();
+  RxInt totalUnreadMessages = 0.obs;
 
   void onInit() {
     super.onInit();
     loadConsultations();
-    startStatusChecker(); // بدء الفحص الدوري لتحديث الحالة
+    startStatusChecker();
+    getUnreadMessagesForAllConsultation();
+    // بدء الفحص الدوري لتحديث الحالة
   }
 
   void loadConsultations() {
     // استماع للاستشارات النشطة
     _chatService
-        .getDoctorConsultations(doctorController.doctorData.value?.doctor?.id ?? 0, 'active')
+        .getDoctorConsultations(
+            doctorController.doctorData.value?.doctor?.id ?? 0, 'active')
         .listen((consultations) {
       activeConsultations.value = consultations;
     });
 
     // استماع للاستشارات القادمة
     _chatService
-        .getDoctorConsultations(doctorController.doctorData.value?.doctor?.id ?? 0, 'upcoming')
+        .getDoctorConsultations(
+            doctorController.doctorData.value?.doctor?.id ?? 0, 'upcoming')
         .listen((consultations) {
       upcomingConsultations.value = consultations;
     });
 
     // استماع للاستشارات الماضية
     _chatService
-        .getDoctorConsultations(doctorController.doctorData.value?.doctor?.id ?? 0, 'past')
+        .getDoctorConsultations(
+            doctorController.doctorData.value?.doctor?.id ?? 0, 'past')
         .listen((consultations) {
       pastConsultations.value = consultations;
     });
   }
 
- String _getConsultationStatus(Timestamp startTime, Timestamp endTime) {
+  String _getConsultationStatus(Timestamp startTime, Timestamp endTime) {
     final now = Timestamp.now();
     if (now.compareTo(startTime) < 0) {
       return 'upcoming';
@@ -60,14 +66,22 @@ class DoctorConsultationController extends GetxController {
     });
   }
 
-
- void _checkConsultationStatuses() {
+  void _checkConsultationStatuses() {
     final allConsultations = [...upcomingConsultations, ...activeConsultations];
     for (var consultation in allConsultations) {
-      final expectedStatus = _getConsultationStatus(consultation.startTime, consultation.endTime);
+      final expectedStatus =
+          _getConsultationStatus(consultation.startTime, consultation.endTime);
       if (consultation.status != expectedStatus) {
         _chatService.updateConsultationStatus(consultation.id, expectedStatus);
       }
+    }
+  }
+
+  void getUnreadMessagesForAllConsultation() async {
+    for (var consultation in activeConsultations) {
+      totalUnreadMessages += await _chatService.getUnreadMessageCount(
+          consultation.id,
+          '${doctorController.doctorData.value?.doctor?.id ?? 0}');
     }
   }
 }
